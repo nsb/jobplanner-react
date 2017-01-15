@@ -69,16 +69,15 @@ export const login = (credentials) => {
     }).then(response => response.json())
       .then(json => {
 
-        // We can dispatch many times!
-        // Here, we update the app state with the results of the API call.
-        dispatch(receiveLogin(json))
-        dispatch(push('/foo'))
+        if (json.token) {
+          dispatch(receiveLogin(json))
+          dispatch(push('/foo'))
+        } else {
+          dispatch(receiveLoginError(json))
+        }
 
       }).catch((error) =>
         dispatch(receiveLoginError(error))
       )
-
-      // In a real world app, you also want to
-      // catch any error in the network call.
   }
 }
