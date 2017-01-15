@@ -71,7 +71,7 @@ export const login = (credentials) => {
 
         if (json.token) {
           dispatch(receiveLogin(json))
-          dispatch(push('/foo'))
+          dispatch(push('/'))
         } else {
           dispatch(receiveLoginError(json))
         }
