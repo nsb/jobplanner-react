@@ -1,9 +1,12 @@
 import { combineReducers } from 'redux'
+import { routerReducer } from 'react-router-redux'
 import ui from './ui'
 import login from './login'
 
-const jobplannerApp = combineReducers({
-  ui, login
+const rootReducer = combineReducers({
+  routing: routerReducer,
+  ui,
+  login
 })
 
-export default jobplannerApp
+export default rootReducer

@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import { push } from 'react-router-redux'
 
 const TOGGLE_NAV = 'TOGGLE_NAV'
 const REQUEST_LOGIN = 'REQUEST_LOGIN'
@@ -71,6 +72,8 @@ export const login = (credentials) => {
         // We can dispatch many times!
         // Here, we update the app state with the results of the API call.
         dispatch(receiveLogin(json))
+        dispatch(push('/foo'))
+
       }).catch((error) =>
         dispatch(receiveLoginError(error))
       )

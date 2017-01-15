@@ -6,12 +6,13 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router, Route, browserHistory } from 'react-router';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
 import App from './containers/App';
 import rootReducer from './reducers'
 import './index.css';
 import 'grommet/scss/vanilla/index.scss';
 
-const middleware = [ thunkMiddleware ]
+const middleware = [ thunkMiddleware, routerMiddleware(browserHistory) ]
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
@@ -22,9 +23,12 @@ const store = createStore(
   applyMiddleware(...middleware)
 )
 
+// Create an enhanced history that syncs navigation events with the store
+const history = syncHistoryWithStore(browserHistory, store)
+
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={history}>
       <Route path="/" component={App} />
     </Router>
   </Provider>,
