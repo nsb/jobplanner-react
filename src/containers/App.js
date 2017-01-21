@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux'
 import { App as AppGrommet, Split } from 'grommet'
 
 // import logo from './logo.svg';
@@ -15,9 +16,15 @@ class App extends Component {
   //   dispatch: PropTypes.func.isRequired
   // }
 
+  static propTypes = {
+    navEnabled: PropTypes.bool.isRequired
+  }
+
+
   render() {
+    console.log(this.props)
     const nav = <NavSidebar />
-    const showNav = true
+    const showNav = this.props.navEnabled
 
     return (
       <AppGrommet centered={false}>
@@ -45,13 +52,14 @@ class App extends Component {
 
 }
 
-// const mapStateToProps = state => {
-//   const { login } = state
-//
-//   return {
-//     loginBusy: login.loginBusy
-//   }
-// }
-//
-// export default connect(mapStateToProps)(App)
-export default App
+const mapStateToProps = state => {
+  const { login, nav } = state
+
+  return {
+    loginBusy: login.loginBusy,
+    navEnabled: nav.enabled
+  }
+}
+
+export default connect(mapStateToProps)(App)
+// export default App

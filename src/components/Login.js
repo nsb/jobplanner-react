@@ -2,11 +2,16 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { LoginForm, Split, Sidebar, Footer } from 'grommet'
 import logo from '../logo.svg'
-import { login } from '../actions'
+import { login } from '../actions/login'
+import { navEnable } from '../actions/nav'
 
 class Login extends Component {
   static propTypes = {
     loginBusy: PropTypes.bool.isRequired,
+  }
+
+  componentWillMount () {
+    this.props.dispatch(navEnable(false));
   }
 
   onSubmit = (credentials) => {
