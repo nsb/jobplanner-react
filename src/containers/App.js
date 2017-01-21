@@ -3,7 +3,7 @@ import { App as AppGrommet, Split } from 'grommet'
 
 // import logo from './logo.svg';
 import './App.css';
-import Test from '../components/Test'
+import NavSidebar from '../components/NavSidebar'
 
 class App extends Component {
   // static propTypes = {
@@ -16,11 +16,13 @@ class App extends Component {
   // }
 
   render() {
+    const nav = <NavSidebar />
+    const showNav = true
 
     return (
       <AppGrommet centered={false}>
         <Split priority={"left"} flex="right">
-          <Test />
+          {showNav ? nav : null}
           {this.props.children}
         </Split>
       </AppGrommet>

@@ -1,7 +1,6 @@
-// (C) Copyright 2014-2016 Hewlett Packard Enterprise Development LP
-
-import React, { Component } from "react";
-import { Sidebar, Header, Title, Button, CloseIcon, Footer } from 'grommet'
+import React, { Component } from "react"
+import { Sidebar, Header, Title, Button, Footer } from 'grommet'
+import CloseIcon from 'grommet/components/icons/base/Close'
 
 class NavSidebar extends Component {
 
