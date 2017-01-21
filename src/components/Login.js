@@ -1,21 +1,28 @@
 import React, { PropTypes, Component } from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { LoginForm, Split, Sidebar, Footer } from 'grommet'
+import logo from '../logo.svg'
+import { login } from '../actions'
 
 class Login extends Component {
   static propTypes = {
     loginBusy: PropTypes.bool.isRequired,
-    onSubmit: PropTypes.func.isRequired
+  }
+
+  onSubmit = (credentials) => {
+    this.props.dispatch(login(credentials))
   }
 
   render() {
       return <Split flex="left">
-          <div>Davs</div>
+          <div>
+            <img src={logo} className="App-logo" alt="logo" />
+          </div>
           <Sidebar justify="between" align="center" pad="none" size="large">
               <span />
               <LoginForm align="start"
                   title="jobPlanner"
-                  onSubmit={this.props.loginBusy ? null : this.props.onSubmit}
+                  onSubmit={this.props.loginBusy ? null : this.onSubmit}
                   usernameType="text" />
               <Footer direction="row" size="small"
                   pad={{ horizontal: "medium", vertical: "small", between: "small" }}>
@@ -38,4 +45,12 @@ class Login extends Component {
 }
 
 
-export default Login
+const mapStateToProps = state => {
+  const { login } = state
+
+  return {
+    loginBusy: login.loginBusy
+  }
+}
+
+export default connect(mapStateToProps)(Login)

@@ -5,9 +5,9 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, browserHistory } from 'react-router';
+import { routes } from './routes';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
-import App from './containers/App';
 import rootReducer from './reducers'
 import './index.css';
 import 'grommet/scss/vanilla/index.scss';
@@ -28,9 +28,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
-      <Route path="/" component={App} />
-    </Router>
+    <Router routes={routes} history={history} />
   </Provider>,
   document.getElementById('root')
 );

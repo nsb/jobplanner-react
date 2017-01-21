@@ -1,26 +1,33 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux'
-import { login } from '../actions'
+import React, { Component } from 'react';
+import { App as AppGrommet, Split } from 'grommet'
 
 // import logo from './logo.svg';
 import './App.css';
-import Login from '../components/Login';
+import Test from '../components/Test'
 
 class App extends Component {
-  static propTypes = {
-    //  selectedReddit: PropTypes.string.isRequired,
-    //  posts: PropTypes.array.isRequired,
-    //  isFetching: PropTypes.bool.isRequired,
-    //  lastUpdated: PropTypes.number,
-    loginBusy: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
-  }
+  // static propTypes = {
+  //   //  selectedReddit: PropTypes.string.isRequired,
+  //   //  posts: PropTypes.array.isRequired,
+  //   //  isFetching: PropTypes.bool.isRequired,
+  //   //  lastUpdated: PropTypes.number,
+  //   loginBusy: PropTypes.bool.isRequired,
+  //   dispatch: PropTypes.func.isRequired
+  // }
 
   render() {
 
     return (
-      <Login onSubmit={this.onSubmit} loginBusy={this.props.loginBusy}/>
+      <AppGrommet centered={false}>
+        <Split priority={"left"} flex="right">
+          <Test />
+          {this.props.children}
+        </Split>
+      </AppGrommet>
     );
+
+    // <Login onSubmit={this.onSubmit} loginBusy={this.props.loginBusy}/>
+
     // return (
     //   <div className="App">
     //     <div className="App-header">
@@ -34,17 +41,15 @@ class App extends Component {
     // );
   }
 
-  onSubmit = (credentials) => {
-    this.props.dispatch(login(credentials))
-  }
 }
 
-const mapStateToProps = state => {
-  const { login } = state
-
-  return {
-    loginBusy: login.loginBusy
-  }
-}
-
-export default connect(mapStateToProps)(App)
+// const mapStateToProps = state => {
+//   const { login } = state
+//
+//   return {
+//     loginBusy: login.loginBusy
+//   }
+// }
+//
+// export default connect(mapStateToProps)(App)
+export default App
