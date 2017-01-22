@@ -6,11 +6,11 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-// import { routes } from './routes';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
+import AppAuthenticatedSearch from './containers/AppAuthenticatedSearch'
 import Test from './components/Test'
 import Login from './components/Login'
 import './index.css';
@@ -36,7 +36,9 @@ ReactDOM.render(
       <Route path="/" component={App}>
 
         <Route component={AppAuthenticated}>
-          <IndexRoute component={Test}/>
+          <Route component={AppAuthenticatedSearch}>
+            <IndexRoute component={Test}/>
+          </Route>
         </Route>
 
         <Route path="login" component={Login}/>
