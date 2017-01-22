@@ -1,18 +1,35 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux'
 import { Split } from 'grommet'
 import NavSidebar from '../components/NavSidebar'
+import { navToggle } from '../actions'
 
 class AppAuthenticated extends Component {
+  static propTypes = {
+    navActive: PropTypes.bool.isRequired
+  }
 
   render() {
 
     return (
         <Split priority={"left"} flex="right">
-          {<NavSidebar />}
+          {this.props.navActive ? <NavSidebar toggleNav={this.toggleNav}/> : null}
           {this.props.children}
         </Split>
     );
   }
+
+  toggleNav = () => {
+    this.props.dispatch(navToggle())
+  }
 }
 
-export default AppAuthenticated
+const mapStateToProps = state => {
+  const { nav } = state
+
+  return {
+    navActive: nav.active
+  }
+}
+
+export default connect(mapStateToProps)(AppAuthenticated)
