@@ -3,15 +3,10 @@ import { connect } from 'react-redux'
 import { LoginForm, Split, Sidebar, Footer } from 'grommet'
 import logo from '../logo.svg'
 import { login } from '../actions/login'
-import { navEnable } from '../actions/nav'
 
 class Login extends Component {
   static propTypes = {
     loginBusy: PropTypes.bool.isRequired,
-  }
-
-  componentWillMount () {
-    this.props.dispatch(navEnable(false));
   }
 
   onSubmit = (credentials) => {
@@ -36,17 +31,6 @@ class Login extends Component {
           </Sidebar>
       </Split>
   }
-    // return (
-    //   <div className="App">
-    //     <div className="App-header">
-    //       <img src={logo} className="App-logo" alt="logo" />
-    //       <h2>Welcome to React</h2>
-    //     </div>
-    //     <p className="App-intro">
-    //       To get started, edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //   </div>
-    // );
 }
 
 
@@ -54,7 +38,7 @@ const mapStateToProps = state => {
   const { login } = state
 
   return {
-    loginBusy: login.loginBusy
+    loginBusy: login.busy
   }
 }
 
