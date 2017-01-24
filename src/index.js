@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const store = createStore(
   rootReducer,
-  { login: {busy: false}, nav: {active: true}},
+  { login: {busy: false}, nav: {active: true, responsive: 'multiple'}},
   applyMiddleware(...middleware)
 )
 

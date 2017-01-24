@@ -16,7 +16,7 @@ class AppAuthenticatedSearch extends Component {
         {this.props.children}
 
       </Article>
-    );
+    )
   }
 }
 
