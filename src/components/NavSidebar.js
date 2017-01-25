@@ -21,7 +21,7 @@ class NavSidebar extends Component {
             a11yTitle="Close Menu" />
         </Header>
         <Menu fill={true} primary={true}>
-          <Anchor key="dashboard" path="/dashboard" label="Dashboard" />
+          <Anchor key="dashboard" path="/" label="Dashboard" />
           <Anchor key="calendar" path="/calendar" label="Calendar" />
           <Anchor key="clients" path="/clients" label="Clients" />
           <Anchor key="work" path="/work" label="Work" />
