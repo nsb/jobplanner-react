@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { Split } from 'grommet'
 import NavSidebar from '../components/NavSidebar'
-import { navToggle } from '../actions'
+import { navToggle, navResponsive } from '../actions'
 
 class AppAuthenticated extends Component {
   static propTypes = {
@@ -15,11 +15,16 @@ class AppAuthenticated extends Component {
     const priority = (navActive && 'single' === responsive ? 'left' : 'right')
 
     return (
-        <Split priority={priority} flex="right" >
+        <Split priority={priority} flex="right"
+          onResponsive={this.onResponsive} >
           {this.props.navActive ? <NavSidebar toggleNav={this.toggleNav}/> : null}
           {this.props.children}
         </Split>
     );
+  }
+
+  onResponsive = (responsive) => {
+    this.props.dispatch(navResponsive(responsive))
   }
 
   toggleNav = () => {

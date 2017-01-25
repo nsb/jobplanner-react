@@ -13,16 +13,7 @@ const navReducer = (state = {}, action) => {
       })
 
     case NAV_RESPONSIVE:
-      // let result = { responsive: action.responsive }
-      // if ('single' === action.responsive && state.active) {
-      //   result.active = false
-      //   result.activateOnMultiple = true
-      // } else if ('multiple' === action.responsive && state.activateOnMultiple) {
-      //   result.active = true
-      // }
-      return { ...state,
-               responsive: action.responsive,
-               active: action.responsive === 'multiple' }
+      return { ...state, responsive: action.responsive }
 
     default:
       return state
