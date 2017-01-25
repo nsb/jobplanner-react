@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react"
 import { Sidebar, Header, Title, Menu, Anchor, Button, Footer } from 'grommet'
 import CloseIcon from 'grommet/components/icons/base/Close'
+import logo from '../logo.svg'
 
 class NavSidebar extends Component {
   static propTypes = {
@@ -13,6 +14,7 @@ class NavSidebar extends Component {
       <Sidebar colorIndex="neutral-1" fixed={true}>
         <Header size="large" justify="between" pad={{horizontal: "medium"}}>
           <Title a11yTitle="Close Menu">
+            <img src={logo} className="App-logo" alt="logo" style={{height : '40px'}} />
             <span>JobPlanner</span>
           </Title>
           <Button icon={<CloseIcon />} onClick={this.props.toggleNav} plain={true}
