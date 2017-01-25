@@ -13,7 +13,9 @@ const navReducer = (state = {}, action) => {
       })
 
     case NAV_RESPONSIVE:
-      return { ...state, responsive: action.responsive }
+      return { ...state,
+               responsive: action.responsive,
+               active: action.responsive === 'multiple' }
 
     default:
       return state
