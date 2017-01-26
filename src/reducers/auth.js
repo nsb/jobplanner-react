@@ -1,4 +1,4 @@
-const loginReducer = (state = {}, action) => {
+const authReducer = (state = {}, action) => {
   switch (action.type) {
     case 'REQUEST_LOGIN':
       return Object.assign({}, state, {
@@ -28,4 +28,4 @@ const loginReducer = (state = {}, action) => {
   }
 }
 
-export default loginReducer
+export default authReducer

@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import { LoginForm, Split, Sidebar, Footer } from 'grommet'
 import logo from '../logo.svg'
-import { login } from '../actions/login'
+import { login } from '../actions/auth'
 
 class Login extends Component {
   static propTypes = {
@@ -35,10 +35,10 @@ class Login extends Component {
 
 
 const mapStateToProps = state => {
-  const { login } = state
+  const { auth } = state
 
   return {
-    loginBusy: login.busy
+    loginBusy: auth.busy
   }
 }
 

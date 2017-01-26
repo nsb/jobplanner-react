@@ -23,19 +23,26 @@ if (process.env.NODE_ENV !== 'production') {
 
 const store = createStore(
   rootReducer,
-  { login: {busy: false}, nav: {active: true, responsive: 'multiple'}},
+  { auth: { busy: false, token: null, user: null },
+    nav: { active: true, responsive: 'multiple' } },
   applyMiddleware(...middleware)
 )
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)
 
+const authRequired = (nextState, replace) => {
+  if (!store.getState().auth.token) {
+    replace("/login");
+  }
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history} >
       <Route path="/" component={App}>
 
-        <Route component={AppAuthenticated}>
+        <Route onEnter={authRequired} component={AppAuthenticated} >
           <Route component={AppAuthenticatedSearch}>
             <IndexRoute component={Test}/>
           </Route>

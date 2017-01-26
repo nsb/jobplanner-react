@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import login from './login'
+import auth from './auth'
 import nav from './nav'
 
 const rootReducer = combineReducers({
   routing: routerReducer,
-  login,
+  auth,
   nav
 })
 
