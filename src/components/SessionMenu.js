@@ -5,19 +5,19 @@ import UserIcon from 'grommet/components/icons/base/User';
 
 class SessionMenu extends Component {
   static propTypes = {
-    user: PropTypes.object,
+    user: PropTypes.object.isRequired,
     dropAlign: PropTypes.object.isRequired,
     colorIndex: PropTypes.string.isRequired
   }
 
   render() {
-    const { dropAlign, colorIndex } = this.props
+    const { user, dropAlign, colorIndex } = this.props
 
     return (
       <Menu icon={<UserIcon />} dropAlign={dropAlign}
         colorIndex={colorIndex} a11yTitle="Session">
         <Box pad="medium">
-          <Heading tag="h3" margin="none">"Niels"</Heading>
+          <Heading tag="h3" margin="none">{user.username}</Heading>
         </Box>
         <Anchor href="#" onClick={null} label="Logout" />
       </Menu>
