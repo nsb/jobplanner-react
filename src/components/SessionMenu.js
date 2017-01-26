@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Menu, Anchor, Box, Heading } from 'grommet'
+import { logout } from '../actions'
 import UserIcon from 'grommet/components/icons/base/User';
 
 class SessionMenu extends Component {
@@ -19,11 +20,14 @@ class SessionMenu extends Component {
         <Box pad="medium">
           <Heading tag="h3" margin="none">{user.username}</Heading>
         </Box>
-        <Anchor href="#" onClick={null} label="Logout" />
+        <Anchor href="#" onClick={this.onLogout} label="Logout" />
       </Menu>
     );
   }
 
+  onLogout = () => {
+    this.props.dispatch(logout())
+  }
 }
 
 const mapStateToProps = state => {

@@ -5,6 +5,7 @@ const TOGGLE_NAV = 'TOGGLE_NAV'
 const REQUEST_LOGIN = 'REQUEST_LOGIN'
 const REQUEST_LOGIN_FAILURE = 'REQUEST_LOGIN_FAILURE'
 const REQUEST_LOGIN_SUCCESS = 'REQUEST_LOGIN_SUCCESS'
+const LOGOUT = 'LOGOUT'
 
 export const toggleNav = () => {
   return {
@@ -80,5 +81,11 @@ export const login = (credentials) => {
       }).catch((error) =>
         dispatch(receiveLoginError(error))
       )
+  }
+}
+
+export const logout = () => {
+  return {
+    type: LOGOUT
   }
 }

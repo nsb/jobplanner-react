@@ -17,6 +17,12 @@ const loginReducer = (state = {}, action) => {
         busy: false
       })
 
+    case 'LOGOUT':
+      return Object.assign({}, state, {
+        token: null
+      })
+
+
     default:
       return state
   }
