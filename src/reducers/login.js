@@ -8,6 +8,7 @@ const loginReducer = (state = {}, action) => {
     case 'REQUEST_LOGIN_SUCCESS':
       return Object.assign({}, state, {
         token: action.token,
+        user: action.user,
         busy: false
       })
 

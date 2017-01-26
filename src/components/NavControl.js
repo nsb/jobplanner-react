@@ -6,7 +6,7 @@ import logo from '../logo.svg'
 
 class NavControl extends Component {
   render () {
-    const { nav: { active }, dispatch } = this.props;
+    const { nav: { active }, dispatch } = this.props
 
     let result;
     if (! active) {

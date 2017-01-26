@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react"
 import { Sidebar, Header, Title, Menu, Anchor, Button, Footer } from 'grommet'
 import CloseIcon from 'grommet/components/icons/base/Close'
 import logo from '../logo.svg'
+import SessionMenu from './SessionMenu'
 
 class NavSidebar extends Component {
   static propTypes = {
@@ -27,6 +28,8 @@ class NavSidebar extends Component {
           <Anchor key="work" path="/work" label="Work" />
         </Menu>
         <Footer pad={{horizontal: "medium", vertical: "small"}}>
+          <SessionMenu dropAlign={{bottom: 'bottom'}}
+            colorIndex="neutral-1-a" />
         </Footer>
       </Sidebar>
     )

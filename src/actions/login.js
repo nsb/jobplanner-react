@@ -26,6 +26,7 @@ export const receiveLogin = (json) => {
   return {
     type: REQUEST_LOGIN_SUCCESS,
     token: json.token,
+    user: json.user,
     receivedAt: Date.now()
   }
 }
