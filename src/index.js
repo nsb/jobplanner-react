@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
+import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux'
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
@@ -33,7 +33,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 const authRequired = (nextState, replace) => {
   if (!store.getState().auth.token) {
-    replace("/login");
+    store.dispatch(push('/login'))
   }
 }
 
