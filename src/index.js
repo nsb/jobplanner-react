@@ -16,6 +16,19 @@ import Login from './components/Login'
 import './index.css';
 import 'grommet/scss/vanilla/index.scss';
 
+// Setup service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch(function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+
 const middleware = [ thunkMiddleware, routerMiddleware(browserHistory) ]
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
