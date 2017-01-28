@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { App as AppGrommet } from 'grommet'
+import AppGrommet from 'grommet/components/App'
 import './App.css';
 
 class App extends Component {

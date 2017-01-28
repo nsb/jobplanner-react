@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import { Split } from 'grommet'
+import Split from 'grommet/components/Split'
 import NavSidebar from '../components/NavSidebar'
 import { navToggle, navResponsive } from '../actions'
 

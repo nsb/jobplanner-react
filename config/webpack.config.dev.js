@@ -7,6 +7,7 @@ var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeMod
 var ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 var getClientEnvironment = require('./env');
 var paths = require('./paths');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 
@@ -204,7 +205,8 @@ module.exports = {
     new WatchMissingNodeModulesPlugin(paths.appNodeModules),
     new ServiceWorkerWebpackPlugin({
       entry: paths.serviceWorker,
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

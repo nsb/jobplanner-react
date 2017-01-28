@@ -1,5 +1,7 @@
 import React, { Component } from "react"
-import { Article, Header, Search } from 'grommet'
+import Article from 'grommet/components/Article'
+import Header from 'grommet/components/Header'
+import Search from 'grommet/components/Search'
 import NavControl from '../components/NavControl'
 
 class AppAuthenticatedSearch extends Component {

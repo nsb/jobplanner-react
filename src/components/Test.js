@@ -1,5 +1,9 @@
 import React, { Component } from "react"
-import { Header, Heading, Section, Tile, Tiles } from 'grommet'
+import Header from 'grommet/components/Header'
+import Heading from 'grommet/components/Heading'
+import Section from 'grommet/components/Section'
+import Tile from 'grommet/components/Tile'
+import Tiles from 'grommet/components/Tiles'
 
 class Test extends Component {
 

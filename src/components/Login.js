@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
-import { LoginForm, Split, Sidebar, Footer } from 'grommet'
+import LoginForm from 'grommet/components/LoginForm'
+import Split from 'grommet/components/Split'
+import Sidebar from 'grommet/components/Sidebar'
+import Footer from 'grommet/components/Footer'
 import logo from '../logo.svg'
 import { login } from '../actions/auth'
 

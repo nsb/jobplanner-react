@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Menu, Anchor, Box, Heading } from 'grommet'
-import { logout } from '../actions'
+import Menu from 'grommet/components/Menu'
+import Anchor from 'grommet/components/Anchor'
+import Box from 'grommet/components/Box'
+import Heading from 'grommet/components/Heading'
 import UserIcon from 'grommet/components/icons/base/User';
+import { logout } from '../actions'
 
 class SessionMenu extends Component {
   static propTypes = {

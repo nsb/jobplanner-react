@@ -1,5 +1,11 @@
 import React, { Component, PropTypes } from "react"
-import { Sidebar, Header, Title, Menu, Anchor, Button, Footer } from 'grommet'
+import Sidebar from 'grommet/components/Sidebar'
+import Header from 'grommet/components/Header'
+import Title from 'grommet/components/Title'
+import Menu from 'grommet/components/Title'
+import Anchor from 'grommet/components/Anchor'
+import Button from 'grommet/components/Button'
+import Footer from 'grommet/components/Footer'
 import CloseIcon from 'grommet/components/icons/base/Close'
 import logo from '../logo.svg'
 import SessionMenu from './SessionMenu'
