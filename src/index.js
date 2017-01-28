@@ -13,8 +13,8 @@ import AppAuthenticated from './containers/AppAuthenticated'
 import AppAuthenticatedSearch from './containers/AppAuthenticatedSearch'
 import Test from './components/Test'
 import Login from './components/Login'
-import './index.css';
 import 'grommet/scss/vanilla/index.scss';
+import './index.css';
 
 // Setup service worker
 if ('serviceWorker' in navigator) {
