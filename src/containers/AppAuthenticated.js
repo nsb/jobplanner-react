@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import Split from 'grommet/components/Split'
+import Article from 'grommet/components/Article'
+import Section from 'grommet/components/Section'
+import logo from '../logo.svg'
 import NavSidebar from '../components/NavSidebar'
 import { navToggle, navResponsive, verify } from '../actions'
 
@@ -34,7 +37,13 @@ class AppAuthenticated extends Component {
       )
     } else {
       return (
-        <div>Loading...</div>
+        <Article scrollStep={true} controls={true}>
+          <Section full={true}
+            colorIndex="dark" texture="url(img/ferret_background.png)"
+            pad="large" justify="center" align="center">
+            <img src={logo} className="App-logo" alt="logo" />
+          </Section>
+        </Article>
       )
     }
   }
