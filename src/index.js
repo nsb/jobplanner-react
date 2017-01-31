@@ -34,9 +34,11 @@ if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
 
+const token = localStorage.getItem('token');
+
 const store = createStore(
   rootReducer,
-  { auth: { busy: false, token: null, user: null },
+  { auth: { busy: false, token: token, user: null, isAuthenticated: false },
     nav: { active: true, responsive: 'multiple' } },
   applyMiddleware(...middleware)
 )
