@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react"
 import Sidebar from 'grommet/components/Sidebar'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
-import Menu from 'grommet/components/Title'
+import Menu from 'grommet/components/Menu'
 import Anchor from 'grommet/components/Anchor'
 import Button from 'grommet/components/Button'
 import Footer from 'grommet/components/Footer'
