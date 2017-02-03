@@ -28,7 +28,7 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
 )
 
 const ClientForm = (props) => {
-  const { handleSubmit, valid, pristine, submitting, onClose } = props
+  const { handleSubmit, valid, dirty, submitting, onClose } = props
   return (
     <Form onSubmit={handleSubmit}>
 
@@ -54,7 +54,7 @@ const ClientForm = (props) => {
       <Footer pad={{vertical: 'medium'}}>
         <span />
         <Button type="submit" primary={true} label="Add"
-             onClick={!pristine && valid && !submitting ? () => true : null} />
+             onClick={valid && dirty && !submitting ? () => true : null} />
       </Footer>
     </Form>
 
