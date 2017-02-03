@@ -22,7 +22,8 @@ class ClientAdd extends Component {
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
 
-        <ClientForm onSubmit={this.onSubmit} onClose={this.onClose} />
+        <ClientForm onSubmit={this.onSubmit}
+          onClose={this.onClose} />
 
       </Article>
     )

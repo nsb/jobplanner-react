@@ -41,7 +41,7 @@ const ClientForm = (props) => {
       <Footer pad={{vertical: 'medium'}}>
         <span />
         <Button type="submit" primary={true} label="Add"
-             onClick={() => true} />
+             onClick={!pristine && !submitting ? () => true : null} />
       </Footer>
     </Form>
 
