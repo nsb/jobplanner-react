@@ -22,7 +22,7 @@ const validate = values => {
 }
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-  <FormField label={label} htmlFor="first_name" error={touched ? error : null}>
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>
 )
