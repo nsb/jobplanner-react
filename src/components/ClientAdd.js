@@ -11,6 +11,7 @@ import Footer from 'grommet/components/Footer'
 import FormFields from 'grommet/components/FormFields'
 import FormField from 'grommet/components/FormField'
 import CloseIcon from 'grommet/components/icons/base/Close'
+import ClientForm from './ClientForm'
 
 class ClientAdd extends Component {
   static propTypes = {
@@ -20,35 +21,9 @@ class ClientAdd extends Component {
   render () {
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
-        <Form onSubmit={this._onSubmit}>
 
-          <Header size="large" justify="between" pad="none">
-            <Heading tag="h2" margin="none" strong={true}>
-              Add Client
-            </Heading>
-            <Anchor icon={<CloseIcon />} onClick={this.onClose}
-              a11yTitle='Close Add Client Form' />
-          </Header>
+        <ClientForm handleSubmit={null} onClose={this.onClose} />
 
-          <FormFields>
-
-            <fieldset>
-
-              <FormField label="Name" htmlFor="name" error={null}>
-                <input id="name" name={"template.name"} type="text"
-                  value={''}
-                  onChange={null} />
-              </FormField>
-
-            </fieldset>
-          </FormFields>
-
-          <Footer pad={{vertical: 'medium'}}>
-            <span />
-            <Button type="submit" primary={true} label="Add"
-              onClick={this._onSubmit} />
-          </Footer>
-        </Form>
       </Article>
     )
 
