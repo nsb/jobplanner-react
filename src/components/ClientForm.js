@@ -10,8 +10,25 @@ import FormFields from 'grommet/components/FormFields'
 import FormField from 'grommet/components/FormField'
 import CloseIcon from 'grommet/components/icons/base/Close'
 
+const validate = values => {
+  const errors = {}
+  if (!values.first_name) {
+    errors.first_name = 'Required'
+  }
+  if (!values.last_name) {
+    errors.last_name = 'Required'
+  }
+  return errors
+}
+
+const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+  <FormField label={label} htmlFor="first_name" error={touched ? error : null}>
+    <input {...input} type={type} />
+  </FormField>
+)
+
 const ClientForm = (props) => {
-  const { handleSubmit, pristine, reset, submitting, onClose } = props
+  const { handleSubmit, valid, pristine, reset, submitting, onClose } = props
   return (
     <Form onSubmit={handleSubmit}>
 
@@ -27,12 +44,8 @@ const ClientForm = (props) => {
 
         <fieldset>
 
-          <FormField label="First Name" htmlFor="first_name" error={null}>
-            <Field name="first_name" component="input" type="text" />
-          </FormField>
-          <FormField label="Last Name" htmlFor="last_name" error={null}>
-            <Field name="last_name" component="input" type="text" />
-          </FormField>
+          <Field name="first_name" label="First name" component={renderField} type="text" />
+          <Field name="last_name" label="Last Name" component={renderField} type="text" />
 
         </fieldset>
 
@@ -41,7 +54,7 @@ const ClientForm = (props) => {
       <Footer pad={{vertical: 'medium'}}>
         <span />
         <Button type="submit" primary={true} label="Add"
-             onClick={!pristine && !submitting ? () => true : null} />
+             onClick={!pristine && valid && !submitting ? () => true : null} />
       </Footer>
     </Form>
 
@@ -50,5 +63,6 @@ const ClientForm = (props) => {
 }
 
 export default reduxForm({
-  form: 'client'  // a unique identifier for this form
+  form: 'client',  // a unique identifier for this form
+  validate
 })(ClientForm)
