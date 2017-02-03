@@ -13,7 +13,7 @@ import CloseIcon from 'grommet/components/icons/base/Close'
 const ClientForm = (props) => {
   const { handleSubmit, pristine, reset, submitting, onClose } = props
   return (
-    <Form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
 
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
@@ -28,7 +28,7 @@ const ClientForm = (props) => {
         <fieldset>
 
           <FormField label="Name" htmlFor="name" error={null}>
-            <Field name="firstName" component="input" type="text" placeholder="First Name"/>
+            <Field name="name" component="input" type="text" />
           </FormField>
 
         </fieldset>
@@ -37,9 +37,9 @@ const ClientForm = (props) => {
 
       <Footer pad={{vertical: 'medium'}}>
         <span />
-        <Button type="submit" primary={true} label="Add" />
+        <input type="submit" />
       </Footer>
-    </Form>
+    </form>
 
 
   )

@@ -22,11 +22,17 @@ class ClientAdd extends Component {
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
 
-        <ClientForm handleSubmit={null} onClose={this.onClose} />
+        <ClientForm onSubmit={this.onSubmit} onClose={this.onClose} />
 
       </Article>
     )
 
+  }
+
+  onSubmit = (data, e) => {
+    console.log(data)
+    return false
+    // e.preventDefault()
   }
 
   onClose = () => {
