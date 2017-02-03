@@ -9,6 +9,7 @@ import Heading from 'grommet/components/Heading'
 import Form from 'grommet/components/Form'
 import Footer from 'grommet/components/Footer'
 import FormFields from 'grommet/components/FormFields'
+import FormField from 'grommet/components/FormField'
 import CloseIcon from 'grommet/components/icons/base/Close'
 
 class ClientAdd extends Component {
@@ -32,6 +33,12 @@ class ClientAdd extends Component {
           <FormFields>
 
             <fieldset>
+
+              <FormField label="Name" htmlFor="name" error={null}>
+                <input id="name" name={"template.name"} type="text"
+                  value={''}
+                  onChange={null} />
+              </FormField>
 
             </fieldset>
           </FormFields>
