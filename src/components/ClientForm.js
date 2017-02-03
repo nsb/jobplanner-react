@@ -27,8 +27,11 @@ const ClientForm = (props) => {
 
         <fieldset>
 
-          <FormField label="Name" htmlFor="name" error={null}>
-            <Field name="name" component="input" type="text" />
+          <FormField label="First Name" htmlFor="first_name" error={null}>
+            <Field name="first_name" component="input" type="text" />
+          </FormField>
+          <FormField label="Last Name" htmlFor="last_name" error={null}>
+            <Field name="last_name" component="input" type="text" />
           </FormField>
 
         </fieldset>
@@ -37,7 +40,8 @@ const ClientForm = (props) => {
 
       <Footer pad={{vertical: 'medium'}}>
         <span />
-        <input type="submit" />
+        <Button type="submit" primary={true} label="Add"
+             onClick={() => true} />
       </Footer>
     </form>
 
