@@ -22,7 +22,7 @@ class NavSidebar extends Component {
         <Header size="large" justify="between" pad={{horizontal: "medium"}}>
           <Title a11yTitle="Close Menu">
             <img src={logo} className="App-logo" alt="logo" style={{height : '40px'}} />
-            <span>JobPlanner</span>
+            <span>jobPlanner</span>
           </Title>
           <Button icon={<CloseIcon />} onClick={this.props.toggleNav} plain={true}
             a11yTitle="Close Menu" />
