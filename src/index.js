@@ -11,7 +11,8 @@ import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
 import AppAuthenticatedSearch from './containers/AppAuthenticatedSearch'
-import Test from './components/Test'
+import Clients from './components/Clients'
+import ClientAdd from './components/ClientAdd'
 import Login from './components/Login'
 import 'grommet/scss/vanilla/index.scss';
 import './index.css';
@@ -59,8 +60,9 @@ ReactDOM.render(
 
         <Route onEnter={authRequired} component={AppAuthenticated} >
           <Route component={AppAuthenticatedSearch}>
-            <IndexRoute component={Test}/>
+            <IndexRoute component={Clients}/>
           </Route>
+          <Route path="clients/add" component={ClientAdd} />
         </Route>
 
         <Route path="login" component={Login}/>
