@@ -61,6 +61,7 @@ ReactDOM.render(
         <Route onEnter={authRequired} component={AppAuthenticated} >
           <Route component={AppAuthenticatedSearch}>
             <IndexRoute component={Clients}/>
+            <Route path="clients" component={Clients} />
           </Route>
           <Route path="clients/add" component={ClientAdd} />
         </Route>

@@ -29,10 +29,8 @@ class ClientAdd extends Component {
 
   }
 
-  onSubmit = (data, e) => {
-    console.log(data)
-    return false
-    // e.preventDefault()
+  onSubmit = (data, dispatch, props) => {
+    console.log(data, props)
   }
 
   onClose = () => {

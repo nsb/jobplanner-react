@@ -13,7 +13,7 @@ import CloseIcon from 'grommet/components/icons/base/Close'
 const ClientForm = (props) => {
   const { handleSubmit, pristine, reset, submitting, onClose } = props
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
 
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
@@ -43,7 +43,7 @@ const ClientForm = (props) => {
         <Button type="submit" primary={true} label="Add"
              onClick={() => true} />
       </Footer>
-    </form>
+    </Form>
 
 
   )
