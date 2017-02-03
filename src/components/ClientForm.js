@@ -28,7 +28,7 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
 )
 
 const ClientForm = (props) => {
-  const { handleSubmit, valid, pristine, reset, submitting, onClose } = props
+  const { handleSubmit, valid, pristine, submitting, onClose } = props
   return (
     <Form onSubmit={handleSubmit}>
 
