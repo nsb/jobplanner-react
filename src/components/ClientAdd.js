@@ -3,17 +3,18 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Article from 'grommet/components/Article'
 import ClientForm from './ClientForm'
+import { createClient } from '../actions'
 
 class ClientAdd extends Component {
   static propTypes = {
-    nav: PropTypes.object,
+    token: PropTypes.string.isRequired
   }
 
   render () {
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
 
-        <ClientForm onSubmit={this.onSubmit}
+        <ClientForm onSubmit={this.handleSubmit}
           onClose={this.onClose} />
 
       </Article>
@@ -21,8 +22,9 @@ class ClientAdd extends Component {
 
   }
 
-  onSubmit = (data, dispatch, props) => {
-    console.log(data, props)
+  handleSubmit = (values) => {
+    const { token } = this.props
+    this.props.dispatch(createClient(values, token))
   }
 
   onClose = () => {
@@ -31,7 +33,9 @@ class ClientAdd extends Component {
 }
 
 const mapStateToProps = state => {
+  const { auth } = state
   return {
+    token: auth.token
   }
 }
 
