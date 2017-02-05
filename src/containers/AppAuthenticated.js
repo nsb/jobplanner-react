@@ -1,16 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
-import Split from 'grommet/components/Split'
 import Article from 'grommet/components/Article'
 import Section from 'grommet/components/Section'
 import logo from '../logo.svg'
-import NavSidebar from '../components/NavSidebar'
 import { navToggle, navResponsive, verify } from '../actions'
 
 class AppAuthenticated extends Component {
   static propTypes = {
-    navActive: PropTypes.bool.isRequired,
-    responsive: PropTypes.string.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     token: PropTypes.string.isRequired
   }
@@ -24,16 +20,13 @@ class AppAuthenticated extends Component {
   }
 
   render() {
-    const { navActive, responsive, isAuthenticated } = this.props
-    const priority = (navActive && 'single' === responsive ? 'left' : 'right')
+    const { isAuthenticated } = this.props
 
     if (isAuthenticated) {
       return (
-          <Split priority={priority} flex="right"
-            onResponsive={this.onResponsive} >
-            {this.props.navActive ? <NavSidebar toggleNav={this.toggleNav}/> : null}
-            {this.props.children}
-          </Split>
+        <div>
+          {this.props.children}
+        </div>
       )
     } else {
       return (
@@ -58,13 +51,11 @@ class AppAuthenticated extends Component {
 }
 
 const mapStateToProps = state => {
-  const { nav, auth } = state
+  const { auth } = state
 
   return {
-    navActive: nav.active,
     isAuthenticated: auth.isAuthenticated,
     token: auth.token,
-    responsive: nav.responsive
   }
 }
 
