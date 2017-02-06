@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Article from 'grommet/components/Article'
 import BusinessForm from './BusinessForm'
+import { createBusiness } from '../actions'
 
 class BusinessAdd extends Component {
   static propTypes = {
@@ -21,9 +22,8 @@ class BusinessAdd extends Component {
   }
 
   handleSubmit = (values) => {
-    console.log(values)
-    // const { token } = this.props
-    // this.props.dispatch(createClient(values, token))
+    const { token } = this.props
+    this.props.dispatch(createBusiness(values, token))
   }
 
   onClose = () => {

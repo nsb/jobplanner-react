@@ -40,10 +40,15 @@ if (process.env.NODE_ENV !== 'production') {
 
 const token = localStorage.getItem('token');
 
+const initialState = {
+  auth: { busy: false, token: token, user: null, isAuthenticated: false },
+  nav: { active: true, responsive: 'multiple' },
+  businesses: []
+}
+
 const store = createStore(
   rootReducer,
-  { auth: { busy: false, token: token, user: null, isAuthenticated: false },
-    nav: { active: true, responsive: 'multiple' } },
+  initialState,
   applyMiddleware(...middleware)
 )
 
