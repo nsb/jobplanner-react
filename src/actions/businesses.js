@@ -57,7 +57,7 @@ export const createBusiness = (data, token) => {
       },
       body: JSON.stringify(data)
     }).then(response => {
-      if (response.Ok) {
+      if (response.ok) {
         return response.json()
       } else {
         dispatch(createBusinessError('Oops'))

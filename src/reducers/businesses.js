@@ -1,6 +1,7 @@
-import CREATE_BUSINESS_SUCCESS from '../actions'
+import { CREATE_BUSINESS_SUCCESS } from '../actions'
 
 const businessesReducer = (state = [], action) => {
+
   switch (action.type) {
     case CREATE_BUSINESS_SUCCESS:
       return [
