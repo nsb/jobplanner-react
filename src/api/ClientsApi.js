@@ -3,10 +3,10 @@ import fetch from 'isomorphic-fetch'
 class ClientsApi {
   static getAllClients(token) {
     return fetch('http://localhost:8000/clients').then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 
   static updateClient(client) {
@@ -16,14 +16,14 @@ class ClientsApi {
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({client: client})
-    });
+    })
 
 
     return fetch(request).then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 
   static createClient(client, token) {
@@ -34,27 +34,27 @@ class ClientsApi {
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify(client)
-    });
+    })
 
 
     return fetch(request).then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 
   static deleteCat(cat) {
     const request = new Request(`http://localhost:8000/api/v1/Clients/${cat.id}`, {
       method: 'DELETE'
-    });
+    })
 
     return fetch(request).then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 }
 
-export default ClientsApi;
+export default ClientsApi

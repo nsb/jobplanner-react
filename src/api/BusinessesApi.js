@@ -3,10 +3,10 @@ import fetch from 'isomorphic-fetch'
 class BusinessesApi {
   static getAllBusinesses(token) {
     return fetch('http://localhost:8000/businesses').then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 
   static updateBusiness(business) {
@@ -16,14 +16,14 @@ class BusinessesApi {
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify(business)
-    });
+    })
 
 
     return fetch(request).then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 
   static createBusiness(business, token) {
@@ -34,27 +34,27 @@ class BusinessesApi {
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify(business)
-    });
+    })
 
 
     return fetch(request).then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 
   static deleteBusiness(business) {
     const request = new Request(`http://localhost:8000/businesses/${business.id}`, {
       method: 'DELETE'
-    });
+    })
 
     return fetch(request).then(response => {
-      return response.json();
+      return response.json()
     }).catch(error => {
-      return error;
-    });
+      return error
+    })
   }
 }
 
-export default BusinessesApi;
+export default BusinessesApi
