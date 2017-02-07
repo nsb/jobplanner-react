@@ -64,7 +64,7 @@ export const createBusiness = (data, token) => {
       }
     }).then(json => {
           dispatch(createBusinessSuccess(json))
-          dispatch(push('/1'))
+          dispatch(push(`/${json.id}`))
       }).catch((error) =>
         dispatch(createBusinessError(error))
       )
