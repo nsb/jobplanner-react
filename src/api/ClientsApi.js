@@ -45,7 +45,7 @@ class ClientsApi {
   }
 
   static deleteCat(cat) {
-    const request = new Request(`http://localhost:5000/api/v1/Clients/${cat.id}`, {
+    const request = new Request(`http://localhost:8000/api/v1/Clients/${cat.id}`, {
       method: 'DELETE'
     });
 

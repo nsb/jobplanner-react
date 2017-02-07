@@ -45,7 +45,7 @@ class BusinessesApi {
   }
 
   static deleteBusiness(business) {
-    const request = new Request(`http://localhost:5000/businesses/${business.id}`, {
+    const request = new Request(`http://localhost:8000/businesses/${business.id}`, {
       method: 'DELETE'
     });
 
