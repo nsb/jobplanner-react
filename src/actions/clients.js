@@ -58,24 +58,5 @@ export const createClient = (client, token) => {
           throw(error);
         });
 
-  //   return fetch('http://localhost:8000/clients/', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(Object.assign({}, data, {business: "/businesses/1/"}))
-  //   }).then(response => {
-  //     if (response.Ok) {
-  //       return response.json()
-  //     } else {
-  //       dispatch(createClientError('Oops'))
-  //     }
-  //   }).then(json => {
-  //         dispatch(createClientSuccess(json))
-  //         dispatch(push('/clients/1'))
-  //     }).catch((error) =>
-  //       dispatch(createClientError(error))
-  //     )
   }
 }

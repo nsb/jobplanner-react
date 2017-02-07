@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch'
 import { push } from 'react-router-redux'
+import businessesApi from '../api/BusinessesApi'
 
 //Create new client
 export const CREATE_BUSINESS = 'CREATE_BUSINESS';
@@ -49,24 +49,13 @@ export const createBusiness = (data, token) => {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch('http://localhost:8000/businesses/', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then(response => {
-      if (response.ok) {
-        return response.json()
-      } else {
-        dispatch(createBusinessError('Oops'))
-      }
-    }).then(json => {
-          dispatch(createBusinessSuccess(json))
-          dispatch(push(`/${json.id}`))
-      }).catch((error) =>
-        dispatch(createBusinessError(error))
-      )
+    return businessesApi.createBusiness(data, token).then(responseBusiness => {
+          dispatch(createBusinessSuccess(responseBusiness))
+          dispatch(push(`/${responseBusiness.id}`))
+          return responseBusiness
+        }).catch(error => {
+          throw(error);
+        });
+
   }
 }
