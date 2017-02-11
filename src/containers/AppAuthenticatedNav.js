@@ -14,10 +14,14 @@ class AppAuthenticatedNav extends Component {
     const { navActive, responsive } = this.props
     const priority = (navActive && 'single' === responsive ? 'left' : 'right')
 
+    const { businesses, params } = this.props
+    let business = businesses.find(
+      business => business.id === parseInt(params.businessId, 10))
+
     return (
         <Split priority={priority} flex="right"
           onResponsive={this.onResponsive} >
-          {this.props.navActive ? <NavSidebar toggleNav={this.toggleNav}/> : null}
+          {this.props.navActive ? <NavSidebar toggleNav={this.toggleNav} business={business} /> : null}
           {this.props.children}
         </Split>
     )
@@ -33,11 +37,12 @@ class AppAuthenticatedNav extends Component {
 }
 
 const mapStateToProps = state => {
-  const { nav } = state
+  const { nav, businesses } = state
 
   return {
     navActive: nav.active,
-    responsive: nav.responsive
+    responsive: nav.responsive,
+    businesses: businesses
   }
 }
 

@@ -13,16 +13,18 @@ import SessionMenu from './SessionMenu'
 class NavSidebar extends Component {
   static propTypes = {
     toggleNav: PropTypes.func.isRequired,
+    business: PropTypes.object.isRequired
   }
 
   render() {
+    const { business } = this.props
 
     return (
       <Sidebar colorIndex="neutral-1" fixed={true}>
         <Header size="large" justify="between" pad={{horizontal: "medium"}}>
           <Title a11yTitle="Close Menu">
             <img src={logo} className="App-logo" alt="logo" style={{height : '40px'}} />
-            <span>jobPlanner</span>
+            <span>{business.name}</span>
           </Title>
           <Button icon={<CloseIcon />} onClick={this.props.toggleNav} plain={true}
             a11yTitle="Close Menu" />

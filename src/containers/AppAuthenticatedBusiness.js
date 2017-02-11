@@ -3,26 +3,26 @@ import { connect } from 'react-redux'
 import Article from 'grommet/components/Article'
 import Section from 'grommet/components/Section'
 import logo from '../logo.svg'
-import { navToggle, navResponsive, verify } from '../actions'
+import { fetchBusinesses } from '../actions'
 
-class AppAuthenticated extends Component {
+class AppAuthenticatedBusiness extends Component {
   static propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
-    token: PropTypes.string.isRequired
+    businesses: PropTypes.array.isRequired
   }
 
   componentWillMount () {
-    const { isAuthenticated, token } = this.props
-
-    if (!isAuthenticated) {
-      this.props.dispatch(verify(token))
-    }
+    // const { businesses, params, dispatch, token } = this.props
+    // let business = businesses.find(
+    //   business => business.id === parseInt(params.businessId, 10))
+    const { dispatch, token } = this.props
+    dispatch(fetchBusinesses(token))
   }
 
   render() {
-    const { isAuthenticated } = this.props
 
-    if (isAuthenticated) {
+    const { businesses } = this.props
+
+    if (businesses.length) {
       return (
         <div>
           {this.props.children}
@@ -40,23 +40,15 @@ class AppAuthenticated extends Component {
       )
     }
   }
-
-  onResponsive = (responsive) => {
-    this.props.dispatch(navResponsive(responsive))
-  }
-
-  toggleNav = () => {
-    this.props.dispatch(navToggle())
-  }
 }
 
 const mapStateToProps = state => {
-  const { auth } = state
+  const { businesses, auth } = state
 
   return {
-    isAuthenticated: auth.isAuthenticated,
-    token: auth.token,
+    businesses: businesses,
+    token: auth.token
   }
 }
 
-export default connect(mapStateToProps)(AppAuthenticated)
+export default connect(mapStateToProps)(AppAuthenticatedBusiness)

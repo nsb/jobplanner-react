@@ -2,7 +2,15 @@ import fetch from 'isomorphic-fetch'
 
 class BusinessesApi {
   static getAllBusinesses(token) {
-    return fetch('http://localhost:8000/businesses').then(response => {
+    const request = new Request('http://localhost:8000/businesses/', {
+      method: 'GET',
+      headers: new Headers({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    })
+
+    return fetch(request).then(response => {
       return response.json()
     }).catch(error => {
       return error
