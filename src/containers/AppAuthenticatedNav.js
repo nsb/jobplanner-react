@@ -16,7 +16,6 @@ class AppAuthenticatedNav extends Component {
     const priority = (navActive && 'single' === responsive ? 'left' : 'right')
 
     const { businesses, params } = this.props
-    console.log(businesses, params)
     let business = businesses.find(
       business => business.id === parseInt(params.businessId, 10))
 
