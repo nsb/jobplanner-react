@@ -13,6 +13,12 @@ export const FETCH_BUSINESSES_SUCCESS = 'FETCH_BUSINESSES_SUCCESS'
 export const FETCH_BUSINESSES_FAILURE = 'FETCH_BUSINESSES_FAILURE'
 export const RESET_BUSINESSES = 'RESET_BUSINESSES'
 
+export const fetchBusinessesRequest = () => {
+  return {
+    type: FETCH_BUSINESSES
+  }
+}
+
 export const fetchBusinessesSuccess = (businesses) => {
   return {
     type: FETCH_BUSINESSES_SUCCESS,
@@ -32,7 +38,7 @@ export const fetchBusinesses = (token) => {
 
   return (dispatch) => {
 
-    // dispatch(createBusinessRequest(data))
+    dispatch(fetchBusinessesRequest())
 
     return businessesApi.getAllBusinesses(token).then(responseBusinesses => {
           dispatch(fetchBusinessesSuccess(responseBusinesses))

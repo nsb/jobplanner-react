@@ -8,6 +8,7 @@ class AppAuthenticatedNav extends Component {
   static propTypes = {
     navActive: PropTypes.bool.isRequired,
     responsive: PropTypes.string.isRequired,
+    businesses: PropTypes.array.isRequired
   }
 
   render() {
@@ -15,6 +16,7 @@ class AppAuthenticatedNav extends Component {
     const priority = (navActive && 'single' === responsive ? 'left' : 'right')
 
     const { businesses, params } = this.props
+    console.log(businesses, params)
     let business = businesses.find(
       business => business.id === parseInt(params.businessId, 10))
 
@@ -42,7 +44,7 @@ const mapStateToProps = state => {
   return {
     navActive: nav.active,
     responsive: nav.responsive,
-    businesses: businesses
+    businesses: businesses.items
   }
 }
 

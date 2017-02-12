@@ -125,7 +125,7 @@ export const verify = (token) => {
     // First dispatch: the app state is updated to inform
     // that the API call is starting.
 
-    dispatch(requestLogin(token))
+    dispatch(requestVerify(token))
 
     // The function called by the thunk middleware can return a value,
     // that is passed on as the return value of the dispatch method.
@@ -150,6 +150,7 @@ export const verify = (token) => {
           dispatch(receiveVerifyError(json))
           dispatch(push('/login'))
         }
+        return json
 
       }).catch((error) => {
         dispatch(receiveVerifyError(error))

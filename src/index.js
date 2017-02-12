@@ -10,7 +10,6 @@ import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
-import AppAuthenticatedBusiness from './containers/AppAuthenticatedBusiness'
 import AppAuthenticatedNav from './containers/AppAuthenticatedNav'
 import AppAuthenticatedSearch from './containers/AppAuthenticatedSearch'
 import Businesses from './components/Businesses'
@@ -44,7 +43,7 @@ const token = localStorage.getItem('token');
 const initialState = {
   auth: { busy: false, token: token, user: null, isAuthenticated: false },
   nav: { active: true, responsive: 'multiple' },
-  businesses: []
+  businesses: { items: [], isFetching: false }
 }
 
 const store = createStore(
@@ -72,14 +71,12 @@ ReactDOM.render(
         <Route onEnter={authRequired} component={AppAuthenticated} >
           <IndexRoute component={Businesses}/>
           <Route path="add" component={BusinessAdd} />
-          <Route path=":businessId" component={AppAuthenticatedBusiness} >
-            <Route component={AppAuthenticatedNav} >
-              <Route component={AppAuthenticatedSearch}>
-                <IndexRoute component={Clients}/>
-                <Route path="clients" component={Clients} />
-              </Route>
-              <Route path="clients/add" component={ClientAdd} />
+          <Route path=":businessId" component={AppAuthenticatedNav} >
+            <Route component={AppAuthenticatedSearch}>
+              <IndexRoute component={Clients}/>
+              <Route path="clients" component={Clients} />
             </Route>
+            <Route path="clients/add" component={ClientAdd} />
           </Route>
         </Route>
 

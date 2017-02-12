@@ -3,26 +3,27 @@ import { connect } from 'react-redux'
 import Article from 'grommet/components/Article'
 import Section from 'grommet/components/Section'
 import logo from '../logo.svg'
-import { navToggle, navResponsive, verify } from '../actions'
+import { navToggle, navResponsive, verifyAuthAndFetchBusinesses } from '../actions'
 
 class AppAuthenticated extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     token: PropTypes.string.isRequired
   }
 
   componentWillMount () {
-    const { isAuthenticated, token } = this.props
+    const { isAuthenticated, token, dispatch } = this.props
 
     if (!isAuthenticated) {
-      this.props.dispatch(verify(token))
+      dispatch(verifyAuthAndFetchBusinesses(token))
     }
   }
 
   render() {
-    const { isAuthenticated } = this.props
+    const { isAuthenticated, isFetching } = this.props
 
-    if (isAuthenticated) {
+    if (isAuthenticated && !isFetching) {
       return (
         <div>
           {this.props.children}
@@ -51,10 +52,11 @@ class AppAuthenticated extends Component {
 }
 
 const mapStateToProps = state => {
-  const { auth } = state
+  const { auth, businesses } = state
 
   return {
     isAuthenticated: auth.isAuthenticated,
+    isFetching: auth.busy || businesses.isFetching,
     token: auth.token,
   }
 }
