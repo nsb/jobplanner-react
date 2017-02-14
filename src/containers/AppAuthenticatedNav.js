@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import Split from 'grommet/components/Split'
 import NavSidebar from '../components/NavSidebar'
 import { navToggle, navResponsive } from '../actions'
@@ -9,6 +10,13 @@ class AppAuthenticatedNav extends Component {
     navActive: PropTypes.bool.isRequired,
     responsive: PropTypes.string.isRequired,
     business: PropTypes.object.isRequired
+  }
+
+  componentWillMount() {
+    const { business, dispatch } = this.props
+    if(business === undefined) {
+      dispatch(push('/404'))
+    }
   }
 
   render() {
@@ -41,7 +49,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     navActive: nav.active,
     responsive: nav.responsive,
-    business: businesses.items.find(business => business.id === parseInt(ownProps.params.businessId, 10))
+    business: businesses.entities.businesses[parseInt(ownProps.params.businessId, 10)]
   }
 }
 

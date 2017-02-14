@@ -1,4 +1,6 @@
 import { push } from 'react-router-redux'
+import { normalize } from 'normalizr'
+import { businessListSchema } from '../schemas'
 import businessesApi from '../api/BusinessesApi'
 
 //Create new business
@@ -22,7 +24,7 @@ export const fetchBusinessesRequest = () => {
 export const fetchBusinessesSuccess = (businesses) => {
   return {
     type: FETCH_BUSINESSES_SUCCESS,
-    businesses: businesses,
+    payload: normalize(businesses, businessListSchema),
     receivedAt: Date.now()
   }
 }
@@ -50,19 +52,19 @@ export const fetchBusinesses = (token) => {
 }
 
 
-export const createBusinessRequest = (business) => {
+export const createBusinessRequest = (payload) => {
 
   return {
     type: CREATE_BUSINESS,
-    business
+    payload
   }
 }
 
-export const createBusinessSuccess = (json) => {
+export const createBusinessSuccess = (payload) => {
   return {
     type: CREATE_BUSINESS_SUCCESS,
-    business: json,
-    receivedAt: Date.now()
+    receivedAt: Date.now(),
+    payload
   }
 }
 

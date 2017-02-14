@@ -42,8 +42,7 @@ const token = localStorage.getItem('token');
 
 const initialState = {
   auth: { busy: false, token: token, user: null, isAuthenticated: false },
-  nav: { active: true, responsive: 'multiple' },
-  businesses: { items: [], isFetching: false }
+  nav: { active: true, responsive: 'multiple' }
 }
 
 const store = createStore(

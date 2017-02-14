@@ -55,6 +55,8 @@
     "grommet-addons": "^0.3.0",
     "grommet-templates": "^0.2.0",
     "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.4",
+    "normalizr": "^3.2.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
