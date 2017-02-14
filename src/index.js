@@ -1,11 +1,11 @@
 import 'babel-polyfill'
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux'
 import rootReducer from './reducers'
 import App from './containers/App'
@@ -17,20 +17,20 @@ import BusinessAdd from './components/BusinessAdd'
 import Clients from './components/Clients'
 import ClientAdd from './components/ClientAdd'
 import Login from './components/Login'
-import 'grommet/scss/vanilla/index.scss';
-import './index.css';
+import 'grommet/scss/vanilla/index.scss'
+import './index.css'
 
 // Setup service worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('/sw.js').then(function(registration) {
       // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      console.log('ServiceWorker registration successful with scope: ', registration.scope)
     }).catch(function(err) {
       // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
+      console.log('ServiceWorker registration failed: ', err)
+    })
+  })
 }
 
 const middleware = [ thunkMiddleware, routerMiddleware(browserHistory) ]
@@ -75,4 +75,4 @@ ReactDOM.render(
     </Router>
   </Provider>,
   document.getElementById('root')
-);
+)
