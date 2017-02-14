@@ -47,7 +47,7 @@ const businesses = (state = {}, action) => {
       return state
 
     default:
-    return state
+     return state
   }
 }
 
@@ -63,8 +63,9 @@ const result = (state = [], action) => {
     case FETCH_BUSINESSES_SUCCESS:
       if (action.payload && action.payload.result) {
         return merge([], state, action.payload.result)
+      } else {
+        return state
       }
-      return state
 
     default:
       return state
