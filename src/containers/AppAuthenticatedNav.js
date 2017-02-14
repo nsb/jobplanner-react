@@ -45,11 +45,12 @@ class AppAuthenticatedNav extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { nav, businesses } = state
+  const businessId = parseInt(ownProps.params.businessId, 10)
 
   return {
     navActive: nav.active,
     responsive: nav.responsive,
-    business: businesses.entities.businesses[parseInt(ownProps.params.businessId, 10)]
+    business: businesses.entities.businesses[businessId]
   }
 }
 
