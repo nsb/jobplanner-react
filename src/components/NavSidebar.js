@@ -32,7 +32,7 @@ class NavSidebar extends Component {
         <Menu fill={true} primary={true}>
           <Anchor key="dashboard" path="/" label="Dashboard" />
           <Anchor key="calendar" path="/calendar" label="Calendar" />
-          <Anchor key="clients" path="/1/clients" label="Clients" />
+          <Anchor key="clients" path={`/${business.id}/clients`} label="Clients" />
           <Anchor key="work" path="/work" label="Work" />
         </Menu>
         <Footer pad={{horizontal: "medium", vertical: "small"}}>
