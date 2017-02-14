@@ -8,7 +8,7 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 
 class Clients extends Component {
   static propTypes = {
-    nav: PropTypes.object,
+    business: PropTypes.number.isRequired,
   }
 
   render () {
@@ -28,12 +28,17 @@ class Clients extends Component {
   }
 
   addClient = (e) => {
-    this.props.dispatch(push('/clients/add'))
+    const { business, dispatch } = this.props
+    dispatch(push(`/${business}/clients/add`))
   }
 }
 
-const mapStateToProps = state => {
+
+const mapStateToProps = (state, ownProps) => {
+  const { businesses } = state
+
   return {
+    business: businesses.entities.businesses[parseInt(ownProps.params.businessId, 10)].id
   }
 }
 
