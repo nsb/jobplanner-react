@@ -7,7 +7,8 @@ import { createClient } from '../actions'
 
 class ClientAdd extends Component {
   static propTypes = {
-    token: PropTypes.string.isRequired
+    token: PropTypes.string.isRequired,
+    business: PropTypes.number.isRequired
   }
 
   render () {
@@ -28,14 +29,18 @@ class ClientAdd extends Component {
   }
 
   onClose = () => {
-    this.props.dispatch(push('/clients'))
+    const { business, dispatch } = this.props
+    dispatch(push(`/${business}/clients`))
   }
 }
 
-const mapStateToProps = state => {
-  const { auth } = state
+const mapStateToProps = (state, ownProps) => {
+  const { auth, businesses } = state
+  const businessId = parseInt(ownProps.params.businessId, 10)
+
   return {
-    token: auth.token
+    token: auth.token,
+    business: businesses.entities.businesses[businessId].id
   }
 }
 
