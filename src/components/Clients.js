@@ -36,9 +36,10 @@ class Clients extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { businesses } = state
+  const businessId = parseInt(ownProps.params.businessId, 10)
 
   return {
-    business: businesses.entities.businesses[parseInt(ownProps.params.businessId, 10)].id
+    business: businesses.entities.businesses[businessId].id
   }
 }
 
