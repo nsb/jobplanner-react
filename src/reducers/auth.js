@@ -1,4 +1,9 @@
-const authReducer = (state = {}, action) => {
+const token = localStorage.getItem('token');
+const initialState = {
+  busy: false, token: token, user: null, isAuthenticated: false
+}
+
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'REQUEST_LOGIN':
       return Object.assign({}, state, {

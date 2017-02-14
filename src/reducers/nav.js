@@ -1,6 +1,10 @@
 import { NAV_ACTIVE, NAV_TOGGLE, NAV_RESPONSIVE } from '../actions'
 
-const navReducer = (state = {}, action) => {
+const initialState = {
+  active: true, responsive: 'multiple'
+}
+
+const navReducer = (state = initialState, action) => {
   switch (action.type) {
     case NAV_ACTIVE:
       return Object.assign({}, state, {
