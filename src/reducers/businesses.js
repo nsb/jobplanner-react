@@ -67,9 +67,6 @@ const result = (state = [], action) => {
       return state
 
     default:
-      // if (action.payload && action.payload.result) {
-      //   return merge({}, state, action.payload.result)
-      // }
       return state
     }
 }
@@ -79,44 +76,3 @@ export default combineReducers({
   entities,
   result,
 })
-
-// import { CREATE_BUSINESS_SUCCESS,
-//          FETCH_BUSINESSES,
-//          FETCH_BUSINESSES_SUCCESS } from '../actions'
-//
-// const businessesReducer = (state = [], action) => {
-//
-//   switch (action.type) {
-//     case CREATE_BUSINESS_SUCCESS:
-//       return Object.assign(
-//         {}, state, {
-//           entities: Object.assign(
-//             {}, state.entities, {
-//               [action.result]: Object.assign(
-//                 {}, action.payload.entities[action.result])})})
-//       // return {
-//       //   ...state,
-//       //   [action.payload.id]: {
-//       //     ...action.payload
-//       //   }
-//       // };
-//       // const { items } = state
-//       // return Object.assign({}, state, {
-//       //   items: [
-//       //     ...items.filter(business => business.id !== action.business.id),
-//       //     Object.assign({}, action.business)
-//       //   ]
-//       // })
-//
-//     case FETCH_BUSINESSES:
-//       return Object.assign({}, state, { isFetching: true })
-//
-//     case FETCH_BUSINESSES_SUCCESS:
-//       return {...action.payload, isFetching: false }
-//
-//     default:
-//       return state
-//   }
-// }
-//
-// export default businessesReducer
