@@ -37,13 +37,13 @@ class Businesses extends Component {
             value={searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
-        <List onMore={() => false}>
+        <List onMore={null}>
           {businesses.map((business, index) => {
             return <BusinessListItem key={business.id}
               business={business} index={index} onClick={e => this.onClick(e, business)} />
           })}
         </List>
-        <ListPlaceholder filteredTotal={0}
+        <ListPlaceholder filteredTotal={businesses.length}
           unfilteredTotal={businesses.length}
           emptyMessage='You do not have any businesses.'
           addControl={
@@ -62,7 +62,7 @@ class Businesses extends Component {
   }
 
   onSearch = () => {
-
+    return false
   }
 
   handleAdd = (e) => {
