@@ -14,7 +14,7 @@ class BusinessAdd extends Component {
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
 
-        <BusinessForm onSubmit={this.handleSubmit} />
+        <BusinessForm onSubmit={this.handleSubmit} onClose={this.onClose} />
 
       </Article>
     )
