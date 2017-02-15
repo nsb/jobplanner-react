@@ -14,13 +14,27 @@ import NavControl from './NavControl'
 import BusinessListItem from './businessListItem'
 
 class Businesses extends Component {
+
   static propTypes = {
     businesses: PropTypes.array.isRequired
   }
 
+  constructor () {
+    super()
+    this.state = { searchText: '' }
+  }
+
   render () {
     const { businesses } = this.props
-    const searchText = ''
+    const filteredBusinesses = businesses.filter((business) => {
+      const searchText = this.state.searchText.toLowerCase()
+      if (searchText) {
+        return business.name.toLowerCase().includes(searchText)
+      } else {
+        return true
+      }
+    })
+
     const addControl = (
         <Anchor icon={<AddIcon />} path='/add'
           a11yTitle={`Add business`} onClick={this.handleAdd} />
@@ -34,16 +48,16 @@ class Businesses extends Component {
             <span>Businesses</span>
           </Title>
           <Search inline={true} fill={true} size='medium' placeHolder='Search'
-            value={searchText} onDOMChange={this.onSearch} />
+            value={this.searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
         <List onMore={null}>
-          {businesses.map((business, index) => {
+          {filteredBusinesses.map((business, index) => {
             return <BusinessListItem key={business.id}
               business={business} index={index} onClick={e => this.onClick(e, business)} />
           })}
         </List>
-        <ListPlaceholder filteredTotal={businesses.length}
+        <ListPlaceholder filteredTotal={filteredBusinesses.length}
           unfilteredTotal={businesses.length}
           emptyMessage='You do not have any businesses.'
           addControl={
@@ -61,8 +75,9 @@ class Businesses extends Component {
     dispatch(push(`/${business.id}`))
   }
 
-  onSearch = () => {
-    return false
+  onSearch = (event) => {
+    const searchText = event.target.value
+    this.setState({ searchText })
   }
 
   handleAdd = (e) => {
