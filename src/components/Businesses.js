@@ -40,7 +40,7 @@ class Businesses extends Component {
         <List onMore={() => false}>
           {businesses.map((business, index) => {
             return <BusinessListItem key={business.id}
-              business={business} index={index} onClick={this.onClick} />
+              business={business} index={index} onClick={e => this.onClick(e, business)} />
           })}
         </List>
         <ListPlaceholder filteredTotal={0}
@@ -56,8 +56,9 @@ class Businesses extends Component {
 
   }
 
-  onClick = () => {
-    
+  onClick = (e, business) => {
+    const { dispatch } = this.props
+    dispatch(push(`/${business.id}`))
   }
 
   onSearch = () => {
