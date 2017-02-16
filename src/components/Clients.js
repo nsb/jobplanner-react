@@ -37,12 +37,6 @@ class Clients extends Component {
   render () {
     const { business, clients, isFetching } = this.props
 
-    // if (isFetching) {
-    //   return (
-    //     <Spinning />
-    //   )
-    // }
-
     const filteredClients = clients.filter((client) => {
       const searchText = this.state.searchText.toLowerCase()
       if (searchText) {
