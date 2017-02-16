@@ -8,6 +8,7 @@ import Search from 'grommet/components/Search'
 import Anchor from 'grommet/components/Anchor'
 import Button from 'grommet/components/Button'
 import AddIcon from 'grommet/components/icons/base/Add'
+// import Spinning from 'grommet/components/icons/Spinning'
 import List from 'grommet/components/List'
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
@@ -36,11 +37,11 @@ class Clients extends Component {
   render () {
     const { business, clients, isFetching } = this.props
 
-    if (isFetching) {
-      return (
-        <div>Hejsa</div>
-      )
-    }
+    // if (isFetching) {
+    //   return (
+    //     <Spinning />
+    //   )
+    // }
 
     const filteredClients = clients.filter((client) => {
       const searchText = this.state.searchText.toLowerCase()
@@ -67,7 +68,7 @@ class Clients extends Component {
             value={this.searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
-        <List onMore={null}>
+        <List onMore={isFetching ? this.onMore : null}>
           {filteredClients.map((client, index) => {
             return <ClientListItem key={client.id}
               client={client} index={index} onClick={e => this.onClick(e, client)} />
@@ -84,6 +85,9 @@ class Clients extends Component {
       </Box>
     )
 
+  }
+
+  onMore = () => {
   }
 
   onClick = (e, client) => {
