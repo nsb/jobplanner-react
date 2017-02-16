@@ -11,7 +11,6 @@ import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
 import AppAuthenticatedNav from './containers/AppAuthenticatedNav'
-import AppAuthenticatedSearch from './containers/AppAuthenticatedSearch'
 import Businesses from './components/Businesses'
 import BusinessAdd from './components/BusinessAdd'
 import Clients from './components/Clients'
@@ -63,10 +62,8 @@ ReactDOM.render(
           <IndexRoute component={Businesses}/>
           <Route path="add" component={BusinessAdd} />
           <Route path=":businessId" component={AppAuthenticatedNav} >
-            <Route component={AppAuthenticatedSearch}>
-              <IndexRoute component={Clients}/>
-              <Route path="clients" component={Clients} />
-            </Route>
+            <IndexRoute component={Clients}/>
+            <Route path="clients" component={Clients} />
             <Route path="clients/add" component={ClientAdd} />
           </Route>
         </Route>
