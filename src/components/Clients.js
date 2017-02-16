@@ -17,7 +17,7 @@ import ClientListItem from './clientListItem'
 
 class Clients extends Component {
   static propTypes = {
-    business: PropTypes.number.isRequired,
+    business: PropTypes.object.isRequired,
     clients: PropTypes.array.isRequired,
     token: PropTypes.string.isRequired
   }
@@ -30,7 +30,7 @@ class Clients extends Component {
   componentDidMount () {
     const { business, clients, token, dispatch } = this.props
     if (!clients.length) {
-      dispatch(fetchClients(token, {business: business}))
+      dispatch(fetchClients(token, {business: business.id}))
     }
   }
 
@@ -47,7 +47,7 @@ class Clients extends Component {
     })
 
     const addControl = (
-        <Anchor icon={<AddIcon />} path={`/${business}/clients/add`}
+        <Anchor icon={<AddIcon />} path={`/${business.id}/clients/add`}
           a11yTitle={`Add business`} onClick={this.handleAdd} />
       )
 
@@ -96,7 +96,7 @@ class Clients extends Component {
 
   addClient = (e) => {
     const { business, dispatch } = this.props
-    dispatch(push(`/${business}/clients/add`))
+    dispatch(push(`/${business.id}/clients/add`))
   }
 }
 
@@ -106,7 +106,7 @@ const mapStateToProps = (state, ownProps) => {
   const businessId = parseInt(ownProps.params.businessId, 10)
 
   return {
-    business: businesses.entities.businesses[businessId].id,
+    business: businesses.entities.businesses[businessId],
     clients: clients.result.map((Id) => {
       return clients.entities.clients[Id]
     }),

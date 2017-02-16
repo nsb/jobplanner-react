@@ -52,19 +52,19 @@ export const fetchClients = (token, queryParams = {}) => {
 }
 
 
-export const createClientRequest = (client) => {
+export const createClientRequest = (payload) => {
 
   return {
     type: CREATE_CLIENT,
-    client
+    payload
   }
 }
 
-export const createClientSuccess = (json) => {
+export const createClientSuccess = (payload) => {
   return {
     type: CREATE_CLIENT_SUCCESS,
-    client: json,
-    receivedAt: Date.now()
+    receivedAt: Date.now(),
+    payload
   }
 }
 
@@ -76,7 +76,7 @@ export const createClientError = (error) => {
 }
 
 
-export const createClient = (client, token) => {
+export const createClient = (business, client, token) => {
 
   return (dispatch) => {
 
@@ -84,7 +84,7 @@ export const createClient = (client, token) => {
 
     return clientsApi.createClient(client, token).then(responseClient => {
           dispatch(createClientSuccess(responseClient))
-          dispatch(push(`/clients/${responseClient.id}`))
+          dispatch(push(`/${business.id}/clients/${responseClient.id}`))
           return responseClient
         }).catch(error => {
           throw(error)

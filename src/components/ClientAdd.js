@@ -8,7 +8,7 @@ import { createClient } from '../actions'
 class ClientAdd extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
-    business: PropTypes.number.isRequired
+    business: PropTypes.object.isRequired
   }
 
   render () {
@@ -25,16 +25,16 @@ class ClientAdd extends Component {
 
   handleSubmit = (values) => {
     const { token, business } = this.props
-    let action = createClient({
+    let action = createClient(business, {
       ...values,
-      business: `/businesses/${business}/`
+      business: `/businesses/${business.id}/`
     }, token)
     this.props.dispatch(action)
   }
 
   onClose = () => {
     const { business, dispatch } = this.props
-    dispatch(push(`/${business}/clients`))
+    dispatch(push(`/${business.id}/clients`))
   }
 }
 
@@ -44,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     token: auth.token,
-    business: businesses.entities.businesses[businessId].id
+    business: businesses.entities.businesses[businessId]
   }
 }
 
