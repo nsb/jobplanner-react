@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import 'url-search-params-polyfill'
 
 class ClientsApi {
   static getAllClients(token, queryParams={}) {
