@@ -2,13 +2,20 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Box from 'grommet/components/Box'
-import Button from 'grommet/components/Button';
-import AddIcon from 'grommet/components/icons/base/Add';
-import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
+import Button from 'grommet/components/Button'
+import AddIcon from 'grommet/components/icons/base/Add'
+import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
+import { fetchClients } from '../actions'
 
 class Clients extends Component {
   static propTypes = {
     business: PropTypes.number.isRequired,
+    token: PropTypes.string.isRequired
+  }
+
+  componentWillMount () {
+    const { token, dispatch } = this.props
+    dispatch(fetchClients(token))
   }
 
   render () {
@@ -35,11 +42,12 @@ class Clients extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const { businesses } = state
+  const { businesses, auth } = state
   const businessId = parseInt(ownProps.params.businessId, 10)
 
   return {
-    business: businesses.entities.businesses[businessId].id
+    business: businesses.entities.businesses[businessId].id,
+    token: auth.token
   }
 }
 

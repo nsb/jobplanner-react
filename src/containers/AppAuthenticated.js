@@ -12,7 +12,7 @@ class AppAuthenticated extends Component {
     token: PropTypes.string.isRequired
   }
 
-  componentWillMount () {
+  componentDidMount () {
     const { isAuthenticated, token, dispatch } = this.props
 
     if (!isAuthenticated) {
