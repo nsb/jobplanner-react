@@ -24,8 +24,12 @@ class ClientAdd extends Component {
   }
 
   handleSubmit = (values) => {
-    const { token } = this.props
-    this.props.dispatch(createClient(values, token))
+    const { token, business } = this.props
+    let action = createClient({
+      ...values,
+      business: `/businesses/${business}/`
+    }, token)
+    this.props.dispatch(action)
   }
 
   onClose = () => {
