@@ -29,7 +29,7 @@ class Login extends Component {
                   usernameType="text" />
               <Footer direction="row" size="small"
                   pad={{ horizontal: "medium", vertical: "small", between: "small" }}>
-                  <span className="secondary">&copy; 2016 jobPlanner</span>
+                  <span className="secondary">&copy; 2017 jobPlanner</span>
               </Footer>
           </Sidebar>
       </Split>
