@@ -35,7 +35,6 @@ class Clients extends Component {
 
   render () {
     const { business, clients, isFetching } = this.props
-    console.log(clients)
 
     if (isFetching) {
       return (
