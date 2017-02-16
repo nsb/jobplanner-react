@@ -27,9 +27,9 @@ class Clients extends Component {
   }
 
   componentDidMount () {
-    const { clients, token, dispatch } = this.props
+    const { business, clients, token, dispatch } = this.props
     if (!clients.length) {
-      dispatch(fetchClients(token))
+      dispatch(fetchClients(token, {business: business}))
     }
   }
 

@@ -36,13 +36,13 @@ export const fetchClientsFailure = (error) => {
   }
 }
 
-export const fetchClients = (token) => {
+export const fetchClients = (token, queryParams = {}) => {
 
   return (dispatch) => {
 
     dispatch(fetchClientsRequest())
 
-    return clientsApi.getAllClients(token).then(responseClients => {
+    return clientsApi.getAllClients(token, queryParams).then(responseClients => {
           dispatch(fetchClientsSuccess(responseClients))
           return responseClients
         }).catch(error => {

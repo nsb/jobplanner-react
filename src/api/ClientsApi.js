@@ -1,8 +1,15 @@
 import fetch from 'isomorphic-fetch'
 
 class ClientsApi {
-  static getAllClients(token) {
-    const request = new Request('http://localhost:8000/clients/', {
+  static getAllClients(token, queryParams={}) {
+    let searchParams = new URLSearchParams()
+    Object.keys(queryParams).forEach(function (key) {
+      let param = queryParams[key]
+      searchParams.append(key, param)
+    })
+
+    const url = `http://localhost:8000/clients/?${searchParams.toString()}`
+    const request = new Request(url, {
       method: 'GET',
       headers: new Headers({
         'Authorization': `Bearer ${token}`,
