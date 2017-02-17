@@ -13,7 +13,7 @@ import List from 'grommet/components/List'
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import { fetchClients } from '../actions'
-import ClientListItem from './clientListItem'
+import ClientListItem from './ClientListItem'
 
 class Clients extends Component {
   static propTypes = {
@@ -69,8 +69,8 @@ class Clients extends Component {
               client={client} index={index} onClick={e => this.onClick(e, client)} />
           })}
         </List>
-        <ListPlaceholder filteredTotal={filteredClients.length}
-          unfilteredTotal={clients.length}
+        <ListPlaceholder filteredTotal={isFetching ? null : filteredClients.length}
+          unfilteredTotal={isFetching ? null : clients.length}
           emptyMessage='You do not have any clients at the moment.'
           addControl={
             <Button icon={<AddIcon />} label='Add client'
