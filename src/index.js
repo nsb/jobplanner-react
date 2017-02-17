@@ -7,6 +7,7 @@ import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux'
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
@@ -39,8 +40,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(...middleware)
-)
+  composeWithDevTools(
+    applyMiddleware(...middleware)
+))
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)

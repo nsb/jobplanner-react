@@ -19,7 +19,8 @@ class Clients extends Component {
   static propTypes = {
     business: PropTypes.object.isRequired,
     clients: PropTypes.array.isRequired,
-    token: PropTypes.string.isRequired
+    token: PropTypes.string.isRequired,
+    isFetching: PropTypes.bool.isRequired
   }
 
   constructor () {
