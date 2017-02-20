@@ -5,6 +5,7 @@ import auth from './auth'
 import nav from './nav'
 import businesses from './businesses'
 import clients from './clients'
+import network from './network'
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   auth,
   nav,
   businesses,
-  clients
+  clients,
+  network
 })
 
 export default rootReducer

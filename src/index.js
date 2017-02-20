@@ -8,6 +8,7 @@ import createLogger from 'redux-logger'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
+import NetworkListener from 'redux-queue-offline-listener'
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
@@ -33,6 +34,8 @@ if ('serviceWorker' in navigator) {
   })
 }
 
+const NetworkListenerProvider = NetworkListener(Provider)
+
 const middleware = [ thunkMiddleware, routerMiddleware(browserHistory) ]
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
@@ -54,7 +57,7 @@ const authRequired = (nextState, replace) => {
 }
 
 ReactDOM.render(
-  <Provider store={store}>
+  <NetworkListenerProvider store={store}>
     <Router history={history} >
       <Route path="/" component={App}>
 
@@ -72,6 +75,6 @@ ReactDOM.render(
 
       </Route>
     </Router>
-  </Provider>,
+  </NetworkListenerProvider>,
   document.getElementById('root')
 )

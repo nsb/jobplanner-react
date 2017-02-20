@@ -11,10 +11,20 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
+  let request = event.request
   event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        return response || fetch(event.request);
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.match(request)
+        .then(function(response) {
+          if (response) {
+            return response;
+          }
+
+          return fetch(request).then(function(response) {
+            cache.put(request, response.clone())
+            return response
+          })
+        })
       })
   );
 });
