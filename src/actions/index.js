@@ -12,8 +12,5 @@ export const verifyAuthAndFetchBusinesses = (token) => {
       dispatch(verify(token)),
       dispatch(fetchBusinesses(token))
     ])
-    // return dispatch(verify(token)).then(() => {
-    //   return dispatch(fetchBusinesses(token))
-    // })
   }
 }

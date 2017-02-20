@@ -44,6 +44,9 @@ export const fetchBusinesses = (token) => {
 
     return businessesApi.getAllBusinesses(token).then(responseBusinesses => {
           dispatch(fetchBusinessesSuccess(responseBusinesses))
+          if (responseBusinesses.length === 1) {
+            dispatch(push(`/${responseBusinesses[0].id}`))
+          }
           return responseBusinesses
         }).catch(error => {
           throw(error)

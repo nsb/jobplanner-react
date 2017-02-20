@@ -21,6 +21,17 @@ const isFetching = (state = false, action) => {
   }
 }
 
+const hasLoaded = (state = false, action) => {
+  switch (action.type) {
+    case FETCH_BUSINESSES_SUCCESS:
+      return true
+
+    default:
+      return state
+  }
+}
+
+
 const businesses = (state = {}, action) => {
   switch (action.type) {
     case CREATE_BUSINESS_SUCCESS:
@@ -74,6 +85,7 @@ const result = (state = [], action) => {
 
 export default combineReducers({
   isFetching,
+  hasLoaded,
   entities,
   result,
 })
