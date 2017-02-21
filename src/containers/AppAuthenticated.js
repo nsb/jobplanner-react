@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Article from 'grommet/components/Article'
 import Section from 'grommet/components/Section'
 import logo from '../logo.svg'
-import { navToggle, navResponsive, verifyAuthAndFetchBusinesses, fetchBusinesses } from '../actions'
+import { navToggle, navResponsive, verifyAuthAndFetchBusinesses } from '../actions'
 
 class AppAuthenticated extends Component {
   static propTypes = {
@@ -13,19 +13,14 @@ class AppAuthenticated extends Component {
   }
 
   componentDidMount () {
-    const { isAuthenticated, hasLoaded, token, dispatch } = this.props
-
-    if (!isAuthenticated) {
-      dispatch(verifyAuthAndFetchBusinesses(token))
-    } else if (!hasLoaded) {
-      dispatch(fetchBusinesses(token))
-    }
+    const { token, dispatch } = this.props
+    dispatch(verifyAuthAndFetchBusinesses(token))
   }
 
   render() {
-    const { isAuthenticated, isFetching } = this.props
+    const { hasLoaded, isFetching } = this.props
 
-    if (isAuthenticated && !isFetching) {
+    if (hasLoaded && !isFetching) {
       return (
         <div>
           {this.props.children}
