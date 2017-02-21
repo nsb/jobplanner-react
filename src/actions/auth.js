@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import { push } from 'react-router-redux'
 
-const TOGGLE_NAV = 'TOGGLE_NAV'
 const REQUEST_LOGIN = 'REQUEST_LOGIN'
 const REQUEST_LOGIN_FAILURE = 'REQUEST_LOGIN_FAILURE'
 const REQUEST_LOGIN_SUCCESS = 'REQUEST_LOGIN_SUCCESS'
@@ -10,11 +9,6 @@ const REQUEST_VERIFY = 'REQUEST_VERIFY'
 const REQUEST_VERIFY_FAILURE = 'REQUEST_VERIFY_FAILURE'
 const REQUEST_VERIFY_SUCCESS = 'REQUEST_VERIFY_SUCCESS'
 
-export const toggleNav = () => {
-  return {
-    type: TOGGLE_NAV
-  }
-}
 
 export const requestLogin = (username, password, rememberMe) => {
 
@@ -158,8 +152,6 @@ export const verify = (token) => {
       })
   }
 }
-
-
 
 export const logout = () => {
   return {
