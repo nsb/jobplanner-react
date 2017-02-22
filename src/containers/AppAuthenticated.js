@@ -49,11 +49,11 @@ class AppAuthenticated extends Component {
 }
 
 const mapStateToProps = state => {
-  const { auth, businesses } = state
+  const { users, auth, businesses } = state
 
   return {
     isAuthenticated: auth.isAuthenticated,
-    isFetching: auth.busy || businesses.isFetching,
+    isFetching: users.isFetching || businesses.isFetching,
     hasLoaded: businesses.hasLoaded,
     token: auth.token,
   }

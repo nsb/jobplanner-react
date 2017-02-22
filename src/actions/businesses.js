@@ -43,14 +43,18 @@ export const fetchBusinesses = (token) => {
     dispatch(fetchBusinessesRequest())
 
     return businessesApi.getAllBusinesses(token).then(responseBusinesses => {
-          dispatch(fetchBusinessesSuccess(responseBusinesses))
-          if (responseBusinesses.length === 1) {
-            dispatch(push(`/${responseBusinesses[0].id}`))
-          }
-          return responseBusinesses
-        }).catch(error => {
-          throw(error)
-        })
+      if (Array.isArray(responseBusinesses)) {
+        dispatch(fetchBusinessesSuccess(responseBusinesses))
+        if (responseBusinesses.length === 1) {
+          dispatch(push(`/${responseBusinesses[0].id}`))
+        }
+      } else {
+        dispatch(fetchBusinessesFailure(responseBusinesses))
+      }
+      return responseBusinesses
+    }).catch(error => {
+      throw(error)
+    })
   }
 }
 
@@ -86,12 +90,15 @@ export const createBusiness = (data, token) => {
     dispatch(createBusinessRequest(data))
 
     return businessesApi.createBusiness(data, token).then(responseBusiness => {
-          dispatch(createBusinessSuccess(responseBusiness))
-          dispatch(push(`/${responseBusiness.id}`))
-          return responseBusiness
-        }).catch(error => {
-          throw(error)
-        })
-
+      if (responseBusiness.id) {
+        dispatch(createBusinessSuccess(responseBusiness))
+        dispatch(push(`/${responseBusiness.id}`))
+      } else {
+        dispatch(createBusinessError(responseBusiness))
+      }
+      return responseBusiness
+    }).catch(error => {
+      throw(error)
+    })
   }
 }

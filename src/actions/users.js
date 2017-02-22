@@ -1,8 +1,9 @@
+import { push } from 'react-router-redux'
 import usersApi from '../api/UsersApi'
 
-const REQUEST_ME = 'REQUEST_ME'
-const REQUEST_ME_FAILURE = 'REQUEST_ME_FAILURE'
-const REQUEST_ME_SUCCESS = 'REQUEST_ME_SUCCESS'
+export const REQUEST_ME = 'REQUEST_ME'
+export const REQUEST_ME_FAILURE = 'REQUEST_ME_FAILURE'
+export const REQUEST_ME_SUCCESS = 'REQUEST_ME_SUCCESS'
 
 
 export const requestMe = (token) => {
@@ -36,7 +37,12 @@ export const me = (token) => {
     dispatch(requestMe(token))
 
     return usersApi.getMe(token).then(responseUser => {
-      dispatch(receiveMe(responseUser))
+      if (responseUser.id) {
+        dispatch(receiveMe(responseUser))
+      } else {
+        dispatch(receiveMeError(responseUser))
+        dispatch(push('/login'))
+      }
       return responseUser
     }).catch(error => {
       throw(error)

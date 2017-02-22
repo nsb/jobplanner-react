@@ -13,7 +13,6 @@ const authReducer = (state = initialState, action) => {
     case 'REQUEST_LOGIN_SUCCESS':
       return Object.assign({}, state, {
         token: action.token,
-        user: action.user,
         busy: false,
         isAuthenticated: true
       })
@@ -39,13 +38,6 @@ const authReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isAuthenticated: false,
         user: null,
-        busy: false
-      })
-
-    case 'REQUEST_ME_SUCCESS':
-      return Object.assign({}, state, {
-        isAuthenticated: true,
-        user: action.user,
         busy: false
       })
 

@@ -34,10 +34,10 @@ class SessionMenu extends Component {
 }
 
 const mapStateToProps = state => {
-  const { auth } = state
+  const { users } = state
 
   return {
-    user: auth.user
+    user: users.me
   }
 }
 
