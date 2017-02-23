@@ -24,6 +24,14 @@ class Businesses extends Component {
     this.state = { searchText: '' }
   }
 
+  componentDidMount () {
+    const { businesses, dispatch } = this.props
+
+    if (businesses.length === 1) {
+      dispatch(push(`/${businesses[0].id}`))
+    }
+  }
+
   render () {
     const { businesses } = this.props
     const filteredBusinesses = businesses.filter((business) => {
