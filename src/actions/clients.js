@@ -43,11 +43,15 @@ export const fetchClients = (token, queryParams = {}) => {
     dispatch(fetchClientsRequest())
 
     return clientsApi.getAllClients(token, queryParams).then(responseClients => {
-          dispatch(fetchClientsSuccess(responseClients))
-          return responseClients
-        }).catch(error => {
-          throw(error)
-        })
+      if (Array.isArray(responseClients)) {
+        dispatch(fetchClientsSuccess(responseClients))
+      } else {
+        dispatch(fetchClientsFailure(responseClients))
+      }
+      return responseClients
+    }).catch(error => {
+      throw(error)
+    })
   }
 }
 
