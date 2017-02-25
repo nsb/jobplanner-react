@@ -11,3 +11,11 @@ const clientSchema = new schema.Entity('clients', {
   quotes: [ quote ]
 })
 export const clientListSchema = new schema.Array(clientSchema)
+
+
+const lineItem = new schema.Entity('lineItem')
+
+const jobSchema = new schema.Entity('jobs', {
+  line_items: [ lineItem ]
+})
+export const jobListSchema = new schema.Array(jobSchema)

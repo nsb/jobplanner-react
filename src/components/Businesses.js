@@ -27,6 +27,7 @@ class Businesses extends Component {
   componentDidMount () {
     const { businesses, dispatch } = this.props
 
+    // Redirect if we only have one business
     if (businesses.length === 1) {
       dispatch(push(`/${businesses[0].id}`))
     }

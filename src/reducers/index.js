@@ -7,6 +7,7 @@ import businesses from './businesses'
 import clients from './clients'
 import network from './network'
 import users from './users'
+import jobs from './jobs'
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   businesses,
   clients,
   network,
-  users
+  users,
+  jobs
 })
 
 export default rootReducer

@@ -3,6 +3,7 @@ export * from './nav'
 export * from './clients'
 export * from './businesses'
 export * from './users'
+export * from './jobs'
 
 import { me } from './users'
 import { fetchBusinesses } from './businesses'
