@@ -26,10 +26,10 @@ class Jobs extends Component {
   }
 
   render () {
-    const { jobs, isFetching } = this.props
+    const { jobs, business, isFetching } = this.props
 
     const addControl = (
-        <Anchor icon={<AddIcon />} path='/add'
+        <Anchor icon={<AddIcon />} path={`/${business.id}/jobs/add`}
           a11yTitle={`Add job`} onClick={this.handleAdd} />
       )
 
