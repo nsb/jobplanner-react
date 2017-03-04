@@ -28,22 +28,23 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
 )
 
 const ClientForm = (props) => {
-  const { handleSubmit, valid, dirty, submitting, onClose } = props
+  const { handleSubmit, valid, dirty, submitting, onClose, initialValues } = props
   return (
     <Form onSubmit={handleSubmit}>
 
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
-          Add Client
+          { initialValues ? 'Edit client' : 'Add Client' }
         </Heading>
         <Anchor icon={<CloseIcon />} onClick={onClose}
-          a11yTitle='Close Add Client Form' />
+          a11yTitle='Close' />
       </Header>
 
       <FormFields>
 
         <fieldset>
 
+          <Heading tag="h3">Client details</Heading>
           <Field name="first_name" label="First name" component={renderField} type="text" />
           <Field name="last_name" label="Last Name" component={renderField} type="text" />
 
@@ -53,7 +54,7 @@ const ClientForm = (props) => {
 
       <Footer pad={{vertical: 'medium'}}>
         <span />
-        <Button type="submit" primary={true} label="Add"
+        <Button type="submit" primary={true} label={ initialValues ? 'Save' : 'Add' }
              onClick={valid && dirty && !submitting ? () => true : null} />
       </Footer>
     </Form>
