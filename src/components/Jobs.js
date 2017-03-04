@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 import Box from 'grommet/components/Box'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
@@ -15,8 +14,12 @@ import JobListItem from './JobListItem'
 import NavControl from './NavControl'
 
 class Jobs extends Component {
-
   static propTypes = {}
+
+  constructor () {
+    super()
+    this.state = { searchText: '' }
+  }
 
   componentDidMount () {
     const { business, jobs, token, dispatch } = this.props
@@ -27,6 +30,15 @@ class Jobs extends Component {
 
   render () {
     const { jobs, business, isFetching } = this.props
+
+    const filteredJobs = jobs.filter((job) => {
+      const searchText = this.state.searchText.toLowerCase()
+      if (searchText) {
+        return job.description.toLowerCase().includes(searchText)
+      } else {
+        return true
+      }
+    })
 
     const addControl = (
         <Anchor icon={<AddIcon />} path={`/${business.id}/jobs/add`}
@@ -44,14 +56,14 @@ class Jobs extends Component {
             value={this.searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
-        <List onMore={null}>
-          {jobs.map((job, index) => {
+        <List onMore={isFetching ? this.onMore : null}>
+          {filteredJobs.map((job, index) => {
             return <JobListItem key={job.id}
               job={job} index={index} onClick={e => this.onClick(e, job)} />
           })}
         </List>
-        <ListPlaceholder filteredTotal={isFetching ? null : jobs.length}
-          unfilteredTotal={jobs.length}
+        <ListPlaceholder filteredTotal={isFetching ? null : filteredJobs.length}
+          unfilteredTotal={isFetching ? null : jobs.length}
           emptyMessage='You do not have any jobs.'
           addControl={
             <Button icon={<AddIcon />} label='Add job'
@@ -60,6 +72,9 @@ class Jobs extends Component {
             } />
       </Box>
     )
+  }
+
+  onMore = () => {
   }
 }
 

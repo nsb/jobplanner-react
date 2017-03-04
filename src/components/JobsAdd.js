@@ -12,11 +12,14 @@ class JobsAdd extends Component {
   }
 
   render () {
+    const { clients } = this.props
+
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
 
         <JobForm onSubmit={this.handleSubmit}
-          onClose={this.onClose} />
+          onClose={this.onClose}
+          clients={clients} />
 
       </Article>
     )
@@ -39,12 +42,18 @@ class JobsAdd extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { auth, businesses } = state
+  const { auth, businesses, clients } = state
   const businessId = parseInt(ownProps.params.businessId, 10)
 
   return {
     token: auth.token,
-    business: businesses.entities.businesses[businessId]
+    business: businesses.entities.businesses[businessId],
+    clients: clients.result.map((Id) => {
+      return {
+        value: clients.entities.clients[Id].first_name,
+        label: clients.entities.clients[Id].first_name
+      }
+    }),
   }
 }
 

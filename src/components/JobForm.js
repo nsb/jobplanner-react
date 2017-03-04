@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import Anchor from 'grommet/components/Anchor'
 import Button from 'grommet/components/Button'
@@ -8,27 +8,32 @@ import Form from 'grommet/components/Form'
 import Footer from 'grommet/components/Footer'
 import FormFields from 'grommet/components/FormFields'
 import FormField from 'grommet/components/FormField'
+import TextInput from 'grommet/components/TextInput'
+import Select from 'grommet/components/Select'
 import CloseIcon from 'grommet/components/icons/base/Close'
 
 const validate = values => {
   const errors = {}
-  if (!values.first_name) {
-    errors.first_name = 'Required'
-  }
-  if (!values.last_name) {
-    errors.last_name = 'Required'
-  }
   return errors
 }
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <input {...input} type={type} />
+    <TextInput {...input} type={type} />
   </FormField>
 )
 
+const renderSelect = ({ input, label, options, onSearch, meta: { touched, error, warning } }) => {
+  console.log(input,options)
+  return (
+    <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+      <Select {...input} options={options} />
+    </FormField>
+  )
+}
+
 const JobForm = (props) => {
-  const { handleSubmit, valid, dirty, submitting, onClose } = props
+  const { clients, handleSubmit, valid, dirty, submitting, onClose } = props
   return (
     <Form onSubmit={handleSubmit}>
 
@@ -44,8 +49,9 @@ const JobForm = (props) => {
 
         <fieldset>
 
-          <Field name="first_name" label="First name" component={renderField} type="text" />
-          <Field name="last_name" label="Last Name" component={renderField} type="text" />
+          <Field name="client" label="Client" component={renderSelect}
+            options={clients} onSearch={(s) => {console.log(s)}} />
+          <Field name="description" label="Description" component={renderField} type="text" />
 
         </fieldset>
 
@@ -60,6 +66,12 @@ const JobForm = (props) => {
 
 
   )
+}
+
+JobForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  valid: PropTypes.bool.isRequired,
+  clients : PropTypes.array.isRequired
 }
 
 export default reduxForm({
