@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import Box from 'grommet/components/Box'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
@@ -75,6 +76,11 @@ class Jobs extends Component {
   }
 
   onMore = () => {
+  }
+
+  onClick = (e, job) => {
+    const { business, dispatch } = this.props
+    dispatch(push(`/${business.id}/jobs/${job.id}`))
   }
 
   onSearch = (event) => {
