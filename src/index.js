@@ -20,6 +20,7 @@ import ClientAdd from './components/ClientAdd'
 import ClientEdit from './components/ClientEdit'
 import Jobs from './components/Jobs'
 import JobsAdd from './components/JobsAdd'
+import JobEdit from './components/JobEdit'
 import Login from './components/Login'
 import 'grommet/scss/vanilla/index.scss'
 import './index.css'
@@ -75,6 +76,7 @@ ReactDOM.render(
             <Route path="clients/:clientId" component={ClientEdit} />
             <Route path="jobs" component={Jobs} />
             <Route path="jobs/add" component={JobsAdd} />
+            <Route path="jobs/:jobId" component={JobEdit} />
             <IndexRoute component={Clients}/>
           </Route>
         </Route>
