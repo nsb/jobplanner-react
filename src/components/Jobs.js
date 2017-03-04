@@ -76,6 +76,12 @@ class Jobs extends Component {
 
   onMore = () => {
   }
+
+  onSearch = (event) => {
+    const searchText = event.target.value
+    this.setState({ searchText })
+  }
+
 }
 
 const mapStateToProps = (state, ownProps) => {
