@@ -33,22 +33,23 @@ const renderSelect = ({ input, label, options, onSearch, meta: { touched, error,
 }
 
 const JobForm = (props) => {
-  const { clients, handleSubmit, valid, dirty, submitting, onClose } = props
+  const { clients, handleSubmit, valid, dirty, submitting, onClose, initialValues } = props
   return (
     <Form onSubmit={handleSubmit}>
 
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
-          Add Job
+          { initialValues ? 'Edit job' : 'Add Job' }
         </Heading>
         <Anchor icon={<CloseIcon />} onClick={onClose}
-          a11yTitle='Close Add Client Form' />
+          a11yTitle='Close' />
       </Header>
 
       <FormFields>
 
         <fieldset>
 
+          <Heading tag="h3">Job details</Heading>
           <Field name="client" label="Client" component={renderSelect}
             options={clients} onSearch={(s) => {console.log(s)}} />
           <Field name="description" label="Description" component={renderField} type="text" />
@@ -59,7 +60,7 @@ const JobForm = (props) => {
 
       <Footer pad={{vertical: 'medium'}}>
         <span />
-        <Button type="submit" primary={true} label="Add"
+        <Button type="submit" primary={true} label={ initialValues ? 'Save' : 'Add' }
              onClick={valid && dirty && !submitting ? () => true : null} />
       </Footer>
     </Form>
