@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import Anchor from 'grommet/components/Anchor'
 import Button from 'grommet/components/Button'
@@ -24,7 +24,6 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
 )
 
 const renderSelect = ({ input, label, options, onSearch, meta: { touched, error, warning } }) => {
-  console.log(input,options)
   return (
     <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
       <Select {...input} options={options} onSearch={onSearch} />
@@ -32,48 +31,76 @@ const renderSelect = ({ input, label, options, onSearch, meta: { touched, error,
   )
 }
 
-const JobForm = (props) => {
-  const { clients, handleSubmit, valid, dirty, submitting, onClose, initialValues } = props
-  return (
-    <Form onSubmit={handleSubmit}>
+class JobForm extends Component {
+  static propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    valid: PropTypes.bool.isRequired,
+    clients : PropTypes.array.isRequired
+  }
 
-      <Header size="large" justify="between" pad="none">
-        <Heading tag="h2" margin="none" strong={true}>
-          { initialValues ? 'Edit job' : 'Add Job' }
-        </Heading>
-        <Anchor icon={<CloseIcon />} onClick={onClose}
-          a11yTitle='Close' />
-      </Header>
+  constructor () {
+    super()
+    this.state = { clientsSearchText: '' }
+  }
 
-      <FormFields>
+  render () {
+    const { clients, handleSubmit, valid, dirty, submitting, onClose, initialValues } = this.props
 
-        <fieldset>
+    const filteredClients = clients.filter((client) => {
+      const searchText = this.state.clientsSearchText.toLowerCase()
+      if (searchText) {
+        console.log(searchText, client)
+        return `${client.first_name} ${client.last_name}`.toLowerCase().includes(searchText)
+      } else {
+        return true
+      }
+    })
 
-          <Heading tag="h3">Job details</Heading>
-          <Field name="client" label="Client" component={renderSelect}
-            options={clients} onSearch={(e) => {console.log(e)}}
-            onChange={(e) => {console.log(e)}} />
-          <Field name="description" label="Description" component={renderField} type="text" />
+    const mappedClients = filteredClients.map((client) => {
+      return {
+        value: client,
+        label: client.first_name
+      }
+    })
 
-        </fieldset>
+    return (
+      <Form onSubmit={handleSubmit}>
 
-      </FormFields>
+        <Header size="large" justify="between" pad="none">
+          <Heading tag="h2" margin="none" strong={true}>
+            { initialValues ? 'Edit job' : 'Add Job' }
+          </Heading>
+          <Anchor icon={<CloseIcon />} onClick={onClose}
+            a11yTitle='Close' />
+        </Header>
 
-      <Footer pad={{vertical: 'medium'}}>
-        <span />
-        <Button type="submit" primary={true} label={ initialValues ? 'Save' : 'Add' }
-             onClick={valid && dirty && !submitting ? () => true : null} />
-      </Footer>
-    </Form>
+        <FormFields>
 
+          <fieldset>
 
-  )
-}
+            <Heading tag="h3">Job details</Heading>
+            <Field name="client" label="Client" component={renderSelect}
+              options={mappedClients} onSearch={this.onSearch}
+              onChange={(e) => {console.log(e)}} />
+            <Field name="description" label="Description" component={renderField} type="text" />
 
-JobForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  valid: PropTypes.bool.isRequired,
-  clients : PropTypes.array.isRequired
+          </fieldset>
+
+        </FormFields>
+
+        <Footer pad={{vertical: 'medium'}}>
+          <span />
+          <Button type="submit" primary={true} label={ initialValues ? 'Save' : 'Add' }
+               onClick={valid && dirty && !submitting ? () => true : null} />
+        </Footer>
+      </Form>
+    )
+  }
+
+  onSearch = (e) => {
+    const clientsSearchText = e.target.value
+    this.setState({ clientsSearchText })
+  }
 }
 
 export default reduxForm({

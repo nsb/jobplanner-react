@@ -49,10 +49,7 @@ const mapStateToProps = (state, ownProps) => {
     token: auth.token,
     business: businesses.entities.businesses[businessId],
     clients: clients.result.map((Id) => {
-      return {
-        value: clients.entities.clients[Id].first_name,
-        label: clients.entities.clients[Id].first_name
-      }
+      return clients.entities.clients[Id]
     }),
   }
 }
