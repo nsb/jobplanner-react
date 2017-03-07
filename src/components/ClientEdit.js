@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Article from 'grommet/components/Article'
 import ClientForm from './ClientForm'
-import { createClient } from '../actions'
+import { updateClient } from '../actions'
 
 class ClientEdit extends Component {
   static propTypes = {
@@ -28,10 +28,10 @@ class ClientEdit extends Component {
   }
 
   handleSubmit = (values) => {
-    const { token, business } = this.props
-    let action = createClient(business, {
+    const { token, client } = this.props
+    let action = updateClient({
+      client,
       ...values,
-      business: `/businesses/${business.id}/`
     }, token)
     this.props.dispatch(action)
   }

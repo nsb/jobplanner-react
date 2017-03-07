@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { merge } from 'lodash/object'
 import { CREATE_CLIENT_SUCCESS,
+         UPDATE_CLIENT_SUCCESS,
          FETCH_CLIENTS,
          FETCH_CLIENTS_SUCCESS,
          FETCH_CLIENTS_FAILURE } from '../actions'
@@ -31,7 +32,7 @@ const clients = (state = {}, action) => {
         }
       }
 
-    case 'UPDATE_CLIENTS':
+    case UPDATE_CLIENT_SUCCESS:
       return {
         ...state,
         [action.payload.id]: {

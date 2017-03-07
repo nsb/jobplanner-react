@@ -7,13 +7,16 @@ import clientsApi from '../api/ClientsApi'
 export const CREATE_CLIENT = 'CREATE_CLIENT';
 export const CREATE_CLIENT_SUCCESS = 'CREATE_CLIENT_SUCCESS';
 export const CREATE_CLIENT_FAILURE = 'CREATE_CLIENT_FAILURE';
-export const RESET_NEW_CLIENT = 'RESET_NEW_CLIENT';
 
-//Fetch businesses
+//Fetch clients
 export const FETCH_CLIENTS = 'FETCH_CLIENTS'
 export const FETCH_CLIENTS_SUCCESS = 'FETCH_CLIENTS_SUCCESS'
 export const FETCH_CLIENTS_FAILURE = 'FETCH_CLIENTS_FAILURE'
-export const RESET_CLIENTS = 'RESET_CLIENTS'
+
+//Update client
+export const UPDATE_CLIENT = 'UPDATE_CLIENT'
+export const UPDATE_CLIENT_SUCCESS = 'UPDATE_CLIENT_SUCCESS'
+export const UPDATE_CLIENT_FAILURE = 'UPDATE_CLIENT_FAILURE'
 
 export const fetchClientsRequest = () => {
   return {
@@ -93,5 +96,45 @@ export const createClient = (business, client, token) => {
         }).catch(error => {
           throw(error)
         })
+  }
+}
+
+
+export const updateClientRequest = (payload) => {
+
+  return {
+    type: UPDATE_CLIENT,
+    payload
+  }
+}
+
+export const updateClientSuccess = (payload) => {
+  return {
+    type: UPDATE_CLIENT_SUCCESS,
+    receivedAt: Date.now(),
+    payload
+  }
+}
+
+export const updateClientError = (error) => {
+  return {
+    type: UPDATE_CLIENT_FAILURE,
+    error: error
+  }
+}
+
+
+export const updateClient = (client, token) => {
+
+  return (dispatch) => {
+
+    dispatch(createClientRequest(client))
+
+    return clientsApi.updateClient(client, token).then(responseClient => {
+      dispatch(updateClientSuccess(responseClient))
+      return responseClient
+    }).catch(error => {
+      dispatch(updateClientError(error))
+    })
   }
 }
