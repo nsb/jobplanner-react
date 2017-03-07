@@ -8,7 +8,6 @@ import Form from 'grommet/components/Form'
 import Footer from 'grommet/components/Footer'
 import FormFields from 'grommet/components/FormFields'
 import FormField from 'grommet/components/FormField'
-import TextInput from 'grommet/components/TextInput'
 import Select from 'grommet/components/Select'
 import CloseIcon from 'grommet/components/icons/base/Close'
 
@@ -19,7 +18,7 @@ const validate = values => {
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <TextInput {...input} type={type} />
+    <input {...input} type={type} />
   </FormField>
 )
 
@@ -38,9 +37,11 @@ class JobForm extends Component {
     clients : PropTypes.array.isRequired
   }
 
-  constructor () {
+  constructor (props) {
     super()
-    this.state = { clientsSearchText: '' }
+    this.state = {
+      clientsSearchText: ''
+    }
   }
 
   render () {
@@ -57,7 +58,8 @@ class JobForm extends Component {
 
     const mappedClients = filteredClients.map((client) => {
       return {
-        value: client,
+        client: client,
+        value: client.first_name,
         label: client.first_name
       }
     })
@@ -80,7 +82,7 @@ class JobForm extends Component {
             <Heading tag="h3">Job details</Heading>
             <Field name="client" label="Client" component={renderSelect}
               options={mappedClients} onSearch={this.onSearch}
-              onChange={(e) => {console.log(e)}} />
+              onChange={this.onChange} />
             <Field name="description" label="Description" component={renderField} type="text" />
 
           </fieldset>
@@ -94,6 +96,10 @@ class JobForm extends Component {
         </Footer>
       </Form>
     )
+  }
+
+  onChange = (e) => {
+    console.log(e)
   }
 
   onSearch = (e) => {

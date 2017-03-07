@@ -80,18 +80,23 @@ export const createJobError = (error) => {
 }
 
 
-export const createJob = (business, job, token) => {
+export const createJob = (job, token) => {
 
   return (dispatch) => {
 
     dispatch(createJobRequest(job))
 
     return jobsApi.createJob(job, token).then(responseJob => {
-          dispatch(createJobSuccess(responseJob))
-          dispatch(push(`/${business.id}/jobs/${responseJob.id}`))
-          return responseJob
-        }).catch(error => {
-          throw(error)
-        })
+      if (responseJob.id) {
+        dispatch(createJobSuccess(responseJob))
+        // dispatch(push(`/${business.id}/jobs/${responseJob.id}`))
+      }
+      else {
+        dispatch(createJobError(responseJob))
+      }
+      return responseJob
+    }).catch(error => {
+      throw(error)
+    })
   }
 }
