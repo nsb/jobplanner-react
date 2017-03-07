@@ -28,12 +28,12 @@ class ClientEdit extends Component {
   }
 
   handleSubmit = (values) => {
-    const { token, client } = this.props
+    const { token, client, dispatch } = this.props
     let action = updateClient({
       client,
       ...values,
     }, token)
-    this.props.dispatch(action)
+    dispatch(action)
   }
 
   onClose = () => {
