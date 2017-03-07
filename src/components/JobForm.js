@@ -27,7 +27,7 @@ const renderSelect = ({ input, label, options, onSearch, meta: { touched, error,
   console.log(input,options)
   return (
     <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-      <Select {...input} options={options} />
+      <Select {...input} options={options} onSearch={onSearch} />
     </FormField>
   )
 }
@@ -51,7 +51,8 @@ const JobForm = (props) => {
 
           <Heading tag="h3">Job details</Heading>
           <Field name="client" label="Client" component={renderSelect}
-            options={clients} onSearch={(s) => {console.log(s)}} />
+            options={clients} onSearch={(e) => {console.log(e)}}
+            onChange={(e) => {console.log(e)}} />
           <Field name="description" label="Description" component={renderField} type="text" />
 
         </fieldset>
