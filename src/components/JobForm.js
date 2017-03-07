@@ -49,7 +49,6 @@ class JobForm extends Component {
     const filteredClients = clients.filter((client) => {
       const searchText = this.state.clientsSearchText.toLowerCase()
       if (searchText) {
-        console.log(searchText, client)
         return `${client.first_name} ${client.last_name}`.toLowerCase().includes(searchText)
       } else {
         return true
