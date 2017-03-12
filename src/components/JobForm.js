@@ -23,6 +23,13 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
 )
 
 const renderSelect = ({ input, label, options, onSearch, meta: { touched, error, warning } }) => {
+
+  // We need to destructure value because we get an object from redux-form
+  if (input.value) {
+    const { value : { option : { value : myVal }}} = input
+    input.value = myVal
+  }
+
   return (
     <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
       <Select {...input} options={options} onSearch={onSearch} />
@@ -40,7 +47,8 @@ class JobForm extends Component {
   constructor (props) {
     super()
     this.state = {
-      clientsSearchText: ''
+      clientsSearchText: '',
+      client: null
     }
   }
 
@@ -99,7 +107,7 @@ class JobForm extends Component {
   }
 
   onChange = (e) => {
-    console.log(e)
+    this.setState({client: e.option.client})
   }
 
   onSearch = (e) => {
