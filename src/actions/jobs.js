@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { jobListSchema } from '../schemas'
 import jobsApi from '../api/JobsApi'

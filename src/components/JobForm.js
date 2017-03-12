@@ -26,8 +26,8 @@ const renderSelect = ({ input, label, options, onSearch, meta: { touched, error,
 
   // We need to destructure value because we get an object from redux-form
   if (input.value) {
-    const { value : { option : { value : myVal }}} = input
-    input.value = myVal
+    const { value : { option : { label : myLabel }}} = input
+    input.value = myLabel
   }
 
   return (
@@ -47,8 +47,7 @@ class JobForm extends Component {
   constructor (props) {
     super()
     this.state = {
-      clientsSearchText: '',
-      client: null
+      clientsSearchText: ''
     }
   }
 
@@ -66,9 +65,8 @@ class JobForm extends Component {
 
     const mappedClients = filteredClients.map((client) => {
       return {
-        client: client,
-        value: client.first_name,
-        label: client.first_name
+        value: client.id,
+        label: `${client.first_name} ${client.last_name}`
       }
     })
 
@@ -104,10 +102,6 @@ class JobForm extends Component {
         </Footer>
       </Form>
     )
-  }
-
-  onChange = (e) => {
-    this.setState({client: e.option.client})
   }
 
   onSearch = (e) => {
