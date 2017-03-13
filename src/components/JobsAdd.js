@@ -27,8 +27,7 @@ class JobsAdd extends Component {
   }
 
   handleSubmit = (values) => {
-    // get client Id
-    const { client : { option : { value : clientId }}} = values
+    const { client : { value : clientId }} = values
 
     const { token, business } = this.props
     let action = createJob({

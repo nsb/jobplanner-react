@@ -22,14 +22,11 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
   </FormField>
 )
 
+const normalizeSelect = (value) => {
+  return value.option
+}
+
 const renderSelect = ({ input, label, options, onSearch, meta: { touched, error, warning } }) => {
-
-  // We need to destructure value because we get an object from redux-form
-  if (input.value) {
-    const { value : { option : { label : myLabel }}} = input
-    input.value = myLabel
-  }
-
   return (
     <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
       <Select {...input} options={options} onSearch={onSearch} />
@@ -88,7 +85,8 @@ class JobForm extends Component {
             <Heading tag="h3">Job details</Heading>
             <Field name="client" label="Client" component={renderSelect}
               options={mappedClients} onSearch={this.onSearch}
-              onChange={this.onChange} />
+              onChange={this.onChange}
+              normalize={normalizeSelect} />
             <Field name="description" label="Description" component={renderField} type="text" />
 
           </fieldset>
