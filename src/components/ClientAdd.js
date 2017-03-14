@@ -27,7 +27,7 @@ class ClientAdd extends Component {
     const { token, business } = this.props
     let action = createClient(business, {
       ...values,
-      business: `/businesses/${business.id}/`
+      business: business.id
     }, token)
     this.props.dispatch(action)
   }

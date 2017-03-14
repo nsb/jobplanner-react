@@ -128,7 +128,7 @@ export const updateClient = (client, token) => {
 
   return (dispatch) => {
 
-    dispatch(createClientRequest(client))
+    dispatch(updateClientRequest(client))
 
     return clientsApi.updateClient(client, token).then(responseClient => {
       dispatch(updateClientSuccess(responseClient))

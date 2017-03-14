@@ -25,13 +25,14 @@ class JobsApi {
     })
   }
 
-  static updateJobs(job) {
-    const request = new Request(`http://localhost:8000/jobs/${job.id}`, {
+  static updateJob(job, token) {
+    const request = new Request(`http://localhost:8000/jobs/${job.id}/`, {
       method: 'PUT',
       headers: new Headers({
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify({job: job})
+      body: JSON.stringify(job)
     })
 
 

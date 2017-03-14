@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Article from 'grommet/components/Article'
 import JobForm from './JobForm'
-import { createJob } from '../actions'
+import { updateJob } from '../actions'
 import { push } from 'react-router-redux'
 
 class JobEdit extends Component {
@@ -14,13 +14,16 @@ class JobEdit extends Component {
 
   render () {
     const { clients, job } = this.props
+    const clientList = clients.result.map((Id) => {
+      return clients.entities.clients[Id]
+    })
 
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
 
         <JobForm onSubmit={this.handleSubmit}
           onClose={this.onClose}
-          clients={clients}
+          clients={clientList}
           initialValues={{...job, client: { label: 'niels', value: 1 }}} />
 
       </Article>
@@ -29,14 +32,14 @@ class JobEdit extends Component {
 
   handleSubmit = (values) => {
     // get client Id
-    const { client : { option : { value : clientId }}} = values
+    const { client : { value : clientId }} = values
 
     const { token, business } = this.props
-    let action = createJob({
+    let action = updateJob({
       ...values,
-      business: `/businesses/${business.id}/`,
+      business: business.id,
       recurrences: '',
-      client: `/clients/${clientId}/`
+      client: clientId
     }, token)
     this.props.dispatch(action)
   }
@@ -56,10 +59,11 @@ const mapStateToProps = (state, ownProps) => {
   return {
     token: auth.token,
     business: businesses.entities.businesses[businessId],
-    clients: clients.result.map((Id) => {
-      return clients.entities.clients[Id]
-    }),
-    job: jobs.entities.jobs[jobId]
+    // clients: clients.result.map((Id) => {
+    //   return clients.entities.clients[Id]
+    // }),
+    job: jobs.entities.jobs[jobId],
+    clients
   }
 }
 

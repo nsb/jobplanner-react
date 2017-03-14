@@ -14,6 +14,12 @@ export const FETCH_JOBS_SUCCESS = 'FETCH_JOBS_SUCCESS'
 export const FETCH_JOBS_FAILURE = 'FETCH_JOBS_FAILURE'
 export const RESET_JOBS = 'RESET_JOBS'
 
+//Update jobs
+export const UPDATE_JOB = 'UPDATE_JOB'
+export const UPDATE_JOB_SUCCESS = 'UPDATE_JOB_SUCCESS'
+export const UPDATE_JOB_FAILURE = 'UPDATE_JOB_FAILURE'
+
+
 export const fetchJobsRequest = () => {
   return {
     type: FETCH_JOBS
@@ -96,6 +102,45 @@ export const createJob = (job, token) => {
       return responseJob
     }).catch(error => {
       throw(error)
+    })
+  }
+}
+
+export const updateJobRequest = (payload) => {
+
+  return {
+    type: UPDATE_JOB,
+    payload
+  }
+}
+
+export const updateJobSuccess = (payload) => {
+  return {
+    type: UPDATE_JOB_SUCCESS,
+    receivedAt: Date.now(),
+    payload
+  }
+}
+
+export const updateJobError = (error) => {
+  return {
+    type: UPDATE_JOB_FAILURE,
+    error: error
+  }
+}
+
+
+export const updateJob = (job, token) => {
+
+  return (dispatch) => {
+
+    dispatch(updateJobRequest(job))
+
+    return jobsApi.updateJob(job, token).then(responseJob => {
+      dispatch(updateJobSuccess(responseJob))
+      return responseJob
+    }).catch(error => {
+      dispatch(updateJobError(error))
     })
   }
 }
