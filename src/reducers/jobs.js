@@ -43,7 +43,7 @@ const jobs = (state = {}, action) => {
         }
       }
 
-    case 'UPDATE_JOBS':
+    case UPDATE_JOB_SUCCESS:
       return {
         ...state,
         [action.payload.id]: {
