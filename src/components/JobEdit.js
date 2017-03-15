@@ -14,6 +14,7 @@ class JobEdit extends Component {
 
   render () {
     const { clients, job } = this.props
+    const client = clients.entities.clients[job.client]
     const clientList = clients.result.map((Id) => {
       return clients.entities.clients[Id]
     })
@@ -24,7 +25,7 @@ class JobEdit extends Component {
         <JobForm onSubmit={this.handleSubmit}
           onClose={this.onClose}
           clients={clientList}
-          initialValues={{...job, client: { label: 'niels', value: 1 }}} />
+          initialValues={{...job, client: { label: client.first_name, value: client.id }}} />
 
       </Article>
     )

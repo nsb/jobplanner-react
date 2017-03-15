@@ -3,7 +3,10 @@ import { merge } from 'lodash/object'
 import { CREATE_JOB_SUCCESS,
          FETCH_JOBS,
          FETCH_JOBS_SUCCESS,
-         FETCH_JOBS_FAILURE } from '../actions'
+         FETCH_JOBS_FAILURE,
+         UPDATE_JOB,
+         UPDATE_JOB_SUCCESS,
+         UPDATE_JOB_FAILURE } from '../actions'
 
 const isFetching = (state = false, action) => {
   switch (action.type) {
@@ -14,6 +17,15 @@ const isFetching = (state = false, action) => {
       return false
 
     case FETCH_JOBS_FAILURE:
+      return false
+
+    case UPDATE_JOB:
+      return true
+
+    case UPDATE_JOB_SUCCESS:
+      return false
+
+    case UPDATE_JOB_FAILURE:
       return false
 
     default:
