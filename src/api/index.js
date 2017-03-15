@@ -1,15 +1,15 @@
 import fetch from 'isomorphic-fetch'
 import 'url-search-params-polyfill'
 
-class JobsApi {
-  static getAllJobs(token, queryParams={}) {
+class Api {
+  static getAll(resource, token, queryParams={}) {
     let searchParams = new URLSearchParams()
     Object.keys(queryParams).forEach(function (key) {
       let param = queryParams[key]
       searchParams.append(key, param)
     })
 
-    const url = `http://localhost:8000/jobs/?${searchParams.toString()}`
+    const url = `http://localhost:8000/${resource}/?${searchParams.toString()}`
     const request = new Request(url, {
       method: 'GET',
       headers: new Headers({
@@ -25,14 +25,14 @@ class JobsApi {
     })
   }
 
-  static updateJob(job, token) {
-    const request = new Request(`http://localhost:8000/jobs/${job.id}/`, {
+  static update(resource, item, token) {
+    const request = new Request(`http://localhost:8000/${resource}/${item.id}/`, {
       method: 'PUT',
       headers: new Headers({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify(job)
+      body: JSON.stringify(item)
     })
 
 
@@ -43,14 +43,14 @@ class JobsApi {
     })
   }
 
-  static createJob(job, token) {
-    const request = new Request('http://localhost:8000/jobs/', {
+  static create(resource, item, token) {
+    const request = new Request(`http://localhost:8000/${resource}/`, {
       method: 'POST',
       headers: new Headers({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify(job)
+      body: JSON.stringify(item)
     })
 
 
@@ -61,9 +61,13 @@ class JobsApi {
     })
   }
 
-  static deleteJob(job) {
-    const request = new Request(`http://localhost:8000/jobs/${job.id}`, {
-      method: 'DELETE'
+  static delete(resource, item, token) {
+    const request = new Request(`http://localhost:8000/${resource}/${item.id}`, {
+      method: 'DELETE',
+      headers: new Headers({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }),
     })
 
     return fetch(request).then(response => {
@@ -74,4 +78,4 @@ class JobsApi {
   }
 }
 
-export default JobsApi
+export default Api

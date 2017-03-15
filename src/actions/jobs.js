@@ -1,6 +1,6 @@
 import { normalize } from 'normalizr'
 import { jobListSchema } from '../schemas'
-import jobsApi from '../api/JobsApi'
+import jobsApi from '../api'
 
 //Create new job
 export const CREATE_JOB = 'CREATE_JOB'
@@ -47,7 +47,7 @@ export const fetchJobs = (token, queryParams = {}) => {
 
     dispatch(fetchJobsRequest())
 
-    return jobsApi.getAllJobs(token, queryParams).then(responseJobs => {
+    return jobsApi.getAll('jobs', token, queryParams).then(responseJobs => {
       if (Array.isArray(responseJobs)) {
         dispatch(fetchJobsSuccess(responseJobs))
       } else {
@@ -91,7 +91,7 @@ export const createJob = (job, token) => {
 
     dispatch(createJobRequest(job))
 
-    return jobsApi.createJob(job, token).then(responseJob => {
+    return jobsApi.create('jobs', job, token).then(responseJob => {
       if (responseJob.id) {
         dispatch(createJobSuccess(responseJob))
         // dispatch(push(`/${business.id}/jobs/${responseJob.id}`))
@@ -136,7 +136,7 @@ export const updateJob = (job, token) => {
 
     dispatch(updateJobRequest(job))
 
-    return jobsApi.updateJob(job, token).then(responseJob => {
+    return jobsApi.update('jobs', job, token).then(responseJob => {
       dispatch(updateJobSuccess(responseJob))
       return responseJob
     }).catch(error => {

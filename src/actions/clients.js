@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { clientListSchema } from '../schemas'
-import clientsApi from '../api/ClientsApi'
+import clientsApi from '../api'
 
 //Create new client
 export const CREATE_CLIENT = 'CREATE_CLIENT';
@@ -45,7 +45,7 @@ export const fetchClients = (token, queryParams = {}) => {
 
     dispatch(fetchClientsRequest())
 
-    return clientsApi.getAllClients(token, queryParams).then(responseClients => {
+    return clientsApi.getAll('clients', token, queryParams).then(responseClients => {
       if (Array.isArray(responseClients)) {
         dispatch(fetchClientsSuccess(responseClients))
       } else {
@@ -89,7 +89,7 @@ export const createClient = (business, client, token) => {
 
     dispatch(createClientRequest(client))
 
-    return clientsApi.createClient(client, token).then(responseClient => {
+    return clientsApi.create('clients', client, token).then(responseClient => {
           dispatch(createClientSuccess(responseClient))
           dispatch(push(`/${business.id}/clients/${responseClient.id}`))
           return responseClient
@@ -130,7 +130,7 @@ export const updateClient = (client, token) => {
 
     dispatch(updateClientRequest(client))
 
-    return clientsApi.updateClient(client, token).then(responseClient => {
+    return clientsApi.update('clients', client, token).then(responseClient => {
       dispatch(updateClientSuccess(responseClient))
       return responseClient
     }).catch(error => {

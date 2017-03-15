@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { businessListSchema } from '../schemas'
-import businessesApi from '../api/BusinessesApi'
+import businessesApi from '../api'
 
 //Create new business
 export const CREATE_BUSINESS = 'CREATE_BUSINESS'
@@ -42,7 +42,7 @@ export const fetchBusinesses = (token) => {
 
     dispatch(fetchBusinessesRequest())
 
-    return businessesApi.getAllBusinesses(token).then(responseBusinesses => {
+    return businessesApi.getAll('businesses', token).then(responseBusinesses => {
       if (Array.isArray(responseBusinesses)) {
         dispatch(fetchBusinessesSuccess(responseBusinesses))
       } else {
@@ -86,7 +86,7 @@ export const createBusiness = (data, token) => {
 
     dispatch(createBusinessRequest(data))
 
-    return businessesApi.createBusiness(data, token).then(responseBusiness => {
+    return businessesApi.create('businesses', data, token).then(responseBusiness => {
       if (responseBusiness.id) {
         dispatch(createBusinessSuccess(responseBusiness))
         dispatch(push(`/${responseBusiness.id}`))
