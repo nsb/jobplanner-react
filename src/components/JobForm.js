@@ -131,7 +131,7 @@ class JobForm extends Component {
   renderLayer = () => {
       const { scheduleLayer } = this.state
       console.log('scheduleLayer', scheduleLayer)
-      let result;
+      let result
       if (scheduleLayer) {
         result = (
           <JobScheduleEdit />
