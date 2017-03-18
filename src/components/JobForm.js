@@ -12,7 +12,7 @@ import Select from 'grommet/components/Select'
 import CloseIcon from 'grommet/components/icons/base/Close'
 import AddIcon from 'grommet/components/icons/base/Add'
 import List from 'grommet/components/List'
-import JobScheduleItem from './JobScheduleItem'
+import JobScheduleEdit from './JobScheduleEdit'
 
 const validate = values => {
   const errors = {}
@@ -134,7 +134,7 @@ class JobForm extends Component {
       let result;
       if (scheduleLayer) {
         result = (
-          <JobScheduleItem />
+          <JobScheduleEdit />
         )
       }
       return result

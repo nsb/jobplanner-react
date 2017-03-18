@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LayerForm from 'grommet-templates/components/LayerForm';
 
-class JobScheduleItem extends Component {
+class JobScheduleEdit extends Component {
   static propTypes = {
   }
 
@@ -19,4 +19,4 @@ class JobScheduleItem extends Component {
   }
 }
 
-export default JobScheduleItem
+export default JobScheduleEdit
