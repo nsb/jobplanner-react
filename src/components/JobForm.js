@@ -10,6 +10,9 @@ import FormFields from 'grommet/components/FormFields'
 import FormField from 'grommet/components/FormField'
 import Select from 'grommet/components/Select'
 import CloseIcon from 'grommet/components/icons/base/Close'
+import AddIcon from 'grommet/components/icons/base/Add'
+import List from 'grommet/components/List'
+import JobScheduleItem from './JobScheduleItem'
 
 const validate = values => {
   const errors = {}
@@ -44,7 +47,8 @@ class JobForm extends Component {
   constructor (props) {
     super()
     this.state = {
-      clientsSearchText: ''
+      clientsSearchText: '',
+      scheduleLayer: false
     }
   }
 
@@ -67,39 +71,78 @@ class JobForm extends Component {
       }
     })
 
+    let layer = this.renderLayer()
+
     return (
-      <Form onSubmit={handleSubmit}>
+      <div>
+        <Form onSubmit={handleSubmit}>
 
-        <Header size="large" justify="between" pad="none">
-          <Heading tag="h2" margin="none" strong={true}>
-            { initialValues ? 'Edit job' : 'Add Job' }
-          </Heading>
-          <Anchor icon={<CloseIcon />} onClick={onClose}
-            a11yTitle='Close' />
-        </Header>
+          <Header size="large" justify="between" pad="none">
+            <Heading tag="h2" margin="none" strong={true}>
+              { initialValues ? 'Edit job' : 'Add Job' }
+            </Heading>
+            <Anchor icon={<CloseIcon />} onClick={onClose}
+              a11yTitle='Close' />
+          </Header>
 
-        <FormFields>
+          <FormFields>
 
-          <fieldset>
+            <fieldset>
 
-            <Heading tag="h3">Job details</Heading>
-            <Field name="client" label="Client" component={renderSelect}
-              options={mappedClients} onSearch={this.onSearch}
-              onChange={this.onChange}
-              normalize={normalizeSelect} />
-            <Field name="description" label="Description" component={renderField} type="text" />
+              <Heading tag="h3">Job details</Heading>
+              <Field name="client" label="Client" component={renderSelect}
+                options={mappedClients} onSearch={this.onSearch}
+                onChange={this.onChange}
+                normalize={normalizeSelect} />
+              <Field name="description" label="Description" component={renderField} type="text" />
 
-          </fieldset>
+            </fieldset>
 
-        </FormFields>
+            {this.renderSchedules()}
 
-        <Footer pad={{vertical: 'medium'}}>
-          <span />
-          <Button type="submit" primary={true} label={ initialValues ? 'Save' : 'Add' }
-               onClick={valid && dirty && !submitting ? () => true : null} />
-        </Footer>
-      </Form>
+          </FormFields>
+
+          <Footer pad={{vertical: 'medium'}}>
+            <span />
+            <Button type="submit" primary={true} label={ initialValues ? 'Save' : 'Add' }
+                 onClick={valid && dirty && !submitting ? () => true : null} />
+          </Footer>
+        </Form>
+        {layer}
+      </div>
     )
+  }
+
+  renderSchedules = () => {
+    return (
+      <fieldset>
+        <Header size="small" justify="between">
+          <Heading tag="h3">Schedule</Heading>
+          <Button icon={<AddIcon />} onClick={this.onScheduleAdd}
+          a11yTitle='Add Network' />
+        </Header>
+        <List>
+          {[]}
+        </List>
+      </fieldset>
+    )
+  }
+
+  renderLayer = () => {
+      const { scheduleLayer } = this.state
+      console.log('scheduleLayer', scheduleLayer)
+      let result;
+      if (scheduleLayer) {
+        result = (
+          <JobScheduleItem />
+        )
+      }
+      return result
+    }
+
+  onScheduleAdd = (e) => {
+    console.log("scheduleLayer")
+    this.setState({ scheduleLayer: true })
   }
 
   onSearch = (e) => {
