@@ -60,7 +60,7 @@ class JobScheduleEdit extends Component {
     if (this.props.freq === RRule.DAILY) {
       schedule = <FormField label="Interval" htmlFor="interval">
         <NumberInput id="interval" name="interval" min={1}
-          value={this.state.interval}
+          value={this.props.interval}
           onChange={this.onIntervalChange}></NumberInput>
       </FormField>
     } else if (this.props.freq === RRule.WEEKLY) {
@@ -101,7 +101,7 @@ class JobScheduleEdit extends Component {
   }
 
   onIntervalChange = (e) => {
-    this.setState({ interval: e.target.value })
+    this.props.onChange(e)
   }
 }
 

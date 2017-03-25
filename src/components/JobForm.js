@@ -50,7 +50,7 @@ class JobForm extends Component {
     this.state = {
       clientsSearchText: '',
       scheduleLayer: false,
-      schedule: { freq: RRule.WEEKLY }
+      schedule: { freq: RRule.WEEKLY, interval: 1 }
     }
   }
 
