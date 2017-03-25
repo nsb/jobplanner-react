@@ -50,7 +50,7 @@ class JobScheduleEdit extends Component {
     const { onClose } = this.props
 
     const freqOption = rruleFrequency.find((freq) => {
-      return freq.value === this.state.freq
+      return freq.value === this.state.schedule.freq
     })
 
     const byweekdayOption = rruleByWeekDay.find((byweekday) => {
