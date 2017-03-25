@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { reduxForm } from 'redux-form'
 import Select from 'grommet/components/Select'
 import FormField from 'grommet/components/FormField'
 import NumberInput from 'grommet/components/NumberInput'
@@ -27,6 +26,7 @@ class JobScheduleEdit extends Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    schedule: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -58,14 +58,15 @@ class JobScheduleEdit extends Component {
     })
 
     let schedule = this.state.schedule
+    let scheduleComponent = null
     if (schedule.freq === RRule.DAILY) {
-      schedule = <FormField label="Interval" htmlFor="interval">
+      scheduleComponent = <FormField label="Interval" htmlFor="interval">
         <NumberInput id="interval" name="interval" min={1}
           value={schedule.interval}
           onChange={this.onIntervalChange}></NumberInput>
       </FormField>
     } else if (schedule.freq === RRule.WEEKLY) {
-      schedule = <FormField label="Weekdays" htmlFor="freq" >
+      scheduleComponent = <FormField label="Weekdays" htmlFor="freq" >
           <Select id="byweekday" name="byweekday"
             inline={true} multiple={true}
             value={byweekdayOption} options={rruleByWeekDay}
@@ -73,7 +74,7 @@ class JobScheduleEdit extends Component {
             onSearch={null} />
         </FormField>
     } else if (schedule.freq === RRule.MONTHLY) {
-      schedule = <div>monthly</div>
+      scheduleComponent = <div>monthly</div>
     }
 
     return (
@@ -87,7 +88,7 @@ class JobScheduleEdit extends Component {
               onChange={this.onFreqChange}
               onSearch={null} />
           </FormField>
-          {schedule}
+          {scheduleComponent}
         </fieldset>
       </LayerForm>
     )

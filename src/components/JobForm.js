@@ -13,7 +13,7 @@ import CloseIcon from 'grommet/components/icons/base/Close'
 import AddIcon from 'grommet/components/icons/base/Add'
 import List from 'grommet/components/List'
 import JobScheduleEdit from './JobScheduleEdit'
-import RRule from 'rrule'
+import { RRule, rrulestr } from 'rrule'
 
 const validate = values => {
   const errors = {}
@@ -46,11 +46,15 @@ class JobForm extends Component {
   }
 
   constructor (props) {
-    super()
+    super(props)
+
+    let recurrences = props.initialValues.recurrences
+    let rrule = recurrences ? rrulestr(recurrences) : new RRule()
+
     this.state = {
       clientsSearchText: '',
       scheduleLayer: false,
-      schedule: { freq: RRule.WEEKLY, interval: 2 }
+      schedule: { ...rrule.options }
     }
   }
 
