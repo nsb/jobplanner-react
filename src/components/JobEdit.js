@@ -60,9 +60,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     token: auth.token,
     business: businesses.entities.businesses[businessId],
-    // clients: clients.result.map((Id) => {
-    //   return clients.entities.clients[Id]
-    // }),
     job: jobs.entities.jobs[jobId],
     clients
   }

@@ -48,7 +48,8 @@ class JobForm extends Component {
     super()
     this.state = {
       clientsSearchText: '',
-      scheduleLayer: false
+      scheduleLayer: false,
+      schedule: {}
     }
   }
 
@@ -115,7 +116,8 @@ class JobForm extends Component {
     if (scheduleLayer) {
       result = (
         <JobScheduleEdit onClose={this.onScheduleClose}
-          onSubmit={this.onScheduleSubmit} />
+          onSubmit={this.onScheduleSubmit}
+          onChange={this.onScheduleChange} />
       )
     }
 
@@ -147,7 +149,16 @@ class JobForm extends Component {
   }
 
   onScheduleSubmit = (e) => {
+    console.log(e)
+  }
 
+  onScheduleChange = (event) => {
+    var schedule = { ...this.state.schedule }
+    const attribute = event.target.getAttribute('name')
+    const value = event.target.value
+    schedule[attribute] = value
+    this.setState({schedule})
+    console.log(schedule)
   }
 
 

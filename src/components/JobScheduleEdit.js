@@ -7,10 +7,10 @@ import LayerForm from 'grommet-templates/components/LayerForm'
 import RRule from 'rrule'
 
 const rruleFrequency = [
-  { label: "Yearly", value: RRule.YEARLY },
-  { label: "Monthly", value: RRule.MONTHLY },
-  { label: "Weekly", value: RRule.WEEKLY },
   { label: "Daily", value: RRule.DAILY },
+  { label: "Weekly", value: RRule.WEEKLY },
+  { label: "Monthly", value: RRule.MONTHLY },
+  { label: "Yearly", value: RRule.YEARLY }
 ]
 
 const rruleByWeekDay = [
@@ -25,7 +25,9 @@ const rruleByWeekDay = [
 
 class JobScheduleEdit extends Component {
   static propTypes = {
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -41,6 +43,14 @@ class JobScheduleEdit extends Component {
       byweekday: [RRule.MO],
       dtstart: new Date(),
     }
+  }
+
+  componentDidMount() {
+    console.log("JobScheduleEdit componentDidMount")
+  }
+
+  componentWillUnmount() {
+    console.log("JobScheduleEdit componentWillUnmount")
   }
 
   render () {
@@ -91,6 +101,7 @@ class JobScheduleEdit extends Component {
   }
 
   onFreqChange = (e) => {
+    this.props.onChange(e)
     this.setState({ freq: e.option.value })
   }
 
