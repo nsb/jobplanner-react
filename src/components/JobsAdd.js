@@ -4,8 +4,6 @@ import { push } from 'react-router-redux'
 import Article from 'grommet/components/Article'
 import JobForm from './JobForm'
 import { createJob } from '../actions'
-import JobScheduleEdit from './JobScheduleEdit'
-import RRule from 'rrule'
 
 class JobsAdd extends Component {
   static propTypes = {
@@ -22,41 +20,16 @@ class JobsAdd extends Component {
 
   render () {
     const { clients } = this.props
-    let layer = this.renderLayer()
 
     return (
       <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
 
         <JobForm onSubmit={this.handleSubmit}
           onClose={this.onClose}
-          onScheduleAdd={this.onScheduleAdd}
           clients={clients} />
-          {layer}
-
       </Article>
     )
 
-  }
-
-  renderLayer = () => {
-    const { scheduleLayer } = this.state
-    let result
-
-    let rule = new RRule({
-      freq: RRule.WEEKLY,
-      interval: 5,
-      byweekday: [RRule.MO, RRule.FR],
-      dtstart: new Date(2012, 1, 1, 10, 30),
-      until: new Date(2012, 12, 31)
-    })
-
-    if (scheduleLayer) {
-      result = (
-        <JobScheduleEdit rrule={rule} onClose={this.onScheduleClose}
-          onSubmit={this.onScheduleSubmit} />
-      )
-    }
-    return result
   }
 
   handleSubmit = (values) => {
@@ -70,18 +43,6 @@ class JobsAdd extends Component {
       client: clientId
     }, token)
     this.props.dispatch(action)
-  }
-
-  onScheduleAdd = (e) => {
-    this.setState({ scheduleLayer: true })
-  }
-
-  onScheduleClose = (e) => {
-    this.setState({ scheduleLayer: false })
-  }
-
-  onScheduleSubmit = (e) => {
-
   }
 
   onClose = () => {

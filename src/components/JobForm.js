@@ -12,6 +12,7 @@ import Select from 'grommet/components/Select'
 import CloseIcon from 'grommet/components/icons/base/Close'
 import AddIcon from 'grommet/components/icons/base/Add'
 import List from 'grommet/components/List'
+import JobScheduleEdit from './JobScheduleEdit'
 
 const validate = values => {
   const errors = {}
@@ -46,7 +47,8 @@ class JobForm extends Component {
   constructor (props) {
     super()
     this.state = {
-      clientsSearchText: ''
+      clientsSearchText: '',
+      scheduleLayer: false
     }
   }
 
@@ -107,17 +109,25 @@ class JobForm extends Component {
   }
 
   renderSchedules = () => {
-    const { onScheduleAdd } = this.props
+    const { scheduleLayer } = this.state
+    let result
+
+    if (scheduleLayer) {
+      result = (
+        <JobScheduleEdit onClose={this.onScheduleClose}
+          onSubmit={this.onScheduleSubmit} />
+      )
+    }
 
     return (
       <fieldset>
         <Header size="small" justify="between">
           <Heading tag="h3">Schedule</Heading>
-          <Button icon={<AddIcon />} onClick={onScheduleAdd}
+          <Button icon={<AddIcon />} onClick={this.onScheduleAdd}
           a11yTitle='Add Schedule' />
         </Header>
         <List>
-          {[]}
+          {result}
         </List>
       </fieldset>
     )
@@ -127,6 +137,20 @@ class JobForm extends Component {
     const clientsSearchText = e.target.value
     this.setState({ clientsSearchText })
   }
+
+  onScheduleAdd = (e) => {
+    this.setState({ scheduleLayer: true })
+  }
+
+  onScheduleClose = (e) => {
+    this.setState({ scheduleLayer: false })
+  }
+
+  onScheduleSubmit = (e) => {
+
+  }
+
+
 }
 
 export default reduxForm({
