@@ -45,19 +45,11 @@ class JobScheduleEdit extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log("JobScheduleEdit componentDidMount")
-  }
-
-  componentWillUnmount() {
-    console.log("JobScheduleEdit componentWillUnmount")
-  }
-
   render () {
     const { onClose, onSubmit } = this.props
 
     const freqOption = rruleFrequency.find((freq) => {
-      return freq.value === this.state.freq
+      return freq.value === this.props.freq
     })
 
     const byweekdayOption = rruleByWeekDay.find((byweekday) => {
@@ -65,13 +57,13 @@ class JobScheduleEdit extends Component {
     })
 
     let schedule = null
-    if (this.state.freq === RRule.DAILY) {
+    if (this.props.freq === RRule.DAILY) {
       schedule = <FormField label="Interval" htmlFor="interval">
         <NumberInput id="interval" name="interval" min={1}
           value={this.state.interval}
           onChange={this.onIntervalChange}></NumberInput>
       </FormField>
-    } else if (this.state.freq === RRule.WEEKLY) {
+    } else if (this.props.freq === RRule.WEEKLY) {
       schedule = <FormField label="Weekdays" htmlFor="freq" >
           <Select id="byweekday" name="byweekday"
             inline={true} multiple={true}
@@ -79,7 +71,7 @@ class JobScheduleEdit extends Component {
             onChange={this.onByWeekDayChange}
             onSearch={null} />
         </FormField>
-    } else if (this.state.freq === RRule.MONTHLY) {
+    } else if (this.props.freq === RRule.MONTHLY) {
       schedule = <div>monthly</div>
     }
 
@@ -102,7 +94,6 @@ class JobScheduleEdit extends Component {
 
   onFreqChange = (e) => {
     this.props.onChange(e)
-    this.setState({ freq: e.option.value })
   }
 
   onByWeekDayChange = (e) => {

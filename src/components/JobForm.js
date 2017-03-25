@@ -13,6 +13,7 @@ import CloseIcon from 'grommet/components/icons/base/Close'
 import AddIcon from 'grommet/components/icons/base/Add'
 import List from 'grommet/components/List'
 import JobScheduleEdit from './JobScheduleEdit'
+import RRule from 'rrule'
 
 const validate = values => {
   const errors = {}
@@ -49,7 +50,7 @@ class JobForm extends Component {
     this.state = {
       clientsSearchText: '',
       scheduleLayer: false,
-      schedule: {}
+      schedule: { freq: RRule.WEEKLY }
     }
   }
 
@@ -117,7 +118,8 @@ class JobForm extends Component {
       result = (
         <JobScheduleEdit onClose={this.onScheduleClose}
           onSubmit={this.onScheduleSubmit}
-          onChange={this.onScheduleChange} />
+          onChange={this.onScheduleChange}
+          { ...this.state.schedule } />
       )
     }
 
@@ -155,10 +157,9 @@ class JobForm extends Component {
   onScheduleChange = (event) => {
     var schedule = { ...this.state.schedule }
     const attribute = event.target.getAttribute('name')
-    const value = event.target.value
+    const value = event.option ? event.option.value : event.target.value
     schedule[attribute] = value
     this.setState({schedule})
-    console.log(schedule)
   }
 
 
