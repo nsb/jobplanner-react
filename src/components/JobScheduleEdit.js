@@ -120,6 +120,4 @@ class JobScheduleEdit extends Component {
 
 }
 
-export default reduxForm({
-  form: 'JobScheduleEdit',  // a unique identifier for this form
-})(JobScheduleEdit)
+export default JobScheduleEdit
