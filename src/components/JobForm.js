@@ -151,7 +151,7 @@ class JobForm extends Component {
   }
 
   onScheduleSubmit = (e) => {
-    console.log(e)
+    this.onScheduleClose(e)
   }
 
   onScheduleChange = (event) => {
