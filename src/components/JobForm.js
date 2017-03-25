@@ -50,7 +50,7 @@ class JobForm extends Component {
     this.state = {
       clientsSearchText: '',
       scheduleLayer: false,
-      schedule: { freq: RRule.WEEKLY, interval: 1 }
+      schedule: { freq: RRule.WEEKLY, interval: 2 }
     }
   }
 
@@ -118,8 +118,7 @@ class JobForm extends Component {
       result = (
         <JobScheduleEdit onClose={this.onScheduleClose}
           onSubmit={this.onScheduleSubmit}
-          onChange={this.onScheduleChange}
-          { ...this.state.schedule } />
+          schedule={this.state.schedule} />
       )
     }
 
@@ -150,18 +149,9 @@ class JobForm extends Component {
     this.setState({ scheduleLayer: false })
   }
 
-  onScheduleSubmit = (e) => {
-    this.onScheduleClose(e)
+  onScheduleSubmit = (schedule) => {
+    this.setState({ scheduleLayer: false, schedule })
   }
-
-  onScheduleChange = (event) => {
-    var schedule = { ...this.state.schedule }
-    const attribute = event.target.getAttribute('name')
-    const value = event.option ? event.option.value : event.target.value
-    schedule[attribute] = value
-    this.setState({schedule})
-  }
-
 
 }
 
