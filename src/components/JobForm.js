@@ -48,8 +48,8 @@ class JobForm extends Component {
   constructor (props) {
     super(props)
 
-    let recurrences = props.initialValues.recurrences
-    let rrule = recurrences ? rrulestr(recurrences) : new RRule()
+    let recurrences = props.initialValues ? props.initialValues.recurrences : null
+    let rrule = recurrences ? rrulestr(recurrences) : new RRule({freq: RRule.WEEKLY,})
 
     this.state = {
       clientsSearchText: '',
