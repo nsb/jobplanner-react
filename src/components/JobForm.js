@@ -116,10 +116,11 @@ class JobForm extends Component {
 
   renderSchedules = () => {
     const { scheduleLayer } = this.state
-    let result
+    let layer
+    let rule = new RRule(this.state.schedule)
 
     if (scheduleLayer) {
-      result = (
+      layer = (
         <JobScheduleEdit onClose={this.onScheduleClose}
           onSubmit={this.onScheduleSubmit}
           schedule={this.state.schedule} />
@@ -134,8 +135,9 @@ class JobForm extends Component {
           a11yTitle='Add Schedule' />
         </Header>
         <List>
-          {result}
+          {rule.toText()}
         </List>
+        {layer}
       </fieldset>
     )
   }

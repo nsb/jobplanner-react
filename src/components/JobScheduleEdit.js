@@ -33,15 +33,15 @@ class JobScheduleEdit extends Component {
     super(props)
     this.state = {
       schedule: Object.assign({
-        freq: RRule.WEEKLY,
-        interval: 1,
-        wkst: RRule.MO,
-        count: null,
-        until: null,
-        bysetpos: null,
-        bymonth: null,
-        byweekday: [RRule.MO],
-        dtstart: new Date(),
+        // freq: RRule.WEEKLY,
+        // interval: 1,
+        // wkst: RRule.MO,
+        // count: null,
+        // until: null,
+        // bysetpos: null,
+        // bymonth: null,
+        // byweekday: [RRule.MO],
+        // dtstart: new Date(),
       }, props.schedule)
     }
   }
