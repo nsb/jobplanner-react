@@ -10,8 +10,7 @@ import FormFields from 'grommet/components/FormFields'
 import FormField from 'grommet/components/FormField'
 import Select from 'grommet/components/Select'
 import CloseIcon from 'grommet/components/icons/base/Close'
-import AddIcon from 'grommet/components/icons/base/Add'
-import List from 'grommet/components/List'
+import EditIcon from 'grommet/components/icons/base/Edit'
 import JobScheduleEdit from './JobScheduleEdit'
 import { RRule, rrulestr } from 'rrule'
 
@@ -38,6 +37,36 @@ const renderSelect = ({ input, label, options, onSearch, meta: { touched, error,
   )
 }
 
+class ScheduleInput extends Component {
+
+  render () {
+    const { value, onClick } = this.props
+    let rule = value ? rrulestr(value) : new RRule({freq: RRule.WEEKLY,})
+    return (
+      <div>
+        <Anchor icon={<EditIcon />}
+          label='Label'
+          href='#'
+          reverse={true}
+          onClick={onClick}>
+          <Heading tag='h3'>
+            Schedule
+          </Heading>
+          {rule.toText()}
+        </Anchor>
+      </div>
+    )
+  }
+
+  onChange (e) {
+    console.log(e)
+  }
+}
+
+const renderSchedule = ({ input, onClick, meta: { touched, error, warning } }) => (
+  <ScheduleInput {...input} onClick={onClick} />
+)
+
 class JobForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
@@ -54,7 +83,10 @@ class JobForm extends Component {
     this.state = {
       clientsSearchText: '',
       scheduleLayer: false,
-      schedule: { ...rrule.options }
+      schedule: {
+        freq: rrule.options.freq,
+        interval: rrule.options.interval
+      }
     }
   }
 
@@ -117,7 +149,6 @@ class JobForm extends Component {
   renderSchedules = () => {
     const { scheduleLayer } = this.state
     let layer
-    let rule = new RRule(this.state.schedule)
 
     if (scheduleLayer) {
       layer = (
@@ -129,14 +160,8 @@ class JobForm extends Component {
 
     return (
       <fieldset>
-        <Header size="small" justify="between">
-          <Heading tag="h3">Schedule</Heading>
-          <Button icon={<AddIcon />} onClick={this.onScheduleAdd}
-          a11yTitle='Add Schedule' />
-        </Header>
-        <List>
-          {rule.toText()}
-        </List>
+        <Field name="recurrences" label="Schedule" component={renderSchedule}
+          onClick={this.onScheduleAdd} />
         {layer}
       </fieldset>
     )
@@ -156,6 +181,8 @@ class JobForm extends Component {
   }
 
   onScheduleSubmit = (schedule) => {
+    const { dispatch, change } = this.props
+    dispatch(change('recurrences', new RRule({...schedule}).toString()))
     this.setState({ scheduleLayer: false, schedule })
   }
 
