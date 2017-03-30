@@ -182,7 +182,7 @@ class JobForm extends Component {
 
   onScheduleSubmit = (schedule) => {
     const { dispatch, change } = this.props
-    dispatch(change('recurrences', new RRule({...schedule}).toString()))
+    dispatch(change('recurrences', `RRULE:${new RRule({...schedule}).toString()}`))
     this.setState({ scheduleLayer: false, schedule })
   }
 

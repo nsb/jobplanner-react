@@ -39,7 +39,6 @@ class JobEdit extends Component {
     let action = updateJob({
       ...values,
       business: business.id,
-      recurrences: '',
       client: clientId
     }, token)
     this.props.dispatch(action)
