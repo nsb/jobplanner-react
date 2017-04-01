@@ -54,28 +54,31 @@ class JobScheduleEdit extends Component {
       return freq.value === this.state.schedule.freq
     })
 
-    // const byweekdayOption = rruleByWeekDay.find((byweekday) => {
-    //   return byweekday.value === this.state.schedule.byweekday
-    // })
     const { byweekday} = this.state.schedule
 
     let schedule = this.state.schedule
-    let scheduleComponent = null
-    if (schedule.freq === RRule.DAILY) {
-      scheduleComponent = <FormField label="Interval" htmlFor="interval">
+    let scheduleInterval
+    let scheduleByWeekday
+    let scheduleComponent
+    if (schedule.freq === RRule.DAILY || schedule.freq === RRule.WEEKLY) {
+      scheduleInterval = <FormField label="Interval" htmlFor="interval">
         <NumberInput id="interval" name="interval" min={1}
           value={schedule.interval}
           onChange={this.onIntervalChange}></NumberInput>
       </FormField>
-    } else if (schedule.freq === RRule.WEEKLY) {
-      scheduleComponent = <FormField label="Weekdays" htmlFor="freq" >
+    }
+
+    if (schedule.freq === RRule.WEEKLY) {
+      scheduleByWeekday = <FormField label="Weekdays" htmlFor="freq" >
           <Select id="byweekday" name="byweekday"
             inline={true} multiple={true}
             value={byweekday} options={rruleByWeekDay}
             onChange={this.onByWeekDayChange}
             onSearch={null} />
         </FormField>
-    } else if (schedule.freq === RRule.MONTHLY) {
+    }
+
+    if (schedule.freq === RRule.MONTHLY) {
       scheduleComponent = <div>monthly</div>
     }
 
@@ -90,6 +93,8 @@ class JobScheduleEdit extends Component {
               onChange={this.onFreqChange}
               onSearch={null} />
           </FormField>
+          {scheduleInterval}
+          {scheduleByWeekday}
           {scheduleComponent}
         </fieldset>
       </LayerForm>
