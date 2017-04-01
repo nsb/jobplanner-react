@@ -3,7 +3,8 @@ import Select from 'grommet/components/Select'
 import FormField from 'grommet/components/FormField'
 import NumberInput from 'grommet/components/NumberInput'
 import LayerForm from 'grommet-templates/components/LayerForm'
-import RRule from 'rrule'
+import { RRule } from 'rrule'
+import { xor } from 'lodash'
 
 const rruleFrequency = [
   { label: "Daily", value: RRule.DAILY },
@@ -13,13 +14,13 @@ const rruleFrequency = [
 ]
 
 const rruleByWeekDay = [
-  { label: "Monday", value: RRule.MO },
-  { label: "Tuesday", value: RRule.TU },
-  { label: "Wednesday", value: RRule.WE },
-  { label: "Thursday", value: RRule.TH },
-  { label: "Friday", value: RRule.FR },
-  { label: "Saturday", value: RRule.SA },
-  { label: "Sunday", value: RRule.SU }
+  { label: "Monday", value: RRule.MO.weekday },
+  { label: "Tuesday", value: RRule.TU.weekday },
+  { label: "Wednesday", value: RRule.WE.weekday },
+  { label: "Thursday", value: RRule.TH.weekday },
+  { label: "Friday", value: RRule.FR.weekday },
+  { label: "Saturday", value: RRule.SA.weekday },
+  { label: "Sunday", value: RRule.SU.weekday }
 ]
 
 class JobScheduleEdit extends Component {
@@ -53,9 +54,10 @@ class JobScheduleEdit extends Component {
       return freq.value === this.state.schedule.freq
     })
 
-    const byweekdayOption = rruleByWeekDay.find((byweekday) => {
-      return byweekday.value = this.state.byweekday
-    })
+    // const byweekdayOption = rruleByWeekDay.find((byweekday) => {
+    //   return byweekday.value === this.state.schedule.byweekday
+    // })
+    const { byweekday} = this.state.schedule
 
     let schedule = this.state.schedule
     let scheduleComponent = null
@@ -69,7 +71,7 @@ class JobScheduleEdit extends Component {
       scheduleComponent = <FormField label="Weekdays" htmlFor="freq" >
           <Select id="byweekday" name="byweekday"
             inline={true} multiple={true}
-            value={byweekdayOption} options={rruleByWeekDay}
+            value={byweekday} options={rruleByWeekDay}
             onChange={this.onByWeekDayChange}
             onSearch={null} />
         </FormField>
@@ -103,8 +105,13 @@ class JobScheduleEdit extends Component {
     this._onChange(e)
   }
 
-  onByWeekDayChange = (e) => {
-    console.log(e.option.value.weekday)
+  onByWeekDayChange = (event) => {
+
+    let schedule = Object.assign(
+      this.state.schedule, {
+      byweekday: xor(this.state.schedule.byweekday, [event.option.value])
+    })
+    this.setState(schedule)
   }
 
   onIntervalChange = (e) => {

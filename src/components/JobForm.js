@@ -174,6 +174,7 @@ class JobForm extends Component {
 
   onScheduleAdd = (e) => {
     this.setState({ scheduleLayer: true })
+    e.preventDefault()
   }
 
   onScheduleClose = (e) => {
