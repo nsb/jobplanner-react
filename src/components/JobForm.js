@@ -85,7 +85,8 @@ class JobForm extends Component {
       scheduleLayer: false,
       schedule: {
         freq: rrule.options.freq,
-        interval: rrule.options.interval
+        interval: rrule.options.interval,
+        byweekday: rrule.options.byweekday
       }
     }
   }
