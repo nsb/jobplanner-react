@@ -14,6 +14,7 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import { fetchClients } from '../actions'
 import ClientListItem from './ClientListItem'
+import { FormattedMessage } from 'react-intl'
 
 class Clients extends Component {
   static propTypes = {
@@ -58,6 +59,14 @@ class Clients extends Component {
           <Title responsive={false}>
             <NavControl />
             <span>Clients</span>
+            <FormattedMessage
+              id='app.greeting'
+              description='Greeting to welcome the user to the app'
+              defaultMessage='Hello, {name}!'
+              values={{
+                  name: 'Eric'
+              }}
+            />
           </Title>
           <Search inline={true} fill={true} size='medium' placeHolder='Search'
             value={this.searchText} onDOMChange={this.onSearch} />

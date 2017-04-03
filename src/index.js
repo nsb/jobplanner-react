@@ -1,7 +1,6 @@
 import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
@@ -9,6 +8,10 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import NetworkListener from 'redux-queue-offline-listener'
+import { Provider } from 'react-intl-redux'
+import {addLocaleData} from 'react-intl'
+import en from 'react-intl/locale-data/en'
+import da from 'react-intl/locale-data/da'
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
@@ -24,6 +27,8 @@ import JobEdit from './components/JobEdit'
 import Login from './components/Login'
 import 'grommet/scss/vanilla/index.scss'
 import './index.css'
+
+addLocaleData([...en, ...da])
 
 // Setup service worker
 if ('serviceWorker' in navigator) {
@@ -45,8 +50,20 @@ if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
 
+
+const initialState = {
+  intl: {
+    locale: 'da',
+    messages: {
+      'app.greeting': 'Hejsa {name}!',
+    },
+  },
+  // ...other initialState
+}
+
 const store = createStore(
   rootReducer,
+  initialState,
   composeWithDevTools(
     applyMiddleware(...middleware)
 ))
@@ -61,7 +78,7 @@ const authRequired = (nextState, replace) => {
 }
 
 ReactDOM.render(
-  <NetworkListenerProvider store={store}>
+  <NetworkListenerProvider store={store} locale={navigator.language}>
     <Router history={history} >
       <Route path="/" component={App}>
 
