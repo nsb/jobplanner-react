@@ -28,8 +28,8 @@ import Login from './components/Login'
 import 'grommet/scss/vanilla/index.scss'
 import './index.css'
 
-import localeEnData from './locales/en/data.json'
-import localeDaData from './locales/da/data.json'
+import localeEnData from './locales/en.json'
+import localeDaData from './locales/da.json'
 addLocaleData([...en, ...da])
 
 const language = (navigator.languages && navigator.languages[0]) ||

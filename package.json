@@ -40,6 +40,7 @@
     "postcss-loader": "1.0.0",
     "promise": "7.1.1",
     "react-dev-utils": "^0.4.2",
+    "react-intl-translations-manager": "^5.0.0",
     "recursive-readdir": "2.1.0",
     "sass-loader": "^4.1.1",
     "serviceworker-webpack-plugin": "^0.1.8",
@@ -80,7 +81,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "build:langs": "BABEL_ENV=production ./node_modules/.bin/babel-node scripts/translator.js"
+    "build:langs": "BABEL_ENV=production ./node_modules/.bin/babel-node scripts/translator.js",
+    "manage:translations": "node scripts/translationRunner.js"
   },
   "jest": {
     "collectCoverageFrom": [
