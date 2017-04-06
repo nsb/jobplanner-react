@@ -28,7 +28,15 @@ import Login from './components/Login'
 import 'grommet/scss/vanilla/index.scss'
 import './index.css'
 
+import localeData from './../build/locales/data.json'
 addLocaleData([...en, ...da])
+
+const language = (navigator.languages && navigator.languages[0]) ||
+                     navigator.language ||
+                     navigator.userLanguage
+
+const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0]
+const messages = localeData[languageWithoutRegionCode] || localeData[language] || localeData.en
 
 // Setup service worker
 if ('serviceWorker' in navigator) {
@@ -78,7 +86,7 @@ const authRequired = (nextState, replace) => {
 }
 
 ReactDOM.render(
-  <NetworkListenerProvider store={store} locale={navigator.language}>
+  <NetworkListenerProvider store={store} locale={language} messages={messages}>
     <Router history={history} >
       <Route path="/" component={App}>
 
