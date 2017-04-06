@@ -28,7 +28,8 @@ import Login from './components/Login'
 import 'grommet/scss/vanilla/index.scss'
 import './index.css'
 
-import localeData from './../build/locales/data.json'
+import localeEnData from './locales/en/data.json'
+import localeDaData from './locales/da/data.json'
 addLocaleData([...en, ...da])
 
 const language = (navigator.languages && navigator.languages[0]) ||
@@ -36,7 +37,13 @@ const language = (navigator.languages && navigator.languages[0]) ||
                      navigator.userLanguage
 
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0]
-const messages = localeData[languageWithoutRegionCode] || localeData[language] || localeData.en
+let messages = localeEnData
+
+if (languageWithoutRegionCode === 'da') {
+  messages = localeDaData
+} else {
+  messages = localeEnData
+}
 
 // Setup service worker
 if ('serviceWorker' in navigator) {

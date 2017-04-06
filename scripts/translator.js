@@ -4,7 +4,7 @@ import { sync as globSync } from 'glob';
 import { sync as mkdirpSync } from 'mkdirp';
 
 const filePattern = './build/messages/**/*.json';
-const outputLanguageDataDir = './build/locales/';
+const outputLanguageDataDir = './src/locales/en/';
 
 // Aggregates the default messages that were extracted from the example app's
 // React components via the React Intl Babel plugin. An error will be thrown if
@@ -26,4 +26,4 @@ const defaultMessages = globSync(filePattern)
 
 mkdirpSync(outputLanguageDataDir);
 
-fs.writeFileSync(outputLanguageDataDir + 'data.json', `{ "en": ${JSON.stringify(defaultMessages, null, 2)} }`);
+fs.writeFileSync(outputLanguageDataDir + 'data.json', JSON.stringify(defaultMessages, null, 2));
