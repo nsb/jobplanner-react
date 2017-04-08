@@ -1,6 +1,8 @@
+// @flow
 import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { clientListSchema } from '../schemas'
+import type { Dispatch as ReduxDispatch } from 'redux'
 import clientsApi from '../api'
 
 //Create new client
@@ -18,13 +20,26 @@ export const UPDATE_CLIENT: string = 'UPDATE_CLIENT'
 export const UPDATE_CLIENT_SUCCESS: string = 'UPDATE_CLIENT_SUCCESS'
 export const UPDATE_CLIENT_FAILURE: string = 'UPDATE_CLIENT_FAILURE'
 
-export const fetchClientsRequest = () => {
+type Client = {
+  id: number,
+  first_name: string,
+  last_name: string
+}
+
+type FetchClientsAction = {
+  type: string
+}
+
+export type Action =
+  | FetchClientsAction
+
+export const fetchClientsRequest = (): FetchClientsAction => {
   return {
     type: FETCH_CLIENTS
   }
 }
 
-export const fetchClientsSuccess = (clients) => {
+export const fetchClientsSuccess = (clients: [Client]) => {
   return {
     type: FETCH_CLIENTS_SUCCESS,
     payload: normalize(clients, clientListSchema),
@@ -32,16 +47,16 @@ export const fetchClientsSuccess = (clients) => {
   }
 }
 
-export const fetchClientsFailure = (error) => {
+export const fetchClientsFailure = (error: string) => {
   return {
     type: FETCH_CLIENTS_FAILURE,
     error: error
   }
 }
 
-export const fetchClients = (token, queryParams = {}) => {
+export const fetchClients = (token: string, queryParams: Object = {}) => {
 
-  return (dispatch) => {
+  return (dispatch: ReduxDispatch) => {
 
     dispatch(fetchClientsRequest())
 
@@ -59,7 +74,7 @@ export const fetchClients = (token, queryParams = {}) => {
 }
 
 
-export const createClientRequest = (payload) => {
+export const createClientRequest = (payload: Client) => {
 
   return {
     type: CREATE_CLIENT,
@@ -67,7 +82,7 @@ export const createClientRequest = (payload) => {
   }
 }
 
-export const createClientSuccess = (payload) => {
+export const createClientSuccess = (payload: Client) => {
   return {
     type: CREATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
@@ -75,7 +90,7 @@ export const createClientSuccess = (payload) => {
   }
 }
 
-export const createClientError = (error) => {
+export const createClientError = (error: string) => {
   return {
     type: CREATE_CLIENT_FAILURE,
     error: 'Oops'
@@ -83,9 +98,9 @@ export const createClientError = (error) => {
 }
 
 
-export const createClient = (business, client, token) => {
+export const createClient = (business: Object, client: Client, token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: ReduxDispatch) => {
 
     dispatch(createClientRequest(client))
 
@@ -100,7 +115,7 @@ export const createClient = (business, client, token) => {
 }
 
 
-export const updateClientRequest = (payload) => {
+export const updateClientRequest = (payload: Client) => {
 
   return {
     type: UPDATE_CLIENT,
@@ -108,7 +123,7 @@ export const updateClientRequest = (payload) => {
   }
 }
 
-export const updateClientSuccess = (payload) => {
+export const updateClientSuccess = (payload: Client) => {
   return {
     type: UPDATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
@@ -116,7 +131,7 @@ export const updateClientSuccess = (payload) => {
   }
 }
 
-export const updateClientError = (error) => {
+export const updateClientError = (error: string) => {
   return {
     type: UPDATE_CLIENT_FAILURE,
     error: error
@@ -124,9 +139,9 @@ export const updateClientError = (error) => {
 }
 
 
-export const updateClient = (client, token) => {
+export const updateClient = (client: Client, token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: ReduxDispatch) => {
 
     dispatch(updateClientRequest(client))
 

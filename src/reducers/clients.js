@@ -6,8 +6,9 @@ import { CREATE_CLIENT_SUCCESS,
          FETCH_CLIENTS,
          FETCH_CLIENTS_SUCCESS,
          FETCH_CLIENTS_FAILURE } from '../actions'
+import type { Action } from '../actions/clients'
 
-const isFetching = (state: boolean = false, action: Object): boolean => {
+const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
     case FETCH_CLIENTS:
       return true

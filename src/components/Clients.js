@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+// @flow
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Box from 'grommet/components/Box'
@@ -16,17 +17,26 @@ import { fetchClients } from '../actions'
 import ClientListItem from './ClientListItem'
 import { FormattedMessage } from 'react-intl'
 
-class Clients extends Component {
-  static propTypes = {
-    business: PropTypes.object.isRequired,
-    clients: PropTypes.array.isRequired,
-    token: PropTypes.string.isRequired,
-    isFetching: PropTypes.bool.isRequired
-  }
+import type {
+  Dispatch as ReduxDispatch
+} from 'redux'
 
-  constructor () {
-    super()
-    this.state = { searchText: '' }
+type Props = {
+  business: Object,
+  clients: [Object],
+  token: string,
+  isFetching: boolean,
+  dispatch: ReduxDispatch
+}
+
+type State = {
+  searchText: string
+}
+
+class Clients extends Component<void, Props, State> {
+
+  state: State = {
+    searchText: ''
   }
 
   componentDidMount () {
@@ -50,7 +60,7 @@ class Clients extends Component {
 
     const addControl = (
         <Anchor icon={<AddIcon />} path={`/${business.id}/clients/add`}
-          a11yTitle={`Add business`} onClick={this.handleAdd} />
+          a11yTitle={`Add business`} />
       )
 
     return (
@@ -69,7 +79,7 @@ class Clients extends Component {
             />
           </Title>
           <Search inline={true} fill={true} size='medium' placeHolder='Search'
-            value={this.searchText} onDOMChange={this.onSearch} />
+            value={this.state.searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
         <List onMore={isFetching ? this.onMore : null}>

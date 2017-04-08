@@ -1,3 +1,4 @@
+// @flow
 import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -12,6 +13,7 @@ import { Provider } from 'react-intl-redux'
 import {addLocaleData} from 'react-intl'
 import en from 'react-intl/locale-data/en'
 import da from 'react-intl/locale-data/da'
+import type { Store } from './types/Store'
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
@@ -33,8 +35,7 @@ import localeDaData from './locales/da.json'
 addLocaleData([...en, ...da])
 
 const language = (navigator.languages && navigator.languages[0]) ||
-                     navigator.language ||
-                     navigator.userLanguage
+                     navigator.language
 
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0]
 let messages = localeEnData
@@ -48,13 +49,15 @@ if (languageWithoutRegionCode === 'da') {
 // Setup service worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').then(function(registration) {
-      // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope)
-    }).catch(function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err)
-    })
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.register('/sw.js').then(function(registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope)
+      }).catch(function(err) {
+        // registration failed :(
+        console.log('ServiceWorker registration failed: ', err)
+      })
+    }
   })
 }
 
@@ -76,12 +79,16 @@ const initialState = {
   // ...other initialState
 }
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeWithDevTools(
-    applyMiddleware(...middleware)
-))
+function configureStore(): Store {
+  return createStore(
+    rootReducer,
+    initialState,
+    composeWithDevTools(
+      applyMiddleware(...middleware)
+  ))
+}
+
+const store = configureStore()
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)
