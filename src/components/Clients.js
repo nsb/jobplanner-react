@@ -26,7 +26,7 @@ type Props = {
   clients: [Object],
   token: string,
   isFetching: boolean,
-  dispatch: ReduxDispatch
+  dispatch: ReduxDispatch<*>
 }
 
 type State = {
@@ -82,7 +82,7 @@ class Clients extends Component<void, Props, State> {
             value={this.state.searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
-        <List onMore={isFetching ? this.onMore : null}>
+        <List onMore={isFetching ? this.onMore : undefined}>
           {filteredClients.map((client, index) => {
             return <ClientListItem key={client.id}
               client={client} index={index} onClick={e => this.onClick(e, client)} />

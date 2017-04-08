@@ -30,8 +30,20 @@ type FetchClientsAction = {
   type: string
 }
 
+type CreateClientAction = {
+  type: string,
+  payload: Client
+}
+
+type UpdateClientAction = {
+  type: string,
+  payload: Client
+}
+
 export type Action =
   | FetchClientsAction
+  | CreateClientAction
+  | UpdateClientAction
 
 export const fetchClientsRequest = (): FetchClientsAction => {
   return {
@@ -56,7 +68,7 @@ export const fetchClientsFailure = (error: string) => {
 
 export const fetchClients = (token: string, queryParams: Object = {}) => {
 
-  return (dispatch: ReduxDispatch) => {
+  return (dispatch: ReduxDispatch<FetchClientsAction>) => {
 
     dispatch(fetchClientsRequest())
 
@@ -74,7 +86,7 @@ export const fetchClients = (token: string, queryParams: Object = {}) => {
 }
 
 
-export const createClientRequest = (payload: Client) => {
+export const createClientRequest = (payload: Client): CreateClientAction => {
 
   return {
     type: CREATE_CLIENT,
@@ -90,17 +102,18 @@ export const createClientSuccess = (payload: Client) => {
   }
 }
 
-export const createClientError = (error: string) => {
+export const createClientError = (payload: Client, error: string) => {
   return {
     type: CREATE_CLIENT_FAILURE,
-    error: 'Oops'
+    error,
+    payload
   }
 }
 
 
 export const createClient = (business: Object, client: Client, token: string) => {
 
-  return (dispatch: ReduxDispatch) => {
+  return (dispatch: ReduxDispatch<CreateClientAction>) => {
 
     dispatch(createClientRequest(client))
 
@@ -109,13 +122,13 @@ export const createClient = (business: Object, client: Client, token: string) =>
           dispatch(push(`/${business.id}/clients/${responseClient.id}`))
           return responseClient
         }).catch(error => {
-          throw(error)
+          dispatch(createClientError(client, error))
         })
   }
 }
 
 
-export const updateClientRequest = (payload: Client) => {
+export const updateClientRequest = (payload: Client): UpdateClientAction => {
 
   return {
     type: UPDATE_CLIENT,
@@ -131,17 +144,18 @@ export const updateClientSuccess = (payload: Client) => {
   }
 }
 
-export const updateClientError = (error: string) => {
+export const updateClientError = (payload: Client, error: string) => {
   return {
     type: UPDATE_CLIENT_FAILURE,
-    error: error
+    error,
+    payload
   }
 }
 
 
 export const updateClient = (client: Client, token: string) => {
 
-  return (dispatch: ReduxDispatch) => {
+  return (dispatch: ReduxDispatch<UpdateClientAction>) => {
 
     dispatch(updateClientRequest(client))
 
@@ -149,7 +163,7 @@ export const updateClient = (client: Client, token: string) => {
       dispatch(updateClientSuccess(responseClient))
       return responseClient
     }).catch(error => {
-      dispatch(updateClientError(error))
+      dispatch(updateClientError(client, error))
     })
   }
 }
