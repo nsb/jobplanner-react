@@ -1,5 +1,5 @@
 {
-  "presets": ["react-app"],
+  "presets": ["react-app", "flow"],
   "plugins": [
     ["react-intl", {
         "messagesDir": "./build/messages/"

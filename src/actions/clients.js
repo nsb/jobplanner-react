@@ -4,19 +4,19 @@ import { clientListSchema } from '../schemas'
 import clientsApi from '../api'
 
 //Create new client
-export const CREATE_CLIENT = 'CREATE_CLIENT';
-export const CREATE_CLIENT_SUCCESS = 'CREATE_CLIENT_SUCCESS';
-export const CREATE_CLIENT_FAILURE = 'CREATE_CLIENT_FAILURE';
+export const CREATE_CLIENT: string = 'CREATE_CLIENT';
+export const CREATE_CLIENT_SUCCESS: string = 'CREATE_CLIENT_SUCCESS';
+export const CREATE_CLIENT_FAILURE: string = 'CREATE_CLIENT_FAILURE';
 
 //Fetch clients
-export const FETCH_CLIENTS = 'FETCH_CLIENTS'
-export const FETCH_CLIENTS_SUCCESS = 'FETCH_CLIENTS_SUCCESS'
-export const FETCH_CLIENTS_FAILURE = 'FETCH_CLIENTS_FAILURE'
+export const FETCH_CLIENTS: string = 'FETCH_CLIENTS'
+export const FETCH_CLIENTS_SUCCESS: string = 'FETCH_CLIENTS_SUCCESS'
+export const FETCH_CLIENTS_FAILURE: string = 'FETCH_CLIENTS_FAILURE'
 
 //Update client
-export const UPDATE_CLIENT = 'UPDATE_CLIENT'
-export const UPDATE_CLIENT_SUCCESS = 'UPDATE_CLIENT_SUCCESS'
-export const UPDATE_CLIENT_FAILURE = 'UPDATE_CLIENT_FAILURE'
+export const UPDATE_CLIENT: string = 'UPDATE_CLIENT'
+export const UPDATE_CLIENT_SUCCESS: string = 'UPDATE_CLIENT_SUCCESS'
+export const UPDATE_CLIENT_FAILURE: string = 'UPDATE_CLIENT_FAILURE'
 
 export const fetchClientsRequest = () => {
   return {
