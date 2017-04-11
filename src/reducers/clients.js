@@ -1,21 +1,17 @@
 // @flow
 import { combineReducers } from 'redux'
 import { merge } from 'lodash/object'
-import { CREATE_CLIENT_SUCCESS,
-         FETCH_CLIENTS,
-         FETCH_CLIENTS_SUCCESS,
-         FETCH_CLIENTS_FAILURE } from '../actions'
 import type { Action } from '../actions/clients'
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
-    case FETCH_CLIENTS:
+    case 'FETCH_CLIENTS':
       return true
 
-    case FETCH_CLIENTS_SUCCESS:
+    case 'FETCH_CLIENTS_SUCCESS':
       return false
 
-    case FETCH_CLIENTS_FAILURE:
+    case 'FETCH_CLIENTS_FAILURE':
       return false
 
     default:
@@ -23,7 +19,7 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
   }
 }
 
-const clients = (state = {}, action: Action): Object => {
+const clients = (state: Object = {}, action: Action): Object => {
   switch (action.type) {
     case 'CREATE_CLIENT_SUCCESS':
       return {
@@ -42,7 +38,7 @@ const clients = (state = {}, action: Action): Object => {
         }
       }
 
-    case FETCH_CLIENTS_SUCCESS:
+    case 'FETCH_CLIENTS_SUCCESS':
       if (action.payload && action.payload.entities && action.payload.entities.clients) {
         return merge({}, state, action.payload.entities.clients)
       }
@@ -57,12 +53,12 @@ const entities = combineReducers({
   clients,
 })
 
-const result = (state = [], action) => {
+const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
-    case CREATE_CLIENT_SUCCESS:
+    case 'CREATE_CLIENT_SUCCESS':
       return [...state, action.payload.id]
 
-    case FETCH_CLIENTS_SUCCESS:
+    case 'FETCH_CLIENTS_SUCCESS':
       if (action.payload && action.payload.result) {
         return merge([], state, action.payload.result)
       } else {
