@@ -1,15 +1,16 @@
+// @flow
 import fetch from 'isomorphic-fetch'
 import 'url-search-params-polyfill'
 
 class Api {
-  static getAll(resource, token, queryParams={}) {
-    let searchParams = new URLSearchParams()
+  static getAll(resource: string, token: string, queryParams: Object={}): Promise<*> {
+    let searchParams: URLSearchParams = new URLSearchParams()
     Object.keys(queryParams).forEach(function (key) {
-      let param = queryParams[key]
+      let param: string = queryParams[key]
       searchParams.append(key, param)
     })
 
-    const url = `http://localhost:8000/${resource}/?${searchParams.toString()}`
+    const url: string = `http://localhost:8000/${resource}/?${searchParams.toString()}`
     const request = new Request(url, {
       method: 'GET',
       headers: new Headers({
@@ -25,7 +26,7 @@ class Api {
     })
   }
 
-  static update(resource, item, token) {
+  static update(resource: string, item: { id: number }, token: string) {
     const request = new Request(`http://localhost:8000/${resource}/${item.id}/`, {
       method: 'PUT',
       headers: new Headers({
@@ -43,7 +44,7 @@ class Api {
     })
   }
 
-  static create(resource, item, token) {
+  static create(resource: string, item: {}, token: string) {
     const request = new Request(`http://localhost:8000/${resource}/`, {
       method: 'POST',
       headers: new Headers({
@@ -61,7 +62,7 @@ class Api {
     })
   }
 
-  static delete(resource, item, token) {
+  static delete(resource: string, item: { id: number }, token: string) {
     const request = new Request(`http://localhost:8000/${resource}/${item.id}`, {
       method: 'DELETE',
       headers: new Headers({

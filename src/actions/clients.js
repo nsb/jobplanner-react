@@ -45,9 +45,15 @@ type CreateClientAction = {
   payload: Client
 }
 
-type createClientSuccessAction = {
+type CreateClientSuccessAction = {
   type: typeof CREATE_CLIENT_SUCCESS,
   payload: Client
+}
+
+type CreateClientFailureAction = {
+  type: typeof CREATE_CLIENT_FAILURE,
+  payload: Client,
+  error: string
 }
 
 type UpdateClientAction = {
@@ -71,7 +77,8 @@ export type Action =
   | FetchClientsSuccessAction
   | FetchClientsFailureAction
   | CreateClientAction
-  | createClientSuccessAction
+  | CreateClientSuccessAction
+  | CreateClientFailureAction
   | UpdateClientAction
   | UpdateClientSuccessAction
   | UpdateClientErrorAction
@@ -97,13 +104,13 @@ export const fetchClientsFailure = (error: string): Action => {
   }
 }
 
-export const fetchClients = (token: string, queryParams: Object = {}) => {
+export const fetchClients = (token: string, queryParams: Object = {}): ((d: Dispatch) => Promise<*>) => {
 
-  return (dispatch: Dispatch) => {
+  return (dispatch) => {
 
     dispatch(fetchClientsRequest())
 
-    return clientsApi.getAll('clients', token, queryParams).then(responseClients => {
+    return clientsApi.getAll('clients', token, queryParams).then((responseClients: [Client]) => {
       if (Array.isArray(responseClients)) {
         dispatch(fetchClientsSuccess(responseClients))
       } else {
@@ -133,7 +140,7 @@ export const createClientSuccess = (payload: Client): Action => {
   }
 }
 
-export const createClientError = (payload: Client, error: string) => {
+export const createClientError = (payload: Client, error: string): Action => {
   return {
     type: CREATE_CLIENT_FAILURE,
     error,
@@ -142,13 +149,13 @@ export const createClientError = (payload: Client, error: string) => {
 }
 
 
-export const createClient = (business: Object, client: Client, token: string) => {
+export const createClient = (business: Object, client: Client, token: string): ((d: Dispatch) => Promise<*>) => {
 
-  return (dispatch: Dispatch) => {
+  return (dispatch) => {
 
     dispatch(createClientRequest(client))
 
-    return clientsApi.create('clients', client, token).then(responseClient => {
+    return clientsApi.create('clients', client, token).then((responseClient: Client) => {
           dispatch(createClientSuccess(responseClient))
           dispatch(push(`/${business.id}/clients/${responseClient.id}`))
           return responseClient
@@ -184,13 +191,13 @@ export const updateClientError = (payload: Client, error: string): Action => {
 }
 
 
-export const updateClient = (client: Client, token: string) => {
+export const updateClient = (client: Client, token: string): ((d: Dispatch) => Promise<*>) => {
 
-  return (dispatch: Dispatch) => {
+  return (dispatch) => {
 
     dispatch(updateClientRequest(client))
 
-    return clientsApi.update('clients', client, token).then(responseClient => {
+    return clientsApi.update('clients', client, token).then((responseClient: Client) => {
       dispatch(updateClientSuccess(responseClient))
       return responseClient
     }).catch(error => {
