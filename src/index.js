@@ -71,10 +71,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 const initialState = {
   intl: {
-    locale: 'da',
-    messages: {
-      'app.greeting': 'Hejsa {name}!',
-    },
+    locale: languageWithoutRegionCode,
+    messages: messages,
   },
   // ...other initialState
 }
