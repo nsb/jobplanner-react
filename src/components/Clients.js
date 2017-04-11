@@ -9,24 +9,21 @@ import Search from 'grommet/components/Search'
 import Anchor from 'grommet/components/Anchor'
 import Button from 'grommet/components/Button'
 import AddIcon from 'grommet/components/icons/base/Add'
-// import Spinning from 'grommet/components/icons/Spinning'
 import List from 'grommet/components/List'
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import { fetchClients } from '../actions'
 import ClientListItem from './ClientListItem'
 import { FormattedMessage } from 'react-intl'
-
-import type {
-  Dispatch as ReduxDispatch
-} from 'redux'
+import type { Dispatch } from '../types/Store'
+import type { Client } from '../actions/clients'
 
 type Props = {
   business: Object,
-  clients: [Object],
+  clients: [Client],
   token: string,
   isFetching: boolean,
-  dispatch: ReduxDispatch<*>
+  dispatch: Dispatch
 }
 
 type State = {
