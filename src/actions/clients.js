@@ -190,7 +190,6 @@ export const updateClientError = (payload: Client, error: string): Action => {
   }
 }
 
-
 export const updateClient = (client: Client, token: string): ((d: Dispatch) => Promise<*>) => {
 
   return (dispatch) => {
