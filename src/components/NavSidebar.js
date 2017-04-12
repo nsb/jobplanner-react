@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react"
+import { injectIntl, intlShape } from 'react-intl'
 import Sidebar from 'grommet/components/Sidebar'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
@@ -13,11 +14,13 @@ import SessionMenu from './SessionMenu'
 class NavSidebar extends Component {
   static propTypes = {
     toggleNav: PropTypes.func.isRequired,
-    business: PropTypes.object.isRequired
+    business: PropTypes.object.isRequired,
+    intl: intlShape.isRequired,
   }
 
   render() {
-    const { business } = this.props
+    console.log(this.props)
+    const { business, intl } = this.props
 
     return (
       <Sidebar colorIndex="neutral-1" fixed={true}>
@@ -30,9 +33,18 @@ class NavSidebar extends Component {
             a11yTitle="Close Menu" />
         </Header>
         <Menu fill={true} primary={true}>
-          <Anchor key="dashboard" path="/" label="Dashboard" />
-          <Anchor key="calendar" path="/calendar" label="Calendar" />
-          <Anchor key="clients" path={`/${business.id}/clients`} label="Clients" />
+          <Anchor
+            key="dashboard"
+            path="/"
+            label="Dashboard" />
+          <Anchor
+            key="calendar"
+            path="/calendar"
+            label="Calendar" />
+          <Anchor
+            key="clients"
+            path={`/${business.id}/clients`}
+            label={intl.formatMessage({id: 'clients.title', defaultMessage: 'Clients'})} />
           <Anchor key="jobs" path={`/${business.id}/jobs`} label="Jobs" />
         </Menu>
         <Footer pad={{horizontal: "medium", vertical: "small"}}>
@@ -44,4 +56,4 @@ class NavSidebar extends Component {
   }
 }
 
-export default NavSidebar;
+export default injectIntl(NavSidebar)

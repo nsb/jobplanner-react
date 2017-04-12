@@ -66,14 +66,10 @@ class Clients extends Component<void, Props, State> {
         <Header size='large' pad={{ horizontal: 'medium' }}>
           <Title responsive={false}>
             <NavControl />
-            <span>Clients</span>
             <FormattedMessage
-              id='app.greeting'
-              description='Greeting to welcome the user to the app'
-              defaultMessage='Hello, {name}!'
-              values={{
-                  name: 'Eric'
-              }}
+              id='clients.title'
+              description='Clients title'
+              defaultMessage='Clients'
             />
           </Title>
           <Search inline={true} fill={true} size='medium' placeHolder='Search'
