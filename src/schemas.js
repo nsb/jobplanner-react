@@ -1,3 +1,4 @@
+// @flow
 import { schema } from 'normalizr'
 
 const businessSchema = new schema.Entity('businesses');

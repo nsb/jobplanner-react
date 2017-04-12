@@ -16,6 +16,7 @@ import { fetchClients } from '../actions'
 import ClientListItem from './ClientListItem'
 import { FormattedMessage } from 'react-intl'
 import type { Dispatch } from '../types/Store'
+import type { State as ReduxState } from '../types/State'
 import type { Client } from '../actions/clients'
 
 type Props = {
@@ -118,7 +119,7 @@ class Clients extends Component<void, Props, State> {
 }
 
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: ReduxState, ownProps: Object): Props => {
   const { businesses, clients, auth } = state
   const businessId = parseInt(ownProps.params.businessId, 10)
 
@@ -128,7 +129,8 @@ const mapStateToProps = (state, ownProps) => {
       return clients.entities.clients[Id]
     }),
     isFetching: clients.isFetching,
-    token: auth.token
+    token: auth.token,
+    dispatch: ownProps.dispatch
   }
 }
 
