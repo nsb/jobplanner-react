@@ -12,7 +12,6 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import ClientListItem from './ClientListItem'
 import { FormattedMessage } from 'react-intl'
-import type { Client } from '../actions/clients'
 
 type Props = {
   business: Object,
@@ -69,24 +68,6 @@ class ClientList extends Component<void, Props, void> {
     )
 
   }
-
-  // onMore = () => {
-  // }
-  //
-  // onClick = (e, client) => {
-  //   const { business, dispatch } = this.props
-  //   dispatch(push(`/${business.id}/clients/${client.id}`))
-  // }
-  //
-  // onSearch = (event) => {
-  //   const searchText = event.target.value
-  //   this.setState({ searchText })
-  // }
-  //
-  // addClient = (e) => {
-  //   const { business, dispatch } = this.props
-  //   dispatch(push(`/${business.id}/clients/add`))
-  // }
 }
 
 export default ClientList
