@@ -27,7 +27,14 @@ type Props = {
 class ClientList extends Component<void, Props, void> {
 
   render () {
-    const { business, clients, isFetching, searchText, onSearch, onMore, onClick, addClient } = this.props
+    const { business,
+            clients,
+            isFetching,
+            searchText,
+            onSearch,
+            onMore,
+            onClick,
+            addClient } = this.props
 
     const addControl = (
         <Anchor icon={<AddIcon />} path={`/${business.id}/clients/add`}
