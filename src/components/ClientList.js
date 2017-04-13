@@ -18,10 +18,10 @@ type Props = {
   clients: [Client],
   isFetching: boolean,
   searchText: string,
-  onSearch: (Object) => void,
+  onSearch: (SyntheticInputEvent) => void,
   onMore: () => void,
-  onClick: (Object, Client) => void,
-  addClient: (Object) => void
+  onClick: (SyntheticInputEvent, Client) => void,
+  addClient: (SyntheticInputEvent) => void
 }
 
 class ClientList extends Component<void, Props, void> {

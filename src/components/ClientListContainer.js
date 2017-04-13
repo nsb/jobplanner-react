@@ -69,7 +69,7 @@ class ClientListContainer extends Component {
     this.setState({ searchText: target.value })
   }
 
-  addClient = (e) => {
+  addClient = (e: SyntheticInputEvent) => {
     const { business, dispatch } = this.props
     dispatch(push(`/${business.id}/clients/add`))
   }
