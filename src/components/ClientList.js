@@ -28,7 +28,6 @@ class ClientList extends Component<void, Props, void> {
 
   render () {
     const { business, clients, isFetching, searchText, onSearch, onMore, onClick, addClient } = this.props
-    console.log("BUSINESS", business)
 
     const addControl = (
         <Anchor icon={<AddIcon />} path={`/${business.id}/clients/add`}
@@ -52,8 +51,11 @@ class ClientList extends Component<void, Props, void> {
         </Header>
         <List onMore={isFetching ? onMore : undefined}>
           {clients.map((client, index) => {
-            return <ClientListItem key={client.id}
-              client={client} index={index} onClick={(e: SyntheticInputEvent) => onClick(e, client)} />
+            return <ClientListItem
+              key={client.id}
+              client={client}
+              index={index}
+              onClick={(e: SyntheticInputEvent) => onClick(e, client)} />
           })}
         </List>
         <ListPlaceholder filteredTotal={isFetching ? null : clients.length}
