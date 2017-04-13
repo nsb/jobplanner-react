@@ -53,7 +53,7 @@ class ClientList extends Component<void, Props, void> {
         <List onMore={isFetching ? onMore : undefined}>
           {clients.map((client, index) => {
             return <ClientListItem key={client.id}
-              client={client} index={index} onClick={e => onClick(e, client)} />
+              client={client} index={index} onClick={(e: SyntheticInputEvent) => onClick(e, client)} />
           })}
         </List>
         <ListPlaceholder filteredTotal={isFetching ? null : clients.length}
