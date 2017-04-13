@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react'
+import React from 'react'
 import Box from 'grommet/components/Box'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
@@ -24,59 +24,38 @@ type Props = {
   addClient: (SyntheticInputEvent) => void
 }
 
-class ClientList extends Component<void, Props, void> {
-
-  render () {
-    const { business,
-            clients,
-            isFetching,
-            searchText,
-            onSearch,
-            onMore,
-            onClick,
-            addClient } = this.props
-
-    const addControl = (
-        <Anchor icon={<AddIcon />} path={`/${business.id}/clients/add`}
+export default (props: Props) =>
+  <Box>
+    <Header size='large' pad={{ horizontal: 'medium' }}>
+      <Title responsive={false}>
+        <NavControl />
+        <FormattedMessage
+          id='clients.title'
+          description='Clients title'
+          defaultMessage='Clients'
+        />
+      </Title>
+      <Search inline={true} fill={true} size='medium' placeHolder='Search'
+        value={props.searchText} onDOMChange={props.onSearch} />
+      <Anchor icon={<AddIcon />} path={`/${props.business.id}/clients/add`}
           a11yTitle={`Add business`} />
-      )
 
-    return (
-      <Box>
-        <Header size='large' pad={{ horizontal: 'medium' }}>
-          <Title responsive={false}>
-            <NavControl />
-            <FormattedMessage
-              id='clients.title'
-              description='Clients title'
-              defaultMessage='Clients'
-            />
-          </Title>
-          <Search inline={true} fill={true} size='medium' placeHolder='Search'
-            value={searchText} onDOMChange={onSearch} />
-          {addControl}
-        </Header>
-        <List onMore={isFetching ? onMore : undefined}>
-          {clients.map((client, index) => {
-            return <ClientListItem
-              key={client.id}
-              client={client}
-              index={index}
-              onClick={(e: SyntheticInputEvent) => onClick(e, client)} />
-          })}
-        </List>
-        <ListPlaceholder filteredTotal={isFetching ? null : clients.length}
-          unfilteredTotal={isFetching ? null : clients.length}
-          emptyMessage='You do not have any clients at the moment.'
-          addControl={
-            <Button icon={<AddIcon />} label='Add client'
-              primary={true} a11yTitle={`Add client`}
-              onClick={addClient} />
-            } />
-      </Box>
-    )
-
-  }
-}
-
-export default ClientList
+    </Header>
+    <List onMore={props.isFetching ? props.onMore : undefined}>
+      {props.clients.map((client, index) => {
+        return <ClientListItem
+          key={client.id}
+          client={client}
+          index={index}
+          onClick={(e: SyntheticInputEvent) => props.onClick(e, client)} />
+      })}
+    </List>
+    <ListPlaceholder filteredTotal={props.isFetching ? null : props.clients.length}
+      unfilteredTotal={props.isFetching ? null : props.clients.length}
+      emptyMessage='You do not have any clients at the moment.'
+      addControl={
+        <Button icon={<AddIcon />} label='Add client'
+          primary={true} a11yTitle={`Add client`}
+          onClick={props.addClient} />
+        } />
+  </Box>
