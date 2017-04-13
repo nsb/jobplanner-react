@@ -20,7 +20,7 @@ import AppAuthenticated from './containers/AppAuthenticated'
 import AppAuthenticatedNav from './containers/AppAuthenticatedNav'
 import Businesses from './components/Businesses'
 import BusinessAdd from './components/BusinessAdd'
-import Clients from './components/Clients'
+import ClientListContainer from './components/ClientListContainer'
 import ClientAdd from './components/ClientAdd'
 import ClientEdit from './components/ClientEdit'
 import Jobs from './components/Jobs'
@@ -108,13 +108,13 @@ ReactDOM.render(
           <IndexRoute component={Businesses}/>
           <Route path="add" component={BusinessAdd} />
           <Route path=":businessId" component={AppAuthenticatedNav} >
-            <Route path="clients" component={Clients} />
+            <Route path="clients" component={ClientListContainer} />
             <Route path="clients/add" component={ClientAdd} />
             <Route path="clients/:clientId" component={ClientEdit} />
             <Route path="jobs" component={Jobs} />
             <Route path="jobs/add" component={JobsAdd} />
             <Route path="jobs/:jobId" component={JobEdit} />
-            <IndexRoute component={Clients}/>
+            <IndexRoute component={ClientListContainer}/>
           </Route>
         </Route>
 
