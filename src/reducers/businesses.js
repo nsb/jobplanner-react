@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux'
 import { merge } from 'lodash/object'
 import type { Action } from '../actions/clients'
-import { FETCH_BUSINESSES_SUCCESS } from '../actions'
+import { FETCH_BUSINESSES_SUCCESS } from '../actions/businesses'
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {

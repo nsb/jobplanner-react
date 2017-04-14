@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { fetchClients } from '../actions'
+import { fetchClients } from '../actions/clients'
 import ClientList from './ClientList'
 import type { Dispatch } from '../types/Store'
 import type { State as ReduxState } from '../types/State'

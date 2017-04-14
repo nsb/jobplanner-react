@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Article from 'grommet/components/Article'
 import BusinessForm from './BusinessForm'
-import { createBusiness } from '../actions'
+import { createBusiness } from '../actions/businesses'
 
 class BusinessAdd extends Component {
   static propTypes = {
