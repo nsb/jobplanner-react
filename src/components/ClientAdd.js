@@ -1,15 +1,21 @@
-import React, { Component, PropTypes } from 'react'
+// @flow
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Article from 'grommet/components/Article'
 import ClientForm from './ClientForm'
-import { createClient } from '../actions'
+import { createClient } from '../actions/clients'
+import type { Business } from '../actions/businesses'
+import type { Dispatch } from '../types/Store'
+import type { State as ReduxState } from '../types/State'
 
-class ClientAdd extends Component {
-  static propTypes = {
-    token: PropTypes.string.isRequired,
-    business: PropTypes.object.isRequired
-  }
+type Props = {
+  token: string,
+  business: Business,
+  dispatch: Dispatch
+}
+
+class ClientAdd extends Component<void, Props, void> {
 
   render () {
     return (
@@ -32,19 +38,25 @@ class ClientAdd extends Component {
     this.props.dispatch(action)
   }
 
-  onClose = () => {
+  onClose = (e: SyntheticInputEvent) => {
     const { business, dispatch } = this.props
     dispatch(push(`/${business.id}/clients`))
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+type OwnProps = {
+  params: Object,
+  dispatch: Dispatch
+}
+
+const mapStateToProps = (state: ReduxState, ownProps: OwnProps) => {
   const { auth, businesses } = state
   const businessId = parseInt(ownProps.params.businessId, 10)
 
   return {
     token: auth.token,
-    business: businesses.entities.businesses[businessId]
+    business: businesses.entities.businesses[businessId],
+    dispatch: ownProps.dispatch
   }
 }
 
