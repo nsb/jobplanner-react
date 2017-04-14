@@ -1,19 +1,18 @@
+// @flow
 import { combineReducers } from 'redux'
 import { merge } from 'lodash/object'
-import { CREATE_BUSINESS_SUCCESS,
-         FETCH_BUSINESSES,
-         FETCH_BUSINESSES_SUCCESS,
-         FETCH_BUSINESSES_FAILURE } from '../actions'
+import type { Action } from '../actions/clients'
+import { FETCH_BUSINESSES_SUCCESS } from '../actions'
 
-const isFetching = (state = false, action) => {
+const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
-    case FETCH_BUSINESSES:
+    case 'FETCH_BUSINESSES':
       return true
 
-    case FETCH_BUSINESSES_SUCCESS:
+    case 'FETCH_BUSINESSES_SUCCESS':
       return false
 
-    case FETCH_BUSINESSES_FAILURE:
+    case 'FETCH_BUSINESSES_FAILURE':
       return false
 
     default:
@@ -21,9 +20,9 @@ const isFetching = (state = false, action) => {
   }
 }
 
-const hasLoaded = (state = false, action) => {
+const hasLoaded = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
-    case FETCH_BUSINESSES_SUCCESS:
+    case 'FETCH_BUSINESSES_SUCCESS':
       return true
 
     default:
@@ -32,9 +31,9 @@ const hasLoaded = (state = false, action) => {
 }
 
 
-const businesses = (state = {}, action) => {
+const businesses = (state: Object = {}, action: Action): Object => {
   switch (action.type) {
-    case CREATE_BUSINESS_SUCCESS:
+    case 'CREATE_BUSINESS_SUCCESS':
       return {
         ...state,
         [action.payload.id]: {
@@ -66,12 +65,12 @@ const entities = combineReducers({
   businesses,
 })
 
-const result = (state = [], action) => {
+const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
-    case CREATE_BUSINESS_SUCCESS:
+    case 'CREATE_BUSINESS_SUCCESS':
       return [...state, action.payload.id]
 
-    case FETCH_BUSINESSES_SUCCESS:
+    case 'FETCH_BUSINESSES_SUCCESS':
       if (action.payload && action.payload.result) {
         return merge([], state, action.payload.result)
       } else {
