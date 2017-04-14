@@ -1,31 +1,25 @@
 import { combineReducers } from 'redux'
 import { merge } from 'lodash/object'
-import { CREATE_JOB_SUCCESS,
-         FETCH_JOBS,
-         FETCH_JOBS_SUCCESS,
-         FETCH_JOBS_FAILURE,
-         UPDATE_JOB,
-         UPDATE_JOB_SUCCESS,
-         UPDATE_JOB_FAILURE } from '../actions'
+import type { Action } from '../actions/jobs'
 
-const isFetching = (state = false, action) => {
+const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
-    case FETCH_JOBS:
+    case 'FETCH_JOBS':
       return true
 
-    case FETCH_JOBS_SUCCESS:
+    case 'FETCH_JOBS_SUCCESS':
       return false
 
-    case FETCH_JOBS_FAILURE:
+    case 'FETCH_JOBS_FAILURE':
       return false
 
-    case UPDATE_JOB:
+    case 'UPDATE_JOB':
       return true
 
-    case UPDATE_JOB_SUCCESS:
+    case 'UPDATE_JOB_SUCCESS':
       return false
 
-    case UPDATE_JOB_FAILURE:
+    case 'UPDATE_JOB_FAILURE':
       return false
 
     default:
@@ -33,9 +27,9 @@ const isFetching = (state = false, action) => {
   }
 }
 
-const jobs = (state = {}, action) => {
+const jobs = (state: Object = {}, action: Action): Object => {
   switch (action.type) {
-    case CREATE_JOB_SUCCESS:
+    case 'CREATE_JOB_SUCCESS':
       return {
         ...state,
         [action.payload.id]: {
@@ -43,7 +37,7 @@ const jobs = (state = {}, action) => {
         }
       }
 
-    case UPDATE_JOB_SUCCESS:
+    case 'UPDATE_JOB_SUCCESS':
       return {
         ...state,
         [action.payload.id]: {
@@ -52,7 +46,7 @@ const jobs = (state = {}, action) => {
         }
       }
 
-    case FETCH_JOBS_SUCCESS:
+    case 'FETCH_JOBS_SUCCESS':
       if (action.payload && action.payload.entities && action.payload.entities.jobs) {
         return merge({}, state, action.payload.entities.jobs)
       }
@@ -67,12 +61,12 @@ const entities = combineReducers({
   jobs,
 })
 
-const result = (state = [], action) => {
+const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
-    case CREATE_JOB_SUCCESS:
+    case 'CREATE_JOB_SUCCESS':
       return [...state, action.payload.id]
 
-    case FETCH_JOBS_SUCCESS:
+    case 'FETCH_JOBS_SUCCESS':
       if (action.payload && action.payload.result) {
         return merge([], state, action.payload.result)
       } else {
