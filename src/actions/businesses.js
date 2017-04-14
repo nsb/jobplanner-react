@@ -2,26 +2,70 @@ import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { businessListSchema } from '../schemas'
 import businessesApi from '../api'
+import type { Dispatch } from '../types/Store'
 
 //Create new business
-export const CREATE_BUSINESS = 'CREATE_BUSINESS'
-export const CREATE_BUSINESS_SUCCESS = 'CREATE_BUSINESS_SUCCESS'
-export const CREATE_BUSINESS_FAILURE = 'CREATE_BUSINESS_FAILURE'
-export const RESET_NEW_BUSINESS = 'RESET_NEW_BUSINESS'
+export const CREATE_BUSINESS: 'CREATE_BUSINESS' = 'CREATE_BUSINESS'
+export const CREATE_BUSINESS_SUCCESS: 'CREATE_BUSINESS_SUCCESS' = 'CREATE_BUSINESS_SUCCESS'
+export const CREATE_BUSINESS_FAILURE: 'CREATE_BUSINESS_FAILURE' = 'CREATE_BUSINESS_FAILURE'
+export const RESET_NEW_BUSINESS: 'RESET_NEW_BUSINESS' = 'RESET_NEW_BUSINESS'
 
 //Fetch businesses
-export const FETCH_BUSINESSES = 'FETCH_BUSINESSES'
-export const FETCH_BUSINESSES_SUCCESS = 'FETCH_BUSINESSES_SUCCESS'
-export const FETCH_BUSINESSES_FAILURE = 'FETCH_BUSINESSES_FAILURE'
-export const RESET_BUSINESSES = 'RESET_BUSINESSES'
+export const FETCH_BUSINESSES: 'FETCH_BUSINESSES' = 'FETCH_BUSINESSES'
+export const FETCH_BUSINESSES_SUCCESS: 'FETCH_BUSINESSES_SUCCESS' = 'FETCH_BUSINESSES_SUCCESS'
+export const FETCH_BUSINESSES_FAILURE: 'FETCH_BUSINESSES_FAILURE' = 'FETCH_BUSINESSES_FAILURE'
+export const RESET_BUSINESSES: 'RESET_BUSINESSES' = 'RESET_BUSINESSES'
 
-export const fetchBusinessesRequest = () => {
+export type Business = {
+  id: number,
+  name: string
+}
+
+type FetchBusinessesAction = {
+  type: typeof FETCH_BUSINESSES
+}
+
+type FetchBusinessesSuccessAction = {
+  type: typeof FETCH_BUSINESSES_SUCCESS,
+  payload: [Business]
+}
+
+type FetchBusinessesFailureAction = {
+  type: typeof FETCH_BUSINESSES_FAILURE,
+  error: string
+}
+
+type CreateBusinessAction = {
+  type: typeof CREATE_BUSINESS,
+  payload: Business
+}
+
+type CreateBusinessSuccessAction = {
+  type: typeof CREATE_BUSINESS_SUCCESS,
+  payload: Business
+}
+
+type CreateBusinessFailureAction = {
+  type: typeof CREATE_BUSINESS_FAILURE,
+  error: string
+}
+
+export type Action =
+  | FetchBusinessesAction
+  | FetchBusinessesSuccessAction
+  | FetchBusinessesAction
+  | CreateBusinessAction
+  | CreateBusinessSuccessAction
+  | CreateBusinessFailureAction
+
+
+export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   return {
     type: FETCH_BUSINESSES
   }
 }
 
-export const fetchBusinessesSuccess = (businesses) => {
+export const fetchBusinessesSuccess = (businesses: [Business]): FetchBusinessesSuccessAction => {
   return {
     type: FETCH_BUSINESSES_SUCCESS,
     payload: normalize(businesses, businessListSchema),
@@ -29,14 +73,14 @@ export const fetchBusinessesSuccess = (businesses) => {
   }
 }
 
-export const fetchBusinessesFailure = (error) => {
+export const fetchBusinessesFailure = (error: string): FetchBusinessesFailureAction => {
   return {
     type: FETCH_BUSINESSES_FAILURE,
     error: error
   }
 }
 
-export const fetchBusinesses = (token) => {
+export const fetchBusinesses = (token: string): ((d: Dispatch) => Promise<*>) => {
 
   return (dispatch) => {
 
@@ -56,7 +100,7 @@ export const fetchBusinesses = (token) => {
 }
 
 
-export const createBusinessRequest = (payload) => {
+export const createBusinessRequest = (payload: Business): CreateBusinessAction => {
 
   return {
     type: CREATE_BUSINESS,
@@ -64,7 +108,7 @@ export const createBusinessRequest = (payload) => {
   }
 }
 
-export const createBusinessSuccess = (payload) => {
+export const createBusinessSuccess = (payload: Business): CreateBusinessSuccessAction => {
   return {
     type: CREATE_BUSINESS_SUCCESS,
     receivedAt: Date.now(),
@@ -72,15 +116,15 @@ export const createBusinessSuccess = (payload) => {
   }
 }
 
-export const createBusinessError = (error) => {
+export const createBusinessError = (error: string): CreateBusinessFailureAction => {
   return {
     type: CREATE_BUSINESS_FAILURE,
-    error: 'Oops'
+    error: error
   }
 }
 
 
-export const createBusiness = (data, token) => {
+export const createBusiness = (data: Business, token: string): ((d: Dispatch) => Promise<*>) => {
 
   return (dispatch) => {
 
