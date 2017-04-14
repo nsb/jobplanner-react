@@ -83,13 +83,13 @@ export type Action =
   | UpdateClientSuccessAction
   | UpdateClientErrorAction
 
-export const fetchClientsRequest = (): Action => {
+export const fetchClientsRequest = (): FetchClientsAction => {
   return {
     type: FETCH_CLIENTS
   }
 }
 
-export const fetchClientsSuccess = (clients: [Client]): Action => {
+export const fetchClientsSuccess = (clients: [Client]): FetchClientsSuccessAction => {
   return {
     type: FETCH_CLIENTS_SUCCESS,
     payload: normalize(clients, clientListSchema),
@@ -97,7 +97,7 @@ export const fetchClientsSuccess = (clients: [Client]): Action => {
   }
 }
 
-export const fetchClientsFailure = (error: string): Action => {
+export const fetchClientsFailure = (error: string): FetchClientsFailureAction => {
   return {
     type: FETCH_CLIENTS_FAILURE,
     error: error
