@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react"
+// @flow
+import React, { Component } from "react"
 import { injectIntl, intlShape } from 'react-intl'
 import Sidebar from 'grommet/components/Sidebar'
 import Header from 'grommet/components/Header'
@@ -11,15 +12,15 @@ import CloseIcon from 'grommet/components/icons/base/Close'
 import logo from '../logo.svg'
 import SessionMenu from './SessionMenu'
 
-class NavSidebar extends Component {
-  static propTypes = {
-    toggleNav: PropTypes.func.isRequired,
-    business: PropTypes.object.isRequired,
-    intl: intlShape.isRequired,
-  }
+type Props = {
+  toggleNav: () => void,
+  business: Object,
+  intl: intlShape
+}
+
+class NavSidebar extends Component<void, Props, void> {
 
   render() {
-    console.log(this.props)
     const { business, intl } = this.props
 
     return (
