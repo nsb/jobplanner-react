@@ -66,7 +66,7 @@ type UpdateClientSuccessAction = {
   payload: Client
 }
 
-type UpdateClientErrorAction = {
+type UpdateClientFailureAction = {
   type: typeof UPDATE_CLIENT_FAILURE,
   payload: Client,
   error: string
@@ -81,7 +81,7 @@ export type Action =
   | CreateClientFailureAction
   | UpdateClientAction
   | UpdateClientSuccessAction
-  | UpdateClientErrorAction
+  | UpdateClientFailureAction
 
 export const fetchClientsRequest = (): FetchClientsAction => {
   return {
@@ -124,7 +124,7 @@ export const fetchClients = (token: string, queryParams: Object = {}): ((d: Disp
 }
 
 
-export const createClientRequest = (payload: Client): Action => {
+export const createClientRequest = (payload: Client): CreateClientAction => {
 
   return {
     type: CREATE_CLIENT,
@@ -132,7 +132,7 @@ export const createClientRequest = (payload: Client): Action => {
   }
 }
 
-export const createClientSuccess = (payload: Client): Action => {
+export const createClientSuccess = (payload: Client): CreateClientSuccessAction => {
   return {
     type: CREATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
@@ -140,7 +140,7 @@ export const createClientSuccess = (payload: Client): Action => {
   }
 }
 
-export const createClientError = (payload: Client, error: string): Action => {
+export const createClientError = (payload: Client, error: string): CreateClientFailureAction => {
   return {
     type: CREATE_CLIENT_FAILURE,
     error,
@@ -166,7 +166,7 @@ export const createClient = (business: Object, client: Client, token: string): (
 }
 
 
-export const updateClientRequest = (payload: Client): Action => {
+export const updateClientRequest = (payload: Client): UpdateClientAction => {
 
   return {
     type: UPDATE_CLIENT,
@@ -174,7 +174,7 @@ export const updateClientRequest = (payload: Client): Action => {
   }
 }
 
-export const updateClientSuccess = (payload: Client): Action => {
+export const updateClientSuccess = (payload: Client): UpdateClientSuccessAction => {
   return {
     type: UPDATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
@@ -182,7 +182,7 @@ export const updateClientSuccess = (payload: Client): Action => {
   }
 }
 
-export const updateClientError = (payload: Client, error: string): Action => {
+export const updateClientError = (payload: Client, error: string): UpdateClientFailureAction => {
   return {
     type: UPDATE_CLIENT_FAILURE,
     error,
