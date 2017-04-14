@@ -1,32 +1,97 @@
+// @flow
 import { normalize } from 'normalizr'
 import { jobListSchema } from '../schemas'
 import jobsApi from '../api'
+import type { Dispatch } from '../types/Store'
 
 //Create new job
-export const CREATE_JOB = 'CREATE_JOB'
-export const CREATE_JOB_SUCCESS = 'CREATE_JOB_SUCCESS'
-export const CREATE_JOB_FAILURE = 'CREATE_JOB_FAILURE'
-export const RESET_NEW_JOB = 'RESET_NEW_JOB'
+export const CREATE_JOB: 'CREATE_JOB' = 'CREATE_JOB'
+export const CREATE_JOB_SUCCESS: 'CREATE_JOB_SUCCESS' = 'CREATE_JOB_SUCCESS'
+export const CREATE_JOB_FAILURE: 'CREATE_JOB_FAILURE' = 'CREATE_JOB_FAILURE'
+export const RESET_NEW_JOB: 'RESET_NEW_JOB' = 'RESET_NEW_JOB'
 
 //Fetch jobs
-export const FETCH_JOBS = 'FETCH_JOBS'
-export const FETCH_JOBS_SUCCESS = 'FETCH_JOBS_SUCCESS'
-export const FETCH_JOBS_FAILURE = 'FETCH_JOBS_FAILURE'
-export const RESET_JOBS = 'RESET_JOBS'
+export const FETCH_JOBS: 'FETCH_JOBS' = 'FETCH_JOBS'
+export const FETCH_JOBS_SUCCESS: 'FETCH_JOBS_SUCCESS' = 'FETCH_JOBS_SUCCESS'
+export const FETCH_JOBS_FAILURE: 'FETCH_JOBS_FAILURE' = 'FETCH_JOBS_FAILURE'
+export const RESET_JOBS: 'RESET_JOBS' = 'RESET_JOBS'
 
 //Update jobs
-export const UPDATE_JOB = 'UPDATE_JOB'
-export const UPDATE_JOB_SUCCESS = 'UPDATE_JOB_SUCCESS'
-export const UPDATE_JOB_FAILURE = 'UPDATE_JOB_FAILURE'
+export const UPDATE_JOB: 'UPDATE_JOB' = 'UPDATE_JOB'
+export const UPDATE_JOB_SUCCESS: 'UPDATE_JOB_SUCCESS' = 'UPDATE_JOB_SUCCESS'
+export const UPDATE_JOB_FAILURE: 'UPDATE_JOB_FAILURE' = 'UPDATE_JOB_FAILURE'
+
+export type Job = {
+  id: number,
+  client: number,
+  recurrences: string,
+  description: string,
+  line_items: [Object]
+}
+
+type FetchJobsAction = {
+  type: typeof FETCH_JOBS
+}
+
+type FetchJobsSuccessAction = {
+  type: typeof FETCH_JOBS_SUCCESS,
+  payload: Object
+}
+
+type FetchJobsFailureAction = {
+  type: typeof FETCH_JOBS_FAILURE,
+  error: string
+}
+
+type CreateJobAction = {
+  type: typeof CREATE_JOB,
+  payload: Job
+}
+
+type CreateJobSuccessAction = {
+  type: typeof CREATE_JOB_SUCCESS,
+  payload: Job
+}
+
+type CreateJobFailureAction = {
+  type: typeof CREATE_JOB_FAILURE,
+  error: string
+}
+
+type UpdateJobAction = {
+  type: typeof UPDATE_JOB,
+  payload: Job
+}
+
+type UpdateJobSuccessAction = {
+  type: typeof UPDATE_JOB_SUCCESS,
+  payload: Job
+}
+
+type UpdateJobFailureAction = {
+  type: typeof UPDATE_JOB_FAILURE,
+  error: string
+}
+
+export type Action =
+  | FetchJobsAction
+  | FetchJobsSuccessAction
+  | FetchJobsFailureAction
+  | CreateJobAction
+  | CreateJobSuccessAction
+  | CreateJobFailureAction
+  | UpdateJobAction
+  | UpdateJobSuccessAction
+  | UpdateJobFailureAction
 
 
-export const fetchJobsRequest = () => {
+export const fetchJobsRequest = (): FetchJobsAction => {
   return {
     type: FETCH_JOBS
   }
 }
 
-export const fetchJobsSuccess = (jobs) => {
+export const fetchJobsSuccess = (jobs: Job): FetchJobsSuccessAction => {
   return {
     type: FETCH_JOBS_SUCCESS,
     payload: normalize(jobs, jobListSchema),
@@ -34,14 +99,14 @@ export const fetchJobsSuccess = (jobs) => {
   }
 }
 
-export const fetchJobsFailure = (error) => {
+export const fetchJobsFailure = (error: string): FetchJobsFailureAction => {
   return {
     type: FETCH_JOBS_FAILURE,
     error: error
   }
 }
 
-export const fetchJobs = (token, queryParams = {}) => {
+export const fetchJobs = (token: string, queryParams: Object = {}): ((d: Dispatch) => Promise<*>) => {
 
   return (dispatch) => {
 
@@ -61,7 +126,7 @@ export const fetchJobs = (token, queryParams = {}) => {
 }
 
 
-export const createJobRequest = (payload) => {
+export const createJobRequest = (payload: Job): CreateJobAction => {
 
   return {
     type: CREATE_JOB,
@@ -69,7 +134,7 @@ export const createJobRequest = (payload) => {
   }
 }
 
-export const createJobSuccess = (payload) => {
+export const createJobSuccess = (payload: Job): CreateJobSuccessAction => {
   return {
     type: CREATE_JOB_SUCCESS,
     receivedAt: Date.now(),
@@ -77,15 +142,15 @@ export const createJobSuccess = (payload) => {
   }
 }
 
-export const createJobError = (error) => {
+export const createJobError = (error: string): CreateJobFailureAction => {
   return {
     type: CREATE_JOB_FAILURE,
-    error: 'Oops'
+    error
   }
 }
 
 
-export const createJob = (job, token) => {
+export const createJob = (job: Job, token: string): ((d: Dispatch) => Promise<*>) => {
 
   return (dispatch) => {
 
@@ -106,7 +171,7 @@ export const createJob = (job, token) => {
   }
 }
 
-export const updateJobRequest = (payload) => {
+export const updateJobRequest = (payload: Job): UpdateJobAction => {
 
   return {
     type: UPDATE_JOB,
@@ -114,7 +179,7 @@ export const updateJobRequest = (payload) => {
   }
 }
 
-export const updateJobSuccess = (payload) => {
+export const updateJobSuccess = (payload: Job): UpdateJobSuccessAction => {
   return {
     type: UPDATE_JOB_SUCCESS,
     receivedAt: Date.now(),
@@ -122,15 +187,15 @@ export const updateJobSuccess = (payload) => {
   }
 }
 
-export const updateJobError = (error) => {
+export const updateJobError = (error: string): UpdateJobFailureAction => {
   return {
     type: UPDATE_JOB_FAILURE,
-    error: error
+    error
   }
 }
 
 
-export const updateJob = (job, token) => {
+export const updateJob = (job: Job, token: string): ((d: Dispatch) => Promise<*>) => {
 
   return (dispatch) => {
 
