@@ -1,12 +1,43 @@
+// @flow
 import { push } from 'react-router-redux'
 import usersApi from '../api/UsersApi'
+import type { Dispatch } from '../types/Store'
 
-export const REQUEST_ME = 'REQUEST_ME'
-export const REQUEST_ME_FAILURE = 'REQUEST_ME_FAILURE'
-export const REQUEST_ME_SUCCESS = 'REQUEST_ME_SUCCESS'
+export const REQUEST_ME: 'REQUEST_ME' = 'REQUEST_ME'
+export const REQUEST_ME_FAILURE: 'REQUEST_ME_FAILURE' = 'REQUEST_ME_FAILURE'
+export const REQUEST_ME_SUCCESS: 'REQUEST_ME_SUCCESS' = 'REQUEST_ME_SUCCESS'
 
+export type User = {
+  id: number,
+  url: string,
+  username: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  is_staff: boolean
+}
 
-export const requestMe = (token) => {
+type RequestMeAction = {
+  type: typeof REQUEST_ME,
+  token: string
+}
+
+type RequestMeSuccessAction = {
+  type: typeof REQUEST_ME_SUCCESS,
+  user: User
+}
+
+type RequestMeFailureAction = {
+  type: typeof REQUEST_ME_FAILURE,
+  error: string
+}
+
+export type Action =
+  | RequestMeAction
+  | RequestMeSuccessAction
+  | RequestMeFailureAction
+
+export const requestMe = (token: string): RequestMeAction => {
 
   return {
     type: REQUEST_ME,
@@ -14,7 +45,7 @@ export const requestMe = (token) => {
   }
 }
 
-export const receiveMe = (user) => {
+export const receiveMe = (user: User): RequestMeSuccessAction => {
   return {
     type: REQUEST_ME_SUCCESS,
     receivedAt: Date.now(),
@@ -22,15 +53,15 @@ export const receiveMe = (user) => {
   }
 }
 
-export const receiveMeError = (error) => {
+export const receiveMeError = (error: string): RequestMeFailureAction => {
   return {
     type: REQUEST_ME_FAILURE,
-    error: 'Oops'
+    error
   }
 }
 
 
-export const me = (token) => {
+export const me = (token: string): ((d: Dispatch) => Promise<User>) => {
 
   return (dispatch) => {
 

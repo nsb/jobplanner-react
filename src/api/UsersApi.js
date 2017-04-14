@@ -1,9 +1,10 @@
+// @flow
 import fetch from 'isomorphic-fetch'
 import Api from './index'
 
 class UsersApi extends Api {
 
-  static getMe(token) {
+  static getMe(token: string): Promise<*> {
     const request = new Request('http://localhost:8000/users/me/', {
       method: 'GET',
       headers: new Headers({

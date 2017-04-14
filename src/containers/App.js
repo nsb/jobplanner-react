@@ -1,8 +1,13 @@
+// @flow
 import React, { Component } from 'react';
 import AppGrommet from 'grommet/components/App'
 import './App.css';
 
-class App extends Component {
+type Props = {
+  children: [Component<void, Props, void>]
+}
+
+class App extends Component<void, Props, void> {
 
   render() {
 
