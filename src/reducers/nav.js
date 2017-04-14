@@ -1,10 +1,17 @@
-import { NAV_ACTIVE, NAV_TOGGLE, NAV_RESPONSIVE } from '../actions'
+// @flow
+import { NAV_ACTIVE, NAV_TOGGLE, NAV_RESPONSIVE } from '../actions/nav'
+import type { Action } from '../actions/nav'
 
-const initialState = {
+type State = {
+  active: boolean,
+  responsive: 'multiple'
+}
+
+const initialState: State = {
   active: true, responsive: 'multiple'
 }
 
-const navReducer = (state = initialState, action) => {
+const navReducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
     case NAV_ACTIVE:
       return Object.assign({}, state, {

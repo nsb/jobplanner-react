@@ -12,10 +12,15 @@ type NavToggleAction = {
   type: typeof NAV_TOGGLE
 }
 
-type NavResponseAction = {
+type NavResponsiveAction = {
   type: typeof NAV_RESPONSIVE,
-  responsive: boolean
+  responsive: 'multiple'
 }
+
+export type Action =
+  | NavActiveAction
+  | NavToggleAction
+  | NavResponsiveAction
 
 export const navActivate = (active: boolean): NavActiveAction => {
   return { type: NAV_ACTIVE, active }
@@ -25,6 +30,6 @@ export const navToggle = (active: boolean): NavToggleAction => {
   return { type: NAV_TOGGLE }
 }
 
-export function navResponsive (responsive: boolean): NavResponseAction {
+export function navResponsive (responsive: 'multiple'): NavResponsiveAction {
   return { type: NAV_RESPONSIVE, responsive: responsive }
 }
