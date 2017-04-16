@@ -2,7 +2,7 @@
 import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { clientListSchema } from '../schemas'
-import type { Dispatch } from '../types/Store'
+import type { Thunk } from '../types/Store'
 import clientsApi from '../api'
 
 //Create new client
@@ -104,7 +104,7 @@ export const fetchClientsFailure = (error: string): FetchClientsFailureAction =>
   }
 }
 
-export const fetchClients = (token: string, queryParams: Object = {}): ((d: Dispatch) => Promise<*>) => {
+export const fetchClients = (token: string, queryParams: Object = {}): Thunk<Action> => {
 
   return (dispatch) => {
 
@@ -149,7 +149,7 @@ export const createClientError = (payload: Client, error: string): CreateClientF
 }
 
 
-export const createClient = (business: Object, client: Client, token: string): ((d: Dispatch) => Promise<*>) => {
+export const createClient = (business: Object, client: Client, token: string): Thunk<Action> => {
 
   return (dispatch) => {
 
@@ -190,7 +190,7 @@ export const updateClientError = (payload: Client, error: string): UpdateClientF
   }
 }
 
-export const updateClient = (client: Client, token: string): ((d: Dispatch) => Promise<*>) => {
+export const updateClient = (client: Client, token: string): Thunk<Action> => {
 
   return (dispatch) => {
 
