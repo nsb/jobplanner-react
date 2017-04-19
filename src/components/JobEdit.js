@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Article from 'grommet/components/Article'
 import JobForm from './JobForm'
-import { updateJob } from '../actions'
+import { updateJob } from '../actions/jobs'
 import { push } from 'react-router-redux'
 
 class JobEdit extends Component {

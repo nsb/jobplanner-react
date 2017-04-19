@@ -10,7 +10,7 @@ import Button from 'grommet/components/Button'
 import AddIcon from 'grommet/components/icons/base/Add'
 import List from 'grommet/components/List'
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
-import { fetchJobs } from '../actions'
+import { fetchJobs } from '../actions/jobs'
 import JobListItem from './JobListItem'
 import NavControl from './NavControl'
 
