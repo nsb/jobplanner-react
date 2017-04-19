@@ -12,9 +12,10 @@ import List from 'grommet/components/List'
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import ClientListItem from './ClientListItem'
+import type { Business } from '../actions/businesses'
 
 type Props = {
-  business: Object,
+  business: Business,
   clients: [Client],
   isFetching: boolean,
   searchText: string,
