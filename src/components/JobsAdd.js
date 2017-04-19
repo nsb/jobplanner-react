@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Article from 'grommet/components/Article'
 import JobForm from './JobForm'
-import { createJob } from '../actions'
+import { createJob } from '../actions/jobs'
 
 class JobsAdd extends Component {
   static propTypes = {
