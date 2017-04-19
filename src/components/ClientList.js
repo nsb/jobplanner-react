@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import { injectIntl, intlShape } from 'react-intl'
 import Box from 'grommet/components/Box'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
@@ -21,10 +22,11 @@ type Props = {
   onSearch: (SyntheticInputEvent) => void,
   onMore: () => void,
   onClick: (SyntheticInputEvent, Client) => void,
-  addClient: (SyntheticInputEvent) => void
+  addClient: (SyntheticInputEvent) => void,
+  intl: intlShape
 }
 
-export default (props: Props) =>
+const ClientList = (props: Props) =>
   <Box>
     <Header size='large' pad={{ horizontal: 'medium' }}>
       <Title responsive={false}>
@@ -52,10 +54,14 @@ export default (props: Props) =>
     </List>
     <ListPlaceholder filteredTotal={props.isFetching ? null : props.clients.length}
       unfilteredTotal={props.isFetching ? null : props.clients.length}
-      emptyMessage='You do not have any clients at the moment.'
+      emptyMessage={props.intl.formatMessage({
+        id: 'clients.emptyMessage',
+        defaultMessage: 'You do not have any clients at the moment.'})}
       addControl={
         <Button icon={<AddIcon />} label='Add client'
           primary={true} a11yTitle={`Add client`}
           onClick={props.addClient} />
         } />
   </Box>
+
+export default injectIntl(ClientList)
