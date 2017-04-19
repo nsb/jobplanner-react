@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { injectIntl, intlShape } from 'react-intl'
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl'
 import Box from 'grommet/components/Box'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
@@ -12,7 +12,6 @@ import List from 'grommet/components/List'
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import ClientListItem from './ClientListItem'
-import { FormattedMessage } from 'react-intl'
 
 type Props = {
   business: Object,
