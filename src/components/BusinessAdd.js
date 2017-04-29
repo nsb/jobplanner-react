@@ -14,7 +14,7 @@ class BusinessAdd extends Component {
   props: {
     token: ?string,
     push: typeof pushActionCreator,
-    createBusiness: typeof createBusiness
+    createBusiness: (Business, string) => (d: Dispatch) => Promise<Business>
   }
 
   render () {

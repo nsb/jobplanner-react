@@ -124,7 +124,7 @@ export const createBusinessError = (error: string): CreateBusinessFailureAction 
   }
 }
 
-export const createBusiness = (data: Business, token: string) => {
+export const createBusiness = (data: Business, token: string): (d: Dispatch) => Promise<Business> => {
 
   return (dispatch: Dispatch) => {
 
