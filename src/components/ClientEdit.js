@@ -1,15 +1,23 @@
-import React, {Component, PropTypes} from 'react';
+// @flow
+
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
+import {push as pushActionCreator} from 'react-router-redux';
 import Article from 'grommet/components/Article';
 import ClientForm from './ClientForm';
 import {updateClient} from '../actions/clients';
+import type {Business} from '../actions/businesses';
+import type {Client} from '../actions/clients';
+import type {State} from '../types/State';
 
 class ClientEdit extends Component {
-  static propTypes = {
-    token: PropTypes.string.isRequired,
-    business: PropTypes.object.isRequired,
-    client: PropTypes.object.isRequired,
+  props: {
+    token?: string,
+    business: Business,
+    client: Client,
+    updateClient: (d: Dispatch) => Promise<Client>,
+    push: typeof pushActionCreator,
   };
 
   render() {
@@ -29,24 +37,26 @@ class ClientEdit extends Component {
   }
 
   handleSubmit = values => {
-    const {token, client, dispatch} = this.props;
-    let action = updateClient(
+    const {token, client, updateClient} = this.props;
+    updateClient(
       {
         client,
         ...values,
       },
-      token
+      token || ''
     );
-    dispatch(action);
   };
 
   onClose = () => {
-    const {business, dispatch} = this.props;
-    dispatch(push(`/${business.id}/clients`));
+    const {business, push} = this.props;
+    push(`/${business.id}/clients`);
   };
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (
+  state: State,
+  ownProps: {params: {businessId: number, clientId: number}}
+) => {
   const {auth, businesses, clients} = state;
   const businessId = parseInt(ownProps.params.businessId, 10);
   const clientId = parseInt(ownProps.params.clientId, 10);
@@ -58,4 +68,13 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(ClientEdit);
+const mapDispatchToProps = (dispatch: *) =>
+  bindActionCreators(
+    {
+      push: pushActionCreator,
+      updateClient,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClientEdit);
