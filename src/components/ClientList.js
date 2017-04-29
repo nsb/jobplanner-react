@@ -17,9 +17,9 @@ import type { Client } from '../actions/clients'
 
 type Props = {
   business: Business,
-  clients: [Client],
-  isFetching: boolean,
-  searchText: string,
+  clients?: Array<Client>,
+  isFetching?: boolean,
+  searchText?: string,
   onSearch: (SyntheticInputEvent) => void,
   onMore: () => void,
   onClick: (SyntheticInputEvent, Client) => void,
@@ -28,9 +28,9 @@ type Props = {
 }
 
 const ClientList = ({ business,
-                      clients,
-                      isFetching,
-                      searchText,
+                      clients = [],
+                      isFetching = false,
+                      searchText = '',
                       onSearch,
                       onMore,
                       onClick,

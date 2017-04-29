@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Split from 'grommet/components/Split'
 import NavSidebar from '../components/NavSidebar'
-import { navToggle, navResponsive } from '../actions'
+import { navToggle, navResponsive } from '../actions/nav'
 
 class AppAuthenticatedNav extends Component {
   static propTypes = {

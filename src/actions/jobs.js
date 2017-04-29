@@ -91,21 +91,6 @@ export const fetchJobsRequest = (): FetchJobsAction => {
   }
 }
 
-interface ErrorResponse<S,T> {
-  status: S,
-  statusText: T,
-}
-
-interface JSONResponse<S,J> {
-  status: S,
-  json(): Promise<J>,
-}
-
-type JobsJSON = [Job]
-type DecrementResponse = ErrorResponse<400,string>
-                       | JSONResponse<200,JobsJSON>
-
-
 export const fetchJobsSuccess = (jobs: Array<Job>): FetchJobsSuccessAction => {
   return {
     type: FETCH_JOBS_SUCCESS,

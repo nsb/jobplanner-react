@@ -6,11 +6,11 @@ type State = {
 }
 
 type OnlineAction = {
-  type: 'ONLINE'
+  type: ONLINE
 }
 
 type OfflineAction = {
-  type: 'OFFLINE'
+  type: OFFLINE
 }
 
 type Action =
@@ -23,12 +23,12 @@ const initialState: State = {
 
 const NetworkReducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case 'ONLINE':
+    case ONLINE:
       return Object.assign({}, state, {
         offline: false
       })
 
-    case 'OFFLINE':
+    case OFFLINE:
       return Object.assign({}, state, {
         offline: true
       })
