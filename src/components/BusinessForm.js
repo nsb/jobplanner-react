@@ -1,31 +1,31 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
-import Anchor from 'grommet/components/Anchor'
-import Button from 'grommet/components/Button'
-import Header from 'grommet/components/Header'
-import Heading from 'grommet/components/Heading'
-import Form from 'grommet/components/Form'
-import Footer from 'grommet/components/Footer'
-import FormFields from 'grommet/components/FormFields'
-import FormField from 'grommet/components/FormField'
-import CloseIcon from 'grommet/components/icons/base/Close'
+import React from 'react';
+import {Field, reduxForm} from 'redux-form';
+import Anchor from 'grommet/components/Anchor';
+import Button from 'grommet/components/Button';
+import Header from 'grommet/components/Header';
+import Heading from 'grommet/components/Heading';
+import Form from 'grommet/components/Form';
+import Footer from 'grommet/components/Footer';
+import FormFields from 'grommet/components/FormFields';
+import FormField from 'grommet/components/FormField';
+import CloseIcon from 'grommet/components/icons/base/Close';
 
 const validate = values => {
-  const errors = {}
+  const errors = {};
   if (!values.name) {
-    errors.name = 'Required'
+    errors.name = 'Required';
   }
-  return errors
-}
+  return errors;
+};
 
-const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>
-)
+);
 
-const BusinessForm = (props) => {
-  const { handleSubmit, valid, dirty, submitting, onClose } = props
+const BusinessForm = props => {
+  const {handleSubmit, valid, dirty, submitting, onClose} = props;
   return (
     <Form onSubmit={handleSubmit}>
 
@@ -33,8 +33,11 @@ const BusinessForm = (props) => {
         <Heading tag="h2" margin="none" strong={true}>
           Add Business
         </Heading>
-        <Anchor icon={<CloseIcon />} onClick={onClose}
-          a11yTitle='Close Add Client Form' />
+        <Anchor
+          icon={<CloseIcon />}
+          onClick={onClose}
+          a11yTitle="Close Add Client Form"
+        />
       </Header>
 
       <FormFields>
@@ -49,16 +52,18 @@ const BusinessForm = (props) => {
 
       <Footer pad={{vertical: 'medium'}}>
         <span />
-        <Button type="submit" primary={true} label="Save"
-             onClick={valid && dirty && !submitting ? () => true : null} />
+        <Button
+          type="submit"
+          primary={true}
+          label="Save"
+          onClick={valid && dirty && !submitting ? () => true : null}
+        />
       </Footer>
     </Form>
-
-
-  )
-}
+  );
+};
 
 export default reduxForm({
-  form: 'business',  // a unique identifier for this form
-  validate
-})(BusinessForm)
+  form: 'business', // a unique identifier for this form
+  validate,
+})(BusinessForm);

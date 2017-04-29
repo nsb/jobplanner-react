@@ -1,55 +1,59 @@
 // @flow
-import { push } from 'react-router-redux'
-import { normalize } from 'normalizr'
-import { businessListSchema } from '../schemas'
-import businessesApi from '../api'
-import type { Dispatch } from '../types/Store'
+import {push} from 'react-router-redux';
+import {normalize} from 'normalizr';
+import {businessListSchema} from '../schemas';
+import businessesApi from '../api';
+import type {Dispatch} from '../types/Store';
 
 //Create new business
-export const CREATE_BUSINESS: 'CREATE_BUSINESS' = 'CREATE_BUSINESS'
-export const CREATE_BUSINESS_SUCCESS: 'CREATE_BUSINESS_SUCCESS' = 'CREATE_BUSINESS_SUCCESS'
-export const CREATE_BUSINESS_FAILURE: 'CREATE_BUSINESS_FAILURE' = 'CREATE_BUSINESS_FAILURE'
-export const RESET_NEW_BUSINESS: 'RESET_NEW_BUSINESS' = 'RESET_NEW_BUSINESS'
+export const CREATE_BUSINESS: 'CREATE_BUSINESS' = 'CREATE_BUSINESS';
+export const CREATE_BUSINESS_SUCCESS: 'CREATE_BUSINESS_SUCCESS' =
+  'CREATE_BUSINESS_SUCCESS';
+export const CREATE_BUSINESS_FAILURE: 'CREATE_BUSINESS_FAILURE' =
+  'CREATE_BUSINESS_FAILURE';
+export const RESET_NEW_BUSINESS: 'RESET_NEW_BUSINESS' = 'RESET_NEW_BUSINESS';
 
 //Fetch businesses
-export const FETCH_BUSINESSES: 'FETCH_BUSINESSES' = 'FETCH_BUSINESSES'
-export const FETCH_BUSINESSES_SUCCESS: 'FETCH_BUSINESSES_SUCCESS' = 'FETCH_BUSINESSES_SUCCESS'
-export const FETCH_BUSINESSES_FAILURE: 'FETCH_BUSINESSES_FAILURE' = 'FETCH_BUSINESSES_FAILURE'
-export const RESET_BUSINESSES: 'RESET_BUSINESSES' = 'RESET_BUSINESSES'
+export const FETCH_BUSINESSES: 'FETCH_BUSINESSES' = 'FETCH_BUSINESSES';
+export const FETCH_BUSINESSES_SUCCESS: 'FETCH_BUSINESSES_SUCCESS' =
+  'FETCH_BUSINESSES_SUCCESS';
+export const FETCH_BUSINESSES_FAILURE: 'FETCH_BUSINESSES_FAILURE' =
+  'FETCH_BUSINESSES_FAILURE';
+export const RESET_BUSINESSES: 'RESET_BUSINESSES' = 'RESET_BUSINESSES';
 
 export type Business = {
   id: number,
-  name: string
-}
+  name: string,
+};
 
 type FetchBusinessesAction = {
-  type: typeof FETCH_BUSINESSES
-}
+  type: typeof FETCH_BUSINESSES,
+};
 
 type FetchBusinessesSuccessAction = {
   type: typeof FETCH_BUSINESSES_SUCCESS,
-  payload: Array<Business>
-}
+  payload: Array<Business>,
+};
 
 type FetchBusinessesFailureAction = {
   type: typeof FETCH_BUSINESSES_FAILURE,
-  error: string
-}
+  error: string,
+};
 
 type CreateBusinessAction = {
   type: typeof CREATE_BUSINESS,
-  payload: Business
-}
+  payload: Business,
+};
 
 type CreateBusinessSuccessAction = {
   type: typeof CREATE_BUSINESS_SUCCESS,
-  payload: Business
-}
+  payload: Business,
+};
 
 type CreateBusinessFailureAction = {
   type: typeof CREATE_BUSINESS_FAILURE,
-  error: string
-}
+  error: string,
+};
 
 export type Action =
   | FetchBusinessesAction
@@ -57,89 +61,101 @@ export type Action =
   | FetchBusinessesAction
   | CreateBusinessAction
   | CreateBusinessSuccessAction
-  | CreateBusinessFailureAction
-
+  | CreateBusinessFailureAction;
 
 export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   return {
-    type: FETCH_BUSINESSES
-  }
-}
+    type: FETCH_BUSINESSES,
+  };
+};
 
-export const fetchBusinessesSuccess = (businesses: Array<Business>): FetchBusinessesSuccessAction => {
+export const fetchBusinessesSuccess = (
+  businesses: Array<Business>
+): FetchBusinessesSuccessAction => {
   return {
     type: FETCH_BUSINESSES_SUCCESS,
     payload: normalize(businesses, businessListSchema),
-    receivedAt: Date.now()
-  }
-}
+    receivedAt: Date.now(),
+  };
+};
 
-export const fetchBusinessesFailure = (error: string): FetchBusinessesFailureAction => {
+export const fetchBusinessesFailure = (
+  error: string
+): FetchBusinessesFailureAction => {
   return {
     type: FETCH_BUSINESSES_FAILURE,
-    error: error
-  }
-}
+    error: error,
+  };
+};
 
 export const fetchBusinesses = (token: string) => {
-
   return (dispatch: Dispatch) => {
+    dispatch(fetchBusinessesRequest());
 
-    dispatch(fetchBusinessesRequest())
+    return businessesApi
+      .getAll('businesses', token)
+      .then((responseBusinesses: Array<Business>) => {
+        if (Array.isArray(responseBusinesses)) {
+          dispatch(fetchBusinessesSuccess(responseBusinesses));
+        } else {
+          dispatch(fetchBusinessesFailure('error'));
+        }
+        return responseBusinesses;
+      })
+      .catch((error: string) => {
+        throw error;
+      });
+  };
+};
 
-    return businessesApi.getAll('businesses', token).then((responseBusinesses: Array<Business>) => {
-      if (Array.isArray(responseBusinesses)) {
-        dispatch(fetchBusinessesSuccess(responseBusinesses))
-      } else {
-        dispatch(fetchBusinessesFailure('error'))
-      }
-      return responseBusinesses
-    }).catch((error: string) => {
-      throw(error)
-    })
-  }
-}
-
-
-export const createBusinessRequest = (payload: Business): CreateBusinessAction => {
-
+export const createBusinessRequest = (
+  payload: Business
+): CreateBusinessAction => {
   return {
     type: CREATE_BUSINESS,
-    payload
-  }
-}
+    payload,
+  };
+};
 
-export const createBusinessSuccess = (payload: Business): CreateBusinessSuccessAction => {
+export const createBusinessSuccess = (
+  payload: Business
+): CreateBusinessSuccessAction => {
   return {
     type: CREATE_BUSINESS_SUCCESS,
     receivedAt: Date.now(),
-    payload
-  }
-}
+    payload,
+  };
+};
 
-export const createBusinessError = (error: string): CreateBusinessFailureAction => {
+export const createBusinessError = (
+  error: string
+): CreateBusinessFailureAction => {
   return {
     type: CREATE_BUSINESS_FAILURE,
-    error: error
-  }
-}
+    error: error,
+  };
+};
 
-export const createBusiness = (data: Business, token: string): (d: Dispatch) => Promise<Business> => {
-
+export const createBusiness = (
+  data: Business,
+  token: string
+): ((d: Dispatch) => Promise<Business>) => {
   return (dispatch: Dispatch) => {
+    dispatch(createBusinessRequest(data));
 
-    dispatch(createBusinessRequest(data))
-
-    return businessesApi.create('businesses', data, token).then((responseBusiness: Business) => {
-      if (responseBusiness.id) {
-        dispatch(createBusinessSuccess(responseBusiness))
-        dispatch(push(`/${responseBusiness.id}`))
-      } else {
-        dispatch(createBusinessError('error'))
-      }
-      return responseBusiness
-    }).catch((error: string) => {
-      throw(error)
-    })
-  }
-}
+    return businessesApi
+      .create('businesses', data, token)
+      .then((responseBusiness: Business) => {
+        if (responseBusiness.id) {
+          dispatch(createBusinessSuccess(responseBusiness));
+          dispatch(push(`/${responseBusiness.id}`));
+        } else {
+          dispatch(createBusinessError('error'));
+        }
+        return responseBusiness;
+      })
+      .catch((error: string) => {
+        throw error;
+      });
+  };
+};
