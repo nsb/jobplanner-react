@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import Anchor from 'grommet/components/Anchor';
@@ -10,7 +12,7 @@ import FormFields from 'grommet/components/FormFields';
 import FormField from 'grommet/components/FormField';
 import CloseIcon from 'grommet/components/icons/base/Close';
 
-const validate = values => {
+const validate = (values: Object): Object => {
   const errors = {};
   if (!values.name) {
     errors.name = 'Required';
@@ -24,8 +26,21 @@ const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
   </FormField>
 );
 
-const BusinessForm = props => {
-  const {handleSubmit, valid, dirty, submitting, onClose} = props;
+type Props = {
+  handleSubmit?: Function,
+  valid: boolean,
+  dirty: boolean,
+  submitting: boolean,
+  onClose?: Function,
+};
+
+const BusinessForm = ({
+  handleSubmit,
+  valid,
+  dirty,
+  submitting,
+  onClose,
+}: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
 
@@ -56,7 +71,7 @@ const BusinessForm = props => {
           type="submit"
           primary={true}
           label="Save"
-          onClick={valid && dirty && !submitting ? () => true : null}
+          onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>
     </Form>

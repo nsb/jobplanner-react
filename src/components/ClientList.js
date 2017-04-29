@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import Box from 'grommet/components/Box';
