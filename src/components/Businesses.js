@@ -1,4 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+// @flow
+
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Box from 'grommet/components/Box'
@@ -12,11 +15,16 @@ import List from 'grommet/components/List'
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import BusinessListItem from './businessListItem'
+import type { Business } from '../actions/businesses'
+import type { State } from '../types/State'
 
 class Businesses extends Component {
+  props: {
+    businesses: Array<Business>
+  }
 
-  static propTypes = {
-    businesses: PropTypes.array.isRequired
+  state: {
+    searchText: string
   }
 
   constructor () {
@@ -25,11 +33,11 @@ class Businesses extends Component {
   }
 
   componentDidMount () {
-    const { businesses, dispatch } = this.props
+    const { businesses } = this.props
 
     // Redirect if we only have one business
     if (businesses.length === 1) {
-      dispatch(push(`/${businesses[0].id}`))
+      push(`/${businesses[0].id}`)
     }
   }
 
@@ -57,13 +65,13 @@ class Businesses extends Component {
             <span>Businesses</span>
           </Title>
           <Search inline={true} fill={true} size='medium' placeHolder='Search'
-            value={this.searchText} onDOMChange={this.onSearch} />
+            value={this.state.searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
-        <List onMore={null}>
+        <List onMore={() => {}}>
           {filteredBusinesses.map((business, index) => {
             return <BusinessListItem key={business.id}
-              business={business} index={index} onClick={e => this.onClick(e, business)} />
+              business={business} index={index} onClick={(e: SyntheticInputEvent) => this.onClick(e, business)} />
           })}
         </List>
         <ListPlaceholder filteredTotal={filteredBusinesses.length}
@@ -80,21 +88,20 @@ class Businesses extends Component {
   }
 
   onClick = (e, business) => {
-    const { dispatch } = this.props
-    dispatch(push(`/${business.id}`))
+    push(`/${business.id}`)
   }
 
-  onSearch = (event) => {
-    const searchText = event.target.value
+  onSearch = (e: SyntheticInputEvent) => {
+    const searchText = e.target.value
     this.setState({ searchText })
   }
 
   handleAdd = (e) => {
-    this.props.dispatch(push('/add'))
+    push('/add')
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State) => {
   const { businesses } = state
 
   return {
@@ -104,4 +111,11 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(Businesses)
+const mapDispatchToProps = (dispatch: *) => bindActionCreators({
+  push
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Businesses)
