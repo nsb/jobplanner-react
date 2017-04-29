@@ -14,6 +14,7 @@ import {addLocaleData} from 'react-intl'
 import en from 'react-intl/locale-data/en'
 import da from 'react-intl/locale-data/da'
 import type { Store } from './types/Store'
+import type { State } from './types/State'
 import rootReducer from './reducers'
 import App from './containers/App'
 import AppAuthenticated from './containers/AppAuthenticated'
@@ -38,7 +39,7 @@ const language = (navigator.languages && navigator.languages[0]) ||
                      navigator.language
 
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0]
-let messages = localeEnData
+let messages: Object
 
 if (languageWithoutRegionCode === 'da') {
   messages = localeDaData
@@ -91,7 +92,7 @@ const store = configureStore()
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)
 
-const authRequired = (nextState, replace) => {
+const authRequired = (nextState: State) => {
   if (!store.getState().auth.token) {
     store.dispatch(push('/login'))
   }
