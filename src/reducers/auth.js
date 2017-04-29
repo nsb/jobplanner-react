@@ -1,9 +1,20 @@
+// @flow
+import type { User, Action } from '../actions/auth'
+
 const token = localStorage.getItem('token');
-const initialState = {
+
+type State = {
+  busy: boolean,
+  token: ?string,
+  isAuthenticated: boolean,
+  user: ?User
+}
+
+const initialState: State = {
   busy: false, token: token, user: null, isAuthenticated: false
 }
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
     case 'REQUEST_LOGIN':
       return Object.assign({}, state, {

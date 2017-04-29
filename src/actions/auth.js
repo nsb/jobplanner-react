@@ -1,16 +1,82 @@
+// @flow
 import fetch from 'isomorphic-fetch'
 import { push } from 'react-router-redux'
+import type { Thunk } from '../types/Store'
 
-const REQUEST_LOGIN = 'REQUEST_LOGIN'
-const REQUEST_LOGIN_FAILURE = 'REQUEST_LOGIN_FAILURE'
-const REQUEST_LOGIN_SUCCESS = 'REQUEST_LOGIN_SUCCESS'
-const LOGOUT = 'LOGOUT'
-const REQUEST_VERIFY = 'REQUEST_VERIFY'
-const REQUEST_VERIFY_FAILURE = 'REQUEST_VERIFY_FAILURE'
-const REQUEST_VERIFY_SUCCESS = 'REQUEST_VERIFY_SUCCESS'
+const REQUEST_LOGIN: 'REQUEST_LOGIN' = 'REQUEST_LOGIN'
+const REQUEST_LOGIN_FAILURE: 'REQUEST_LOGIN_FAILURE' = 'REQUEST_LOGIN_FAILURE'
+const REQUEST_LOGIN_SUCCESS: 'REQUEST_LOGIN_SUCCESS' = 'REQUEST_LOGIN_SUCCESS'
+const LOGOUT: 'LOGOUT' = 'LOGOUT'
+const REQUEST_VERIFY: 'REQUEST_VERIFY' = 'REQUEST_VERIFY'
+const REQUEST_VERIFY_FAILURE: 'REQUEST_VERIFY_FAILURE' = 'REQUEST_VERIFY_FAILURE'
+const REQUEST_VERIFY_SUCCESS: 'REQUEST_VERIFY_SUCCESS' = 'REQUEST_VERIFY_SUCCESS'
 
+export type User = {
+  id: number,
+  first_name: string,
+  last_name: string
+}
 
-export const requestLogin = (username, password, rememberMe) => {
+type Credentials = {
+  username: string,
+  password: string,
+  rememberMe: boolean
+}
+
+type AuthResponse = {
+  token: string,
+  user: User
+}
+
+type RequestLoginAction = {
+  type: typeof REQUEST_LOGIN,
+  username: string,
+  password: string,
+  rememberMe: boolean
+}
+
+type RequestLoginFailureAction = {
+  type: typeof REQUEST_LOGIN_FAILURE,
+  error: string
+}
+
+type RequestLoginSuccessAction = {
+  type: typeof REQUEST_LOGIN_SUCCESS,
+  token: string
+}
+
+type RequestVerifyAction = {
+  type: typeof REQUEST_VERIFY,
+  token: string
+}
+
+type RequestVerifyFacilureAction = {
+  type: typeof REQUEST_VERIFY_FAILURE,
+  error: string
+}
+
+type RequestVerifySuccessAction = {
+  type: typeof REQUEST_VERIFY_SUCCESS,
+  token: string,
+  user: User
+}
+
+type LogoutAction = {
+  type: typeof LOGOUT
+}
+
+export type Action =
+  | RequestLoginAction
+  | RequestLoginFailureAction
+  | RequestLoginSuccessAction
+  | RequestVerifyAction
+  | RequestVerifyFacilureAction
+  | RequestVerifySuccessAction
+  | LogoutAction
+
+export const requestLogin = (username: string,
+                             password: string,
+                             rememberMe: boolean): RequestLoginAction => {
 
   return {
     type: REQUEST_LOGIN,
@@ -20,7 +86,7 @@ export const requestLogin = (username, password, rememberMe) => {
   }
 }
 
-export const receiveLogin = (json) => {
+export const receiveLogin = (json: AuthResponse): RequestLoginSuccessAction => {
   return {
     type: REQUEST_LOGIN_SUCCESS,
     token: json.token,
@@ -28,7 +94,7 @@ export const receiveLogin = (json) => {
   }
 }
 
-export const receiveLoginError = (error) => {
+export const receiveLoginError = (error: string): RequestLoginFailureAction => {
   return {
     type: REQUEST_LOGIN_FAILURE,
     error: 'Oops'
@@ -36,7 +102,7 @@ export const receiveLoginError = (error) => {
 }
 
 
-export const login = (credentials) => {
+export const login = (credentials: Credentials): Thunk<Action> => {
   const { username, password, rememberMe } = credentials
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
@@ -65,17 +131,17 @@ export const login = (credentials) => {
         password
       })
     }).then(response => response.json())
-      .then(json => {
+      .then((json: AuthResponse) => {
 
         if (json.token) {
           localStorage.setItem('token', json.token)
           dispatch(receiveLogin(json))
           dispatch(push('/'))
         } else {
-          dispatch(receiveLoginError(json))
+          dispatch(receiveLoginError('error'))
         }
 
-      }).catch((error) =>
+      }).catch((error: string) =>
         dispatch(receiveLoginError(error))
       )
   }
@@ -83,15 +149,14 @@ export const login = (credentials) => {
 
 // Verify
 
-export const requestVerify = (token) => {
-
+export const requestVerify = (token: string): RequestVerifyAction => {
   return {
     type: REQUEST_VERIFY,
     token
   }
 }
 
-export const receiveVerify = (json) => {
+export const receiveVerify = (json: { token: string, user: User }): RequestVerifySuccessAction => {
   return {
     type: REQUEST_VERIFY_SUCCESS,
     token: json.token,
@@ -100,7 +165,7 @@ export const receiveVerify = (json) => {
   }
 }
 
-export const receiveVerifyError = (error) => {
+export const receiveVerifyError = (error: string): RequestVerifyFacilureAction => {
   return {
     type: REQUEST_VERIFY_FAILURE,
     error: 'Oops'
@@ -108,7 +173,7 @@ export const receiveVerifyError = (error) => {
 }
 
 
-export const verify = (token) => {
+export const verify = (token: string): Thunk<Action> => {
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
   // thus making it able to dispatch actions itself.
@@ -135,24 +200,24 @@ export const verify = (token) => {
         token
       })
     }).then(response => response.json())
-      .then(json => {
+      .then((json: { token: string, user: User }) => {
 
         if (json.token) {
           dispatch(receiveVerify(json))
         } else {
-          dispatch(receiveVerifyError(json))
+          dispatch(receiveVerifyError('error'))
           dispatch(push('/login'))
         }
         return json
 
-      }).catch((error) => {
+      }).catch((error: string) => {
         dispatch(receiveVerifyError(error))
         dispatch(push('/login'))
       })
   }
 }
 
-export const logout = () => {
+export const logout = (): LogoutAction => {
   return {
     type: LOGOUT
   }
