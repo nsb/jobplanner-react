@@ -13,6 +13,7 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder'
 import NavControl from './NavControl'
 import ClientListItem from './ClientListItem'
 import type { Business } from '../actions/businesses'
+import type { Client } from '../actions/clients'
 
 type Props = {
   business: Business,
@@ -44,12 +45,12 @@ const ClientList = (props: Props) =>
 
     </Header>
     <List onMore={props.isFetching ? props.onMore : undefined}>
-      {props.clients.map((client, index) => {
+      {props.clients.map((client: Client, index: number) => {
         return <ClientListItem
           key={client.id}
           client={client}
           index={index}
-          onClick={(e: SyntheticInputEvent) => props.onClick(e, client)} />
+          onClick={e => props.onClick(e, client)} />
       })}
     </List>
     <ListPlaceholder filteredTotal={props.isFetching ? null : props.clients.length}

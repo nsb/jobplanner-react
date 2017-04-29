@@ -1,11 +1,13 @@
-import React, { Component, PropTypes } from 'react'
+// @flow
+import React, { Component } from 'react'
 import ListItem from 'grommet/components/ListItem'
+import type { Client } from '../actions/clients'
 
 class ClientListItem extends Component {
-  static propTypes = {
-    client: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    onClick: PropTypes.func.isRequired
+  props: {
+    client: Client,
+    index: number,
+    onClick: (SyntheticInputEvent) => void
   }
 
   render () {

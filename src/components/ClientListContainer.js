@@ -7,9 +7,10 @@ import ClientList from './ClientList'
 import type { Dispatch } from '../types/Store'
 import type { State as ReduxState } from '../types/State'
 import type { Client } from '../actions/clients'
+import type { Business } from '../actions/businesses'
 
 type Props = {
-  business: Object,
+  business: Business,
   clients: [Client],
   token: string,
   isFetching: boolean,
@@ -20,7 +21,7 @@ type State = {
   searchText: string
 }
 
-class ClientListContainer extends Component {
+class ClientListContainer extends Component<void, Props, State> {
   state: State = {
     searchText: ''
   }
