@@ -1,9 +1,10 @@
 // @flow
+
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import type { Dispatch } from '../types/Store'
-import type { State as ReduxState } from '../types/State'
+import type { State } from '../types/State'
 import type { Business } from '../actions/businesses'
 import Article from 'grommet/components/Article'
 import BusinessForm from './BusinessForm'
@@ -11,8 +12,7 @@ import { createBusiness } from '../actions/businesses'
 
 class BusinessAdd extends Component {
   props: {
-    token: string,
-    dispatch: Dispatch
+    token: ?string
   }
 
   render () {
@@ -27,21 +27,26 @@ class BusinessAdd extends Component {
   }
 
   handleSubmit = (business: Business) => {
-    const { token, dispatch } = this.props
-    dispatch(createBusiness(business, token))
+    const { token } = this.props
+    if (token)
+      createBusiness(business, token)
   }
 
   onClose = () => {
-    this.props.dispatch(push('/'))
+    push('/')
   }
 }
 
-const mapStateToProps = (state: ReduxState, ownProps: Object) => {
-  const { auth } = state
-  return {
-    token: auth.token,
-    dispatch: ownProps.dispatch
-  }
-}
+const mapStateToProps = ({ auth }: State) => ({
+  token: auth.token
+})
 
-export default connect(mapStateToProps)(BusinessAdd)
+const mapDispatchToProps = (dispatch: *) => bindActionCreators({
+  createBusiness,
+  push
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BusinessAdd)
