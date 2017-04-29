@@ -27,7 +27,15 @@ type Props = {
   intl: intlShape
 }
 
-const ClientList = (props: Props) =>
+const ClientList = ({ business,
+                      clients,
+                      isFetching,
+                      searchText,
+                      onSearch,
+                      onMore,
+                      onClick,
+                      addClient,
+                      intl }: Props) =>
   <Box>
     <Header size='large' pad={{ horizontal: 'medium' }}>
       <Title responsive={false}>
@@ -39,29 +47,29 @@ const ClientList = (props: Props) =>
         />
       </Title>
       <Search inline={true} fill={true} size='medium' placeHolder='Search'
-        value={props.searchText} onDOMChange={props.onSearch} />
-      <Anchor icon={<AddIcon />} path={`/${props.business.id}/clients/add`}
+        value={searchText} onDOMChange={onSearch} />
+      <Anchor icon={<AddIcon />} path={`/${business.id}/clients/add`}
           a11yTitle={`Add business`} />
 
     </Header>
-    <List onMore={props.isFetching ? props.onMore : undefined}>
-      {props.clients.map((client: Client, index: number) => {
+    <List onMore={isFetching ? onMore : undefined}>
+      {clients.map((client: Client, index: number) => {
         return <ClientListItem
           key={client.id}
           client={client}
           index={index}
-          onClick={e => props.onClick(e, client)} />
+          onClick={e => onClick(e, client)} />
       })}
     </List>
-    <ListPlaceholder filteredTotal={props.isFetching ? null : props.clients.length}
-      unfilteredTotal={props.isFetching ? null : props.clients.length}
-      emptyMessage={props.intl.formatMessage({
+    <ListPlaceholder filteredTotal={isFetching ? null : clients.length}
+      unfilteredTotal={isFetching ? null : clients.length}
+      emptyMessage={intl.formatMessage({
         id: 'clients.emptyMessage',
         defaultMessage: 'You do not have any clients at the moment.'})}
       addControl={
         <Button icon={<AddIcon />} label='Add client'
           primary={true} a11yTitle={`Add client`}
-          onClick={props.addClient} />
+          onClick={addClient} />
         } />
   </Box>
 
