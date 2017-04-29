@@ -2,13 +2,17 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import type { Dispatch } from '../types/Store'
+import type { State as ReduxState } from '../types/State'
+import type { Business } from '../actions/businesses'
 import Article from 'grommet/components/Article'
 import BusinessForm from './BusinessForm'
 import { createBusiness } from '../actions/businesses'
 
 class BusinessAdd extends Component {
-  static propTypes = {
-    token: PropTypes.string.isRequired
+  props: {
+    token: string,
+    dispatch: Dispatch
   }
 
   render () {
@@ -22,9 +26,9 @@ class BusinessAdd extends Component {
 
   }
 
-  handleSubmit = (values) => {
-    const { token } = this.props
-    this.props.dispatch(createBusiness(values, token))
+  handleSubmit = (business: Business) => {
+    const { token, dispatch } = this.props
+    dispatch(createBusiness(business, token))
   }
 
   onClose = () => {
@@ -32,10 +36,11 @@ class BusinessAdd extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: ReduxState, ownProps: Object) => {
   const { auth } = state
   return {
-    token: auth.token
+    token: auth.token,
+    dispatch: ownProps.dispatch
   }
 }
 

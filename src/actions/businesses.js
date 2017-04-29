@@ -1,3 +1,4 @@
+// @flow
 import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { businessListSchema } from '../schemas'
@@ -27,7 +28,7 @@ type FetchBusinessesAction = {
 
 type FetchBusinessesSuccessAction = {
   type: typeof FETCH_BUSINESSES_SUCCESS,
-  payload: [Business]
+  payload: Array<Business>
 }
 
 type FetchBusinessesFailureAction = {
@@ -65,7 +66,7 @@ export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   }
 }
 
-export const fetchBusinessesSuccess = (businesses: [Business]): FetchBusinessesSuccessAction => {
+export const fetchBusinessesSuccess = (businesses: Array<Business>): FetchBusinessesSuccessAction => {
   return {
     type: FETCH_BUSINESSES_SUCCESS,
     payload: normalize(businesses, businessListSchema),
@@ -134,7 +135,7 @@ export const createBusiness = (data: Business, token: string) => {
         dispatch(createBusinessSuccess(responseBusiness))
         dispatch(push(`/${responseBusiness.id}`))
       } else {
-        dispatch(createBusinessError(responseBusiness))
+        dispatch(createBusinessError('error'))
       }
       return responseBusiness
     }).catch((error: string) => {
