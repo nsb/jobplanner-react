@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import { push as pushActionCreator } from 'react-router-redux'
 import Box from 'grommet/components/Box'
 import Header from 'grommet/components/Header'
 import Title from 'grommet/components/Title'
@@ -20,7 +20,8 @@ import type { State } from '../types/State'
 
 class Businesses extends Component {
   props: {
-    businesses: Array<Business>
+    businesses: Array<Business>,
+    push: typeof pushActionCreator
   }
 
   state: {
@@ -33,7 +34,7 @@ class Businesses extends Component {
   }
 
   componentDidMount () {
-    const { businesses } = this.props
+    const { businesses, push } = this.props
 
     // Redirect if we only have one business
     if (businesses.length === 1) {
@@ -68,7 +69,7 @@ class Businesses extends Component {
             value={this.state.searchText} onDOMChange={this.onSearch} />
           {addControl}
         </Header>
-        <List onMore={() => {}}>
+        <List onMore={undefined}>
           {filteredBusinesses.map((business, index) => {
             return <BusinessListItem key={business.id}
               business={business} index={index} onClick={(e: SyntheticInputEvent) => this.onClick(e, business)} />
@@ -88,7 +89,7 @@ class Businesses extends Component {
   }
 
   onClick = (e, business) => {
-    push(`/${business.id}`)
+    this.props.push(`/${business.id}`)
   }
 
   onSearch = (e: SyntheticInputEvent) => {
@@ -97,7 +98,7 @@ class Businesses extends Component {
   }
 
   handleAdd = (e) => {
-    push('/add')
+    this.props.push('/add')
   }
 }
 
@@ -112,7 +113,7 @@ const mapStateToProps = (state: State) => {
 }
 
 const mapDispatchToProps = (dispatch: *) => bindActionCreators({
-  push
+  push: pushActionCreator
 }, dispatch)
 
 export default connect(

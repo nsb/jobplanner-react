@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import { push as pushActionCreator } from 'react-router-redux'
 import type { State } from '../types/State'
 import type { Business } from '../actions/businesses'
 import Article from 'grommet/components/Article'
@@ -12,7 +12,9 @@ import { createBusiness } from '../actions/businesses'
 
 class BusinessAdd extends Component {
   props: {
-    token: ?string
+    token: ?string,
+    push: typeof pushActionCreator,
+    createBusiness: typeof createBusiness
   }
 
   render () {
@@ -27,13 +29,13 @@ class BusinessAdd extends Component {
   }
 
   handleSubmit = (business: Business) => {
-    const { token } = this.props
+    const { token, createBusiness } = this.props
     if (token)
       createBusiness(business, token)
   }
 
   onClose = () => {
-    push('/')
+    this.props.push('/')
   }
 }
 
@@ -42,8 +44,8 @@ const mapStateToProps = ({ auth }: State) => ({
 })
 
 const mapDispatchToProps = (dispatch: *) => bindActionCreators({
-  createBusiness,
-  push
+  push: pushActionCreator,
+  createBusiness
 }, dispatch)
 
 export default connect(
