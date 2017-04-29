@@ -2,7 +2,7 @@
 import { push } from 'react-router-redux'
 import { normalize } from 'normalizr'
 import { clientListSchema } from '../schemas'
-import type { Thunk } from '../types/Store'
+import type { Dispatch } from '../types/Store'
 import clientsApi from '../api'
 
 //Create new client
@@ -89,7 +89,7 @@ export const fetchClientsRequest = (): FetchClientsAction => {
   }
 }
 
-export const fetchClientsSuccess = (clients: [Client]): FetchClientsSuccessAction => {
+export const fetchClientsSuccess = (clients: Array<Client>): FetchClientsSuccessAction => {
   return {
     type: FETCH_CLIENTS_SUCCESS,
     payload: normalize(clients, clientListSchema),
@@ -104,20 +104,20 @@ export const fetchClientsFailure = (error: string): FetchClientsFailureAction =>
   }
 }
 
-export const fetchClients = (token: string, queryParams: Object = {}): Thunk<Action> => {
+export const fetchClients = (token: string, queryParams: Object = {}) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(fetchClientsRequest())
 
-    return clientsApi.getAll('clients', token, queryParams).then((responseClients: [Client]) => {
+    return clientsApi.getAll('clients', token, queryParams).then((responseClients: Array<Client>) => {
       if (Array.isArray(responseClients)) {
         dispatch(fetchClientsSuccess(responseClients))
       } else {
-        dispatch(fetchClientsFailure(responseClients))
+        dispatch(fetchClientsFailure('error'))
       }
       return responseClients
-    }).catch(error => {
+    }).catch((error: string) => {
       throw(error)
     })
   }
@@ -149,9 +149,9 @@ export const createClientError = (payload: Client, error: string): CreateClientF
 }
 
 
-export const createClient = (business: Object, client: Client, token: string): Thunk<Action> => {
+export const createClient = (business: Object, client: Client, token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(createClientRequest(client))
 
@@ -159,7 +159,7 @@ export const createClient = (business: Object, client: Client, token: string): T
           dispatch(createClientSuccess(responseClient))
           dispatch(push(`/${business.id}/clients/${responseClient.id}`))
           return responseClient
-        }).catch(error => {
+        }).catch((error: string) => {
           dispatch(createClientError(client, error))
         })
   }
@@ -190,16 +190,16 @@ export const updateClientError = (payload: Client, error: string): UpdateClientF
   }
 }
 
-export const updateClient = (client: Client, token: string): Thunk<Action> => {
+export const updateClient = (client: Client, token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(updateClientRequest(client))
 
     return clientsApi.update('clients', client, token).then((responseClient: Client) => {
       dispatch(updateClientSuccess(responseClient))
       return responseClient
-    }).catch(error => {
+    }).catch((error: string) => {
       dispatch(updateClientError(client, error))
     })
   }

@@ -1,7 +1,7 @@
 // @flow
 import fetch from 'isomorphic-fetch'
 import { push } from 'react-router-redux'
-import type { Thunk } from '../types/Store'
+import type { Dispatch } from '../types/Store'
 
 const REQUEST_LOGIN: 'REQUEST_LOGIN' = 'REQUEST_LOGIN'
 const REQUEST_LOGIN_FAILURE: 'REQUEST_LOGIN_FAILURE' = 'REQUEST_LOGIN_FAILURE'
@@ -102,13 +102,13 @@ export const receiveLoginError = (error: string): RequestLoginFailureAction => {
 }
 
 
-export const login = (credentials: Credentials): Thunk<Action> => {
+export const login = (credentials: Credentials) => {
   const { username, password, rememberMe } = credentials
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
   // thus making it able to dispatch actions itself.
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     // First dispatch: the app state is updated to inform
     // that the API call is starting.
@@ -173,12 +173,12 @@ export const receiveVerifyError = (error: string): RequestVerifyFacilureAction =
 }
 
 
-export const verify = (token: string): Thunk<Action> => {
+export const verify = (token: string) => {
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
   // thus making it able to dispatch actions itself.
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     // First dispatch: the app state is updated to inform
     // that the API call is starting.

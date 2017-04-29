@@ -91,7 +91,22 @@ export const fetchJobsRequest = (): FetchJobsAction => {
   }
 }
 
-export const fetchJobsSuccess = (jobs: Job): FetchJobsSuccessAction => {
+interface ErrorResponse<S,T> {
+  status: S,
+  statusText: T,
+}
+
+interface JSONResponse<S,J> {
+  status: S,
+  json(): Promise<J>,
+}
+
+type JobsJSON = [Job]
+type DecrementResponse = ErrorResponse<400,string>
+                       | JSONResponse<200,JobsJSON>
+
+
+export const fetchJobsSuccess = (jobs: Array<Job>): FetchJobsSuccessAction => {
   return {
     type: FETCH_JOBS_SUCCESS,
     payload: normalize(jobs, jobListSchema),
@@ -106,20 +121,20 @@ export const fetchJobsFailure = (error: string): FetchJobsFailureAction => {
   }
 }
 
-export const fetchJobs = (token: string, queryParams: Object = {}): ((d: Dispatch) => Promise<*>) => {
+export const fetchJobs = (token: string, queryParams: Object = {}) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(fetchJobsRequest())
 
-    return jobsApi.getAll('jobs', token, queryParams).then(responseJobs => {
+    return jobsApi.getAll('jobs', token, queryParams).then((responseJobs: Array<Job>) => {
       if (Array.isArray(responseJobs)) {
         dispatch(fetchJobsSuccess(responseJobs))
       } else {
-        dispatch(fetchJobsFailure(responseJobs))
+        dispatch(fetchJobsFailure('error'))
       }
       return responseJobs
-    }).catch(error => {
+    }).catch((error: string) => {
       throw(error)
     })
   }
@@ -150,22 +165,22 @@ export const createJobError = (error: string): CreateJobFailureAction => {
 }
 
 
-export const createJob = (job: Job, token: string): ((d: Dispatch) => Promise<*>) => {
+export const createJob = (job: Job, token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(createJobRequest(job))
 
-    return jobsApi.create('jobs', job, token).then(responseJob => {
+    return jobsApi.create('jobs', job, token).then((responseJob: Job) => {
       if (responseJob.id) {
         dispatch(createJobSuccess(responseJob))
         // dispatch(push(`/${business.id}/jobs/${responseJob.id}`))
       }
       else {
-        dispatch(createJobError(responseJob))
+        dispatch(createJobError('error'))
       }
       return responseJob
-    }).catch(error => {
+    }).catch((error: string) => {
       throw(error)
     })
   }
@@ -195,16 +210,16 @@ export const updateJobError = (error: string): UpdateJobFailureAction => {
 }
 
 
-export const updateJob = (job: Job, token: string): ((d: Dispatch) => Promise<*>) => {
+export const updateJob = (job: Job, token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(updateJobRequest(job))
 
-    return jobsApi.update('jobs', job, token).then(responseJob => {
+    return jobsApi.update('jobs', job, token).then((responseJob: Job) => {
       dispatch(updateJobSuccess(responseJob))
       return responseJob
-    }).catch(error => {
+    }).catch((error: string) => {
       dispatch(updateJobError(error))
     })
   }
