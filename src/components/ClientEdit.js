@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 import Article from 'grommet/components/Article';
 import ClientForm from './ClientForm';
-import {updateClient} from '../actions';
+import {updateClient} from '../actions/clients';
 
 class ClientEdit extends Component {
   static propTypes = {
