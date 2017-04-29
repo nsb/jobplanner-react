@@ -2,6 +2,7 @@
 import fetch from 'isomorphic-fetch'
 import { push } from 'react-router-redux'
 import type { Dispatch } from '../types/Store'
+import type { User } from './users'
 
 const REQUEST_LOGIN: 'REQUEST_LOGIN' = 'REQUEST_LOGIN'
 const REQUEST_LOGIN_FAILURE: 'REQUEST_LOGIN_FAILURE' = 'REQUEST_LOGIN_FAILURE'
@@ -10,12 +11,6 @@ const LOGOUT: 'LOGOUT' = 'LOGOUT'
 const REQUEST_VERIFY: 'REQUEST_VERIFY' = 'REQUEST_VERIFY'
 const REQUEST_VERIFY_FAILURE: 'REQUEST_VERIFY_FAILURE' = 'REQUEST_VERIFY_FAILURE'
 const REQUEST_VERIFY_SUCCESS: 'REQUEST_VERIFY_SUCCESS' = 'REQUEST_VERIFY_SUCCESS'
-
-export type User = {
-  id: number,
-  first_name: string,
-  last_name: string
-}
 
 type Credentials = {
   username: string,

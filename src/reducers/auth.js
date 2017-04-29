@@ -1,5 +1,6 @@
 // @flow
-import type { User, Action } from '../actions/auth'
+import type { Action } from '../actions/auth'
+import type { User } from '../actions/users'
 
 const token = localStorage.getItem('token');
 

@@ -80,20 +80,20 @@ export const fetchBusinessesFailure = (error: string): FetchBusinessesFailureAct
   }
 }
 
-export const fetchBusinesses = (token: string): ((d: Dispatch) => Promise<*>) => {
+export const fetchBusinesses = (token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(fetchBusinessesRequest())
 
-    return businessesApi.getAll('businesses', token).then(responseBusinesses => {
+    return businessesApi.getAll('businesses', token).then((responseBusinesses: Array<Business>) => {
       if (Array.isArray(responseBusinesses)) {
         dispatch(fetchBusinessesSuccess(responseBusinesses))
       } else {
-        dispatch(fetchBusinessesFailure(responseBusinesses))
+        dispatch(fetchBusinessesFailure('error'))
       }
       return responseBusinesses
-    }).catch(error => {
+    }).catch((error: string) => {
       throw(error)
     })
   }
@@ -123,14 +123,13 @@ export const createBusinessError = (error: string): CreateBusinessFailureAction 
   }
 }
 
+export const createBusiness = (data: Business, token: string) => {
 
-export const createBusiness = (data: Business, token: string): ((d: Dispatch) => Promise<*>) => {
-
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(createBusinessRequest(data))
 
-    return businessesApi.create('businesses', data, token).then(responseBusiness => {
+    return businessesApi.create('businesses', data, token).then((responseBusiness: Business) => {
       if (responseBusiness.id) {
         dispatch(createBusinessSuccess(responseBusiness))
         dispatch(push(`/${responseBusiness.id}`))
@@ -138,7 +137,7 @@ export const createBusiness = (data: Business, token: string): ((d: Dispatch) =>
         dispatch(createBusinessError(responseBusiness))
       }
       return responseBusiness
-    }).catch(error => {
+    }).catch((error: string) => {
       throw(error)
     })
   }

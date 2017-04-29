@@ -61,21 +61,21 @@ export const receiveMeError = (error: string): RequestMeFailureAction => {
 }
 
 
-export const me = (token: string): ((d: Dispatch) => Promise<User>) => {
+export const me = (token: string) => {
 
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
 
     dispatch(requestMe(token))
 
-    return usersApi.getMe(token).then(responseUser => {
+    return usersApi.getMe(token).then((responseUser: User) => {
       if (responseUser.id) {
         dispatch(receiveMe(responseUser))
       } else {
-        dispatch(receiveMeError(responseUser))
+        dispatch(receiveMeError('error'))
         dispatch(push('/login'))
       }
       return responseUser
-    }).catch(error => {
+    }).catch((error: string) => {
       throw(error)
     })
   }
