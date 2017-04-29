@@ -1,3 +1,4 @@
+// @flow
 import { combineReducers } from 'redux'
 import { merge } from 'lodash/object'
 import type { Action } from '../actions/jobs'

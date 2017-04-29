@@ -1,15 +1,16 @@
+// @flow
 import { combineReducers } from 'redux'
-import { REQUEST_ME, REQUEST_ME_SUCCESS, REQUEST_ME_FAILURE } from '../actions'
+import type { Action, User } from '../actions/users'
 
-const isFetching = (state = false, action) => {
+const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
-    case REQUEST_ME:
+    case 'REQUEST_ME':
       return true
 
-    case REQUEST_ME_SUCCESS:
+    case 'REQUEST_ME_SUCCESS':
       return false
 
-    case REQUEST_ME_FAILURE:
+    case 'REQUEST_ME_FAILURE':
       return false
 
     default:
@@ -17,9 +18,9 @@ const isFetching = (state = false, action) => {
   }
 }
 
-const me = (state = {}, action) => {
+const me = (state: ?User = null, action: Action): ?User => {
   switch (action.type) {
-    case REQUEST_ME_SUCCESS:
+    case 'REQUEST_ME_SUCCESS':
       return Object.assign({}, state, action.user)
 
     default:

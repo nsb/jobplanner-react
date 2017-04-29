@@ -69,18 +69,18 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
-const initialState = {
-  intl: {
-    locale: languageWithoutRegionCode,
-    messages: messages,
-  },
-  // ...other initialState
-}
+// const initialState = {
+//   intl: {
+//     locale: languageWithoutRegionCode,
+//     messages: messages,
+//   },
+//   // ...other initialState
+// }
 
 function configureStore(): Store {
   return createStore(
     rootReducer,
-    initialState,
+    // initialState,
     composeWithDevTools(
       applyMiddleware(...middleware)
   ))
@@ -98,7 +98,10 @@ const authRequired = (nextState, replace) => {
 }
 
 ReactDOM.render(
-  <NetworkListenerProvider store={store} locale={language} messages={messages}>
+  <NetworkListenerProvider
+    store={store}
+    locale={languageWithoutRegionCode}
+    messages={messages}>
     <Router history={history} >
       <Route path="/" component={App}>
 

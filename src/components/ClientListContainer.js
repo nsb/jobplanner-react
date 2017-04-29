@@ -11,8 +11,8 @@ import type { Business } from '../actions/businesses'
 
 type Props = {
   business: Business,
-  clients: [Client],
-  token: string,
+  clients: Array<Client>,
+  token: ?string,
   isFetching: boolean,
   dispatch: Dispatch
 }
@@ -28,7 +28,7 @@ class ClientListContainer extends Component<void, Props, State> {
 
   componentDidMount () {
     const { business, clients, token, dispatch } = this.props
-    if (!clients.length) {
+    if (!clients.length && token) {
       dispatch(fetchClients(token, {business: business.id}))
     }
   }
