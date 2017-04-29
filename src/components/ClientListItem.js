@@ -1,4 +1,5 @@
 // @flow
+
 import React, {Component} from 'react';
 import ListItem from 'grommet/components/ListItem';
 import type {Client} from '../actions/clients';

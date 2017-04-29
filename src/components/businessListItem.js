@@ -1,11 +1,15 @@
-import React, {Component, PropTypes} from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import ListItem from 'grommet/components/ListItem';
+import type { Business } from '../actions/businesses'
+
 
 class BusinessListItem extends Component {
-  static propTypes = {
-    business: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    onClick: PropTypes.func.isRequired,
+  props: {
+    business: Business,
+    index: number,
+    onClick: Function
   };
 
   render() {

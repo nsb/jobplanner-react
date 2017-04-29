@@ -1,15 +1,23 @@
-import React, {Component, PropTypes} from 'react';
+// @flow
+
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Article from 'grommet/components/Article';
 import JobForm from './JobForm';
 import {updateJob} from '../actions/jobs';
-import {push} from 'react-router-redux';
+import {push as pushActionCreator} from 'react-router-redux';
+import type {State} from '../types/State';
+import type {Business} from '../actions/businesses';
+import type {Job} from '../actions/jobs';
 
 class JobEdit extends Component {
-  static propTypes = {
-    token: PropTypes.string.isRequired,
-    business: PropTypes.object.isRequired,
-    job: PropTypes.object.isRequired,
+  props: {
+    token?: string,
+    business: Business,
+    clients: Object,
+    job: Job,
+    push: typeof pushActionCreator,
   };
 
   render() {
@@ -41,24 +49,26 @@ class JobEdit extends Component {
     const {client: {value: clientId}} = values;
 
     const {token, business} = this.props;
-    let action = updateJob(
+    updateJob(
       {
         ...values,
         business: business.id,
         client: clientId,
       },
-      token
+      token || ''
     );
-    this.props.dispatch(action);
   };
 
   onClose = () => {
-    const {business, dispatch} = this.props;
-    dispatch(push(`/${business.id}/jobs`));
+    const {business, push} = this.props;
+    push(`/${business.id}/jobs`);
   };
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (
+  state: State,
+  ownProps: {params: {businessId: number, jobId: number}}
+) => {
   const {auth, businesses, clients, jobs} = state;
   const businessId = parseInt(ownProps.params.businessId, 10);
   const jobId = parseInt(ownProps.params.jobId, 10);
@@ -71,4 +81,13 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(JobEdit);
+const mapDispatchToProps = (dispatch: *) =>
+  bindActionCreators(
+    {
+      push: pushActionCreator,
+      updateJob,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(JobEdit);
