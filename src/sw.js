@@ -3,13 +3,11 @@ var CACHE_NAME = 'jobplanner-v1';
 self.addEventListener('install', function(event) {
   // Perform install steps
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        return cache.addAll(serviceWorkerOption.assets);
-      })
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(serviceWorkerOption.assets);
+    })
   );
 });
-
 
 // self.addEventListener("fetch", function(event) {
 //   console.log('WORKER: fetch event in progress.');
@@ -114,8 +112,6 @@ self.addEventListener('install', function(event) {
 //   );
 // });
 
-
-
 // self.addEventListener('fetch', function(event) {
 //   let request = event.request
 //   event.respondWith(
@@ -140,15 +136,13 @@ self.addEventListener('install', function(event) {
 //   );
 // });
 
-
 self.addEventListener('fetch', function(event) {
-  let request = event.request
+  let request = event.request;
   event.respondWith(
     caches.open(CACHE_NAME).then(function(cache) {
-      return cache.match(request)
-        .then(function(response) {
-          return response || fetch(event.request);
-        })
-      })
+      return cache.match(request).then(function(response) {
+        return response || fetch(event.request);
+      });
+    })
   );
 });

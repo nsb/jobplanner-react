@@ -1,25 +1,29 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import Menu from 'grommet/components/Menu'
-import Anchor from 'grommet/components/Anchor'
-import Box from 'grommet/components/Box'
-import Heading from 'grommet/components/Heading'
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import Menu from 'grommet/components/Menu';
+import Anchor from 'grommet/components/Anchor';
+import Box from 'grommet/components/Box';
+import Heading from 'grommet/components/Heading';
 import UserIcon from 'grommet/components/icons/base/User';
-import { logout } from '../actions'
+import {logout} from '../actions';
 
 class SessionMenu extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
     dropAlign: PropTypes.object.isRequired,
-    colorIndex: PropTypes.string.isRequired
-  }
+    colorIndex: PropTypes.string.isRequired,
+  };
 
   render() {
-    const { user, dropAlign, colorIndex } = this.props
+    const {user, dropAlign, colorIndex} = this.props;
 
     return (
-      <Menu icon={<UserIcon />} dropAlign={dropAlign}
-        colorIndex={colorIndex} a11yTitle="Session">
+      <Menu
+        icon={<UserIcon />}
+        dropAlign={dropAlign}
+        colorIndex={colorIndex}
+        a11yTitle="Session"
+      >
         <Box pad="medium">
           <Heading tag="h3" margin="none">{user.username}</Heading>
         </Box>
@@ -29,16 +33,16 @@ class SessionMenu extends Component {
   }
 
   onLogout = () => {
-    this.props.dispatch(logout())
-  }
+    this.props.dispatch(logout());
+  };
 }
 
 const mapStateToProps = state => {
-  const { users } = state
+  const {users} = state;
 
   return {
-    user: users.me
-  }
-}
+    user: users.me,
+  };
+};
 
-export default connect(mapStateToProps)(SessionMenu)
+export default connect(mapStateToProps)(SessionMenu);
