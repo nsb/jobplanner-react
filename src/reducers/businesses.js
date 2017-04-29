@@ -1,8 +1,7 @@
 // @flow
 import { combineReducers } from 'redux'
 import { merge } from 'lodash/object'
-import type { Action } from '../actions/clients'
-import { FETCH_BUSINESSES_SUCCESS } from '../actions/businesses'
+import type { Action } from '../actions/businesses'
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
@@ -50,7 +49,7 @@ const businesses = (state: Object = {}, action: Action): Object => {
         }
       }
 
-    case FETCH_BUSINESSES_SUCCESS:
+    case 'FETCH_BUSINESSES_SUCCESS':
       if (action.payload && action.payload.entities && action.payload.entities.businesses) {
         return merge({}, state, action.payload.entities.businesses)
       }
