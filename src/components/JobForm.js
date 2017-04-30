@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import Anchor from 'grommet/components/Anchor';
 import Button from 'grommet/components/Button';
@@ -13,8 +15,10 @@ import CloseIcon from 'grommet/components/icons/base/Close';
 import EditIcon from 'grommet/components/icons/base/Edit';
 import JobScheduleEdit from './JobScheduleEdit';
 import {RRule, rrulestr} from 'rrule';
+import type {Client} from '../actions/clients'
+import type {Dispatch} from '../types/Store'
 
-const validate = values => {
+const validate = (): Object => {
   const errors = {};
   return errors;
 };
@@ -79,11 +83,29 @@ const renderSchedule = ({input, onClick, meta: {touched, error, warning}}) => (
 );
 
 class JobForm extends Component {
-  static propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    valid: PropTypes.bool.isRequired,
-    clients: PropTypes.array.isRequired,
+  props: {
+    handleSubmit?: Function,
+    valid: boolean,
+    clients: Array<Client>,
+    dirty: boolean,
+    submitting: boolean,
+    onClose?: Function,
+    initialValues: Object,
+    // onChange?: Function,
+    dispatch: Dispatch,
+    change: Function
   };
+
+  state: {
+    clientsSearchText: string,
+    scheduleLayer: boolean,
+    schedule: {
+      freq: number,
+      interval: number,
+      byweekday: string,
+    },
+
+  }
 
   constructor(props) {
     super(props);
@@ -156,7 +178,7 @@ class JobForm extends Component {
               component={renderSelect}
               options={mappedClients}
               onSearch={this.onSearch}
-              onChange={this.onChange}
+              // onChange={this.onChange}
               normalize={normalizeSelect}
             />
             <Field
@@ -178,7 +200,7 @@ class JobForm extends Component {
             type="submit"
             primary={true}
             label={initialValues ? 'Save' : 'Add'}
-            onClick={valid && dirty && !submitting ? () => true : null}
+            onClick={valid && dirty && !submitting ? () => true : undefined}
           />
         </Footer>
       </Form>
