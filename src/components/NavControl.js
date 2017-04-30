@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Button from 'grommet/components/Button';
-import {navToggle} from '../actions';
+import {navToggle} from '../actions/nav';
 import logo from '../logo.svg';
 
 class NavControl extends Component {
