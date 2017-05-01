@@ -1,3 +1,5 @@
+// @flow
+
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
@@ -13,9 +15,12 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import {fetchJobs} from '../actions/jobs';
 import JobListItem from './JobListItem';
 import NavControl from './NavControl';
+import type {State} from '../types/State';
 
 class Jobs extends Component {
-  static propTypes = {};
+  state: {
+    searchText: string
+  }
 
   constructor() {
     super();
@@ -46,7 +51,7 @@ class Jobs extends Component {
         icon={<AddIcon />}
         path={`/${business.id}/jobs/add`}
         a11yTitle={`Add job`}
-        onClick={this.handleAdd}
+        // onClick={this.handleAdd}
       />
     );
 
@@ -62,12 +67,12 @@ class Jobs extends Component {
             fill={true}
             size="medium"
             placeHolder="Search"
-            value={this.searchText}
+            value={this.state.searchText}
             onDOMChange={this.onSearch}
           />
           {addControl}
         </Header>
-        <List onMore={isFetching ? this.onMore : null}>
+        <List onMore={isFetching ? this.onMore : undefined}>
           {filteredJobs.map((job, index) => {
             return (
               <JobListItem
@@ -89,7 +94,7 @@ class Jobs extends Component {
               label="Add job"
               primary={true}
               a11yTitle={`Add job`}
-              onClick={this.handleAdd}
+              // onClick={this.handleAdd}
             />
           }
         />
@@ -110,7 +115,7 @@ class Jobs extends Component {
   };
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: {params: {businessId: number}}) => {
   const {businesses, jobs, auth} = state;
   const businessId = parseInt(ownProps.params.businessId, 10);
 
