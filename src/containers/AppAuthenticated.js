@@ -1,19 +1,23 @@
+// flow
+
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Article from 'grommet/components/Article';
 import Section from 'grommet/components/Section';
 import logo from '../logo.svg';
-import {
-  navToggle,
-  navResponsive,
-  verifyAuthAndFetchBusinesses,
-} from '../actions';
+import {navToggle, navResponsive} from '../actions/nav';
+import {verifyAuthAndFetchBusinesses} from '../actions';
+import type {Dispatch} from '../types/Store';
+import type {State} from '../types/State';
 
 class AppAuthenticated extends Component {
-  static propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    token: PropTypes.string.isRequired,
+  props: {
+    isAuthenticated: boolean,
+    isFetching: boolean,
+    token: string,
+    dispatch: Dispatch,
+    hasLoaded: boolean
+    children?: React.Element<*>
   };
 
   componentDidMount() {
@@ -48,7 +52,7 @@ class AppAuthenticated extends Component {
     }
   }
 
-  onResponsive = responsive => {
+  onResponsive = (responsive: 'multiple') => {
     this.props.dispatch(navResponsive(responsive));
   };
 
@@ -57,7 +61,7 @@ class AppAuthenticated extends Component {
   };
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
   const {users, auth, businesses} = state;
 
   return {
