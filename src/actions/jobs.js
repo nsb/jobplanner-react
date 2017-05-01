@@ -35,7 +35,7 @@ type FetchJobsAction = {
 
 type FetchJobsSuccessAction = {
   type: typeof FETCH_JOBS_SUCCESS,
-  payload: Array<Client>,
+  payload: {entities: {jobs: {[id: number]: Job}}, result: Array<number>},
 };
 
 type FetchJobsFailureAction = {

@@ -6,11 +6,11 @@ class Api {
   static getAll(
     resource: string,
     token: string,
-    queryParams: Object = {}
+    queryParams: {[key: string]: string} = {}
   ): Promise<*> {
     let searchParams: URLSearchParams = new URLSearchParams();
     Object.keys(queryParams).forEach(function(key) {
-      let param: string = queryParams[key];
+      let param = queryParams[key];
       searchParams.append(key, param);
     });
 
@@ -27,7 +27,7 @@ class Api {
       .then(response => {
         return response.json();
       })
-      .catch(error => {
+      .catch((error: string) => {
         return error;
       });
   }
@@ -49,8 +49,8 @@ class Api {
       .then(response => {
         return response.json();
       })
-      .catch(error => {
-        return error;
+      .catch((error: string) => {
+        throw error;
       });
   }
 
@@ -68,8 +68,8 @@ class Api {
       .then(response => {
         return response.json();
       })
-      .catch(error => {
-        return error;
+      .catch((error: string) => {
+        throw error;
       });
   }
 
@@ -89,8 +89,8 @@ class Api {
       .then(response => {
         return response.json();
       })
-      .catch(error => {
-        return error;
+      .catch((error: string) => {
+        throw error;
       });
   }
 }

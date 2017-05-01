@@ -16,8 +16,8 @@ class UsersApi extends Api {
       .then(response => {
         return response.json();
       })
-      .catch(error => {
-        return error;
+      .catch((error: string) => {
+        throw error;
       });
   }
 }
