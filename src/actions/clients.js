@@ -38,7 +38,7 @@ type FetchClientsAction = {
 
 type FetchClientsSuccessAction = {
   type: typeof FETCH_CLIENTS_SUCCESS,
-  payload: Object,
+  payload: Array<Client>,
 };
 
 type FetchClientsFailureAction = {

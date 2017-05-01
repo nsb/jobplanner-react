@@ -35,7 +35,7 @@ type FetchJobsAction = {
 
 type FetchJobsSuccessAction = {
   type: typeof FETCH_JOBS_SUCCESS,
-  payload: Object,
+  payload: Array<Client>,
 };
 
 type FetchJobsFailureAction = {
