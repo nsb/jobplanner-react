@@ -1,7 +1,7 @@
 // @flow
 import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
-import type {Action, Business, BusinessesMap} from '../actions/businesses';
+import type {Action, BusinessesMap} from '../actions/businesses';
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {

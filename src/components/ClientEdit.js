@@ -36,7 +36,7 @@ class ClientEdit extends Component {
     );
   }
 
-  handleSubmit = values => {
+  handleSubmit = (values: Client): void => {
     const {token, client, updateClient} = this.props;
     updateClient(
       {

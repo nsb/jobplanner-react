@@ -8,6 +8,7 @@ import JobForm from './JobForm';
 import {updateJob} from '../actions/jobs';
 import {push as pushActionCreator} from 'react-router-redux';
 import type {State} from '../types/State';
+import type {State as ClientsState} from '../reducers/clients';
 import type {Business} from '../actions/businesses';
 import type {Job} from '../actions/jobs';
 
@@ -15,7 +16,7 @@ class JobEdit extends Component {
   props: {
     token?: string,
     business: Business,
-    clients: Object,
+    clients: ClientsState,
     job: Job,
     push: typeof pushActionCreator,
   };

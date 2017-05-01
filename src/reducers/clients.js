@@ -1,9 +1,23 @@
 // @flow
 import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
-import type {Action, Client, ClientsMap} from '../actions/clients';
+import type {Action, ClientsMap} from '../actions/clients';
 
-const isFetching = (state: boolean = false, action: Action): boolean => {
+type IsFetchingState = boolean;
+type ClientsState = ClientsMap;
+type ResultState = Array<number>;
+export type State = {
+  isFetching: IsFetchingState,
+  result: ResultState,
+  entities: {
+    clients: ClientsState
+  }
+}
+
+const isFetching = (
+  state: IsFetchingState = false,
+  action: Action
+): IsFetchingState => {
   switch (action.type) {
     case 'FETCH_CLIENTS':
       return true;
@@ -57,7 +71,7 @@ const entities = combineReducers({
   clients,
 });
 
-const result = (state: Array<number> = [], action: Action): Array<number> => {
+const result = (state: ResultState = [], action: Action): ResultState => {
   switch (action.type) {
     case 'CREATE_CLIENT_SUCCESS':
       return [...state, action.payload.id];

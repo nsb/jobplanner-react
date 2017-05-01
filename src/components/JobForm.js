@@ -15,10 +15,10 @@ import CloseIcon from 'grommet/components/icons/base/Close';
 import EditIcon from 'grommet/components/icons/base/Edit';
 import JobScheduleEdit from './JobScheduleEdit';
 import {RRule, rrulestr} from 'rrule';
-import type {Client} from '../actions/clients'
-import type {Dispatch} from '../types/Store'
+import type {Client} from '../actions/clients';
+import type {Dispatch} from '../types/Store';
 
-const validate = (): Object => {
+const validate = () => {
   const errors = {};
   return errors;
 };
@@ -52,6 +52,11 @@ const renderSelect = ({
 };
 
 class ScheduleInput extends Component {
+  props: {
+    value: string,
+    onClick: Function,
+  };
+
   render() {
     const {value, onClick} = this.props;
     let rule = value ? rrulestr(value) : new RRule({freq: RRule.WEEKLY});
@@ -73,7 +78,7 @@ class ScheduleInput extends Component {
     );
   }
 
-  onChange(e) {
+  onChange(e: SyntheticInputEvent) {
     console.log(e);
   }
 }
@@ -93,7 +98,7 @@ class JobForm extends Component {
     initialValues: Object,
     // onChange?: Function,
     dispatch: Dispatch,
-    change: Function
+    change: Function,
   };
 
   state: {
@@ -104,8 +109,7 @@ class JobForm extends Component {
       interval: number,
       byweekday: string,
     },
-
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -234,21 +238,27 @@ class JobForm extends Component {
     );
   };
 
-  onSearch = e => {
+  onSearch = (e: SyntheticInputEvent) => {
     const clientsSearchText = e.target.value;
     this.setState({clientsSearchText});
   };
 
-  onScheduleAdd = e => {
+  onScheduleAdd = (e: SyntheticInputEvent) => {
     this.setState({scheduleLayer: true});
     e.preventDefault();
   };
 
-  onScheduleClose = e => {
+  onScheduleClose = () => {
     this.setState({scheduleLayer: false});
   };
 
-  onScheduleSubmit = schedule => {
+  onScheduleSubmit = (
+    schedule: {
+      freq: number,
+      interval: number,
+      byweekday: string,
+    }
+  ) => {
     const {dispatch, change} = this.props;
     dispatch(
       change('recurrences', `RRULE:${new RRule({...schedule}).toString()}`)

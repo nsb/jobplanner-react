@@ -1,7 +1,7 @@
 // @flow
 import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
-import type {Action, Job} from '../actions/jobs';
+import type {Action, JobsMap} from '../actions/jobs';
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
@@ -28,7 +28,7 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
   }
 };
 
-const jobs = (state: { [id: number]: Job } = {}, action: Action): Object => {
+const jobs = (state: JobsMap = {}, action: Action): JobsMap => {
   switch (action.type) {
     case 'CREATE_JOB_SUCCESS':
       return {

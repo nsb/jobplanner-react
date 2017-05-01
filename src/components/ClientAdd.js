@@ -5,9 +5,10 @@ import {push} from 'react-router-redux';
 import Article from 'grommet/components/Article';
 import ClientForm from './ClientForm';
 import {createClient} from '../actions/clients';
+import type {Client} from '../actions/clients';
 import type {Business} from '../actions/businesses';
 import type {Dispatch} from '../types/Store';
-import type {State as ReduxState} from '../types/State';
+import type {State} from '../types/State';
 
 type Props = {
   token: string,
@@ -26,7 +27,7 @@ class ClientAdd extends Component<void, Props, void> {
     );
   }
 
-  handleSubmit = values => {
+  handleSubmit = (values: Client): void => {
     const {token, business} = this.props;
     let action = createClient(
       business,
@@ -46,11 +47,11 @@ class ClientAdd extends Component<void, Props, void> {
 }
 
 type OwnProps = {
-  params: Object,
+  params: {businessId: number},
   dispatch: Dispatch,
 };
 
-const mapStateToProps = (state: ReduxState, ownProps: OwnProps) => {
+const mapStateToProps = (state: State, ownProps: OwnProps) => {
   const {auth, businesses} = state;
   const businessId = parseInt(ownProps.params.businessId, 10);
 

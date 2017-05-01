@@ -29,13 +29,15 @@ export type Job = {
   line_items: [Object],
 };
 
+export type JobsMap = {[id: number]: Job};
+
 type FetchJobsAction = {
   type: typeof FETCH_JOBS,
 };
 
 type FetchJobsSuccessAction = {
   type: typeof FETCH_JOBS_SUCCESS,
-  payload: {entities: {jobs: {[id: number]: Job}}, result: Array<number>},
+  payload: {entities: {jobs: JobsMap}, result: Array<number>},
 };
 
 type FetchJobsFailureAction = {
