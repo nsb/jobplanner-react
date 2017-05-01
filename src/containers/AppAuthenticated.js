@@ -1,6 +1,6 @@
 // flow
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Article from 'grommet/components/Article';
 import Section from 'grommet/components/Section';
@@ -16,7 +16,7 @@ class AppAuthenticated extends Component {
     isFetching: boolean,
     token: string,
     dispatch: Dispatch,
-    hasLoaded: boolean
+    hasLoaded: boolean,
     children?: React.Element<*>
   };
 

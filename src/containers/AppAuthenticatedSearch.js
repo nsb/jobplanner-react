@@ -1,3 +1,5 @@
+// @flow
+
 import React, {Component} from 'react';
 import Article from 'grommet/components/Article';
 import Header from 'grommet/components/Header';
@@ -5,6 +7,10 @@ import Search from 'grommet/components/Search';
 import NavControl from '../components/NavControl';
 
 class AppAuthenticatedSearch extends Component {
+  props: {
+    children?: React.Element<*>,
+  };
+
   render() {
     return (
       <Article ref="content" pad="none">
