@@ -1,4 +1,6 @@
-import React, {PropTypes, Component} from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import LoginForm from 'grommet/components/LoginForm';
 import Split from 'grommet/components/Split';
@@ -6,13 +8,17 @@ import Sidebar from 'grommet/components/Sidebar';
 import Footer from 'grommet/components/Footer';
 import logo from '../logo.svg';
 import {login} from '../actions/auth';
+import type {Credentials} from '../actions/auth';
+import type {Dispatch} from '../types/Store';
+import type {State} from '../types/State';
 
 class Login extends Component {
-  static propTypes = {
-    loginBusy: PropTypes.bool.isRequired,
+  props: {
+    loginBusy: boolean,
+    dispatch: Dispatch
   };
 
-  onSubmit = credentials => {
+  onSubmit = (credentials: Credentials) => {
     this.props.dispatch(login(credentials));
   };
 
@@ -27,7 +33,7 @@ class Login extends Component {
           <LoginForm
             align="start"
             title="jobPlanner"
-            onSubmit={this.props.loginBusy ? null : this.onSubmit}
+            onSubmit={this.props.loginBusy ? undefined : this.onSubmit}
             usernameType="text"
           />
           <Footer
@@ -43,7 +49,7 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
   const {auth} = state;
 
   return {

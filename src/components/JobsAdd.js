@@ -1,14 +1,25 @@
-import React, {Component, PropTypes} from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 import Article from 'grommet/components/Article';
 import JobForm from './JobForm';
 import {createJob} from '../actions/jobs';
+import type {Business} from '../actions/businesses';
+import type {State} from '../types/State';
+import type {Dispatch} from '../types/Store';
 
 class JobsAdd extends Component {
-  static propTypes = {
-    token: PropTypes.string.isRequired,
-    business: PropTypes.object.isRequired,
+  props: {
+    token: string,
+    business: Business,
+    clients: Array<Client>,
+    dispatch: Dispatch
+  };
+
+  state: {
+    scheduleLayer: boolean,
   };
 
   constructor(props) {
@@ -55,7 +66,10 @@ class JobsAdd extends Component {
   };
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (
+  state: State,
+  ownProps: {params: {businessId: number}}
+) => {
   const {auth, businesses, clients} = state;
   const businessId = parseInt(ownProps.params.businessId, 10);
 

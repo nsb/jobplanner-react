@@ -14,7 +14,7 @@ const REQUEST_VERIFY_FAILURE: 'REQUEST_VERIFY_FAILURE' =
 const REQUEST_VERIFY_SUCCESS: 'REQUEST_VERIFY_SUCCESS' =
   'REQUEST_VERIFY_SUCCESS';
 
-type Credentials = {
+export type Credentials = {
   username: string,
   password: string,
   rememberMe: boolean,

@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import Select from 'grommet/components/Select';
 import FormField from 'grommet/components/FormField';
 import NumberInput from 'grommet/components/NumberInput';
@@ -24,18 +26,17 @@ const rruleByWeekDay = [
 ];
 
 class JobScheduleEdit extends Component {
-  static propTypes = {
-    onClose: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    schedule: PropTypes.object.isRequired,
+  props: {
+    onClose: Function,
+    onSubmit: Function,
+    schedule: Object,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      schedule: Object.assign({}, props.schedule),
-    };
-  }
+  state: {
+    schedule: Object
+  } = {
+    schedule: Object.assign({}, this.props.schedule)
+  };
 
   render() {
     const {onClose} = this.props;
@@ -75,7 +76,7 @@ class JobScheduleEdit extends Component {
             value={byweekday}
             options={rruleByWeekDay}
             onChange={this.onByWeekDayChange}
-            onSearch={null}
+            onSearch={undefined}
           />
         </FormField>
       );
@@ -101,7 +102,7 @@ class JobScheduleEdit extends Component {
               value={freqOption}
               options={rruleFrequency}
               onChange={this.onFreqChange}
-              onSearch={null}
+              onSearch={undefined}
             />
           </FormField>
           {scheduleInterval}
@@ -112,27 +113,27 @@ class JobScheduleEdit extends Component {
     );
   }
 
-  onSubmit = e => {
+  onSubmit = (e: SyntheticInputEvent) => {
     const {schedule} = this.state;
     this.props.onSubmit(schedule);
   };
 
-  onFreqChange = e => {
+  onFreqChange = (e: SyntheticInputEvent) => {
     this._onChange(e);
   };
 
-  onByWeekDayChange = event => {
+  onByWeekDayChange = (event: Object) => {
     let schedule = Object.assign(this.state.schedule, {
       byweekday: xor(this.state.schedule.byweekday, [event.option.value]),
     });
     this.setState(schedule);
   };
 
-  onIntervalChange = e => {
+  onIntervalChange = (e: SyntheticInputEvent) => {
     this._onChange(e);
   };
 
-  _onChange = event => {
+  _onChange = (event: Object) => {
     var schedule = {...this.state.schedule};
     const attribute = event.target.getAttribute('name');
     const value = event.option ? event.option.value : event.target.value;
