@@ -1,10 +1,18 @@
-import React, {Component, PropTypes} from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Button from 'grommet/components/Button';
 import {navToggle} from '../actions/nav';
 import logo from '../logo.svg';
+import type {State} from '../types/State';
+import type {Dispatch} from '../types/Store';
 
 class NavControl extends Component {
+  props: {
+    nav: {active: boolean},
+    dispatch: Dispatch,
+  }
   render() {
     const {nav: {active}, dispatch} = this.props;
 
@@ -27,11 +35,7 @@ class NavControl extends Component {
   }
 }
 
-NavControl.propTypes = {
-  nav: PropTypes.object,
-};
-
-let select = (state, props) => ({
+let select = (state: State) => ({
   nav: state.nav,
 });
 

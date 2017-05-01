@@ -23,7 +23,7 @@ export const navActivate = (active: boolean): NavActiveAction => {
   return {type: NAV_ACTIVE, active};
 };
 
-export const navToggle = (active: boolean): NavToggleAction => {
+export const navToggle = (): NavToggleAction => {
   return {type: NAV_TOGGLE};
 };
 
