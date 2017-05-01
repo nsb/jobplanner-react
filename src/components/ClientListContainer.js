@@ -84,7 +84,7 @@ const mapStateToProps = (state: ReduxState, ownProps: Object): Props => {
 
   return {
     business: businesses.entities.businesses[businessId],
-    clients: clients.result.map(Id => {
+    clients: clients.result.map((Id: number) => {
       return clients.entities.clients[Id];
     }),
     isFetching: clients.isFetching,

@@ -1,7 +1,7 @@
 // @flow
 import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
-import type {Action} from '../actions/businesses';
+import type {Action, Business, BusinessesMap} from '../actions/businesses';
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
@@ -29,7 +29,10 @@ const hasLoaded = (state: boolean = false, action: Action): boolean => {
   }
 };
 
-const businesses = (state: Object = {}, action: Action): Object => {
+const businesses = (
+  state: BusinessesMap = {},
+  action: Action
+): BusinessesMap => {
   switch (action.type) {
     case 'CREATE_BUSINESS_SUCCESS':
       return {

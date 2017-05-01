@@ -32,13 +32,15 @@ export type Client = {
   last_name: string,
 };
 
+export type ClientsMap = {[id: number]: Client};
+
 type FetchClientsAction = {
   type: typeof FETCH_CLIENTS,
 };
 
 type FetchClientsSuccessAction = {
   type: typeof FETCH_CLIENTS_SUCCESS,
-  payload: {entities: {clients: {[id: number]: Client}}, result: Array<number>},
+  payload: {entities: {clients: ClientsMap}, result: Array<number>},
 };
 
 type FetchClientsFailureAction = {

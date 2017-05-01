@@ -26,13 +26,18 @@ export type Business = {
   name: string,
 };
 
+export type BusinessesMap = {[id: number]: Business};
+
 type FetchBusinessesAction = {
   type: typeof FETCH_BUSINESSES,
 };
 
 type FetchBusinessesSuccessAction = {
   type: typeof FETCH_BUSINESSES_SUCCESS,
-  payload: Array<Business>,
+  payload: {
+    entities: {businesses: BusinessesMap},
+    result: Array<number>,
+  },
 };
 
 type FetchBusinessesFailureAction = {
