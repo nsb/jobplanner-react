@@ -1,4 +1,5 @@
 // @flow
+
 import React, {Component} from 'react';
 import {injectIntl, intlShape} from 'react-intl';
 import Sidebar from 'grommet/components/Sidebar';
@@ -11,10 +12,11 @@ import Footer from 'grommet/components/Footer';
 import CloseIcon from 'grommet/components/icons/base/Close';
 import logo from '../logo.svg';
 import SessionMenu from './SessionMenu';
+import type {Business} from '../actions/businesses'
 
 type Props = {
   toggleNav: () => void,
-  business: Object,
+  business: Business,
   intl: intlShape,
 };
 
