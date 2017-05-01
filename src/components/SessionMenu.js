@@ -1,3 +1,4 @@
+// @flow
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Menu from 'grommet/components/Menu';
@@ -5,13 +6,17 @@ import Anchor from 'grommet/components/Anchor';
 import Box from 'grommet/components/Box';
 import Heading from 'grommet/components/Heading';
 import UserIcon from 'grommet/components/icons/base/User';
-import {logout} from '../actions';
+import {logout} from '../actions/auth';
+import type { User } from '../actions/users'
+import type { Dispatch } from '../types/Store'
+import type { State } from '../types/State'
 
 class SessionMenu extends Component {
-  static propTypes = {
-    user: PropTypes.object.isRequired,
-    dropAlign: PropTypes.object.isRequired,
-    colorIndex: PropTypes.string.isRequired,
+  props: {
+    user: User,
+    dropAlign: Object,
+    colorIndex: string,
+    dispatch: Dispatch
   };
 
   render() {
@@ -37,7 +42,7 @@ class SessionMenu extends Component {
   };
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
   const {users} = state;
 
   return {
