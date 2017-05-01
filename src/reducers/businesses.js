@@ -42,14 +42,14 @@ const businesses = (
         },
       };
 
-    case 'UPDATE_BUSINESS':
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...state[action.payload.id],
-          ...action.payload,
-        },
-      };
+    // case 'UPDATE_BUSINESS':
+    //   return {
+    //     ...state,
+    //     [action.payload.id]: {
+    //       ...state[action.payload.id],
+    //       ...action.payload,
+    //     },
+    //   };
 
     case 'FETCH_BUSINESSES_SUCCESS':
       if (
