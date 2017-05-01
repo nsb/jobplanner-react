@@ -19,7 +19,10 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
   }
 };
 
-const clients = (state: Object = {}, action: Action): Object => {
+const clients = (
+  state: {[id: number]: Client} = {},
+  action: Action
+): Object => {
   switch (action.type) {
     case 'CREATE_CLIENT_SUCCESS':
       return {
