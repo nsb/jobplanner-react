@@ -15,20 +15,8 @@ import {addLocaleData} from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import da from 'react-intl/locale-data/da';
 import type {Store} from './types/Store';
-// import type {State} from './types/State';
 import rootReducer from './reducers';
 import App from './containers/App';
-// import AppAuthenticated from './containers/AppAuthenticated';
-// import AppAuthenticatedNav from './containers/AppAuthenticatedNav';
-// import Businesses from './components/Businesses';
-// import BusinessAdd from './components/BusinessAdd';
-// import ClientListContainer from './components/ClientListContainer';
-// import ClientAdd from './components/ClientAdd';
-// import ClientEdit from './components/ClientEdit';
-// import Jobs from './components/Jobs';
-// import JobsAdd from './components/JobsAdd';
-// import JobEdit from './components/JobEdit';
-// import Login from './components/Login';
 import 'grommet/scss/vanilla/index.scss';
 import './index.css';
 
@@ -81,18 +69,18 @@ if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger());
 }
 
-// const initialState = {
-//   intl: {
-//     locale: languageWithoutRegionCode,
-//     messages: messages,
-//   },
-//   // ...other initialState
-// }
+const initialState = {
+  intl: {
+    locale: languageWithoutRegionCode,
+    messages: messages,
+  },
+  // ...other initialState
+}
 
 function configureStore(): Store {
   return createStore(
     rootReducer,
-    // initialState,
+    initialState,
     composeWithDevTools(applyMiddleware(...middleware))
   );
 }
@@ -108,8 +96,6 @@ const store = configureStore();
 ReactDOM.render(
   <Provider
     store={store}
-    locale={languageWithoutRegionCode}
-    messages={messages}
   >
     <ConnectedRouter history={history}>
       <App />
