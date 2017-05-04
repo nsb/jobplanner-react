@@ -2,9 +2,16 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
 import {push} from 'react-router-redux';
 import Split from 'grommet/components/Split';
 import NavSidebar from '../components/NavSidebar';
+import ClientListContainer from '../components/ClientListContainer';
+import ClientAdd from '../components/ClientAdd';
+import ClientEdit from '../components/ClientEdit';
+import Jobs from '../components/Jobs';
+import JobsAdd from '../components/JobsAdd';
+import JobEdit from '../components/JobEdit';
 import {navToggle, navResponsive} from '../actions/nav';
 import type {State} from '../types/State';
 import type {Dispatch} from '../types/Store';
@@ -16,7 +23,6 @@ class AppAuthenticatedNav extends Component {
     responsive: string,
     business: Business,
     dispatch: Dispatch,
-    children?: React.Element<*>,
   };
 
   componentWillMount() {
@@ -37,7 +43,15 @@ class AppAuthenticatedNav extends Component {
         {this.props.navActive
           ? <NavSidebar toggleNav={this.toggleNav} business={business} />
           : null}
-        {this.props.children}
+        <Switch>
+          <Route exact path="clients" component={ClientListContainer} />
+          <Route exact path="clients/add" component={ClientAdd} />
+          <Route exact path="clients/:clientId" component={ClientEdit} />
+          <Route exact path="jobs" component={Jobs} />
+          <Route exact path="jobs/add" component={JobsAdd} />
+          <Route exact path="jobs/:jobId" component={JobEdit} />
+          <Route component={ClientListContainer} />
+        </Switch>
       </Split>
     );
   }
@@ -53,10 +67,10 @@ class AppAuthenticatedNav extends Component {
 
 const mapStateToProps = (
   state: State,
-  ownProps: {params: {businessId: number}}
+  ownProps: {match: {params: {businessId: number}}}
 ) => {
   const {nav, businesses} = state;
-  const businessId = parseInt(ownProps.params.businessId, 10);
+  const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     navActive: nav.active,

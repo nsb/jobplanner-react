@@ -12,7 +12,7 @@ import users from './users';
 import jobs from './jobs';
 
 const reducers = {
-  routing: routerReducer,
+  router: routerReducer,
   form: reduxFormReducer,
   intl: intlReducer,
   auth,

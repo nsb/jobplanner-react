@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
 import Article from 'grommet/components/Article';
 import Section from 'grommet/components/Section';
 import logo from '../logo.svg';
@@ -9,6 +10,9 @@ import {navToggle, navResponsive} from '../actions/nav';
 import {verifyAuthAndFetchBusinesses} from '../actions';
 import type {Dispatch} from '../types/Store';
 import type {State} from '../types/State';
+import AppAuthenticatedNav from '../containers/AppAuthenticatedNav';
+import Businesses from '../components/Businesses';
+import BusinessAdd from '../components/BusinessAdd';
 
 class AppAuthenticated extends Component {
   props: {
@@ -31,7 +35,11 @@ class AppAuthenticated extends Component {
     if (hasLoaded && !isFetching) {
       return (
         <div>
-          {this.props.children}
+          <Switch>
+            <Route exact path="/add" component={BusinessAdd} />
+            <Route path="/:businessId" component={AppAuthenticatedNav} />
+            <Route component={Businesses} />
+          </Switch>
         </div>
       );
     } else {

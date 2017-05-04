@@ -78,9 +78,12 @@ class ClientListContainer extends Component<void, Props, State> {
   };
 }
 
-const mapStateToProps = (state: ReduxState, ownProps: Object): Props => {
+const mapStateToProps = (
+  state: ReduxState,
+  ownProps: {match: {params: {businessId: number}}}
+): Props => {
   const {businesses, clients, auth} = state;
-  const businessId = parseInt(ownProps.params.businessId, 10);
+  const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     business: businesses.entities.businesses[businessId],
