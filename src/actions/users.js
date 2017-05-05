@@ -1,5 +1,5 @@
 // @flow
-import {push} from 'react-router-redux';
+// import {push} from 'react-router-redux';
 import usersApi from '../api/UsersApi';
 import type {Dispatch} from '../types/Store';
 
@@ -70,7 +70,7 @@ export const me = (token: string) => {
           dispatch(receiveMe(responseUser));
         } else {
           dispatch(receiveMeError('error'));
-          dispatch(push('/login'));
+          // dispatch(push('/login'));
         }
         return responseUser;
       })

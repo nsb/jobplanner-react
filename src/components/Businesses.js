@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {push as pushActionCreator} from 'react-router-redux';
+import {Redirect} from 'react-router-dom';
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import Title from 'grommet/components/Title';
@@ -21,7 +21,6 @@ import type {State} from '../types/State';
 class Businesses extends Component {
   props: {
     businesses: Array<Business>,
-    push: typeof pushActionCreator,
   };
 
   state: {
@@ -33,17 +32,18 @@ class Businesses extends Component {
     this.state = {searchText: ''};
   }
 
-  componentDidMount() {
-    const {businesses, push} = this.props;
-
-    // Redirect if we only have one business
-    if (businesses.length === 1) {
-      push(`/${businesses[0].id}`);
-    }
-  }
+  // componentDidMount() {
+  //   const {businesses, push} = this.props;
+  //
+  //   // Redirect if we only have one business
+  //   if (businesses.length === 1) {
+  //     push(`/${businesses[0].id}`);
+  //   }
+  // }
 
   render() {
     const {businesses} = this.props;
+
     const filteredBusinesses = businesses.filter(business => {
       const searchText = this.state.searchText.toLowerCase();
       if (searchText) {
@@ -62,7 +62,9 @@ class Businesses extends Component {
       />
     );
 
-    return (
+    return businesses.length === 1 ? (
+      <Redirect to={`/${businesses[0].id}`} />
+    ) : (
       <Box>
         <Header size="large" pad={{horizontal: 'medium'}}>
           <Title responsive={false}>
@@ -110,7 +112,7 @@ class Businesses extends Component {
   }
 
   onClick = (e, business) => {
-    this.props.push(`/${business.id}`);
+    // this.props.push(`/${business.id}`);
   };
 
   onSearch = (e: SyntheticInputEvent) => {
@@ -118,8 +120,8 @@ class Businesses extends Component {
     this.setState({searchText});
   };
 
-  handleAdd = e => {
-    this.props.push('/add');
+  handleAdd = (e: SyntheticInputEvent) => {
+    // this.props.push('/add');
   };
 }
 
@@ -136,7 +138,6 @@ const mapStateToProps = (state: State) => {
 const mapDispatchToProps = (dispatch: *) =>
   bindActionCreators(
     {
-      push: pushActionCreator,
     },
     dispatch
   );

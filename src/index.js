@@ -7,7 +7,8 @@ import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {createLogger} from 'redux-logger';
 import createHistory from 'history/createBrowserHistory';
-import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
+import {Router as BrowserRouter} from 'react-router-dom';
+// import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly';
 // import NetworkListener from 'redux-queue-offline-listener';
 import {Provider} from 'react-intl-redux';
@@ -64,23 +65,23 @@ if ('serviceWorker' in navigator) {
 // const history = syncHistoryWithStore(createBrowserHistory(), store);
 const history = createHistory();
 
-const middleware = [thunkMiddleware, routerMiddleware(history)];
+const middleware = [thunkMiddleware];
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger());
 }
 
-const initialState = {
-  intl: {
-    locale: languageWithoutRegionCode,
-    messages: messages,
-  },
-  // ...other initialState
-}
+// const initialState = {
+//   intl: {
+//     locale: languageWithoutRegionCode,
+//     messages: messages,
+//   },
+//   // ...other initialState
+// }
 
 function configureStore(): Store {
   return createStore(
     rootReducer,
-    initialState,
+    // initialState,
     composeWithDevTools(applyMiddleware(...middleware))
   );
 }
@@ -97,9 +98,9 @@ ReactDOM.render(
   <Provider
     store={store}
   >
-    <ConnectedRouter history={history}>
+    <BrowserRouter history={history}>
       <App />
-    </ConnectedRouter>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );

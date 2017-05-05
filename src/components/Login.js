@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {withRouter, Redirect} from 'react-router-dom';
 import LoginForm from 'grommet/components/LoginForm';
 import Split from 'grommet/components/Split';
 import Sidebar from 'grommet/components/Sidebar';
@@ -15,6 +16,7 @@ import type {State} from '../types/State';
 class Login extends Component {
   props: {
     loginBusy: boolean,
+    isAuthenticated: boolean,
     dispatch: Dispatch
   };
 
@@ -23,7 +25,11 @@ class Login extends Component {
   };
 
   render() {
-    return (
+    const {isAuthenticated} = this.props;
+
+    return isAuthenticated ? (
+      <Redirect to="/"/>
+    ) : (
       <Split flex="left">
         <div>
           <img src={logo} className="App-logo" alt="logo" />
@@ -54,7 +60,8 @@ const mapStateToProps = (state: State) => {
 
   return {
     loginBusy: auth.busy,
+    isAuthenticated: auth.isAuthenticated
   };
 };
 
-export default connect(mapStateToProps)(Login);
+export default withRouter(connect(mapStateToProps)(Login));

@@ -1,6 +1,6 @@
 // @flow
 import fetch from 'isomorphic-fetch';
-import {push} from 'react-router-redux';
+// import {push} from 'react-router-redux';
 import type {Dispatch} from '../types/Store';
 import type {User} from './users';
 
@@ -132,7 +132,7 @@ export const login = (credentials: Credentials) => {
         if (json.token) {
           localStorage.setItem('token', json.token);
           dispatch(receiveLogin(json));
-          dispatch(push('/'));
+          // dispatch(push('/'));
         } else {
           dispatch(receiveLoginError('error'));
         }
@@ -202,13 +202,13 @@ export const verify = (token: string) => {
           dispatch(receiveVerify(json));
         } else {
           dispatch(receiveVerifyError('error'));
-          dispatch(push('/login'));
+          // dispatch(push('/login'));
         }
         return json;
       })
       .catch((error: string) => {
         dispatch(receiveVerifyError(error));
-        dispatch(push('/login'));
+        // dispatch(push('/login'));
       });
   };
 };
