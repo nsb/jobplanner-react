@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Switch, Redirect, Route} from 'react-router-dom';
+import {withRouter, Switch, Redirect, Route} from 'react-router-dom';
 import Article from 'grommet/components/Article';
 import Section from 'grommet/components/Section';
 import logo from '../logo.svg';
@@ -20,8 +20,7 @@ class AppAuthenticated extends Component {
     isFetching: boolean,
     token: string,
     dispatch: Dispatch,
-    hasLoaded: boolean,
-    children?: React.Element<*>
+    hasLoaded: boolean
   };
 
   componentDidMount() {
@@ -32,20 +31,16 @@ class AppAuthenticated extends Component {
   render() {
     const {isAuthenticated, hasLoaded, isFetching} = this.props;
 
-    if (hasLoaded && !isFetching) {
+    if (!isFetching && hasLoaded) {
       return (
         <div>
           <Switch>
             <Route exact path="/add" component={BusinessAdd} />
             <Route exact path="/:businessId" component={AppAuthenticatedNav} />
-            <Route render={() => (
-              isAuthenticated ? (
-                <Businesses/>
-              ) : (
-                <Redirect to="/login"/>
-              )
-            )}/>
-
+            <Route
+              render={() =>
+                (isAuthenticated ? <Businesses /> : <Redirect to="/login" />)}
+            />
           </Switch>
         </div>
       );
