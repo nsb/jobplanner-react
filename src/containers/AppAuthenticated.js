@@ -30,7 +30,6 @@ class AppAuthenticated extends Component {
 
   render() {
     const {isAuthenticated, hasLoaded, isFetching} = this.props;
-    console.log('*****************', isFetching, '****************')
 
     if (!isFetching) {
       return (
