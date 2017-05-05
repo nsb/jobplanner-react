@@ -5,6 +5,7 @@ import {withRouter, Switch, Route} from 'react-router-dom';
 import AppGrommet from 'grommet/components/App';
 import AppAuthenticated from '../containers/AppAuthenticated';
 import Login from '../components/Login';
+import {verifyAuthAndFetchBusinesses} from '../actions';
 import type {State} from '../types/State';
 
 import './App.css';
@@ -26,8 +27,10 @@ class App extends Component {
 }
 
 const mapStateToProps = (state: State) => {
+  const {auth} = state;
 
   return {
+    token: auth.token
   };
 };
 

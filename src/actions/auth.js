@@ -196,15 +196,21 @@ export const verify = (token: string) => {
         token,
       }),
     })
-      .then(response => response.json())
-      .then((json: {token: string, user: User}) => {
-        if (json.token) {
-          dispatch(receiveVerify(json));
-        } else {
+      .then(response =>
+        response.json().then(json => ({
+          status: response.status,
+          json
+        })
+      ))
+      .then(({status, json}) => {
+        if (status >= 400) {
           dispatch(receiveVerifyError('error'));
-          // dispatch(push('/login'));
+        } else {
+          var returnData = Object.assign({}, json, {
+              type: REQUEST_VERIFY_SUCCESS
+          });
+          dispatch(receiveVerify(returnData));
         }
-        return json;
       })
       .catch((error: string) => {
         dispatch(receiveVerifyError(error));

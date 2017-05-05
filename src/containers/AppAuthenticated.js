@@ -23,15 +23,16 @@ class AppAuthenticated extends Component {
     hasLoaded: boolean
   };
 
-  componentDidMount() {
+  componentWillMount() {
     const {token, dispatch} = this.props;
     dispatch(verifyAuthAndFetchBusinesses(token));
   }
 
   render() {
     const {isAuthenticated, hasLoaded, isFetching} = this.props;
+    console.log('*****************', isFetching, '****************')
 
-    if (!isFetching && hasLoaded) {
+    if (!isFetching) {
       return (
         <div>
           <Switch>
@@ -76,7 +77,7 @@ const mapStateToProps = (state: State) => {
 
   return {
     isAuthenticated: auth.isAuthenticated,
-    isFetching: users.isFetching || businesses.isFetching,
+    isFetching: users.isFetching || businesses.isFetching || auth.busy,
     hasLoaded: businesses.hasLoaded,
     token: auth.token
   };

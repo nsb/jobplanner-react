@@ -3,7 +3,8 @@ import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
 import type {Action, BusinessesMap} from '../actions/businesses';
 
-const isFetching = (state: boolean = false, action: Action): boolean => {
+// initially set to true https://github.com/reactjs/react-redux/issues/210
+const isFetching = (state: boolean = true, action: Action): boolean => {
   switch (action.type) {
     case 'FETCH_BUSINESSES':
       return true;
