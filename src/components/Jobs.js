@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import Title from 'grommet/components/Title';
@@ -16,11 +15,12 @@ import {fetchJobs} from '../actions/jobs';
 import JobListItem from './JobListItem';
 import NavControl from './NavControl';
 import type {State} from '../types/State';
+import type {Job} from '../actions/jobs';
 
 class Jobs extends Component {
   state: {
-    searchText: string
-  }
+    searchText: string,
+  };
 
   constructor() {
     super();
@@ -51,7 +51,6 @@ class Jobs extends Component {
         icon={<AddIcon />}
         path={`/${business.id}/jobs/add`}
         a11yTitle={`Add job`}
-        // onClick={this.handleAdd}
       />
     );
 
@@ -79,7 +78,7 @@ class Jobs extends Component {
                 key={job.id}
                 job={job}
                 index={index}
-                onClick={e => this.onClick(e, job)}
+                onClick={(e: SyntheticInputEvent) => this.onClick(e, job)}
               />
             );
           })}
@@ -94,7 +93,6 @@ class Jobs extends Component {
               label="Add job"
               primary={true}
               a11yTitle={`Add job`}
-              // onClick={this.handleAdd}
             />
           }
         />
@@ -104,20 +102,26 @@ class Jobs extends Component {
 
   onMore = () => {};
 
-  onClick = (e, job) => {
-    const {business, dispatch} = this.props;
-    dispatch(push(`/${business.id}/jobs/${job.id}`));
+  onClick = (e: SyntheticInputEvent, job: Job) => {
+    const {push, business} = this.props;
+    push(`/${business.id}/jobs/${job.id}`);
   };
 
-  onSearch = event => {
+  onSearch = (event: SyntheticInputEvent) => {
     const searchText = event.target.value;
     this.setState({searchText});
   };
 }
 
-const mapStateToProps = (state: State, ownProps: {params: {businessId: number}}) => {
+const mapStateToProps = (
+  state: State,
+  ownProps: {
+    match: {params: {businessId: number}},
+    history: {push: string => void},
+  }
+) => {
   const {businesses, jobs, auth} = state;
-  const businessId = parseInt(ownProps.params.businessId, 10);
+  const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     business: businesses.entities.businesses[businessId],
@@ -126,6 +130,7 @@ const mapStateToProps = (state: State, ownProps: {params: {businessId: number}})
     }),
     isFetching: jobs.isFetching,
     token: auth.token,
+    push: ownProps.history.push
   };
 };
 

@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import Article from 'grommet/components/Article';
 import JobForm from './JobForm';
 import {updateJob} from '../actions/jobs';
-import {push as pushActionCreator} from 'react-router-redux';
 import type {State} from '../types/State';
 import type {State as ClientsState} from '../reducers/clients';
 import type {Business} from '../actions/businesses';
@@ -18,7 +17,7 @@ class JobEdit extends Component {
     business: Business,
     clients: ClientsState,
     job: Job,
-    push: typeof pushActionCreator,
+    push: string => void,
   };
 
   render() {
@@ -68,16 +67,20 @@ class JobEdit extends Component {
 
 const mapStateToProps = (
   state: State,
-  ownProps: {params: {businessId: number, jobId: number}}
+  ownProps: {
+    match: {params: {businessId: number, jobId: number}},
+    history: {push: string => void},
+  }
 ) => {
   const {auth, businesses, clients, jobs} = state;
-  const businessId = parseInt(ownProps.params.businessId, 10);
-  const jobId = parseInt(ownProps.params.jobId, 10);
+  const businessId = parseInt(ownProps.match.params.businessId, 10);
+  const jobId = parseInt(ownProps.match.params.jobId, 10);
 
   return {
     token: auth.token,
     business: businesses.entities.businesses[businessId],
     job: jobs.entities.jobs[jobId],
+    push: ownProps.history.push,
     clients,
   };
 };
@@ -85,7 +88,6 @@ const mapStateToProps = (
 const mapDispatchToProps = (dispatch: *) =>
   bindActionCreators(
     {
-      push: pushActionCreator,
       updateJob,
     },
     dispatch

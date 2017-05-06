@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
 import Article from 'grommet/components/Article';
 import JobForm from './JobForm';
 import {createJob} from '../actions/jobs';
@@ -15,18 +14,14 @@ class JobsAdd extends Component {
     token: string,
     business: Business,
     clients: Array<Client>,
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    push: (string) => void
   };
 
   state: {
     scheduleLayer: boolean,
-  };
-
-  constructor(props) {
-    super();
-    this.state = {
-      scheduleLayer: false,
-    };
+  } = {
+    scheduleLayer: false
   }
 
   render() {
@@ -61,17 +56,20 @@ class JobsAdd extends Component {
   };
 
   onClose = () => {
-    const {business, dispatch} = this.props;
-    dispatch(push(`/${business.id}/jobs`));
+    const {business, push} = this.props;
+    push(`/${business.id}/jobs`);
   };
 }
 
 const mapStateToProps = (
   state: State,
-  ownProps: {params: {businessId: number}}
+  ownProps: {
+    match: {params: {businessId: number}},
+    history: {push: string => void},
+  }
 ) => {
   const {auth, businesses, clients} = state;
-  const businessId = parseInt(ownProps.params.businessId, 10);
+  const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     token: auth.token,
@@ -79,6 +77,7 @@ const mapStateToProps = (
     clients: clients.result.map(Id => {
       return clients.entities.clients[Id];
     }),
+    push: ownProps.history.push
   };
 };
 
