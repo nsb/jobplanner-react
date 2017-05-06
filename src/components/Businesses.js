@@ -32,15 +32,6 @@ class Businesses extends Component {
     this.state = {searchText: ''};
   }
 
-  // componentDidMount() {
-  //   const {businesses, push} = this.props;
-  //
-  //   // Redirect if we only have one business
-  //   if (businesses.length === 1) {
-  //     push(`/${businesses[0].id}`);
-  //   }
-  // }
-
   render() {
     const {businesses} = this.props;
 
