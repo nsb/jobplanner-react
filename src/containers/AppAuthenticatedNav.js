@@ -55,9 +55,9 @@ class AppAuthenticatedNav extends Component {
             component={ClientListContainer}
           />
           <Route exact path="/:businessId/clients/add" component={ClientAdd} />
+          <Route exact path="/:businessId/jobs/add" component={JobsAdd} />
           <Route exact path="/:businessId/jobs/:jobId" component={JobEdit} />
           <Route exact path="/:businessId/jobs" component={Jobs} />
-          <Route exact path="/:businessId/jobs/add" component={JobsAdd} />
           <Route component={ClientListContainer} />
         </Switch>
       </Split>
