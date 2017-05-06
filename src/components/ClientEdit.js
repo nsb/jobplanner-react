@@ -20,6 +20,7 @@ class ClientEdit extends Component {
   };
 
   render() {
+    console.dir(this.props)
     const {client} = this.props;
 
     return (

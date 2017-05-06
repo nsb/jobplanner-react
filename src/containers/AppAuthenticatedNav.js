@@ -33,9 +33,8 @@ class AppAuthenticatedNav extends Component {
   // }
 
   render() {
-    const {navActive, responsive, match} = this.props;
+    const {navActive, responsive} = this.props;
     const priority = navActive && 'single' === responsive ? 'left' : 'right';
-    console.log('*********** GOT HERE **************', match)
 
     const {business} = this.props;
 
@@ -47,22 +46,22 @@ class AppAuthenticatedNav extends Component {
         <Switch>
           <Route
             exact
-            path={`${match.url}/clients/:clientId`}
+            path="/:businessId/clients/:clientId"
             component={ClientEdit}
           />
           <Route
             exact
-            path={`${match.url}/clients`}
+            path="/:businessId/clients"
             component={ClientListContainer}
           />
           <Route
             exact
-            path={`${match.url}/clients/add`}
+            path="/:businessId/clients/add"
             component={ClientAdd}
           />
-          <Route exact path={`${match.url}/jobs`} component={Jobs} />
-          <Route exact path={`${match.url}/jobs/add`} component={JobsAdd} />
-          <Route exact path={`${match.url}/jobs/:jobId`} component={JobEdit} />
+          <Route exact path="/:businessId/jobs" component={Jobs} />
+          <Route exact path="/:businessId/jobs/add" component={JobsAdd} />
+          <Route exact path="/:businessId/jobs/:jobId" component={JobEdit} />
           <Route component={ClientListContainer} />
         </Switch>
       </Split>
