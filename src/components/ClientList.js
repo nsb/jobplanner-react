@@ -89,7 +89,7 @@ const ClientList = ({
           label="Add client"
           primary={true}
           a11yTitle={`Add client`}
-          onClick={addClient}
+          path={`/${business.id}/clients/add`}
         />
       }
     />

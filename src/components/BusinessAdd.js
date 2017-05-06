@@ -3,7 +3,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {push as pushActionCreator} from 'react-router-redux';
 import type {State} from '../types/State';
 import type {Business} from '../actions/businesses';
 import Article from 'grommet/components/Article';
@@ -13,7 +12,7 @@ import {createBusiness} from '../actions/businesses';
 class BusinessAdd extends Component {
   props: {
     token: ?string,
-    push: typeof pushActionCreator,
+    push: string => void,
     createBusiness: (Business, string) => (d: Dispatch) => Promise<Business>,
   };
 
@@ -37,14 +36,17 @@ class BusinessAdd extends Component {
   };
 }
 
-const mapStateToProps = ({auth}: State) => ({
+const mapStateToProps = (
+  {auth}: State,
+  ownProps: {history: {push: string => void}}
+) => ({
   token: auth.token,
+  push: ownProps.history.push,
 });
 
 const mapDispatchToProps = (dispatch: *) =>
   bindActionCreators(
     {
-      push: pushActionCreator,
       createBusiness,
     },
     dispatch

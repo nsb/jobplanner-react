@@ -1,7 +1,6 @@
 // @flow
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
 import {fetchClients} from '../actions/clients';
 import ClientList from './ClientList';
 import type {Dispatch} from '../types/Store';
@@ -15,6 +14,7 @@ type Props = {
   token: ?string,
   isFetching: boolean,
   dispatch: Dispatch,
+  push: (string) => void
 };
 
 type State = {
@@ -63,9 +63,9 @@ class ClientListContainer extends Component<void, Props, State> {
 
   onMore = () => {};
 
-  onClick = (e, client) => {
-    const {business, dispatch} = this.props;
-    dispatch(push(`/${business.id}/clients/${client.id}`));
+  onClick = (e: SyntheticInputEvent, client: Client) => {
+    const {push, business} = this.props;
+    push(`/${business.id}/clients/${client.id}`);
   };
 
   onSearch = ({target}: SyntheticInputEvent) => {
@@ -73,14 +73,18 @@ class ClientListContainer extends Component<void, Props, State> {
   };
 
   addClient = (e: SyntheticInputEvent) => {
-    const {business, dispatch} = this.props;
-    dispatch(push(`/${business.id}/clients/add`));
+    const {push, business} = this.props;
+    push(`/${business.id}/clients/add`);
   };
 }
 
 const mapStateToProps = (
   state: ReduxState,
-  ownProps: {match: {params: {businessId: number}}, dispatch: Dispatch}
+  ownProps: {
+    match: {params: {businessId: number}},
+    history: {push: Function},
+    dispatch: Dispatch,
+  }
 ): Props => {
   const {businesses, clients, auth} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
@@ -93,6 +97,7 @@ const mapStateToProps = (
     isFetching: clients.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch,
+    push: ownProps.history.push,
   };
 };
 
