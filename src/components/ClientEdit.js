@@ -3,7 +3,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {push as pushActionCreator} from 'react-router-redux';
 import Article from 'grommet/components/Article';
 import ClientForm from './ClientForm';
 import {updateClient} from '../actions/clients';
@@ -17,7 +16,7 @@ class ClientEdit extends Component {
     business: Business,
     client: Client,
     updateClient: (d: Dispatch) => Promise<Client>,
-    push: typeof pushActionCreator,
+    push: string => void,
   };
 
   render() {
@@ -55,23 +54,26 @@ class ClientEdit extends Component {
 
 const mapStateToProps = (
   state: State,
-  ownProps: {params: {businessId: number, clientId: number}}
+  ownProps: {
+    match: {params: {businessId: number, clientId: number}},
+    history: {push: string => void},
+  }
 ) => {
   const {auth, businesses, clients} = state;
-  const businessId = parseInt(ownProps.params.businessId, 10);
-  const clientId = parseInt(ownProps.params.clientId, 10);
+  const businessId = parseInt(ownProps.match.params.businessId, 10);
+  const clientId = parseInt(ownProps.match.params.clientId, 10);
 
   return {
     token: auth.token,
     business: businesses.entities.businesses[businessId],
     client: clients.entities.clients[clientId],
+    push: ownProps.history.push
   };
 };
 
 const mapDispatchToProps = (dispatch: *) =>
   bindActionCreators(
     {
-      push: pushActionCreator,
       updateClient,
     },
     dispatch

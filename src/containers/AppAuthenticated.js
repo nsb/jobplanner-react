@@ -35,7 +35,7 @@ class AppAuthenticated extends Component {
         <div>
           <Switch>
             <Route exact path="/add" component={BusinessAdd} />
-            <Route exact path="/:businessId" component={AppAuthenticatedNav} />
+            <Route path="/:businessId" component={AppAuthenticatedNav} />
             <Route
               render={() =>
                 (isAuthenticated ? <Businesses /> : <Redirect to="/login" />)}

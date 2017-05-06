@@ -3,7 +3,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Switch, Route} from 'react-router-dom';
-import {push} from 'react-router-redux';
 import Split from 'grommet/components/Split';
 import NavSidebar from '../components/NavSidebar';
 import ClientListContainer from '../components/ClientListContainer';
@@ -23,18 +22,20 @@ class AppAuthenticatedNav extends Component {
     responsive: string,
     business: Business,
     dispatch: Dispatch,
+    match: {url: string},
   };
 
-  componentWillMount() {
-    const {business, dispatch} = this.props;
-    if (business === undefined) {
-      dispatch(push('/404'));
-    }
-  }
+  // componentWillMount() {
+  //   const {business, dispatch} = this.props;
+  //   if (business === undefined) {
+  //     this.props.push('/404');
+  //   }
+  // }
 
   render() {
-    const {navActive, responsive} = this.props;
+    const {navActive, responsive, match} = this.props;
     const priority = navActive && 'single' === responsive ? 'left' : 'right';
+    console.log('*********** GOT HERE **************', match)
 
     const {business} = this.props;
 
@@ -44,12 +45,24 @@ class AppAuthenticatedNav extends Component {
           ? <NavSidebar toggleNav={this.toggleNav} business={business} />
           : null}
         <Switch>
-          <Route exact path="clients" component={ClientListContainer} />
-          <Route exact path="clients/add" component={ClientAdd} />
-          <Route exact path="clients/:clientId" component={ClientEdit} />
-          <Route exact path="jobs" component={Jobs} />
-          <Route exact path="jobs/add" component={JobsAdd} />
-          <Route exact path="jobs/:jobId" component={JobEdit} />
+          <Route
+            exact
+            path={`${match.url}/clients/:clientId`}
+            component={ClientEdit}
+          />
+          <Route
+            exact
+            path={`${match.url}/clients`}
+            component={ClientListContainer}
+          />
+          <Route
+            exact
+            path={`${match.url}/clients/add`}
+            component={ClientAdd}
+          />
+          <Route exact path={`${match.url}/jobs`} component={Jobs} />
+          <Route exact path={`${match.url}/jobs/add`} component={JobsAdd} />
+          <Route exact path={`${match.url}/jobs/:jobId`} component={JobEdit} />
           <Route component={ClientListContainer} />
         </Switch>
       </Split>
@@ -67,7 +80,7 @@ class AppAuthenticatedNav extends Component {
 
 const mapStateToProps = (
   state: State,
-  ownProps: {match: {params: {businessId: number}}}
+  ownProps: {match: {params: {businessId: number}, url: string}}
 ) => {
   const {nav, businesses} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
@@ -76,6 +89,7 @@ const mapStateToProps = (
     navActive: nav.active,
     responsive: nav.responsive,
     business: businesses.entities.businesses[businessId],
+    match: ownProps.match,
   };
 };
 
