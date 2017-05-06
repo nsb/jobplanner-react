@@ -1,9 +1,8 @@
 // @flow
 
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import Title from 'grommet/components/Title';
@@ -21,6 +20,7 @@ import type {State} from '../types/State';
 class Businesses extends Component {
   props: {
     businesses: Array<Business>,
+    push: (string) => void
   };
 
   state: {
@@ -58,7 +58,6 @@ class Businesses extends Component {
         icon={<AddIcon />}
         path="/add"
         a11yTitle={`Add business`}
-        onClick={this.handleAdd}
       />
     );
 
@@ -84,12 +83,12 @@ class Businesses extends Component {
         <List onMore={undefined}>
           {filteredBusinesses.map((business, index) => {
             return (
-              <BusinessListItem
-                key={business.id}
-                business={business}
-                index={index}
-                onClick={(e: SyntheticInputEvent) => this.onClick(e, business)}
-              />
+                <BusinessListItem
+                  key={business.id}
+                  business={business}
+                  index={index}
+                  onClick={(e: SyntheticInputEvent) => this.onClick(e, business)}
+                />
             );
           })}
         </List>
@@ -103,7 +102,7 @@ class Businesses extends Component {
               label="Add business"
               primary={true}
               a11yTitle={`Add business`}
-              onClick={this.handleAdd}
+              path="/add"
             />
           }
         />
@@ -112,34 +111,24 @@ class Businesses extends Component {
   }
 
   onClick = (e, business) => {
-    // this.props.push(`/${business.id}`);
+    this.props.push(`/${business.id}`);
   };
 
   onSearch = (e: SyntheticInputEvent) => {
     const searchText = e.target.value;
     this.setState({searchText});
   };
-
-  handleAdd = (e: SyntheticInputEvent) => {
-    // this.props.push('/add');
-  };
 }
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: State, ownProps: {history: {push: Function}}) => {
   const {businesses} = state;
 
   return {
     businesses: businesses.result.map(Id => {
       return businesses.entities.businesses[Id];
     }),
+    push: ownProps.history.push
   };
 };
 
-const mapDispatchToProps = (dispatch: *) =>
-  bindActionCreators(
-    {
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(Businesses);
+export default withRouter(connect(mapStateToProps)(Businesses));

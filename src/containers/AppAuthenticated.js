@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {withRouter, Switch, Redirect, Route} from 'react-router-dom';
+import {Switch, Redirect, Route} from 'react-router-dom';
 import Article from 'grommet/components/Article';
 import Section from 'grommet/components/Section';
 import logo from '../logo.svg';
@@ -20,7 +20,6 @@ class AppAuthenticated extends Component {
     isFetching: boolean,
     token: string,
     dispatch: Dispatch,
-    hasLoaded: boolean
   };
 
   componentWillMount() {
@@ -29,7 +28,7 @@ class AppAuthenticated extends Component {
   }
 
   render() {
-    const {isAuthenticated, hasLoaded, isFetching} = this.props;
+    const {isAuthenticated, isFetching} = this.props;
 
     if (!isFetching) {
       return (
@@ -77,7 +76,6 @@ const mapStateToProps = (state: State) => {
   return {
     isAuthenticated: auth.isAuthenticated,
     isFetching: users.isFetching || businesses.isFetching || auth.busy,
-    hasLoaded: businesses.hasLoaded,
     token: auth.token
   };
 };
