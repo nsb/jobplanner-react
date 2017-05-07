@@ -103,7 +103,6 @@ class Jobs extends Component {
   onMore = () => {};
 
   onClick = (e: SyntheticInputEvent, job: Job) => {
-    console.log('***************', job)
     const {push, business} = this.props;
     push(`/${business.id}/jobs/${job.id}`);
   };

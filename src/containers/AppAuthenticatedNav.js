@@ -44,6 +44,7 @@ class AppAuthenticatedNav extends Component {
           ? <NavSidebar toggleNav={this.toggleNav} business={business} />
           : null}
         <Switch>
+          <Route exact path="/:businessId/clients/add" component={ClientAdd} />
           <Route
             exact
             path="/:businessId/clients/:clientId"
@@ -54,7 +55,6 @@ class AppAuthenticatedNav extends Component {
             path="/:businessId/clients"
             component={ClientListContainer}
           />
-          <Route exact path="/:businessId/clients/add" component={ClientAdd} />
           <Route exact path="/:businessId/jobs/add" component={JobsAdd} />
           <Route exact path="/:businessId/jobs/:jobId" component={JobEdit} />
           <Route exact path="/:businessId/jobs" component={Jobs} />
