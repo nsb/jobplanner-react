@@ -82,8 +82,10 @@
     "url-search-params-polyfill": "^1.0.2"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "start": "sh -ac '. ./.env.local; node scripts/start.js'",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; node scripts/build.js'",
+    "build:staging": "REACT_APP_ENV=staging yarn run build",
+    "build:production": "REACT_APP_ENV=production yarn run build",
     "flow": "./node_modules/flow-bin/cli.js",
     "test": "node scripts/test.js --env=jsdom",
     "build:langs": "BABEL_ENV=production ./node_modules/.bin/babel-node scripts/translator.js",
