@@ -16,6 +16,7 @@ class JobEdit extends Component {
     token?: string,
     business: Business,
     clients: ClientsState,
+    updateJob: (d: Dispatch) => Promise<Job>,
     job: Job,
     push: string => void,
   };
@@ -48,7 +49,7 @@ class JobEdit extends Component {
     // get client Id
     const {client: {value: clientId}} = values;
 
-    const {token, business} = this.props;
+    const {token, business, updateJob} = this.props;
     updateJob(
       {
         ...values,
