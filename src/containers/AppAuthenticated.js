@@ -31,16 +31,21 @@ class AppAuthenticated extends Component {
     const {isAuthenticated, isFetching} = this.props;
 
     if (!isFetching) {
+
+      let routes = (
+        <Switch>
+          <Route exact path="/add" component={BusinessAdd} />
+          <Route path="/:businessId" component={AppAuthenticatedNav} />
+          <Route component={Businesses}/>
+        </Switch>
+      )
+
       return (
         <div>
-          <Switch>
-            <Route exact path="/add" component={BusinessAdd} />
-            <Route path="/:businessId" component={AppAuthenticatedNav} />
-            <Route
-              render={() =>
-                (isAuthenticated ? <Businesses /> : <Redirect to="/login" />)}
-            />
-          </Switch>
+          <Route
+            render={() =>
+              (isAuthenticated ? routes : <Redirect to="/login" />)}
+          />
         </div>
       );
     } else {
