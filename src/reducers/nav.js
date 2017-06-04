@@ -1,10 +1,10 @@
 // @flow
 import {NAV_ACTIVE, NAV_TOGGLE, NAV_RESPONSIVE} from '../actions/nav';
-import type {Action} from '../actions/nav';
+import type {Action, Responsive} from '../actions/nav';
 
 type State = {
   active: boolean,
-  responsive: 'multiple',
+  responsive: Responsive,
 };
 
 const initialState: State = {
