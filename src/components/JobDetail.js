@@ -15,6 +15,7 @@ import LinkPreviousIcon from 'grommet/components/icons/base/LinkPrevious';
 import JobActions from '../components/JobActions';
 import {navResponsive} from '../actions/nav';
 import type {Business} from '../actions/businesses';
+import type {Job} from '../actions/jobs';
 import type {State} from '../types/State';
 import type {Dispatch} from '../types/Store';
 import type {Responsive} from '../actions/nav';
@@ -24,6 +25,7 @@ class JobsDetail extends Component {
     token: string,
     business: Business,
     clients: Array<Client>,
+    job: Job,
     dispatch: Dispatch,
     responsive: boolean,
     push: (string) => void
@@ -51,7 +53,7 @@ class JobsDetail extends Component {
 
     let sidebar;
     sidebar = (
-      <JobActions onClose={onSidebarClose} />
+      <JobActions onClose={onSidebarClose} onEdit={this.onEdit} />
     );
 
     return (
@@ -103,21 +105,28 @@ class JobsDetail extends Component {
     });
   }
 
+  onEdit = () => {
+    const {business, job, push} = this.props;
+    push(`/${business.id}/jobs/${job.id}/edit`);
+  }
+
 }
 
 const mapStateToProps = (
   state: State,
   ownProps: {
-    match: {params: {businessId: number}},
+    match: {params: {businessId: number, jobId: number}},
     history: {push: string => void},
   }
 ) => {
-  const {auth, businesses, clients, nav} = state;
+  const {auth, businesses, clients, jobs, nav} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
+  const jobId = parseInt(ownProps.match.params.jobId, 10);
 
   return {
     token: auth.token,
     business: businesses.entities.businesses[businessId],
+    job: jobs.entities.jobs[jobId],
     clients: clients.result.map(Id => {
       return clients.entities.clients[Id];
     }),

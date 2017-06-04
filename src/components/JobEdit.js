@@ -61,8 +61,8 @@ class JobEdit extends Component {
   };
 
   onClose = () => {
-    const { business, push } = this.props;
-    push(`/${business.id}/jobs`);
+    const { business, job, push } = this.props;
+    push(`/${business.id}/jobs/${job.id}`);
   };
 }
 
