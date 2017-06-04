@@ -12,6 +12,7 @@ import Heading from 'grommet/components/Heading';
 import Section from 'grommet/components/Section';
 import MoreIcon from 'grommet/components/icons/base/More';
 import LinkPreviousIcon from 'grommet/components/icons/base/LinkPrevious';
+import {rrulestr} from 'rrule';
 import JobActions from '../components/JobActions';
 import {navResponsive} from '../actions/nav';
 import type {Business} from '../actions/businesses';
@@ -39,7 +40,7 @@ class JobsDetail extends Component {
 
   render() {
 
-    const { responsive } = this.props;
+    const { job, responsive } = this.props;
 
     let onSidebarClose;
     let sidebarControl;
@@ -53,7 +54,7 @@ class JobsDetail extends Component {
 
     let sidebar;
     sidebar = (
-      <JobActions onClose={onSidebarClose} onEdit={this.onEdit} />
+      <JobActions job={job} onClose={onSidebarClose} onEdit={this.onEdit} />
     );
 
     return (
@@ -69,7 +70,7 @@ class JobsDetail extends Component {
               <Anchor icon={<LinkPreviousIcon />} path="/1/jobs"
                 a11yTitle="Return" />
               <Heading tag="h1" margin="none">
-                <strong>My name</strong>
+                <strong>{`Job ${job.id}`}</strong>
               </Heading>
             </Box>
             {sidebarControl}
@@ -78,7 +79,7 @@ class JobsDetail extends Component {
 
             <Box full="horizontal">
               <Section pad="medium" full="horizontal">
-                <Heading tag="h2" margin="none">Utilization</Heading>
+                <Heading tag="h2" margin="none">{rrulestr(job.recurrences).toText()}</Heading>
               </Section>
             </Box>
           </Article>

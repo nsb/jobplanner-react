@@ -35,7 +35,6 @@ class JobActions extends Component {
         <SkipLinkAnchor label="Right Panel" />
         <Header pad={{horizontal: 'medium', vertical: 'medium'}}
           justify="between" size="large" >
-          Navn
           {closeControl}
         </Header>
         <Box pad="medium">
