@@ -47,7 +47,6 @@ class JobsAdd extends Component {
       {
         ...values,
         business: business.id,
-        recurrences: '',
         client: clientId,
       },
       token
