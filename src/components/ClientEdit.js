@@ -47,8 +47,8 @@ class ClientEdit extends Component {
   };
 
   onClose = () => {
-    const {business, push} = this.props;
-    push(`/${business.id}/clients`);
+    const {business, client, push} = this.props;
+    push(`/${business.id}/clients/${client.id}`);
   };
 }
 

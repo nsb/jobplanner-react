@@ -1,18 +1,19 @@
 // @flow
 
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Switch, Route} from 'react-router-dom';
-import Split from 'grommet/components/Split';
-import NavSidebar from '../components/NavSidebar';
-import ClientListContainer from '../components/ClientListContainer';
-import ClientAdd from '../components/ClientAdd';
-import ClientEdit from '../components/ClientEdit';
-import Jobs from '../components/Jobs';
-import {navToggle, navResponsive} from '../actions/nav';
-import type {State} from '../types/State';
-import type {Dispatch} from '../types/Store';
-import type {Business} from '../actions/businesses';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Switch, Route } from "react-router-dom";
+import Split from "grommet/components/Split";
+import NavSidebar from "../components/NavSidebar";
+import ClientListContainer from "../components/ClientListContainer";
+import ClientAdd from "../components/ClientAdd";
+import ClientDetail from "../components/ClientDetailContainer";
+import ClientEdit from "../components/ClientEdit";
+import Jobs from "../components/Jobs";
+import { navToggle, navResponsive } from "../actions/nav";
+import type { State } from "../types/State";
+import type { Dispatch } from "../types/Store";
+import type { Business } from "../actions/businesses";
 
 class AppAuthenticatedNav extends Component {
   props: {
@@ -20,7 +21,7 @@ class AppAuthenticatedNav extends Component {
     responsive: string,
     business: Business,
     dispatch: Dispatch,
-    match: {url: string},
+    match: { url: string }
   };
 
   // componentWillMount() {
@@ -31,10 +32,10 @@ class AppAuthenticatedNav extends Component {
   // }
 
   render() {
-    const {navActive, responsive} = this.props;
-    const priority = navActive && 'single' === responsive ? 'left' : 'right';
+    const { navActive, responsive } = this.props;
+    const priority = navActive && "single" === responsive ? "left" : "right";
 
-    const {business} = this.props;
+    const { business } = this.props;
 
     return (
       <Split priority={priority} flex="right" onResponsive={this.onResponsive}>
@@ -46,6 +47,11 @@ class AppAuthenticatedNav extends Component {
           <Route
             exact
             path="/:businessId/clients/:clientId"
+            component={ClientDetail}
+          />
+          <Route
+            exact
+            path="/:businessId/clients/:clientId/edit"
             component={ClientEdit}
           />
           <Route
@@ -60,7 +66,7 @@ class AppAuthenticatedNav extends Component {
     );
   }
 
-  onResponsive = (responsive: 'multiple') => {
+  onResponsive = (responsive: "multiple") => {
     this.props.dispatch(navResponsive(responsive));
   };
 
@@ -71,16 +77,16 @@ class AppAuthenticatedNav extends Component {
 
 const mapStateToProps = (
   state: State,
-  ownProps: {match: {params: {businessId: number}, url: string}}
+  ownProps: { match: { params: { businessId: number }, url: string } }
 ) => {
-  const {nav, businesses} = state;
+  const { nav, businesses } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     navActive: nav.active,
     responsive: nav.responsive,
     business: businesses.entities.businesses[businessId],
-    match: ownProps.match,
+    match: ownProps.match
   };
 };
 
