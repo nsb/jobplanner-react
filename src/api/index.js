@@ -35,6 +35,30 @@ class Api {
       });
   }
 
+  static getOne(
+    resource: string,
+    id: number,
+    token: string,
+  ): Promise<*> {
+
+    const url: string = `${API_ENDPOINT}/${resource}/${id}/`;
+    const request = new Request(url, {
+      method: 'GET',
+      headers: new Headers({
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+
+    return fetch(request)
+      .then(response => {
+        return response.json();
+      })
+      .catch((error: string) => {
+        return error;
+      });
+  }
+
   static update(resource: string, item: {id: number}, token: string) {
     const request = new Request(`${API_ENDPOINT}/${resource}/${item.id}/`, {
       method: 'PUT',

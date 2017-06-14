@@ -19,6 +19,12 @@ export const FETCH_CLIENTS_SUCCESS: 'FETCH_CLIENTS_SUCCESS' =
 export const FETCH_CLIENTS_FAILURE: 'FETCH_CLIENTS_FAILURE' =
   'FETCH_CLIENTS_FAILURE';
 
+export const FETCH_CLIENT: 'FETCH_CLIENT' = 'FETCH_CLIENT';
+export const FETCH_CLIENT_SUCCESS: 'FETCH_CLIENT_SUCCESS' =
+  'FETCH_CLIENT_SUCCESS';
+export const FETCH_CLIENT_FAILURE: 'FETCH_CLIENT_FAILURE' =
+  'FETCH_CLIENT_FAILURE';
+
 //Update client
 export const UPDATE_CLIENT: 'UPDATE_CLIENT' = 'UPDATE_CLIENT';
 export const UPDATE_CLIENT_SUCCESS: 'UPDATE_CLIENT_SUCCESS' =
@@ -47,6 +53,21 @@ type FetchClientsFailureAction = {
   type: typeof FETCH_CLIENTS_FAILURE,
   error: string,
 };
+
+type FetchClientAction = {
+  type: typeof FETCH_CLIENT,
+};
+
+type FetchClientSuccessAction = {
+  type: typeof FETCH_CLIENT_SUCCESS,
+  payload: Client
+};
+
+type FetchClientFailureAction = {
+  type: typeof FETCH_CLIENT_FAILURE,
+  error: string,
+};
+
 
 type CreateClientAction = {
   type: typeof CREATE_CLIENT,
@@ -84,6 +105,9 @@ export type Action =
   | FetchClientsAction
   | FetchClientsSuccessAction
   | FetchClientsFailureAction
+  | FetchClientAction
+  | FetchClientSuccessAction
+  | FetchClientFailureAction
   | CreateClientAction
   | CreateClientSuccessAction
   | CreateClientFailureAction
@@ -132,6 +156,47 @@ export const fetchClients = (token: string, queryParams: Object = {}) => {
       })
       .catch((error: string) => {
         throw error;
+      });
+  };
+};
+
+export const fetchClientRequest = (): FetchClientAction => {
+  return {
+    type: FETCH_CLIENT,
+  };
+};
+
+export const fetchClientSuccess = (
+  payload: Client
+): FetchClientSuccessAction => {
+  return {
+    type: FETCH_CLIENT_SUCCESS,
+    receivedAt: Date.now(),
+    payload,
+  };
+};
+
+export const fetchClientFailure = (
+  error: string
+): FetchClientFailureAction => {
+  return {
+    type: FETCH_CLIENT_FAILURE,
+    error: error,
+  };
+};
+
+export const fetchClient = (token: string, id: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(fetchClientsRequest());
+
+    return clientsApi
+      .getOne('clients', id, token)
+      .then((responseClient: Client) => {
+        dispatch(fetchClientSuccess(responseClient));
+        return responseClient;
+      })
+      .catch((error: string) => {
+        dispatch(fetchClientsFailure('error'));
       });
   };
 };

@@ -15,17 +15,26 @@ export type State = {
 }
 
 const isFetching = (
-  state: IsFetchingState = false,
+  state: IsFetchingState = true,
   action: Action
 ): IsFetchingState => {
   switch (action.type) {
     case 'FETCH_CLIENTS':
       return true;
 
+    case 'FETCH_CLIENT':
+      return true;
+
     case 'FETCH_CLIENTS_SUCCESS':
       return false;
 
+    case 'FETCH_CLIENT_SUCCESS':
+      return false;
+
     case 'FETCH_CLIENTS_FAILURE':
+      return false;
+
+    case 'FETCH_CLIENT_FAILURE':
       return false;
 
     default:
@@ -52,6 +61,14 @@ const clients = (state: ClientsMap = {}, action: Action): ClientsMap => {
         },
       };
 
+    case 'FETCH_CLIENT_SUCCESS':
+      return {
+        ...state,
+        [action.payload.id]: {
+          ...action.payload,
+        },
+      };
+
     case 'FETCH_CLIENTS_SUCCESS':
       if (
         action.payload &&
@@ -74,6 +91,9 @@ const entities = combineReducers({
 const result = (state: ResultState = [], action: Action): ResultState => {
   switch (action.type) {
     case 'CREATE_CLIENT_SUCCESS':
+      return [...state, action.payload.id];
+
+    case 'FETCH_CLIENT_SUCCESS':
       return [...state, action.payload.id];
 
     case 'FETCH_CLIENTS_SUCCESS':

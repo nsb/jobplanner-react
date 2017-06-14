@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchClients } from "../actions/clients";
+import { fetchClient } from "../actions/clients";
 import { navResponsive } from "../actions/nav";
 import ClientDetail from "./ClientDetail";
 import type { Dispatch } from "../types/Store";
@@ -13,19 +13,26 @@ import type { Responsive } from "../actions/nav";
 type Props = {
   business: Business,
   client: Client,
+  clientId: number,
   token: ?string,
   isFetching: boolean,
   dispatch: Dispatch,
-  push: string => void
+  push: string => void,
+  responsive: Responsive
 };
 
 class ClientDetailContainer extends Component {
-  // componentDidMount() {
-  // }
+  componentDidMount() {
+    const {client, clientId, token, dispatch} = this.props;
+    if (!client && token) {
+      dispatch(fetchClient(token, clientId));
+    }
+  }
 
   render() {
-    const { business, client, responsive } = this.props;
-    return (
+    const { business, client, responsive, isFetching } = this.props;
+
+    const clientDetail = (
       <ClientDetail
         business={business}
         client={client}
@@ -35,6 +42,12 @@ class ClientDetailContainer extends Component {
         onResponsive={this.onResponsive}
       />
     );
+
+    const loadingClients = (
+      <div>Loading...</div>
+    )
+
+    return isFetching ? loadingClients : clientDetail
   }
 
   onResponsive = (responsive: Responsive) => {
@@ -67,6 +80,7 @@ const mapStateToProps = (
   return {
     business: businesses.entities.businesses[businessId],
     client: clients.entities.clients[clientId],
+    clientId: clientId,
     isFetching: clients.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch,

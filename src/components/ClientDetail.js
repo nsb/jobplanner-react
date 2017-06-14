@@ -1,23 +1,19 @@
 // @flow
 
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import Split from 'grommet/components/Split';
-import Box from 'grommet/components/Box';
-import Button from 'grommet/components/Button';
-import Article from 'grommet/components/Article';
-import Anchor from 'grommet/components/Anchor';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import Section from 'grommet/components/Section';
-import MoreIcon from 'grommet/components/icons/base/More';
-import LinkPreviousIcon from 'grommet/components/icons/base/LinkPrevious';
-import {rrulestr} from 'rrule';
-import ClientActions from '../components/ClientActions';
-import type {Business} from '../actions/businesses';
-import type {Client} from '../actions/clients';
-import type {State} from '../types/State';
-import type {Dispatch} from '../types/Store';
+import React, { Component } from "react";
+import Split from "grommet/components/Split";
+import Box from "grommet/components/Box";
+import Button from "grommet/components/Button";
+import Article from "grommet/components/Article";
+import Anchor from "grommet/components/Anchor";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
+import Section from "grommet/components/Section";
+import MoreIcon from "grommet/components/icons/base/More";
+import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
+import ClientActions from "../components/ClientActions";
+import type { Business } from "../actions/businesses";
+import type { Client } from "../actions/clients";
 
 class ClientDetail extends Component {
   props: {
@@ -32,20 +28,19 @@ class ClientDetail extends Component {
     showSidebarWhenSingle: boolean
   } = {
     showSidebarWhenSingle: false
-  }
+  };
 
   render() {
-
-    const { client, responsive, onEdit, onResponsive } = this.props;
+    const { business, client, responsive, onEdit, onResponsive } = this.props;
 
     let onSidebarClose;
     let sidebarControl;
 
-    if ('single' === responsive) {
-        sidebarControl = (
-          <Button icon={<MoreIcon />} onClick={this._onToggleSidebar} />
-        );
-        onSidebarClose = this._onToggleSidebar;
+    if ("single" === responsive) {
+      sidebarControl = (
+        <Button icon={<MoreIcon />} onClick={this._onToggleSidebar} />
+      );
+      onSidebarClose = this._onToggleSidebar;
     }
 
     let sidebar;
@@ -54,17 +49,31 @@ class ClientDetail extends Component {
     );
 
     return (
-      <Split flex="left" separator={true}
-        priority={this.state.showSidebarWhenSingle ? 'right' : 'left'}
-        onResponsive={onResponsive}>
+      <Split
+        flex="left"
+        separator={true}
+        priority={this.state.showSidebarWhenSingle ? "right" : "left"}
+        onResponsive={onResponsive}
+      >
 
         <div>
-          <Header pad={{horizontal: "small", vertical: "medium"}}
-            justify="between" size="large" colorIndex="light-2">
-            <Box direction="row" align="center" pad={{between: 'small'}}
-              responsive={false}>
-              <Anchor icon={<LinkPreviousIcon />} path="/1/jobs"
-                a11yTitle="Return" />
+          <Header
+            pad={{ horizontal: "small", vertical: "medium" }}
+            justify="between"
+            size="large"
+            colorIndex="light-2"
+          >
+            <Box
+              direction="row"
+              align="center"
+              pad={{ between: "small" }}
+              responsive={false}
+            >
+              <Anchor
+                icon={<LinkPreviousIcon />}
+                path={`/${business.id}/clients`}
+                a11yTitle="Return"
+              />
               <Heading tag="h1" margin="none">
                 <strong>{`Client ${client.id}`}</strong>
               </Heading>
@@ -82,18 +91,15 @@ class ClientDetail extends Component {
         </div>
         {sidebar}
 
-      </Split
-      >
+      </Split>
     );
   }
 
   _onToggleSidebar = () => {
     this.setState({
-      showSidebarWhenSingle: ! this.state.showSidebarWhenSingle
+      showSidebarWhenSingle: !this.state.showSidebarWhenSingle
     });
-  }
-
-
+  };
 }
 
 export default ClientDetail;
