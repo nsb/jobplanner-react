@@ -108,7 +108,7 @@ class Api {
 
     return fetch(request)
       .then(response => {
-        return response.json();
+        return response;
       })
       .catch((error: string) => {
         throw error;

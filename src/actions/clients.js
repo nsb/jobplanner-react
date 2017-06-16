@@ -1,61 +1,69 @@
 // @flow
-import {push} from 'react-router-redux';
-import {normalize} from 'normalizr';
-import {clientListSchema} from '../schemas';
-import type {Dispatch} from '../types/Store';
-import clientsApi from '../api';
+import { push } from "react-router-redux";
+import { normalize } from "normalizr";
+import { clientListSchema } from "../schemas";
+import type { Dispatch } from "../types/Store";
+import clientsApi from "../api";
 
 //Create new client
-export const CREATE_CLIENT: 'CREATE_CLIENT' = 'CREATE_CLIENT';
-export const CREATE_CLIENT_SUCCESS: 'CREATE_CLIENT_SUCCESS' =
-  'CREATE_CLIENT_SUCCESS';
-export const CREATE_CLIENT_FAILURE: 'CREATE_CLIENT_FAILURE' =
-  'CREATE_CLIENT_FAILURE';
+export const CREATE_CLIENT: "CREATE_CLIENT" = "CREATE_CLIENT";
+export const CREATE_CLIENT_SUCCESS: "CREATE_CLIENT_SUCCESS" =
+  "CREATE_CLIENT_SUCCESS";
+export const CREATE_CLIENT_FAILURE: "CREATE_CLIENT_FAILURE" =
+  "CREATE_CLIENT_FAILURE";
 
 //Fetch clients
-export const FETCH_CLIENTS: 'FETCH_CLIENTS' = 'FETCH_CLIENTS';
-export const FETCH_CLIENTS_SUCCESS: 'FETCH_CLIENTS_SUCCESS' =
-  'FETCH_CLIENTS_SUCCESS';
-export const FETCH_CLIENTS_FAILURE: 'FETCH_CLIENTS_FAILURE' =
-  'FETCH_CLIENTS_FAILURE';
+export const FETCH_CLIENTS: "FETCH_CLIENTS" = "FETCH_CLIENTS";
+export const FETCH_CLIENTS_SUCCESS: "FETCH_CLIENTS_SUCCESS" =
+  "FETCH_CLIENTS_SUCCESS";
+export const FETCH_CLIENTS_FAILURE: "FETCH_CLIENTS_FAILURE" =
+  "FETCH_CLIENTS_FAILURE";
 
-export const FETCH_CLIENT: 'FETCH_CLIENT' = 'FETCH_CLIENT';
-export const FETCH_CLIENT_SUCCESS: 'FETCH_CLIENT_SUCCESS' =
-  'FETCH_CLIENT_SUCCESS';
-export const FETCH_CLIENT_FAILURE: 'FETCH_CLIENT_FAILURE' =
-  'FETCH_CLIENT_FAILURE';
+export const FETCH_CLIENT: "FETCH_CLIENT" = "FETCH_CLIENT";
+export const FETCH_CLIENT_SUCCESS: "FETCH_CLIENT_SUCCESS" =
+  "FETCH_CLIENT_SUCCESS";
+export const FETCH_CLIENT_FAILURE: "FETCH_CLIENT_FAILURE" =
+  "FETCH_CLIENT_FAILURE";
 
 //Update client
-export const UPDATE_CLIENT: 'UPDATE_CLIENT' = 'UPDATE_CLIENT';
-export const UPDATE_CLIENT_SUCCESS: 'UPDATE_CLIENT_SUCCESS' =
-  'UPDATE_CLIENT_SUCCESS';
-export const UPDATE_CLIENT_FAILURE: 'UPDATE_CLIENT_FAILURE' =
-  'UPDATE_CLIENT_FAILURE';
+export const UPDATE_CLIENT: "UPDATE_CLIENT" = "UPDATE_CLIENT";
+export const UPDATE_CLIENT_SUCCESS: "UPDATE_CLIENT_SUCCESS" =
+  "UPDATE_CLIENT_SUCCESS";
+export const UPDATE_CLIENT_FAILURE: "UPDATE_CLIENT_FAILURE" =
+  "UPDATE_CLIENT_FAILURE";
+
+//Delete client
+export const DELETE_CLIENT: "DELETE_CLIENT" = "DELETE_CLIENT";
+export const DELETE_CLIENT_SUCCESS: "DELETE_CLIENT_SUCCESS" =
+  "DELETE_CLIENT_SUCCESS";
+export const DELETE_CLIENT_FAILURE: "DELETE_CLIENT_FAILURE" =
+  "DELETE_CLIENT_FAILURE";
 
 export type Client = {
   id: number,
+  business: number,
   first_name: string,
-  last_name: string,
+  last_name: string
 };
 
-export type ClientsMap = {[id: number]: Client};
+export type ClientsMap = { [id: number]: Client };
 
 type FetchClientsAction = {
-  type: typeof FETCH_CLIENTS,
+  type: typeof FETCH_CLIENTS
 };
 
 type FetchClientsSuccessAction = {
   type: typeof FETCH_CLIENTS_SUCCESS,
-  payload: {entities: {clients: ClientsMap}, result: Array<number>},
+  payload: { entities: { clients: ClientsMap }, result: Array<number> }
 };
 
 type FetchClientsFailureAction = {
   type: typeof FETCH_CLIENTS_FAILURE,
-  error: string,
+  error: string
 };
 
 type FetchClientAction = {
-  type: typeof FETCH_CLIENT,
+  type: typeof FETCH_CLIENT
 };
 
 type FetchClientSuccessAction = {
@@ -65,41 +73,56 @@ type FetchClientSuccessAction = {
 
 type FetchClientFailureAction = {
   type: typeof FETCH_CLIENT_FAILURE,
-  error: string,
+  error: string
 };
-
 
 type CreateClientAction = {
   type: typeof CREATE_CLIENT,
-  payload: Client,
+  payload: Client
 };
 
 type CreateClientSuccessAction = {
   type: typeof CREATE_CLIENT_SUCCESS,
-  payload: Client,
+  payload: Client
 };
 
 type CreateClientFailureAction = {
   type: typeof CREATE_CLIENT_FAILURE,
   payload: Client,
-  error: string,
+  error: string
 };
 
 type UpdateClientAction = {
   type: typeof UPDATE_CLIENT,
-  payload: Client,
+  payload: Client
 };
 
 type UpdateClientSuccessAction = {
   type: typeof UPDATE_CLIENT_SUCCESS,
-  payload: Client,
+  payload: Client
 };
 
 type UpdateClientFailureAction = {
   type: typeof UPDATE_CLIENT_FAILURE,
   payload: Client,
-  error: string,
+  error: string
 };
+
+type DeleteClientAction = {
+  type: typeof DELETE_CLIENT,
+  payload: Client
+};
+
+type DeleteClientSuccessAction = {
+  type: typeof DELETE_CLIENT_SUCCESS,
+  payload: Client
+};
+
+type DeleteClientFailureAction = {
+  type: typeof DELETE_CLIENT_FAILURE,
+  payload: Client,
+  error: string
+}
 
 export type Action =
   | FetchClientsAction
@@ -113,11 +136,14 @@ export type Action =
   | CreateClientFailureAction
   | UpdateClientAction
   | UpdateClientSuccessAction
-  | UpdateClientFailureAction;
+  | UpdateClientFailureAction
+  | DeleteClientAction
+  | DeleteClientSuccessAction
+  | DeleteClientFailureAction;
 
 export const fetchClientsRequest = (): FetchClientsAction => {
   return {
-    type: FETCH_CLIENTS,
+    type: FETCH_CLIENTS
   };
 };
 
@@ -127,7 +153,7 @@ export const fetchClientsSuccess = (
   return {
     type: FETCH_CLIENTS_SUCCESS,
     payload: normalize(clients, clientListSchema),
-    receivedAt: Date.now(),
+    receivedAt: Date.now()
   };
 };
 
@@ -136,7 +162,7 @@ export const fetchClientsFailure = (
 ): FetchClientsFailureAction => {
   return {
     type: FETCH_CLIENTS_FAILURE,
-    error: error,
+    error: error
   };
 };
 
@@ -145,12 +171,12 @@ export const fetchClients = (token: string, queryParams: Object = {}) => {
     dispatch(fetchClientsRequest());
 
     return clientsApi
-      .getAll('clients', token, queryParams)
+      .getAll("clients", token, queryParams)
       .then((responseClients: Array<Client>) => {
         if (Array.isArray(responseClients)) {
           dispatch(fetchClientsSuccess(responseClients));
         } else {
-          dispatch(fetchClientsFailure('error'));
+          dispatch(fetchClientsFailure("error"));
         }
         return responseClients;
       })
@@ -162,7 +188,7 @@ export const fetchClients = (token: string, queryParams: Object = {}) => {
 
 export const fetchClientRequest = (): FetchClientAction => {
   return {
-    type: FETCH_CLIENT,
+    type: FETCH_CLIENT
   };
 };
 
@@ -172,16 +198,14 @@ export const fetchClientSuccess = (
   return {
     type: FETCH_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload,
+    payload
   };
 };
 
-export const fetchClientFailure = (
-  error: string
-): FetchClientFailureAction => {
+export const fetchClientFailure = (error: string): FetchClientFailureAction => {
   return {
     type: FETCH_CLIENT_FAILURE,
-    error: error,
+    error: error
   };
 };
 
@@ -190,13 +214,13 @@ export const fetchClient = (token: string, id: number) => {
     dispatch(fetchClientsRequest());
 
     return clientsApi
-      .getOne('clients', id, token)
+      .getOne("clients", id, token)
       .then((responseClient: Client) => {
         dispatch(fetchClientSuccess(responseClient));
         return responseClient;
       })
       .catch((error: string) => {
-        dispatch(fetchClientsFailure('error'));
+        dispatch(fetchClientsFailure("error"));
       });
   };
 };
@@ -204,7 +228,7 @@ export const fetchClient = (token: string, id: number) => {
 export const createClientRequest = (payload: Client): CreateClientAction => {
   return {
     type: CREATE_CLIENT,
-    payload,
+    payload
   };
 };
 
@@ -214,7 +238,7 @@ export const createClientSuccess = (
   return {
     type: CREATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload,
+    payload
   };
 };
 
@@ -225,7 +249,7 @@ export const createClientError = (
   return {
     type: CREATE_CLIENT_FAILURE,
     error,
-    payload,
+    payload
   };
 };
 
@@ -238,7 +262,7 @@ export const createClient = (
     dispatch(createClientRequest(client));
 
     return clientsApi
-      .create('clients', client, token)
+      .create("clients", client, token)
       .then((responseClient: Client) => {
         dispatch(createClientSuccess(responseClient));
         dispatch(push(`/${business.id}/clients/${responseClient.id}`));
@@ -253,7 +277,7 @@ export const createClient = (
 export const updateClientRequest = (payload: Client): UpdateClientAction => {
   return {
     type: UPDATE_CLIENT,
-    payload,
+    payload
   };
 };
 
@@ -263,7 +287,7 @@ export const updateClientSuccess = (
   return {
     type: UPDATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload,
+    payload
   };
 };
 
@@ -274,7 +298,7 @@ export const updateClientError = (
   return {
     type: UPDATE_CLIENT_FAILURE,
     error,
-    payload,
+    payload
   };
 };
 
@@ -283,13 +307,60 @@ export const updateClient = (client: Client, token: string) => {
     dispatch(updateClientRequest(client));
 
     return clientsApi
-      .update('clients', client, token)
+      .update("clients", client, token)
       .then((responseClient: Client) => {
         dispatch(updateClientSuccess(responseClient));
         return responseClient;
       })
       .catch((error: string) => {
         dispatch(updateClientError(client, error));
+      });
+  };
+};
+
+export const deleteClientRequest = (payload: Client): DeleteClientAction => {
+  return {
+    type: DELETE_CLIENT,
+    payload
+  };
+};
+
+export const deleteClientSuccess = (
+  payload: Client
+): DeleteClientSuccessAction => {
+  return {
+    type: DELETE_CLIENT_SUCCESS,
+    receivedAt: Date.now(),
+    payload
+  };
+};
+
+export const deleteClientError = (
+  payload: Client,
+  error: string
+): DeleteClientFailureAction => {
+  return {
+    type: DELETE_CLIENT_FAILURE,
+    error,
+    payload
+  };
+};
+
+export const deleteClient = (
+  client: Client,
+  token: string
+) => {
+  return (dispatch: Dispatch) => {
+    dispatch(deleteClientRequest(client));
+
+    return clientsApi
+      .delete("clients", client, token)
+      .then(() => {
+        dispatch(deleteClientSuccess(client));
+        dispatch(push(`/${client.business}/clients`));
+      })
+      .catch((error: string) => {
+        dispatch(deleteClientError(client, error));
       });
   };
 };

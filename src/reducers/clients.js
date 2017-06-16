@@ -79,6 +79,11 @@ const clients = (state: ClientsMap = {}, action: Action): ClientsMap => {
       }
       return state;
 
+    case 'DELETE_CLIENT_SUCCESS':
+      const newState = { ...state };
+      delete newState[action.payload.id];
+      return newState;
+
     default:
       return state;
   }
@@ -102,6 +107,11 @@ const result = (state: ResultState = [], action: Action): ResultState => {
       } else {
         return state;
       }
+
+    case 'DELETE_CLIENT_SUCCESS':
+      const newState = [...state];
+      newState.splice(state.indexOf(action.payload.id), 1);
+      return newState;
 
     default:
       return state;
