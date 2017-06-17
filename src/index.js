@@ -6,13 +6,14 @@ import {createStore, applyMiddleware} from 'redux';
 // import {Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import {createLogger} from 'redux-logger';
-import createHistory from 'history/createBrowserHistory';
-import {BrowserRouter} from 'react-router-dom';
+// import createHistory from 'history/createBrowserHistory';
+import {Router} from 'react-router-dom';
 // import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly';
 // import NetworkListener from 'redux-queue-offline-listener';
 import {Provider} from 'react-intl-redux';
 import {addLocaleData} from 'react-intl';
+import history from './history';
 import en from 'react-intl/locale-data/en';
 import da from 'react-intl/locale-data/da';
 import type {Store} from './types/Store';
@@ -63,7 +64,7 @@ if ('serviceWorker' in navigator) {
 // Create an enhanced history that syncs navigation events with the store
 // const history = syncHistoryWithStore(browserHistory, store);
 // const history = syncHistoryWithStore(createBrowserHistory(), store);
-const history = createHistory();
+// const history = createHistory();
 
 const middleware = [thunkMiddleware];
 if (process.env.NODE_ENV !== 'production') {
@@ -98,9 +99,9 @@ ReactDOM.render(
   <Provider
     store={store}
   >
-    <BrowserRouter history={history}>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

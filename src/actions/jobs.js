@@ -3,6 +3,7 @@ import {normalize} from 'normalizr';
 import {jobListSchema} from '../schemas';
 import jobsApi from '../api';
 import type {Dispatch} from '../types/Store';
+import history from '../history';
 
 //Create new job
 export const CREATE_JOB: 'CREATE_JOB' = 'CREATE_JOB';
@@ -170,12 +171,8 @@ export const createJob = (job: Job, token: string) => {
     return jobsApi
       .create('jobs', job, token)
       .then((responseJob: Job) => {
-        if (responseJob.id) {
-          dispatch(createJobSuccess(responseJob));
-          // dispatch(push(`/${business.id}/jobs/${responseJob.id}`))
-        } else {
-          dispatch(createJobError('error'));
-        }
+        dispatch(createJobSuccess(responseJob));
+        // history.push(`/${business.id}/jobs/${responseJob.id}`)
         return responseJob;
       })
       .catch((error: string) => {

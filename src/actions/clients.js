@@ -1,9 +1,9 @@
 // @flow
-import { push } from "react-router-redux";
 import { normalize } from "normalizr";
 import { clientListSchema } from "../schemas";
 import type { Dispatch } from "../types/Store";
 import clientsApi from "../api";
+import history from '../history';
 
 //Create new client
 export const CREATE_CLIENT: "CREATE_CLIENT" = "CREATE_CLIENT";
@@ -265,7 +265,7 @@ export const createClient = (
       .create("clients", client, token)
       .then((responseClient: Client) => {
         dispatch(createClientSuccess(responseClient));
-        dispatch(push(`/${business.id}/clients/${responseClient.id}`));
+        history.push(`/${business.id}/clients/${responseClient.id}`);
         return responseClient;
       })
       .catch((error: string) => {
@@ -357,7 +357,7 @@ export const deleteClient = (
       .delete("clients", client, token)
       .then(() => {
         dispatch(deleteClientSuccess(client));
-        dispatch(push(`/${client.business}/clients`));
+        history.push(`/${client.business}/clients`);
       })
       .catch((error: string) => {
         dispatch(deleteClientError(client, error));

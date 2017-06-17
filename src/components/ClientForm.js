@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {Field, FieldArray, reduxForm} from 'redux-form';
+import Section from 'grommet/components/Section';
 import Anchor from 'grommet/components/Anchor';
 import Button from 'grommet/components/Button';
 import Header from 'grommet/components/Header';
@@ -31,13 +32,13 @@ const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
 );
 
 const renderProperties = ({ fields, meta: { error, submitFailed } }) => (
-  <ul>
-    <li>
+  <Section>
+    <div>
       <button type="button" onClick={() => fields.push({})}>Add Property</button>
       {submitFailed && error && <span>{error}</span>}
-    </li>
+    </div>
     {fields.map((property, index) => (
-      <li key={index}>
+      <div key={index}>
         <button
           type="button"
           title="Remove Property"
@@ -56,9 +57,9 @@ const renderProperties = ({ fields, meta: { error, submitFailed } }) => (
           component={renderField}
           label="Address 2"
         />
-      </li>
+      </div>
     ))}
-  </ul>
+  </Section>
 )
 
 type Props = {
