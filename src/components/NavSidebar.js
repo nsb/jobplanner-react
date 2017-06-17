@@ -44,8 +44,8 @@ class NavSidebar extends Component<void, Props, void> {
           />
         </Header>
         <Menu fill={true} primary={true}>
-          <Anchor key="dashboard" path="/" label="Dashboard" />
-          <Anchor key="calendar" path="/calendar" label="Calendar" />
+          <Anchor key="dashboard" path={`/${business.id}/dashboard`} label="Dashboard" />
+          <Anchor key="calendar" path={`/${business.id}/calendar`} label="Calendar" />
           <Anchor
             key="clients"
             path={`/${business.id}/clients`}
