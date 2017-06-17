@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import {Field, reduxForm} from 'redux-form';
+import {Field, FieldArray, reduxForm} from 'redux-form';
 import Anchor from 'grommet/components/Anchor';
 import Button from 'grommet/components/Button';
 import Header from 'grommet/components/Header';
@@ -29,6 +29,37 @@ const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
     <input {...input} type={type} />
   </FormField>
 );
+
+const renderProperties = ({ fields, meta: { error, submitFailed } }) => (
+  <ul>
+    <li>
+      <button type="button" onClick={() => fields.push({})}>Add Property</button>
+      {submitFailed && error && <span>{error}</span>}
+    </li>
+    {fields.map((property, index) => (
+      <li key={index}>
+        <button
+          type="button"
+          title="Remove Property"
+          onClick={() => fields.remove(index)}
+        />
+        <h4>Propterty #{index + 1}</h4>
+        <Field
+          name={`${property}.address1`}
+          type="text"
+          component={renderField}
+          label="Address 1"
+        />
+        <Field
+          name={`${property}.address2`}
+          type="text"
+          component={renderField}
+          label="Address 2"
+        />
+      </li>
+    ))}
+  </ul>
+)
 
 type Props = {
   handleSubmit: Function,
@@ -74,6 +105,11 @@ const ClientForm = (props: Props) => {
             label="Last Name"
             component={renderField}
             type="text"
+          />
+          <FieldArray
+            name="properties"
+            label="Properties"
+            component={renderProperties}
           />
 
         </fieldset>
