@@ -93,6 +93,7 @@ class JobList extends Component {
               label="Add job"
               primary={true}
               a11yTitle={`Add job`}
+              path={`/${business.id}/jobs/add`}
             />
           }
         />
