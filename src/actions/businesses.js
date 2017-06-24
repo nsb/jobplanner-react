@@ -1,9 +1,9 @@
 // @flow
-// import {push} from 'react-router-redux';
 import {normalize} from 'normalizr';
 import {businessListSchema} from '../schemas';
 import businessesApi from '../api';
 import type {Dispatch} from '../types/Store';
+import history from '../history';
 
 //Create new business
 export const CREATE_BUSINESS: 'CREATE_BUSINESS' = 'CREATE_BUSINESS';
@@ -153,7 +153,7 @@ export const createBusiness = (
       .then((responseBusiness: Business) => {
         if (responseBusiness.id) {
           dispatch(createBusinessSuccess(responseBusiness));
-          // dispatch(push(`/${responseBusiness.id}`));
+          history.push(`/${responseBusiness.id}`);
         } else {
           dispatch(createBusinessError('error'));
         }

@@ -3,7 +3,6 @@ import {normalize} from 'normalizr';
 import {jobListSchema} from '../schemas';
 import jobsApi from '../api';
 import type {Dispatch} from '../types/Store';
-import history from '../history';
 
 //Create new job
 export const CREATE_JOB: 'CREATE_JOB' = 'CREATE_JOB';
