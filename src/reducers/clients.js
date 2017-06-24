@@ -62,12 +62,14 @@ const clients = (state: ClientsMap = {}, action: Action): ClientsMap => {
       };
 
     case 'FETCH_CLIENT_SUCCESS':
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...action.payload,
-        },
-      };
+      if (
+        action.payload &&
+        action.payload.entities &&
+        action.payload.entities.clients
+      ) {
+        return merge({}, state, action.payload.entities.clients);
+      }
+      return state
 
     case 'FETCH_CLIENTS_SUCCESS':
       if (
@@ -99,7 +101,11 @@ const result = (state: ResultState = [], action: Action): ResultState => {
       return [...state, action.payload.id];
 
     case 'FETCH_CLIENT_SUCCESS':
-      return [...state, action.payload.id];
+      if (action.payload && action.payload.result) {
+        return merge([], state, action.payload.result);
+      } else {
+        return state;
+      }
 
     case 'FETCH_CLIENTS_SUCCESS':
       if (action.payload && action.payload.result) {

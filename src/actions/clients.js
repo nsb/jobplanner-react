@@ -198,7 +198,7 @@ export const fetchClientSuccess = (
   return {
     type: FETCH_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload
+    payload: normalize([payload], clientListSchema),
   };
 };
 
