@@ -120,7 +120,7 @@ const mapStateToProps = (
     history: {push: string => void},
   }
 ) => {
-  const {auth, businesses, clients, jobs, nav} = state;
+  const {auth, businesses, entities, clients, jobs, nav} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
 
@@ -129,7 +129,7 @@ const mapStateToProps = (
     business: businesses.entities.businesses[businessId],
     job: jobs.entities.jobs[jobId],
     clients: clients.result.map(Id => {
-      return clients.entities.clients[Id];
+      return entities.clients[Id];
     }),
     push: ownProps.history.push,
     responsive: nav.responsive

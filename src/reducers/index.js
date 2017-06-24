@@ -10,6 +10,7 @@ import clients from './clients';
 import network from './network';
 import users from './users';
 import jobs from './jobs';
+import entities from './entities';
 
 const reducers = {
   router: routerReducer,
@@ -22,6 +23,7 @@ const reducers = {
   network,
   users,
   jobs,
+  entities
 };
 
 export type Reducers = typeof reducers;

@@ -86,13 +86,13 @@ const mapStateToProps = (
     dispatch: Dispatch,
   }
 ): Props => {
-  const {businesses, clients, auth} = state;
+  const {businesses, clients, entities, auth} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     business: businesses.entities.businesses[businessId],
     clients: clients.result.map((Id: number) => {
-      return clients.entities.clients[Id];
+      return entities.clients[Id];
     }),
     isFetching: clients.isFetching,
     token: auth.token,

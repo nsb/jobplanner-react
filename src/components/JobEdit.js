@@ -10,22 +10,24 @@ import type { State } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
+import type { State as EntitiesState } from '../reducers/entities';
 
 class JobEdit extends Component {
   props: {
     token?: string,
     business: Business,
     clients: ClientsState,
+    entities: EntitiesState,
     updateJob: (d: Dispatch) => Promise<Job>,
     job: Job,
     push: string => void
   };
 
   render() {
-    const { clients, job } = this.props;
-    const client = clients.entities.clients[job.client];
+    const { clients, entities, job } = this.props;
+    const client = entities.clients[job.client];
     const clientList = clients.result.map(Id => {
-      return clients.entities.clients[Id];
+      return entities.clients[Id];
     });
 
     return (
@@ -73,7 +75,7 @@ const mapStateToProps = (
     history: { push: string => void }
   }
 ) => {
-  const { auth, businesses, clients, jobs } = state;
+  const { auth, businesses, clients, entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
 
@@ -82,7 +84,8 @@ const mapStateToProps = (
     business: businesses.entities.businesses[businessId],
     job: jobs.entities.jobs[jobId],
     push: ownProps.history.push,
-    clients
+    clients,
+    entities
   };
 };
 

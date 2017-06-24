@@ -9,9 +9,9 @@ type ResultState = Array<number>;
 export type State = {
   isFetching: IsFetchingState,
   result: ResultState,
-  entities: {
-    clients: ClientsState
-  }
+  // entities: {
+  //   clients: ClientsState
+  // }
 }
 
 const isFetching = (
@@ -42,58 +42,58 @@ const isFetching = (
   }
 };
 
-const clients = (state: ClientsMap = {}, action: Action): ClientsMap => {
-  switch (action.type) {
-    case 'CREATE_CLIENT_SUCCESS':
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...action.payload,
-        },
-      };
-
-    case 'UPDATE_CLIENT_SUCCESS':
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...state[action.payload.id],
-          ...action.payload,
-        },
-      };
-
-    case 'FETCH_CLIENT_SUCCESS':
-      if (
-        action.payload &&
-        action.payload.entities &&
-        action.payload.entities.clients
-      ) {
-        return merge({}, state, action.payload.entities.clients);
-      }
-      return state
-
-    case 'FETCH_CLIENTS_SUCCESS':
-      if (
-        action.payload &&
-        action.payload.entities &&
-        action.payload.entities.clients
-      ) {
-        return merge({}, state, action.payload.entities.clients);
-      }
-      return state;
-
-    case 'DELETE_CLIENT_SUCCESS':
-      const newState = { ...state };
-      delete newState[action.payload.id];
-      return newState;
-
-    default:
-      return state;
-  }
-};
-
-const entities = combineReducers({
-  clients,
-});
+// const clients = (state: ClientsMap = {}, action: Action): ClientsMap => {
+//   switch (action.type) {
+//     case 'CREATE_CLIENT_SUCCESS':
+//       return {
+//         ...state,
+//         [action.payload.id]: {
+//           ...action.payload,
+//         },
+//       };
+//
+//     case 'UPDATE_CLIENT_SUCCESS':
+//       return {
+//         ...state,
+//         [action.payload.id]: {
+//           ...state[action.payload.id],
+//           ...action.payload,
+//         },
+//       };
+//
+//     case 'FETCH_CLIENT_SUCCESS':
+//       if (
+//         action.payload &&
+//         action.payload.entities &&
+//         action.payload.entities.clients
+//       ) {
+//         return merge({}, state, action.payload.entities.clients);
+//       }
+//       return state
+//
+//     case 'FETCH_CLIENTS_SUCCESS':
+//       if (
+//         action.payload &&
+//         action.payload.entities &&
+//         action.payload.entities.clients
+//       ) {
+//         return merge({}, state, action.payload.entities.clients);
+//       }
+//       return state;
+//
+//     case 'DELETE_CLIENT_SUCCESS':
+//       const newState = { ...state };
+//       delete newState[action.payload.id];
+//       return newState;
+//
+//     default:
+//       return state;
+//   }
+// };
+//
+// const entities = combineReducers({
+//   clients,
+// });
 
 const result = (state: ResultState = [], action: Action): ResultState => {
   switch (action.type) {
@@ -126,6 +126,6 @@ const result = (state: ResultState = [], action: Action): ResultState => {
 
 export default combineReducers({
   isFetching,
-  entities,
+  // entities,
   result,
 });
