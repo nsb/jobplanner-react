@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { denormalize, schema } from 'normalizr';
+import { denormalize } from 'normalizr';
 import { clientSchema } from '../schemas';
 import Article from 'grommet/components/Article';
 import ClientForm from './ClientForm';
