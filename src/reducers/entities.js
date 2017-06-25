@@ -11,7 +11,8 @@ export type State = {
   properties: PropertiesState
 };
 
-type Action = ClientsAction;
+type Action =
+  | ClientsAction;
 
 // Updates an entity cache in response to any action with entities.
 const entities = (
