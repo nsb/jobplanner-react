@@ -46,6 +46,11 @@ const renderProperties = ({ fields, meta: { error, submitFailed } }) => (
         />
         <h4>Propterty #{index + 1}</h4>
         <Field
+          name={`${property}.id`}
+          type="hidden"
+          component={renderField}
+        />
+        <Field
           name={`${property}.address1`}
           type="text"
           component={renderField}

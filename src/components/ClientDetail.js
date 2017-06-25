@@ -14,11 +14,13 @@ import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import ClientActions from "../components/ClientActions";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
+import type { PropertiesMap } from "../actions/properties";
 
 class ClientDetail extends Component {
   props: {
     business: Business,
     client: Client,
+    properties: PropertiesMap,
     responsive: boolean,
     onEdit: Function,
     onResponsive: Function

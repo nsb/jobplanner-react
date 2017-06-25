@@ -3,18 +3,22 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import { denormalize, schema } from 'normalizr';
+import { clientSchema } from '../schemas';
 import Article from 'grommet/components/Article';
 import ClientForm from './ClientForm';
 import {updateClient} from '../actions/clients';
 import type {Business} from '../actions/businesses';
 import type {Client} from '../actions/clients';
 import type {State} from '../types/State';
+import type {PropertiesMap} from '../actions/properties';
 
 class ClientEdit extends Component {
   props: {
     token?: string,
     business: Business,
     client: Client,
+    properties: PropertiesMap,
     updateClient: (d: Dispatch) => Promise<Client>,
     push: string => void,
   };
@@ -66,7 +70,8 @@ const mapStateToProps = (
   return {
     token: auth.token,
     business: businesses.entities.businesses[businessId],
-    client: entities.clients[clientId],
+    client: denormalize(entities.clients[clientId], clientSchema, entities),
+    properties: entities.properties,
     push: ownProps.history.push
   };
 };

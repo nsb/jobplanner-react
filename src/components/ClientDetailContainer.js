@@ -30,12 +30,13 @@ class ClientDetailContainer extends Component {
   }
 
   render() {
-    const { business, client, responsive, isFetching } = this.props;
+    const { business, client, properties, responsive, isFetching } = this.props;
 
     const clientDetail = (
       <ClientDetail
         business={business}
         client={client}
+        properties={properties}
         responsive={responsive}
         onEdit={this.onEdit}
         onClose={this.onClose}
@@ -80,6 +81,7 @@ const mapStateToProps = (
   return {
     business: businesses.entities.businesses[businessId],
     client: entities.clients[clientId],
+    properties: entities.properties,
     clientId: clientId,
     isFetching: clients.isFetching,
     token: auth.token,

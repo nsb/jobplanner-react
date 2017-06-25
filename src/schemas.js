@@ -7,7 +7,7 @@ export const businessListSchema = new schema.Array(businessSchema);
 const property = new schema.Entity('properties');
 const quote = new schema.Entity('quote');
 
-const clientSchema = new schema.Entity('clients', {
+export const clientSchema = new schema.Entity('clients', {
   properties: [property],
   quotes: [quote],
 });
