@@ -1,10 +1,9 @@
 // @flow
 import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
-import type {Action, ClientsMap} from '../actions/clients';
+import type {Action} from '../actions/clients';
 
 type IsFetchingState = boolean;
-type ClientsState = ClientsMap;
 type ResultState = Array<number>;
 export type State = {
   isFetching: IsFetchingState,
