@@ -1,4 +1,4 @@
-// flow-typed signature: 348f9b3daac9dd60283d833e818a0708
+// flow-typed signature: ea90bc79136461c196a454575aa432be
 // flow-typed version: <<STUB>>/url-search-params-polyfill_v^1.0.2/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

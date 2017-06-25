@@ -1,4 +1,4 @@
-// flow-typed signature: 63dfd8b40a3e12678aa40baf008e2f14
+// flow-typed signature: b34084bec27b2c56690f88c90dcf9abf
 // flow-typed version: <<STUB>>/gzip-size_v3.0.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

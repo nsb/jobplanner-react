@@ -1,4 +1,4 @@
-// flow-typed signature: 1fdf62cc0147d17503db363c7b75e437
+// flow-typed signature: 94aa92c5bf751f803477cddbf9e19d65
 // flow-typed version: <<STUB>>/webpack-bundle-analyzer_v^2.2.1/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

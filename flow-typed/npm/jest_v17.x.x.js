@@ -1,5 +1,5 @@
-// flow-typed signature: ad5f5c404d7e7026ea5b28412235dd5c
-// flow-typed version: c17c09b83f/jest_v17.x.x/flow_>=v0.33.x
+// flow-typed signature: 557f2c2757f1091e6a9017913e2261bd
+// flow-typed version: fcaf13fb04/jest_v17.x.x/flow_>=v0.33.x
 
 type JestMockFn = {
   (...args: Array<any>): any,
@@ -77,7 +77,7 @@ type JestCallsType = {
 type JestClockType = {
   install(): void,
   mockDate(date: Date): void,
-  tick(): void,
+  tick(milliseconds?:number): void,
   uninstall(): void,
 }
 

@@ -1,4 +1,4 @@
-// flow-typed signature: ec567245dfa3f4f795b88a5aa4568d97
+// flow-typed signature: c7d15fd4dbf2b4683bb4f0f24d892a8b
 // flow-typed version: <<STUB>>/css-module-flow_v^1.0.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

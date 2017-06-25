@@ -1,4 +1,4 @@
-// flow-typed signature: 48899ed6ce5d4467e3170283d8a8ee26
+// flow-typed signature: 3ada1148c18af75291772f7d1068063f
 // flow-typed version: <<STUB>>/grommet-addons_v^0.3.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

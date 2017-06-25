@@ -1,4 +1,4 @@
-// flow-typed signature: c8b7ae4248485405fef7f2d6259a4c16
+// flow-typed signature: eed1bf519b85f38650dda69d1ddf0486
 // flow-typed version: <<STUB>>/eslint-config-react-app_v^0.5.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

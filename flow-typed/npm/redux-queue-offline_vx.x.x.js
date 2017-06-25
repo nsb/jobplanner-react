@@ -1,4 +1,4 @@
-// flow-typed signature: f9893475ccc61a3e917b1ccfd347cc6c
+// flow-typed signature: f154acbb6d7e6dbe032d4d5fabfe5685
 // flow-typed version: <<STUB>>/redux-queue-offline_v^0.4.2/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

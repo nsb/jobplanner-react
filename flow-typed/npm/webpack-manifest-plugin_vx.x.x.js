@@ -1,4 +1,4 @@
-// flow-typed signature: 190f11b6e6dbed9220f7e4b893a81f0a
+// flow-typed signature: 5e796526aa9e868921dadc50a090b527
 // flow-typed version: <<STUB>>/webpack-manifest-plugin_v1.1.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

@@ -1,4 +1,4 @@
-// flow-typed signature: 59ffd142f652488f5d43a5704fd7d9fa
+// flow-typed signature: a20070c0ca9df6549e83a1fa437a7d2a
 // flow-typed version: <<STUB>>/fs-extra_v0.30.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

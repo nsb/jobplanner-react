@@ -1,4 +1,4 @@
-// flow-typed signature: a6de94dd0483f6fa29417b0456ec76e4
+// flow-typed signature: 32302b6a7e98cc1b13282c2cf4d044e7
 // flow-typed version: <<STUB>>/serviceworker-webpack-plugin_v^0.1.8/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

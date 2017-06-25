@@ -1,4 +1,4 @@
-// flow-typed signature: aafe26892209a0fcba8bc2adcb40c4d7
+// flow-typed signature: a33cd7dcb963799829d1f01d0e5e51d0
 // flow-typed version: <<STUB>>/react-intl_v^2.2.3/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

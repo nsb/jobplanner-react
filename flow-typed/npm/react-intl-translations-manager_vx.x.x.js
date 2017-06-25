@@ -1,4 +1,4 @@
-// flow-typed signature: 62a7b8a32872f7c257cc05e42141fcac
+// flow-typed signature: 70bf4f1f44d5eac4c58d50eb10ea61e0
 // flow-typed version: <<STUB>>/react-intl-translations-manager_v^5.0.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

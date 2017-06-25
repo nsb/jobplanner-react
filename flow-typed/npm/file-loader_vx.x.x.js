@@ -1,4 +1,4 @@
-// flow-typed signature: d616c8c0e9ec484e2bb7281113c4ff74
+// flow-typed signature: 8b25b5913ec85ba36e8f0ac0064751f1
 // flow-typed version: <<STUB>>/file-loader_v0.9.0/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

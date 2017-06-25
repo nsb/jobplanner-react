@@ -1,4 +1,4 @@
-// flow-typed signature: 2425d0eec713917032462a4a5eaa1cd1
+// flow-typed signature: ec497161a01d6eb0f4969945017b9614
 // flow-typed version: <<STUB>>/babel-preset-react-app_v^2.0.1/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

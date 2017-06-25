@@ -1,4 +1,4 @@
-// flow-typed signature: bc6c0b5f5cf3a4d56e98fcd96fbc75b7
+// flow-typed signature: caee2be1d3345764457e20c85936340c
 // flow-typed version: <<STUB>>/react-dev-utils_v^0.4.2/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

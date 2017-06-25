@@ -1,4 +1,4 @@
-// flow-typed signature: 6ac21e01ca2d83e20829b6323068a62e
+// flow-typed signature: 5cdf16a06b409f7cda615115a2b1c3af
 // flow-typed version: <<STUB>>/babel-plugin-react-intl_v^2.3.1/flow_v0.44.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 
