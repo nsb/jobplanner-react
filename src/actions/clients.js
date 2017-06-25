@@ -287,7 +287,7 @@ export const updateClientSuccess = (
   return {
     type: UPDATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload
+    payload: normalize([payload], clientListSchema),
   };
 };
 
