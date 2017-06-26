@@ -1,7 +1,7 @@
 // @flow
 import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
-import type {Action, JobsMap} from '../actions/jobs';
+import type {Action} from '../actions/jobs';
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
@@ -28,43 +28,43 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
   }
 };
 
-const jobs = (state: JobsMap = {}, action: Action): JobsMap => {
-  switch (action.type) {
-    case 'CREATE_JOB_SUCCESS':
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...action.payload,
-        },
-      };
-
-    case 'UPDATE_JOB_SUCCESS':
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...state[action.payload.id],
-          ...action.payload,
-        },
-      };
-
-    case 'FETCH_JOBS_SUCCESS':
-      if (
-        action.payload &&
-        action.payload.entities &&
-        action.payload.entities.jobs
-      ) {
-        return merge({}, state, action.payload.entities.jobs);
-      }
-      return state;
-
-    default:
-      return state;
-  }
-};
-
-const entities = combineReducers({
-  jobs,
-});
+// const jobs = (state: JobsMap = {}, action: Action): JobsMap => {
+//   switch (action.type) {
+//     case 'CREATE_JOB_SUCCESS':
+//       return {
+//         ...state,
+//         [action.payload.id]: {
+//           ...action.payload,
+//         },
+//       };
+//
+//     case 'UPDATE_JOB_SUCCESS':
+//       return {
+//         ...state,
+//         [action.payload.id]: {
+//           ...state[action.payload.id],
+//           ...action.payload,
+//         },
+//       };
+//
+//     case 'FETCH_JOBS_SUCCESS':
+//       if (
+//         action.payload &&
+//         action.payload.entities &&
+//         action.payload.entities.jobs
+//       ) {
+//         return merge({}, state, action.payload.entities.jobs);
+//       }
+//       return state;
+//
+//     default:
+//       return state;
+//   }
+// };
+//
+// const entities = combineReducers({
+//   jobs,
+// });
 
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
@@ -85,6 +85,6 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
 
 export default combineReducers({
   isFetching,
-  entities,
+  // entities,
   result,
 });

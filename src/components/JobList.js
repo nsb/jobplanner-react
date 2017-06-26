@@ -121,13 +121,13 @@ const mapStateToProps = (
     history: {push: string => void},
   }
 ) => {
-  const {businesses, jobs, auth} = state;
+  const {businesses, entities, jobs, auth} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     business: businesses.entities.businesses[businessId],
     jobs: jobs.result.map(Id => {
-      return jobs.entities.jobs[Id];
+      return entities.jobs[Id];
     }),
     isFetching: jobs.isFetching,
     token: auth.token,
