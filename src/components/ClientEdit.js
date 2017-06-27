@@ -63,13 +63,13 @@ const mapStateToProps = (
     history: {push: string => void},
   }
 ) => {
-  const {auth, businesses, entities} = state;
+  const {auth, entities} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
 
   return {
     token: auth.token,
-    business: businesses.entities.businesses[businessId],
+    business: entities.businesses[businessId],
     client: denormalize(entities.clients[clientId], clientSchema, entities),
     properties: entities.properties,
     push: ownProps.history.push

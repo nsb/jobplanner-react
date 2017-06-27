@@ -67,12 +67,12 @@ const mapStateToProps = (
     history: {push: string => void},
   }
 ) => {
-  const {auth, businesses, entities, clients} = state;
+  const {auth, entities, clients} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     token: auth.token,
-    business: businesses.entities.businesses[businessId],
+    business: entities.businesses[businessId],
     clients: clients.result.map(Id => {
       return entities.clients[Id];
     }),

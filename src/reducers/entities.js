@@ -1,7 +1,7 @@
 // @flow
 import { merge } from "lodash/object";
 import type {
-  Actions as BusinessAction,
+  Action as BusinessesAction,
   BusinessesMap
 } from "../actions/businesses";
 import type { Action as ClientsAction, ClientsMap } from "../actions/clients";
@@ -20,7 +20,7 @@ export type State = {
   jobs: JobsState
 };
 
-type Action = BusinessAction | ClientsAction | JobsAction;
+type Action = BusinessesAction | ClientsAction | JobsAction;
 
 // Updates an entity cache in response to any action with entities.
 const entities = (

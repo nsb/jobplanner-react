@@ -74,12 +74,12 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { businesses, clients, entities, auth, nav } = state;
+  const { clients, entities, auth, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
 
   return {
-    business: businesses.entities.businesses[businessId],
+    business: entities.businesses[businessId],
     client: entities.clients[clientId],
     properties: entities.properties,
     clientId: clientId,
