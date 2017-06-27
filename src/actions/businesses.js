@@ -1,6 +1,6 @@
 // @flow
 import {normalize} from 'normalizr';
-import {businessListSchema} from '../schemas';
+import {businessListSchema, businessSchema} from '../schemas';
 import businessesApi from '../api';
 import type {Dispatch} from '../types/Store';
 import history from '../history';
@@ -128,7 +128,7 @@ export const createBusinessSuccess = (
   return {
     type: CREATE_BUSINESS_SUCCESS,
     receivedAt: Date.now(),
-    payload,
+    payload: normalize(payload, businessSchema),
   };
 };
 
