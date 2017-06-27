@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchClient } from "../actions/clients";
 import { navResponsive } from "../actions/nav";
+import Article from 'grommet/components/Article';
+import Section from 'grommet/components/Section';
+import Spinning from 'grommet/components/icons/Spinning';
 import ClientDetail from "./ClientDetail";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -45,7 +48,18 @@ class ClientDetailContainer extends Component {
     );
 
     const loadingClients = (
-      <div>Loading...</div>
+      <Article scrollStep={true} controls={true}>
+        <Section
+          full={true}
+          colorIndex="dark"
+          // texture="url(img/ferret_background.png)"
+          pad="large"
+          justify="center"
+          align="center"
+        >
+          <Spinning />
+        </Section>
+      </Article>
     )
 
     return isFetching ? loadingClients : clientDetail
