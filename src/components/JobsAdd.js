@@ -44,9 +44,9 @@ class JobsAdd extends Component {
     const {token, business} = this.props;
 
     let action = createJob(
+      business,
       {
         ...values,
-        business: business.id,
         client: clientId,
       },
       token

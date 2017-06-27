@@ -1,8 +1,10 @@
 // @flow
 import {normalize} from 'normalizr';
-import {jobListSchema} from '../schemas';
+import {jobListSchema, jobSchema} from '../schemas';
 import jobsApi from '../api';
 import type {Dispatch} from '../types/Store';
+import type {Business} from '../actions/businesses';
+import history from '../history';
 
 //Create new job
 export const CREATE_JOB: 'CREATE_JOB' = 'CREATE_JOB';
@@ -152,7 +154,7 @@ export const createJobSuccess = (payload: Job): CreateJobSuccessAction => {
   return {
     type: CREATE_JOB_SUCCESS,
     receivedAt: Date.now(),
-    payload,
+    payload: normalize(payload, jobSchema),
   };
 };
 
@@ -163,7 +165,7 @@ export const createJobError = (error: string): CreateJobFailureAction => {
   };
 };
 
-export const createJob = (job: Job, token: string) => {
+export const createJob = (business: Business, job: Job, token: string) => {
   return (dispatch: Dispatch) => {
     dispatch(createJobRequest(job));
 
@@ -171,7 +173,7 @@ export const createJob = (job: Job, token: string) => {
       .create('jobs', job, token)
       .then((responseJob: Job) => {
         dispatch(createJobSuccess(responseJob));
-        // history.push(`/${business.id}/jobs/${responseJob.id}`)
+        history.push(`/${business.id}/jobs/${responseJob.id}`)
         return responseJob;
       })
       .catch((error: string) => {

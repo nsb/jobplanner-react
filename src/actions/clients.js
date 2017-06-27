@@ -2,6 +2,7 @@
 import { normalize } from "normalizr";
 import { clientListSchema } from "../schemas";
 import type { Dispatch } from "../types/Store";
+import type { Business } from "./businesses";
 import clientsApi from "../api";
 import history from '../history';
 
@@ -254,7 +255,7 @@ export const createClientError = (
 };
 
 export const createClient = (
-  business: Object,
+  business: Business,
   client: Client,
   token: string
 ) => {
