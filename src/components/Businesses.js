@@ -112,11 +112,11 @@ class Businesses extends Component {
 }
 
 const mapStateToProps = (state: State, ownProps: {history: {push: Function}}) => {
-  const {businesses} = state;
+  const {businesses, entities} = state;
 
   return {
     businesses: businesses.result.map(Id => {
-      return businesses.entities.businesses[Id];
+      return entities.businesses[Id];
     }),
     push: ownProps.history.push
   };

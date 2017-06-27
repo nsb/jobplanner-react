@@ -53,12 +53,12 @@ type OwnProps = {
 };
 
 const mapStateToProps = (state: State, ownProps: OwnProps) => {
-  const {auth, businesses} = state;
+  const {auth, entities} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     token: auth.token,
-    business: businesses.entities.businesses[businessId],
+    business: entities.businesses[businessId],
     dispatch: ownProps.dispatch,
     push: ownProps.history.push
   };
