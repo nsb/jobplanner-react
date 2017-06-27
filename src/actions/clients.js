@@ -1,6 +1,6 @@
 // @flow
 import { normalize } from "normalizr";
-import { clientListSchema } from "../schemas";
+import { clientListSchema, clientSchema } from "../schemas";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "./businesses";
 import clientsApi from "../api";
@@ -199,7 +199,7 @@ export const fetchClientSuccess = (
   return {
     type: FETCH_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize([payload], clientListSchema),
+    payload: normalize(payload, clientSchema),
   };
 };
 
@@ -239,7 +239,7 @@ export const createClientSuccess = (
   return {
     type: CREATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload
+    payload: normalize(payload, clientSchema)
   };
 };
 
