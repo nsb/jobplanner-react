@@ -1,18 +1,18 @@
 // @flow
-import {combineReducers} from 'redux';
-import {merge} from 'lodash/object';
-import type {Action, BusinessesMap} from '../actions/businesses';
+import { combineReducers } from "redux";
+import { merge } from "lodash/object";
+import type { Action } from "../actions/businesses";
 
 // initially set to true https://github.com/reactjs/react-redux/issues/210
 const isFetching = (state: boolean = true, action: Action): boolean => {
   switch (action.type) {
-    case 'FETCH_BUSINESSES':
+    case "FETCH_BUSINESSES":
       return true;
 
-    case 'FETCH_BUSINESSES_SUCCESS':
+    case "FETCH_BUSINESSES_SUCCESS":
       return false;
 
-    case 'FETCH_BUSINESSES_FAILURE':
+    case "FETCH_BUSINESSES_FAILURE":
       return false;
 
     default:
@@ -22,7 +22,7 @@ const isFetching = (state: boolean = true, action: Action): boolean => {
 
 const hasLoaded = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
-    case 'FETCH_BUSINESSES_SUCCESS':
+    case "FETCH_BUSINESSES_SUCCESS":
       return true;
 
     default:
@@ -30,53 +30,12 @@ const hasLoaded = (state: boolean = false, action: Action): boolean => {
   }
 };
 
-const businesses = (
-  state: BusinessesMap = {},
-  action: Action
-): BusinessesMap => {
-  switch (action.type) {
-    case 'CREATE_BUSINESS_SUCCESS':
-      return {
-        ...state,
-        [action.payload.id]: {
-          ...action.payload,
-        },
-      };
-
-    // case 'UPDATE_BUSINESS':
-    //   return {
-    //     ...state,
-    //     [action.payload.id]: {
-    //       ...state[action.payload.id],
-    //       ...action.payload,
-    //     },
-    //   };
-
-    case 'FETCH_BUSINESSES_SUCCESS':
-      if (
-        action.payload &&
-        action.payload.entities &&
-        action.payload.entities.businesses
-      ) {
-        return merge({}, state, action.payload.entities.businesses);
-      }
-      return state;
-
-    default:
-      return state;
-  }
-};
-
-const entities = combineReducers({
-  businesses,
-});
-
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
-    case 'CREATE_BUSINESS_SUCCESS':
-      return [...state, action.payload.id];
+    case "CREATE_BUSINESS_SUCCESS":
+      return [...state, action.payload.result];
 
-    case 'FETCH_BUSINESSES_SUCCESS':
+    case "FETCH_BUSINESSES_SUCCESS":
       if (action.payload && action.payload.result) {
         return merge([], state, action.payload.result);
       } else {
@@ -91,6 +50,5 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
 export default combineReducers({
   isFetching,
   hasLoaded,
-  entities,
-  result,
+  result
 });

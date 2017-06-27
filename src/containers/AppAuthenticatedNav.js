@@ -79,13 +79,13 @@ const mapStateToProps = (
   state: State,
   ownProps: { match: { params: { businessId: number }, url: string } }
 ) => {
-  const { nav, businesses } = state;
+  const { nav, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     navActive: nav.active,
     responsive: nav.responsive,
-    business: businesses.entities.businesses[businessId],
+    business: entities.businesses[businessId],
     match: ownProps.match
   };
 };
