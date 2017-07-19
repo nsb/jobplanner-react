@@ -33,9 +33,12 @@ class VisitListContainer extends Component<void, Props, State> {
     return (
       <VisitList
         visits={visits}
-        isFetching={isFetching} />
+        isFetching={isFetching}
+        onMore={this.onMore} />
     )
   }
+
+  onMore = () => {};
 
 }
 
