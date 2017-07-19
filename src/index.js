@@ -2,6 +2,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import moment from 'moment';
 import {createStore, applyMiddleware} from 'redux';
 // import {Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
@@ -31,6 +32,9 @@ const language =
 
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
 let messages: Object;
+
+// configure moment locale
+moment.locale(language)
 
 if (languageWithoutRegionCode === 'da') {
   messages = localeDaData;

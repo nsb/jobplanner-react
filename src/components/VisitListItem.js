@@ -1,8 +1,10 @@
 // @flow
 
 import React, {Component} from 'react';
+import moment from 'moment';
 import ListItem from 'grommet/components/ListItem';
 import type {Visit} from '../actions/visits';
+
 
 class VisitListItem extends Component {
   props: {
@@ -24,7 +26,7 @@ class VisitListItem extends Component {
         onClick={onClick}
         selected={false}
       >
-        <span>{visit.id}</span>
+        <span>{moment(visit.begins).format('l')}</span>
       </ListItem>
     );
   }
