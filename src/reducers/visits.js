@@ -3,7 +3,7 @@ import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
 import type {Action} from '../actions/visits';
 
-const isFetching = (state: boolean = false, action: Action): boolean => {
+const isFetching = (state: boolean = true, action: Action): boolean => {
   switch (action.type) {
     case 'FETCH_VISITS':
       return true;

@@ -13,17 +13,15 @@ type Props = {
   isFetching?: boolean,
   onMore: () => void,
   onClick: (SyntheticInputEvent, Visit) => void,
-  addVisit: SyntheticInputEvent => void,
   intl: intlShape,
 };
 
 const VisitList = ({
   business,
   visits = [],
-  isFetching = false,
+  isFetching = true,
   onMore,
   onClick,
-  addVisit,
   intl,
 }: Props) => (
   <Box>

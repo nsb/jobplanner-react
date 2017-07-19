@@ -29,8 +29,11 @@ class VisitListContainer extends Component<void, Props, State> {
   }
 
   render() {
+    const { visits, isFetching } = this.props;
     return (
-      <VisitList />
+      <VisitList
+        visits={visits}
+        isFetching={isFetching} />
     )
   }
 
