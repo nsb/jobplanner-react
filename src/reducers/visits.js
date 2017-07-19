@@ -1,26 +1,26 @@
 // @flow
 import {combineReducers} from 'redux';
 import {merge} from 'lodash/object';
-import type {Action} from '../actions/jobs';
+import type {Action} from '../actions/visits';
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
-    case 'FETCH_JOBS':
+    case 'FETCH_VISITS':
       return true;
 
-    case 'FETCH_JOBS_SUCCESS':
+    case 'FETCH_VISITS_SUCCESS':
       return false;
 
-    case 'FETCH_JOBS_FAILURE':
+    case 'FETCH_VISITS_FAILURE':
       return false;
 
-    case 'UPDATE_JOB':
+    case 'UPDATE_VISIT':
       return true;
 
-    case 'UPDATE_JOB_SUCCESS':
+    case 'UPDATE_VISIT_SUCCESS':
       return false;
 
-    case 'UPDATE_JOB_FAILURE':
+    case 'UPDATE_VISIT_FAILURE':
       return false;
 
     default:
@@ -30,10 +30,10 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
 
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
-    case 'CREATE_JOB_SUCCESS':
+    case 'CREATE_VISIT_SUCCESS':
       return [...state, action.payload.id];
 
-    case 'FETCH_JOBS_SUCCESS':
+    case 'FETCH_VISIT_SUCCESS':
       if (action.payload && action.payload.result) {
         return merge([], state, action.payload.result);
       } else {

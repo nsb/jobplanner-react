@@ -33,7 +33,7 @@ const hasLoaded = (state: boolean = false, action: Action): boolean => {
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
     case "CREATE_BUSINESS_SUCCESS":
-      return [...state, action.payload.result];
+      return [...state, action.payload.id];
 
     case "FETCH_BUSINESSES_SUCCESS":
       if (action.payload && action.payload.result) {

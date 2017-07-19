@@ -41,7 +41,7 @@ const isFetching = (
 const result = (state: ResultState = [], action: Action): ResultState => {
   switch (action.type) {
     case 'CREATE_CLIENT_SUCCESS':
-      return [...state, action.payload.result];
+      return [...state, action.payload.id];
 
     case 'FETCH_CLIENT_SUCCESS':
       if (action.payload && action.payload.result) {

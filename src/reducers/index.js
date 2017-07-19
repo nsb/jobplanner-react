@@ -10,6 +10,7 @@ import clients from './clients';
 import network from './network';
 import users from './users';
 import jobs from './jobs';
+import visits from './visits';
 import entities from './entities';
 
 const reducers = {
@@ -23,6 +24,7 @@ const reducers = {
   network,
   users,
   jobs,
+  visits,
   entities
 };
 
