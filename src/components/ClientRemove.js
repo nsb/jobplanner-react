@@ -30,7 +30,7 @@ class ClientRemove extends Component {
         title="Remove"
         submitLabel="Yes, remove"
         compact={true}
-        onClose={this.props.onClose}
+        onClose={onClose}
         onSubmit={this._onRemove}
       >
         <fieldset>

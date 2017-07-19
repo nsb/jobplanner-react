@@ -33,7 +33,7 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
     case 'CREATE_VISIT_SUCCESS':
       return [...state, action.payload.id];
 
-    case 'FETCH_VISIT_SUCCESS':
+    case 'FETCH_VISITS_SUCCESS':
       if (action.payload && action.payload.result) {
         return merge([], state, action.payload.result);
       } else {

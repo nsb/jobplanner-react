@@ -14,6 +14,7 @@ import MoreIcon from 'grommet/components/icons/base/More';
 import LinkPreviousIcon from 'grommet/components/icons/base/LinkPrevious';
 import {rrulestr} from 'rrule';
 import JobActions from '../components/JobActions';
+import VisitListContainer from '../components/VisitListContainer';
 import {navResponsive} from '../actions/nav';
 import type {Business} from '../actions/businesses';
 import type {Job} from '../actions/jobs';
@@ -80,6 +81,9 @@ class JobsDetail extends Component {
             <Box full="horizontal">
               <Section pad="medium" full="horizontal">
                 <Heading tag="h2" margin="none">{rrulestr(job.recurrences).toText()}</Heading>
+              </Section>
+              <Section pad="medium" full="horizontal">
+                <VisitListContainer job={job} />
               </Section>
             </Box>
           </Article>
