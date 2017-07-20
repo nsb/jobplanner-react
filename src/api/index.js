@@ -33,9 +33,6 @@ class Api {
         }
         return response.json();
       })
-      // .catch((error: string) => {
-      //   return error;
-      // });
   }
 
   static getOne(
