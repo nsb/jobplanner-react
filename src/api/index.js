@@ -28,11 +28,14 @@ class Api {
 
     return fetch(request)
       .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
         return response.json();
       })
-      .catch((error: string) => {
-        return error;
-      });
+      // .catch((error: string) => {
+      //   return error;
+      // });
   }
 
   static getOne(

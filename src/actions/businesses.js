@@ -108,7 +108,7 @@ export const fetchBusinesses = (token: string) => {
         return responseBusinesses;
       })
       .catch((error: string) => {
-        throw error;
+        dispatch(fetchBusinessesFailure(error));
       });
   };
 };
