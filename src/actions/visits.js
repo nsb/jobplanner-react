@@ -32,6 +32,8 @@ export type Visit = {
   ends: Date
 };
 
+type VisitsResponse = {results: Array<Visit>, count: number, next: ?string, previous: ?string}
+
 export type VisitsMap = {[id: number]: Visit};
 
 type FetchVisitsAction = {
@@ -41,6 +43,7 @@ type FetchVisitsAction = {
 type FetchVisitsSuccessAction = {
   type: typeof FETCH_VISITS_SUCCESS,
   payload: {entities: {visits: VisitsMap}, result: Array<number>},
+  meta: { count: number, next: ?string, previous: ?string }
 };
 
 type FetchVisitsFailureAction = {
@@ -109,10 +112,11 @@ export const fetchVisitsRequest = (): FetchVisitsAction => {
 // type DecrementResponse = ErrorResponse<400,string>
 //                        | JSONResponse<200,JobsJSON>
 
-export const fetchVisitsSuccess = (visits: Array<Visit>): FetchVisitsSuccessAction => {
+export const fetchVisitsSuccess = (response: VisitsResponse): FetchVisitsSuccessAction => {
   return {
     type: FETCH_VISITS_SUCCESS,
-    payload: normalize(visits, visitListSchema),
+    payload: normalize(response.results, visitListSchema),
+    meta: { count: response.count, next: response.next, previous: response.previous },
     receivedAt: Date.now(),
   };
 };
@@ -130,12 +134,8 @@ export const fetchVisits = (token: string, queryParams: Object = {}) => {
 
     return visitsApi
       .getAll('visits', token, queryParams)
-      .then((responseVisits: Array<Visit>) => {
-        if (Array.isArray(responseVisits)) {
-          dispatch(fetchVisitsSuccess(responseVisits));
-        } else {
-          dispatch(fetchVisitsFailure('error'));
-        }
+      .then((responseVisits: VisitsResponse) => {
+        dispatch(fetchVisitsSuccess(responseVisits));
         return responseVisits;
       })
       .catch((error: string) => {

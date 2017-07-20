@@ -28,7 +28,7 @@ export type Business = {
 
 export type BusinessesMap = {[id: number]: Business};
 
-export type BusinessResponse = {results: Array<Business>, count: number, next: ?string, previous: ?string}
+type BusinessResponse = {results: Array<Business>, count: number, next: ?string, previous: ?string}
 
 type FetchBusinessesAction = {
   type: typeof FETCH_BUSINESSES,

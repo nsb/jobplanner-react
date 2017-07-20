@@ -28,6 +28,26 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
   }
 };
 
+const count = (state: number = 0, action: Action): number => {
+  switch (action.type) {
+    case "FETCH_JOBS_SUCCESS":
+      return action.meta.count;
+
+    default:
+      return state;
+  }
+};
+
+const next = (state: ?string = null, action: Action): ?string => {
+  switch (action.type) {
+    case "FETCH_JOBS_SUCCESS":
+      return action.meta.next;
+
+    default:
+      return state;
+  }
+};
+
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
     case 'CREATE_JOB_SUCCESS':
@@ -47,5 +67,7 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
 
 export default combineReducers({
   isFetching,
+  count,
+  next,
   result,
 });
