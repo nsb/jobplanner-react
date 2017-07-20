@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import moment from 'moment';
 import ListItem from 'grommet/components/ListItem';
+import CheckBox from 'grommet/components/CheckBox';
 import type {Visit} from '../actions/visits';
 
 
@@ -26,6 +27,7 @@ class VisitListItem extends Component {
         onClick={onClick}
         selected={false}
       >
+        <CheckBox label='' />
         <span>{moment(visit.begins).format('l')}</span>
       </ListItem>
     );

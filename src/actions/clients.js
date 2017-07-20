@@ -4,7 +4,7 @@ import { clientListSchema, clientSchema } from "../schemas";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "./businesses";
 import clientsApi from "../api";
-import history from '../history';
+import history from "../history";
 
 //Create new client
 export const CREATE_CLIENT: "CREATE_CLIENT" = "CREATE_CLIENT";
@@ -49,13 +49,21 @@ export type Client = {
 
 export type ClientsMap = { [id: number]: Client };
 
+type ClientsResponse = {
+  results: Array<Client>,
+  count: number,
+  next: ?string,
+  previous: ?string
+};
+
 type FetchClientsAction = {
   type: typeof FETCH_CLIENTS
 };
 
 type FetchClientsSuccessAction = {
   type: typeof FETCH_CLIENTS_SUCCESS,
-  payload: { entities: { clients: ClientsMap }, result: Array<number> }
+  payload: { entities: { clients: ClientsMap }, result: Array<number> },
+  meta: { count: number, next: ?string, previous: ?string }
 };
 
 type FetchClientsFailureAction = {
@@ -123,7 +131,7 @@ type DeleteClientFailureAction = {
   type: typeof DELETE_CLIENT_FAILURE,
   payload: Client,
   error: string
-}
+};
 
 export type Action =
   | FetchClientsAction
@@ -149,11 +157,12 @@ export const fetchClientsRequest = (): FetchClientsAction => {
 };
 
 export const fetchClientsSuccess = (
-  clients: Array<Client>
+  response: ClientsResponse
 ): FetchClientsSuccessAction => {
   return {
     type: FETCH_CLIENTS_SUCCESS,
-    payload: normalize(clients, clientListSchema),
+    payload: normalize(response.results, clientListSchema),
+    meta: { count: response.count, next: response.next, previous: response.previous },
     receivedAt: Date.now()
   };
 };
@@ -173,12 +182,8 @@ export const fetchClients = (token: string, queryParams: Object = {}) => {
 
     return clientsApi
       .getAll("clients", token, queryParams)
-      .then((responseClients: Array<Client>) => {
-        if (Array.isArray(responseClients)) {
-          dispatch(fetchClientsSuccess(responseClients));
-        } else {
-          dispatch(fetchClientsFailure("error"));
-        }
+      .then((responseClients: ClientsResponse) => {
+        dispatch(fetchClientsSuccess(responseClients));
         return responseClients;
       })
       .catch((error: string) => {
@@ -199,7 +204,7 @@ export const fetchClientSuccess = (
   return {
     type: FETCH_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, clientSchema),
+    payload: normalize(payload, clientSchema)
   };
 };
 
@@ -288,7 +293,7 @@ export const updateClientSuccess = (
   return {
     type: UPDATE_CLIENT_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, clientSchema),
+    payload: normalize(payload, clientSchema)
   };
 };
 
@@ -347,10 +352,7 @@ export const deleteClientError = (
   };
 };
 
-export const deleteClient = (
-  client: Client,
-  token: string
-) => {
+export const deleteClient = (client: Client, token: string) => {
   return (dispatch: Dispatch) => {
     dispatch(deleteClientRequest(client));
 

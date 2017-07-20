@@ -28,12 +28,15 @@ export type Business = {
 
 export type BusinessesMap = {[id: number]: Business};
 
+export type BusinessResponse = {results: Array<Business>, count: number, next: ?string, previous: ?string}
+
 type FetchBusinessesAction = {
   type: typeof FETCH_BUSINESSES,
 };
 
 type FetchBusinessesSuccessAction = {
   type: typeof FETCH_BUSINESSES_SUCCESS,
+  meta: { count: number, next: ?string, previous: ?string },
   payload: {
     entities: {businesses: BusinessesMap},
     result: Array<number>,
@@ -75,11 +78,12 @@ export const fetchBusinessesRequest = (): FetchBusinessesAction => {
 };
 
 export const fetchBusinessesSuccess = (
-  businesses: Array<Business>
+  response: BusinessResponse
 ): FetchBusinessesSuccessAction => {
   return {
     type: FETCH_BUSINESSES_SUCCESS,
-    payload: normalize(businesses, businessListSchema),
+    payload: normalize(response.results, businessListSchema),
+    meta: { count: response.count, next: response.next, previous: response.previous },
     receivedAt: Date.now(),
   };
 };
@@ -99,12 +103,8 @@ export const fetchBusinesses = (token: string) => {
 
     return businessesApi
       .getAll('businesses', token)
-      .then((responseBusinesses: Array<Business>) => {
-        if (Array.isArray(responseBusinesses)) {
-          dispatch(fetchBusinessesSuccess(responseBusinesses));
-        } else {
-          dispatch(fetchBusinessesFailure('error'));
-        }
+      .then((responseBusinesses: BusinessResponse) => {
+        dispatch(fetchBusinessesSuccess(responseBusinesses));
         return responseBusinesses;
       })
       .catch((error: string) => {

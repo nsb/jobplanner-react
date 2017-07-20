@@ -38,6 +38,26 @@ const isFetching = (
   }
 };
 
+const count = (state: number = 0, action: Action): number => {
+  switch (action.type) {
+    case "FETCH_CLIENTS_SUCCESS":
+      return action.meta.count;
+
+    default:
+      return state;
+  }
+};
+
+const next = (state: ?string = null, action: Action): ?string => {
+  switch (action.type) {
+    case "FETCH_CLIENTS_SUCCESS":
+      return action.meta.next;
+
+    default:
+      return state;
+  }
+};
+
 const result = (state: ResultState = [], action: Action): ResultState => {
   switch (action.type) {
     case 'CREATE_CLIENT_SUCCESS':
@@ -69,5 +89,7 @@ const result = (state: ResultState = [], action: Action): ResultState => {
 
 export default combineReducers({
   isFetching,
+  count,
+  next,
   result,
 });
