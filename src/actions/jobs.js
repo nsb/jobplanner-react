@@ -62,7 +62,7 @@ type CreateJobAction = {
 
 type CreateJobSuccessAction = {
   type: typeof CREATE_JOB_SUCCESS,
-  payload: Job
+  payload: { entities: { jobs: JobsMap }, result: number },
 };
 
 type CreateJobFailureAction = {

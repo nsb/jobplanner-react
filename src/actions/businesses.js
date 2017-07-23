@@ -1,66 +1,74 @@
 // @flow
-import {normalize} from 'normalizr';
-import {businessListSchema, businessSchema} from '../schemas';
-import businessesApi from '../api';
-import type {Dispatch} from '../types/Store';
-import history from '../history';
+import { normalize } from "normalizr";
+import { businessListSchema, businessSchema } from "../schemas";
+import businessesApi from "../api";
+import type { Dispatch } from "../types/Store";
+import history from "../history";
 
 //Create new business
-export const CREATE_BUSINESS: 'CREATE_BUSINESS' = 'CREATE_BUSINESS';
-export const CREATE_BUSINESS_SUCCESS: 'CREATE_BUSINESS_SUCCESS' =
-  'CREATE_BUSINESS_SUCCESS';
-export const CREATE_BUSINESS_FAILURE: 'CREATE_BUSINESS_FAILURE' =
-  'CREATE_BUSINESS_FAILURE';
-export const RESET_NEW_BUSINESS: 'RESET_NEW_BUSINESS' = 'RESET_NEW_BUSINESS';
+export const CREATE_BUSINESS: "CREATE_BUSINESS" = "CREATE_BUSINESS";
+export const CREATE_BUSINESS_SUCCESS: "CREATE_BUSINESS_SUCCESS" =
+  "CREATE_BUSINESS_SUCCESS";
+export const CREATE_BUSINESS_FAILURE: "CREATE_BUSINESS_FAILURE" =
+  "CREATE_BUSINESS_FAILURE";
+export const RESET_NEW_BUSINESS: "RESET_NEW_BUSINESS" = "RESET_NEW_BUSINESS";
 
 //Fetch businesses
-export const FETCH_BUSINESSES: 'FETCH_BUSINESSES' = 'FETCH_BUSINESSES';
-export const FETCH_BUSINESSES_SUCCESS: 'FETCH_BUSINESSES_SUCCESS' =
-  'FETCH_BUSINESSES_SUCCESS';
-export const FETCH_BUSINESSES_FAILURE: 'FETCH_BUSINESSES_FAILURE' =
-  'FETCH_BUSINESSES_FAILURE';
-export const RESET_BUSINESSES: 'RESET_BUSINESSES' = 'RESET_BUSINESSES';
+export const FETCH_BUSINESSES: "FETCH_BUSINESSES" = "FETCH_BUSINESSES";
+export const FETCH_BUSINESSES_SUCCESS: "FETCH_BUSINESSES_SUCCESS" =
+  "FETCH_BUSINESSES_SUCCESS";
+export const FETCH_BUSINESSES_FAILURE: "FETCH_BUSINESSES_FAILURE" =
+  "FETCH_BUSINESSES_FAILURE";
+export const RESET_BUSINESSES: "RESET_BUSINESSES" = "RESET_BUSINESSES";
 
 export type Business = {
   id: number,
-  name: string,
+  name: string
 };
 
-export type BusinessesMap = {[id: number]: Business};
+export type BusinessesMap = { [id: number]: Business };
 
-type BusinessResponse = {results: Array<Business>, count: number, next: ?string, previous: ?string}
+type BusinessResponse = {
+  results: Array<Business>,
+  count: number,
+  next: ?string,
+  previous: ?string
+};
 
 type FetchBusinessesAction = {
-  type: typeof FETCH_BUSINESSES,
+  type: typeof FETCH_BUSINESSES
 };
 
 type FetchBusinessesSuccessAction = {
   type: typeof FETCH_BUSINESSES_SUCCESS,
   meta: { count: number, next: ?string, previous: ?string },
   payload: {
-    entities: {businesses: BusinessesMap},
-    result: Array<number>,
-  },
+    entities: { businesses: BusinessesMap },
+    result: Array<number>
+  }
 };
 
 type FetchBusinessesFailureAction = {
   type: typeof FETCH_BUSINESSES_FAILURE,
-  error: string,
+  error: string
 };
 
 type CreateBusinessAction = {
   type: typeof CREATE_BUSINESS,
-  payload: Business,
+  payload: Business
 };
 
 type CreateBusinessSuccessAction = {
   type: typeof CREATE_BUSINESS_SUCCESS,
-  payload: Business,
+  payload: {
+    entities: { businesses: BusinessesMap },
+    result: number
+  }
 };
 
 type CreateBusinessFailureAction = {
   type: typeof CREATE_BUSINESS_FAILURE,
-  error: string,
+  error: string
 };
 
 export type Action =
@@ -73,7 +81,7 @@ export type Action =
 
 export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   return {
-    type: FETCH_BUSINESSES,
+    type: FETCH_BUSINESSES
   };
 };
 
@@ -83,8 +91,12 @@ export const fetchBusinessesSuccess = (
   return {
     type: FETCH_BUSINESSES_SUCCESS,
     payload: normalize(response.results, businessListSchema),
-    meta: { count: response.count, next: response.next, previous: response.previous },
-    receivedAt: Date.now(),
+    meta: {
+      count: response.count,
+      next: response.next,
+      previous: response.previous
+    },
+    receivedAt: Date.now()
   };
 };
 
@@ -93,7 +105,7 @@ export const fetchBusinessesFailure = (
 ): FetchBusinessesFailureAction => {
   return {
     type: FETCH_BUSINESSES_FAILURE,
-    error: error,
+    error: error
   };
 };
 
@@ -102,7 +114,7 @@ export const fetchBusinesses = (token: string) => {
     dispatch(fetchBusinessesRequest());
 
     return businessesApi
-      .getAll('businesses', token)
+      .getAll("businesses", token)
       .then((responseBusinesses: BusinessResponse) => {
         dispatch(fetchBusinessesSuccess(responseBusinesses));
         return responseBusinesses;
@@ -118,7 +130,7 @@ export const createBusinessRequest = (
 ): CreateBusinessAction => {
   return {
     type: CREATE_BUSINESS,
-    payload,
+    payload
   };
 };
 
@@ -128,7 +140,7 @@ export const createBusinessSuccess = (
   return {
     type: CREATE_BUSINESS_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, businessSchema),
+    payload: normalize(payload, businessSchema)
   };
 };
 
@@ -137,7 +149,7 @@ export const createBusinessError = (
 ): CreateBusinessFailureAction => {
   return {
     type: CREATE_BUSINESS_FAILURE,
-    error: error,
+    error: error
   };
 };
 
@@ -149,13 +161,13 @@ export const createBusiness = (
     dispatch(createBusinessRequest(data));
 
     return businessesApi
-      .create('businesses', data, token)
+      .create("businesses", data, token)
       .then((responseBusiness: Business) => {
         if (responseBusiness.id) {
           dispatch(createBusinessSuccess(responseBusiness));
           history.push(`/${responseBusiness.id}`);
         } else {
-          dispatch(createBusinessError('error'));
+          dispatch(createBusinessError("error"));
         }
         return responseBusiness;
       })

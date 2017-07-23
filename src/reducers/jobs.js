@@ -51,7 +51,7 @@ const next = (state: ?string = null, action: Action): ?string => {
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
     case 'CREATE_JOB_SUCCESS':
-      return [...state, action.payload.id];
+      return [...state, action.payload.result];
 
     case 'FETCH_JOBS_SUCCESS':
       if (action.payload && action.payload.result) {

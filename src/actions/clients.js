@@ -92,7 +92,7 @@ type CreateClientAction = {
 
 type CreateClientSuccessAction = {
   type: typeof CREATE_CLIENT_SUCCESS,
-  payload: Client
+  payload: { entities: { clients: ClientsMap }, result: number },
 };
 
 type CreateClientFailureAction = {
