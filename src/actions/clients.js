@@ -92,7 +92,7 @@ type CreateClientAction = {
 
 type CreateClientSuccessAction = {
   type: typeof CREATE_CLIENT_SUCCESS,
-  payload: { entities: { clients: ClientsMap }, result: number },
+  payload: { entities: { clients: ClientsMap }, result: number }
 };
 
 type CreateClientFailureAction = {
@@ -162,7 +162,11 @@ export const fetchClientsSuccess = (
   return {
     type: FETCH_CLIENTS_SUCCESS,
     payload: normalize(response.results, clientListSchema),
-    meta: { count: response.count, next: response.next, previous: response.previous },
+    meta: {
+      count: response.count,
+      next: response.next,
+      previous: response.previous
+    },
     receivedAt: Date.now()
   };
 };

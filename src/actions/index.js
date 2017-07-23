@@ -1,8 +1,8 @@
 // @flow
-import {verify} from './auth';
-import {me} from './users';
-import {fetchBusinesses} from './businesses';
-import type {Dispatch} from '../types/Store';
+import { verify } from "./auth";
+import { me } from "./users";
+import { fetchBusinesses } from "./businesses";
+import type { Dispatch } from "../types/Store";
 
 export const verifyAuthAndFetchBusinesses = (
   token: string
@@ -11,7 +11,7 @@ export const verifyAuthAndFetchBusinesses = (
     return Promise.all([
       dispatch(verify(token)),
       dispatch(me(token)),
-      dispatch(fetchBusinesses(token)),
+      dispatch(fetchBusinesses(token))
     ]);
   };
 };

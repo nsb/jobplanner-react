@@ -1,65 +1,65 @@
 // @flow
-import fetch from 'isomorphic-fetch';
+import fetch from "isomorphic-fetch";
 // import {push} from 'react-router-redux';
-import type {Dispatch} from '../types/Store';
-import type {User} from './users';
+import type { Dispatch } from "../types/Store";
+import type { User } from "./users";
 
-const REQUEST_LOGIN: 'REQUEST_LOGIN' = 'REQUEST_LOGIN';
-const REQUEST_LOGIN_FAILURE: 'REQUEST_LOGIN_FAILURE' = 'REQUEST_LOGIN_FAILURE';
-const REQUEST_LOGIN_SUCCESS: 'REQUEST_LOGIN_SUCCESS' = 'REQUEST_LOGIN_SUCCESS';
-const LOGOUT: 'LOGOUT' = 'LOGOUT';
-const REQUEST_VERIFY: 'REQUEST_VERIFY' = 'REQUEST_VERIFY';
-const REQUEST_VERIFY_FAILURE: 'REQUEST_VERIFY_FAILURE' =
-  'REQUEST_VERIFY_FAILURE';
-const REQUEST_VERIFY_SUCCESS: 'REQUEST_VERIFY_SUCCESS' =
-  'REQUEST_VERIFY_SUCCESS';
+const REQUEST_LOGIN: "REQUEST_LOGIN" = "REQUEST_LOGIN";
+const REQUEST_LOGIN_FAILURE: "REQUEST_LOGIN_FAILURE" = "REQUEST_LOGIN_FAILURE";
+const REQUEST_LOGIN_SUCCESS: "REQUEST_LOGIN_SUCCESS" = "REQUEST_LOGIN_SUCCESS";
+const LOGOUT: "LOGOUT" = "LOGOUT";
+const REQUEST_VERIFY: "REQUEST_VERIFY" = "REQUEST_VERIFY";
+const REQUEST_VERIFY_FAILURE: "REQUEST_VERIFY_FAILURE" =
+  "REQUEST_VERIFY_FAILURE";
+const REQUEST_VERIFY_SUCCESS: "REQUEST_VERIFY_SUCCESS" =
+  "REQUEST_VERIFY_SUCCESS";
 
 export type Credentials = {
   username: string,
   password: string,
-  rememberMe: boolean,
+  rememberMe: boolean
 };
 
 type AuthResponse = {
   token: string,
-  user: User,
+  user: User
 };
 
 type RequestLoginAction = {
   type: typeof REQUEST_LOGIN,
   username: string,
   password: string,
-  rememberMe: boolean,
+  rememberMe: boolean
 };
 
 type RequestLoginFailureAction = {
   type: typeof REQUEST_LOGIN_FAILURE,
-  error: string,
+  error: string
 };
 
 type RequestLoginSuccessAction = {
   type: typeof REQUEST_LOGIN_SUCCESS,
-  token: string,
+  token: string
 };
 
 type RequestVerifyAction = {
   type: typeof REQUEST_VERIFY,
-  token: string,
+  token: string
 };
 
 type RequestVerifyFacilureAction = {
   type: typeof REQUEST_VERIFY_FAILURE,
-  error: string,
+  error: string
 };
 
 type RequestVerifySuccessAction = {
   type: typeof REQUEST_VERIFY_SUCCESS,
   token: string,
-  user: User,
+  user: User
 };
 
 type LogoutAction = {
-  type: typeof LOGOUT,
+  type: typeof LOGOUT
 };
 
 export type Action =
@@ -80,7 +80,7 @@ export const requestLogin = (
     type: REQUEST_LOGIN,
     username,
     password,
-    rememberMe,
+    rememberMe
   };
 };
 
@@ -88,19 +88,19 @@ export const receiveLogin = (json: AuthResponse): RequestLoginSuccessAction => {
   return {
     type: REQUEST_LOGIN_SUCCESS,
     token: json.token,
-    receivedAt: Date.now(),
+    receivedAt: Date.now()
   };
 };
 
 export const receiveLoginError = (error: string): RequestLoginFailureAction => {
   return {
     type: REQUEST_LOGIN_FAILURE,
-    error: 'Oops',
+    error: "Oops"
   };
 };
 
 export const login = (credentials: Credentials) => {
-  const {username, password, rememberMe} = credentials;
+  const { username, password, rememberMe } = credentials;
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
   // thus making it able to dispatch actions itself.
@@ -117,24 +117,24 @@ export const login = (credentials: Credentials) => {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch('http://localhost:8000/api-token-auth/', {
-      method: 'POST',
+    return fetch("http://localhost:8000/api-token-auth/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         username,
-        password,
-      }),
+        password
+      })
     })
       .then(response => response.json())
       .then((json: AuthResponse) => {
         if (json.token) {
-          localStorage.setItem('token', json.token);
+          localStorage.setItem("token", json.token);
           dispatch(receiveLogin(json));
           // dispatch(push('/'));
         } else {
-          dispatch(receiveLoginError('error'));
+          dispatch(receiveLoginError("error"));
         }
       })
       .catch((error: string) => dispatch(receiveLoginError(error)));
@@ -146,18 +146,19 @@ export const login = (credentials: Credentials) => {
 export const requestVerify = (token: string): RequestVerifyAction => {
   return {
     type: REQUEST_VERIFY,
-    token,
+    token
   };
 };
 
-export const receiveVerify = (
-  json: {token: string, user: User}
-): RequestVerifySuccessAction => {
+export const receiveVerify = (json: {
+  token: string,
+  user: User
+}): RequestVerifySuccessAction => {
   return {
     type: REQUEST_VERIFY_SUCCESS,
     token: json.token,
     user: json.user,
-    receivedAt: Date.now(),
+    receivedAt: Date.now()
   };
 };
 
@@ -166,7 +167,7 @@ export const receiveVerifyError = (
 ): RequestVerifyFacilureAction => {
   return {
     type: REQUEST_VERIFY_FAILURE,
-    error: 'Oops',
+    error: "Oops"
   };
 };
 
@@ -187,24 +188,24 @@ export const verify = (token: string) => {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch('http://localhost:8000/api-token-verify/', {
-      method: 'POST',
+    return fetch("http://localhost:8000/api-token-verify/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        token,
-      }),
+        token
+      })
     })
       .then((response: Response) =>
-        response.json().then((json: {token: string, user: User}) => ({
+        response.json().then((json: { token: string, user: User }) => ({
           status: response.status,
           json
-        })
-      ))
-      .then(({status, json}) => {
+        }))
+      )
+      .then(({ status, json }) => {
         if (status >= 400) {
-          dispatch(receiveVerifyError('error'));
+          dispatch(receiveVerifyError("error"));
         } else {
           dispatch(receiveVerify(json));
         }
@@ -217,6 +218,6 @@ export const verify = (token: string) => {
 
 export const logout = (): LogoutAction => {
   return {
-    type: LOGOUT,
+    type: LOGOUT
   };
 };

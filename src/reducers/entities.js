@@ -27,7 +27,13 @@ type Action = BusinessesAction | ClientsAction | JobsAction | VisitsAction;
 
 // Updates an entity cache in response to any action with entities.
 const entities = (
-  state: State = { businesses: {}, clients: {}, properties: {}, jobs: {}, visits: {} },
+  state: State = {
+    businesses: {},
+    clients: {},
+    properties: {},
+    jobs: {},
+    visits: {}
+  },
   action: Action
 ): State => {
   if (action.payload && action.payload.entities) {

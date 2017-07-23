@@ -1,11 +1,11 @@
 // @flow
 // import {push} from 'react-router-redux';
-import usersApi from '../api/UsersApi';
-import type {Dispatch} from '../types/Store';
+import usersApi from "../api/UsersApi";
+import type { Dispatch } from "../types/Store";
 
-export const REQUEST_ME: 'REQUEST_ME' = 'REQUEST_ME';
-export const REQUEST_ME_FAILURE: 'REQUEST_ME_FAILURE' = 'REQUEST_ME_FAILURE';
-export const REQUEST_ME_SUCCESS: 'REQUEST_ME_SUCCESS' = 'REQUEST_ME_SUCCESS';
+export const REQUEST_ME: "REQUEST_ME" = "REQUEST_ME";
+export const REQUEST_ME_FAILURE: "REQUEST_ME_FAILURE" = "REQUEST_ME_FAILURE";
+export const REQUEST_ME_SUCCESS: "REQUEST_ME_SUCCESS" = "REQUEST_ME_SUCCESS";
 
 export type User = {
   id: number,
@@ -14,22 +14,22 @@ export type User = {
   first_name: string,
   last_name: string,
   email: string,
-  is_staff: boolean,
+  is_staff: boolean
 };
 
 type RequestMeAction = {
   type: typeof REQUEST_ME,
-  token: string,
+  token: string
 };
 
 type RequestMeSuccessAction = {
   type: typeof REQUEST_ME_SUCCESS,
-  user: User,
+  user: User
 };
 
 type RequestMeFailureAction = {
   type: typeof REQUEST_ME_FAILURE,
-  error: string,
+  error: string
 };
 
 export type Action =
@@ -40,7 +40,7 @@ export type Action =
 export const requestMe = (token: string): RequestMeAction => {
   return {
     type: REQUEST_ME,
-    token,
+    token
   };
 };
 
@@ -48,14 +48,14 @@ export const receiveMe = (user: User): RequestMeSuccessAction => {
   return {
     type: REQUEST_ME_SUCCESS,
     receivedAt: Date.now(),
-    user,
+    user
   };
 };
 
 export const receiveMeError = (error: string): RequestMeFailureAction => {
   return {
     type: REQUEST_ME_FAILURE,
-    error,
+    error
   };
 };
 
@@ -69,7 +69,7 @@ export const me = (token: string) => {
         if (responseUser.id) {
           dispatch(receiveMe(responseUser));
         } else {
-          dispatch(receiveMeError('error'));
+          dispatch(receiveMeError("error"));
           // dispatch(push('/login'));
         }
         return responseUser;
