@@ -33,14 +33,14 @@ class ClientActions extends Component {
 
   _onLayerOpen = (layerName: string) => {
     this.setState({ layerName });
-  }
+  };
 
   _onLayerClose = () => {
     this.setState({ layerName: undefined });
     if (this.props.onClose) {
       this.props.onClose();
     }
-  }
+  };
 
   render() {
     const { client, onClose, onEdit } = this.props;

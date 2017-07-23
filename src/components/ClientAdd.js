@@ -1,25 +1,25 @@
 // @flow
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import Article from 'grommet/components/Article';
-import ClientForm from './ClientForm';
-import {createClient} from '../actions/clients';
-import type {Client} from '../actions/clients';
-import type {Business} from '../actions/businesses';
-import type {Dispatch} from '../types/Store';
-import type {State} from '../types/State';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Article from "grommet/components/Article";
+import ClientForm from "./ClientForm";
+import { createClient } from "../actions/clients";
+import type { Client } from "../actions/clients";
+import type { Business } from "../actions/businesses";
+import type { Dispatch } from "../types/Store";
+import type { State } from "../types/State";
 
 class ClientAdd extends Component {
   props: {
     token: string,
     business: Business,
     dispatch: Dispatch,
-    push: (string) => void
+    push: string => void
   };
 
   render() {
     return (
-      <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
+      <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
 
         <ClientForm onSubmit={this.handleSubmit} onClose={this.onClose} />
 
@@ -28,12 +28,12 @@ class ClientAdd extends Component {
   }
 
   handleSubmit = (values: Client): void => {
-    const {token, business} = this.props;
+    const { token, business } = this.props;
     let action = createClient(
       business,
       {
         ...values,
-        business: business.id,
+        business: business.id
       },
       token
     );
@@ -41,19 +41,19 @@ class ClientAdd extends Component {
   };
 
   onClose = (e: SyntheticInputEvent) => {
-    const {business, push} = this.props;
+    const { business, push } = this.props;
     push(`/${business.id}/clients`);
   };
 }
 
 type OwnProps = {
-  match: {params: {businessId: number}},
-  history: {push: (string) => void},
-  dispatch: Dispatch,
+  match: { params: { businessId: number } },
+  history: { push: string => void },
+  dispatch: Dispatch
 };
 
 const mapStateToProps = (state: State, ownProps: OwnProps) => {
-  const {auth, entities} = state;
+  const { auth, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {

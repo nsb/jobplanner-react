@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchClient } from "../actions/clients";
 import { navResponsive } from "../actions/nav";
-import Article from 'grommet/components/Article';
-import Section from 'grommet/components/Section';
-import Spinning from 'grommet/components/icons/Spinning';
+import Article from "grommet/components/Article";
+import Section from "grommet/components/Section";
+import Spinning from "grommet/components/icons/Spinning";
 import ClientDetail from "./ClientDetail";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -26,7 +26,7 @@ type Props = {
 
 class ClientDetailContainer extends Component {
   componentDidMount() {
-    const {client, clientId, token, dispatch} = this.props;
+    const { client, clientId, token, dispatch } = this.props;
     if (!client && token) {
       dispatch(fetchClient(token, clientId));
     }
@@ -60,9 +60,9 @@ class ClientDetailContainer extends Component {
           <Spinning />
         </Section>
       </Article>
-    )
+    );
 
-    return isFetching ? loadingClients : clientDetail
+    return isFetching ? loadingClients : clientDetail;
   }
 
   onResponsive = (responsive: Responsive) => {

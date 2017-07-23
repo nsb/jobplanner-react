@@ -1,37 +1,41 @@
 // @flow
 
-import React from 'react';
-import {Field, reduxForm} from 'redux-form';
-import Anchor from 'grommet/components/Anchor';
-import Button from 'grommet/components/Button';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import Form from 'grommet/components/Form';
-import Footer from 'grommet/components/Footer';
-import FormFields from 'grommet/components/FormFields';
-import FormField from 'grommet/components/FormField';
-import CloseIcon from 'grommet/components/icons/base/Close';
+import React from "react";
+import { Field, reduxForm } from "redux-form";
+import Anchor from "grommet/components/Anchor";
+import Button from "grommet/components/Button";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
+import Form from "grommet/components/Form";
+import Footer from "grommet/components/Footer";
+import FormFields from "grommet/components/FormFields";
+import FormField from "grommet/components/FormField";
+import CloseIcon from "grommet/components/icons/base/Close";
 
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.name) {
-    errors.name = 'Required';
+    errors.name = "Required";
   }
   return errors;
 };
 
-const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}) =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>
-);
+  </FormField>;
 
 type Props = {
   handleSubmit?: Function,
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  onClose?: Function,
+  onClose?: Function
 };
 
 const BusinessForm = ({
@@ -39,7 +43,7 @@ const BusinessForm = ({
   valid,
   dirty,
   submitting,
-  onClose,
+  onClose
 }: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
@@ -65,7 +69,7 @@ const BusinessForm = ({
 
       </FormFields>
 
-      <Footer pad={{vertical: 'medium'}}>
+      <Footer pad={{ vertical: "medium" }}>
         <span />
         <Button
           type="submit"
@@ -79,6 +83,6 @@ const BusinessForm = ({
 };
 
 export default reduxForm({
-  form: 'business', // a unique identifier for this form
-  validate,
+  form: "business", // a unique identifier for this form
+  validate
 })(BusinessForm);

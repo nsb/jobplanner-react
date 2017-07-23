@@ -1,17 +1,17 @@
 // @flow
 
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import { denormalize } from 'normalizr';
-import { clientSchema } from '../schemas';
-import Article from 'grommet/components/Article';
-import ClientForm from './ClientForm';
-import {updateClient} from '../actions/clients';
-import type {Business} from '../actions/businesses';
-import type {Client} from '../actions/clients';
-import type {State} from '../types/State';
-import type {PropertiesMap} from '../actions/properties';
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { denormalize } from "normalizr";
+import { clientSchema } from "../schemas";
+import Article from "grommet/components/Article";
+import ClientForm from "./ClientForm";
+import { updateClient } from "../actions/clients";
+import type { Business } from "../actions/businesses";
+import type { Client } from "../actions/clients";
+import type { State } from "../types/State";
+import type { PropertiesMap } from "../actions/properties";
 
 class ClientEdit extends Component {
   props: {
@@ -20,14 +20,14 @@ class ClientEdit extends Component {
     client: Client,
     properties: PropertiesMap,
     updateClient: (d: Dispatch) => Promise<Client>,
-    push: string => void,
+    push: string => void
   };
 
   render() {
-    const {client} = this.props;
+    const { client } = this.props;
 
     return (
-      <Article align="center" pad={{horizontal: 'medium'}} primary={true}>
+      <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
 
         <ClientForm
           onSubmit={this.handleSubmit}
@@ -40,18 +40,18 @@ class ClientEdit extends Component {
   }
 
   handleSubmit = (values: Client): void => {
-    const {token, client, updateClient} = this.props;
+    const { token, client, updateClient } = this.props;
     updateClient(
       {
         client,
-        ...values,
+        ...values
       },
-      token || ''
+      token || ""
     );
   };
 
   onClose = () => {
-    const {business, client, push} = this.props;
+    const { business, client, push } = this.props;
     push(`/${business.id}/clients/${client.id}`);
   };
 }
@@ -59,11 +59,11 @@ class ClientEdit extends Component {
 const mapStateToProps = (
   state: State,
   ownProps: {
-    match: {params: {businessId: number, clientId: number}},
-    history: {push: string => void},
+    match: { params: { businessId: number, clientId: number } },
+    history: { push: string => void }
   }
 ) => {
-  const {auth, entities} = state;
+  const { auth, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
 
@@ -79,7 +79,7 @@ const mapStateToProps = (
 const mapDispatchToProps = (dispatch: *) =>
   bindActionCreators(
     {
-      updateClient,
+      updateClient
     },
     dispatch
   );
