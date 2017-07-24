@@ -1,19 +1,20 @@
 // @flow
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {fetchVisits} from '../actions/visits';
-import VisitList from './VisitList';
-import type {Dispatch} from '../types/Store';
-import type {State as ReduxState} from '../types/State';
-import type {Visit} from '../actions/visits';
-import type {Job} from '../actions/jobs';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import moment from "moment";
+import { fetchVisits } from "../actions/visits";
+import VisitList from "./VisitList";
+import type { Dispatch } from "../types/Store";
+import type { State as ReduxState } from "../types/State";
+import type { Visit } from "../actions/visits";
+import type { Job } from "../actions/jobs";
 
 type Props = {
   visits: Array<Visit>,
   job: Job,
   token: ?string,
   isFetching: boolean,
-  dispatch: Dispatch,
+  dispatch: Dispatch
 };
 
 type State = {};
@@ -22,24 +23,26 @@ class VisitListContainer extends Component<void, Props, State> {
   state: State = {};
 
   componentDidMount() {
-    const {job, visits, token, dispatch} = this.props;
+    const { job, visits, token, dispatch } = this.props;
     if (!visits.length && token) {
-      dispatch(fetchVisits(token, {job: job.id}));
+      dispatch(
+        fetchVisits(token, {
+          job: job.id,
+          ordering: "begins",
+          begins__gt: moment().format("YYYY-MM-DD")
+        })
+      );
     }
   }
 
   render() {
     const { visits, isFetching } = this.props;
     return (
-      <VisitList
-        visits={visits}
-        isFetching={isFetching}
-        onMore={this.onMore} />
-    )
+      <VisitList visits={visits} isFetching={isFetching} onMore={this.onMore} />
+    );
   }
 
   onMore = () => {};
-
 }
 
 const mapStateToProps = (
@@ -49,7 +52,7 @@ const mapStateToProps = (
     job: Job
   }
 ): Props => {
-  const {auth, entities, visits} = state;
+  const { auth, entities, visits } = state;
 
   return {
     job: ownProps.job,
@@ -58,7 +61,7 @@ const mapStateToProps = (
     }),
     isFetching: visits.isFetching,
     token: auth.token,
-    dispatch: ownProps.dispatch,
+    dispatch: ownProps.dispatch
   };
 };
 
