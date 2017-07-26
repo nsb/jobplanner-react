@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import Split from "grommet/components/Split";
 import NavSidebar from "../components/NavSidebar";
+import CalendarContainer from "../components/CalendarContainer";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
@@ -43,6 +44,7 @@ class AppAuthenticatedNav extends Component {
           ? <NavSidebar toggleNav={this.toggleNav} business={business} />
           : null}
         <Switch>
+          <Route exact path="/:businessId/calendar" component={CalendarContainer} />
           <Route exact path="/:businessId/clients/add" component={ClientAdd} />
           <Route
             exact

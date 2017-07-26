@@ -21,6 +21,7 @@ import type {Store} from './types/Store';
 import rootReducer from './reducers';
 import App from './containers/App';
 import 'grommet/scss/vanilla/index.scss';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './index.css';
 
 import localeEnData from './locales/en.json';
