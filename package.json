@@ -57,7 +57,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
-    "grommet": "^1.4.1",
+    "grommet": "^1.5.0",
     "grommet-addons": "^0.3.0",
     "grommet-templates": "^0.2.0",
     "intl": "^1.2.5",
