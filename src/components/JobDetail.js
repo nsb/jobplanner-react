@@ -41,7 +41,7 @@ class JobsDetail extends Component {
 
   render() {
 
-    const { job, responsive } = this.props;
+    const { business, job, responsive } = this.props;
 
     let onSidebarClose;
     let sidebarControl;
@@ -68,7 +68,7 @@ class JobsDetail extends Component {
             justify="between" size="large" colorIndex="light-2">
             <Box direction="row" align="center" pad={{between: 'small'}}
               responsive={false}>
-              <Anchor icon={<LinkPreviousIcon />} path="/1/jobs"
+              <Anchor icon={<LinkPreviousIcon />} path={`/${business.id}/jobs`}
                 a11yTitle="Return" />
               <Heading tag="h1" margin="none">
                 <strong>{`Job ${job.id}`}</strong>
