@@ -36,7 +36,7 @@ const Calendar = ({
     <Box full={true} pad="medium">
       <BigCalendar
         events={visits}
-        titleAccessor="description"
+        titleAccessor="client"
         startAccessor={visit => {
           return new Date(visit.begins);
         }}
