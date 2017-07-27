@@ -1,31 +1,33 @@
 // @flow
 import React, {Component} from 'react';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
+import {connect} from 'react-redux';
+import type {Dispatch} from '../types/Store';
+import type {State as ReduxState} from '../types/State';
 
-BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
+import Calendar from "./Calendar";
 
 type Props = {
 };
 
-type State = {
-};
-
-class CalendarContainer extends Component<void, Props, State> {
-  state: State = {
-  };
+class CalendarContainer extends Component {
 
   render() {
 
     return (
-      <BigCalendar
-        events={[]}
-        startAccessor='startDate'
-        endAccessor='endDate'
-      />
+      <Calendar/>
     );
   }
 
 }
 
-export default CalendarContainer;
+const mapStateToProps = (
+  state: ReduxState,
+  ownProps: {
+  }
+): Props => {
+
+  return {
+  };
+};
+
+export default connect(mapStateToProps)(CalendarContainer);
