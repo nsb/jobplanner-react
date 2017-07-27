@@ -1,12 +1,12 @@
 // @flow
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {fetchClients} from '../actions/clients';
-import ClientList from './ClientList';
-import type {Dispatch} from '../types/Store';
-import type {State as ReduxState} from '../types/State';
-import type {Client} from '../actions/clients';
-import type {Business} from '../actions/businesses';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fetchClients } from "../actions/clients";
+import ClientList from "./ClientList";
+import type { Dispatch } from "../types/Store";
+import type { State as ReduxState } from "../types/State";
+import type { Client } from "../actions/clients";
+import type { Business } from "../actions/businesses";
 
 type Props = {
   business: Business,
@@ -14,27 +14,27 @@ type Props = {
   token: ?string,
   isFetching: boolean,
   dispatch: Dispatch,
-  push: (string) => void
+  push: string => void
 };
 
 type State = {
-  searchText: string,
+  searchText: string
 };
 
 class ClientListContainer extends Component<void, Props, State> {
   state: State = {
-    searchText: '',
+    searchText: ""
   };
 
   componentDidMount() {
-    const {business, clients, token, dispatch} = this.props;
+    const { business, clients, token, dispatch } = this.props;
     if (!clients.length && token) {
-      dispatch(fetchClients(token, {business: business.id}));
+      dispatch(fetchClients(token, { business: business.id }));
     }
   }
 
   render() {
-    const {business, clients, isFetching} = this.props;
+    const { business, clients, isFetching } = this.props;
 
     const filteredClients = clients.filter(client => {
       const sText = this.state.searchText.toLowerCase();
@@ -64,16 +64,16 @@ class ClientListContainer extends Component<void, Props, State> {
   onMore = () => {};
 
   onClick = (e: SyntheticInputEvent, client: Client) => {
-    const {push, business} = this.props;
+    const { push, business } = this.props;
     push(`/${business.id}/clients/${client.id}`);
   };
 
-  onSearch = ({target}: SyntheticInputEvent) => {
-    this.setState({searchText: target.value});
+  onSearch = ({ target }: SyntheticInputEvent) => {
+    this.setState({ searchText: target.value });
   };
 
   addClient = (e: SyntheticInputEvent) => {
-    const {push, business} = this.props;
+    const { push, business } = this.props;
     push(`/${business.id}/clients/add`);
   };
 }
@@ -81,12 +81,12 @@ class ClientListContainer extends Component<void, Props, State> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    match: {params: {businessId: number}},
-    history: {push: Function},
-    dispatch: Dispatch,
+    match: { params: { businessId: number } },
+    history: { push: Function },
+    dispatch: Dispatch
   }
 ): Props => {
-  const {clients, entities, auth} = state;
+  const { clients, entities, auth } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
@@ -97,7 +97,7 @@ const mapStateToProps = (
     isFetching: clients.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch,
-    push: ownProps.history.push,
+    push: ownProps.history.push
   };
 };
 

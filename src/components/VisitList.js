@@ -1,19 +1,19 @@
 // @flow
 
-import React from 'react';
-import {injectIntl, intlShape} from 'react-intl';
-import Box from 'grommet/components/Box';
-import List from 'grommet/components/List';
-import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
-import VisitListItem from './VisitListItem';
-import type {Visit} from '../actions/visits';
+import React from "react";
+import { injectIntl, intlShape } from "react-intl";
+import Box from "grommet/components/Box";
+import List from "grommet/components/List";
+import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import VisitListItem from "./VisitListItem";
+import type { Visit } from "../actions/visits";
 
 type Props = {
   visits?: Array<Visit>,
   isFetching?: boolean,
   onMore: () => void,
   onClick: (SyntheticInputEvent, Visit) => void,
-  intl: intlShape,
+  intl: intlShape
 };
 
 const VisitList = ({
@@ -22,8 +22,8 @@ const VisitList = ({
   isFetching = true,
   onMore,
   onClick,
-  intl,
-}: Props) => (
+  intl
+}: Props) =>
   <Box>
     <List onMore={isFetching ? onMore : undefined}>
       {visits.map((visit: Visit, index: number) => {
@@ -41,11 +41,10 @@ const VisitList = ({
       filteredTotal={isFetching ? null : visits.length}
       unfilteredTotal={isFetching ? null : visits.length}
       emptyMessage={intl.formatMessage({
-        id: 'visits.emptyMessage',
-        defaultMessage: 'You do not have any visits at the moment.',
+        id: "visits.emptyMessage",
+        defaultMessage: "You do not have any visits at the moment."
       })}
     />
-  </Box>
-);
+  </Box>;
 
 export default injectIntl(VisitList);

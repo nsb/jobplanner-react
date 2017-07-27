@@ -1,13 +1,12 @@
 // @flow
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import type {State as ReduxState} from '../types/State';
-import type {Dispatch} from '../types/Store';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import type { State as ReduxState } from "../types/State";
+import type { Dispatch } from "../types/Store";
 
 import Calendar from "./Calendar";
 
-type Props = {
-};
+type Props = {};
 
 type State = {
   view: "day" | "week" | "month" | "agenda",
@@ -18,7 +17,7 @@ class CalendarContainer extends Component {
   state: {
     view: "day" | "week" | "month" | "agenda",
     date: Date
-  } = { view: "week", date: new Date() }
+  } = { view: "week", date: new Date() };
 
   render() {
     const { visits } = this.props;
@@ -40,14 +39,13 @@ class CalendarContainer extends Component {
       />
     );
   }
-
 }
 
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    history: {push: Function},
-    dispatch: Dispatch,
+    history: { push: Function },
+    dispatch: Dispatch
   }
 ): Props => {
   const { visits, entities } = state;
@@ -55,7 +53,7 @@ const mapStateToProps = (
   return {
     visits: visits.result.map((Id: number) => {
       return entities.visits[Id];
-    }),
+    })
   };
 };
 
