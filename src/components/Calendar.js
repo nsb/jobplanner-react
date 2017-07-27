@@ -46,7 +46,7 @@ const Calendar = ({
         allDayAccessor={visit => {
           return !visit.time_begins
         }}
-        view={view}
+        // view={view}
         onNavigate={onNavigate}
         onView={onView}
         onSelectSlot={onSelectSlot}
