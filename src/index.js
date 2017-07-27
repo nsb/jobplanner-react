@@ -12,7 +12,7 @@ import {Router} from 'react-router-dom';
 // import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly';
 // import NetworkListener from 'redux-queue-offline-listener';
-import {Provider} from 'react-intl-redux';
+import {updateIntl, Provider} from 'react-intl-redux';
 import {addLocaleData} from 'react-intl';
 import history from './history';
 import en from 'react-intl/locale-data/en';
@@ -84,6 +84,8 @@ if (process.env.NODE_ENV !== 'production') {
 //   // ...other initialState
 // }
 
+
+
 function configureStore(): Store {
   return createStore(
     rootReducer,
@@ -93,6 +95,11 @@ function configureStore(): Store {
 }
 
 const store = configureStore();
+
+store.dispatch(updateIntl({
+  locale: languageWithoutRegionCode,
+  messages,
+}))
 
 // const authRequired = (nextState: State) => {
 //   if (!store.getState().auth.token) {
