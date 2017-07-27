@@ -3,10 +3,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
+import type { Visit } from "../actions/visits";
 
 import Calendar from "./Calendar";
 
-type Props = {};
+type Props = {
+  visits: Array<Visit>
+};
 
 type State = {
   view: "day" | "week" | "month" | "agenda",

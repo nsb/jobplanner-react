@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import Header from "grommet/components/Header";
