@@ -37,8 +37,12 @@ const Calendar = ({
       <BigCalendar
         events={visits}
         titleAccessor="description"
-        startAccessor={(visit) => { return new Date(visit.begins)}}
-        endAccessor={(visit) => { return new Date(visit.ends)}}
+        startAccessor={visit => {
+          return new Date(visit.begins);
+        }}
+        endAccessor={visit => {
+          return new Date(visit.ends);
+        }}
         view={view}
         onNavigate={onNavigate}
         onView={onView}
