@@ -2,6 +2,9 @@
 import React, {Component} from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
+import Header from "grommet/components/Header";
+import Title from "grommet/components/Title";
+import NavControl from "./NavControl";
 import Box from "grommet/components/Box";
 
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
@@ -19,12 +22,20 @@ class CalendarContainer extends Component<void, Props, State> {
   render() {
 
     return (
-      <Box full={true} pad="medium">
-        <BigCalendar
-          events={[]}
-          startAccessor='startDate'
-          endAccessor='endDate'
-        />
+      <Box>
+        <Header size="large" pad={{ horizontal: "medium" }}>
+          <Title responsive={false}>
+            <NavControl />
+            <span>Calendar</span>
+          </Title>
+        </Header>
+        <Box full={true} pad="medium">
+          <BigCalendar
+            events={[]}
+            startAccessor='startDate'
+            endAccessor='endDate'
+          />
+        </Box>
       </Box>
     );
   }
