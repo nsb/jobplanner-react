@@ -1,45 +1,50 @@
 // @flow
-import React, {Component} from 'react';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
+import React, { Component } from "react";
+import BigCalendar from "react-big-calendar";
+import moment from "moment";
 import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
 import NavControl from "./NavControl";
 import Box from "grommet/components/Box";
+import type { Visit } from "../actions/visits";
 
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 type Props = {
+  visits: Array<Visit>,
+  view: "day" | "week" | "month" | "agenda",
+  date: Date,
+  onNavigate: Function,
+  onView: Function,
+  onSelectSlot: Function
 };
 
-type State = {
-};
+const Calendar = ({
+  visits = [],
+  view = "week",
+  onNavigate,
+  onView,
+  onSelectSlot
+}: Props) =>
+  <Box>
+    <Header size="large" pad={{ horizontal: "medium" }}>
+      <Title responsive={false}>
+        <NavControl />
+        <span>Calendar</span>
+      </Title>
+    </Header>
+    <Box full={true} pad="medium">
+      <BigCalendar
+        events={visits}
+        titleAccessor="description"
+        startAccessor={(visit) => { return new Date(visit.begins)}}
+        endAccessor={(visit) => { return new Date(visit.ends)}}
+        view={view}
+        onNavigate={onNavigate}
+        onView={onView}
+        onSelectSlot={onSelectSlot}
+      />
+    </Box>
+  </Box>;
 
-class CalendarContainer extends Component<void, Props, State> {
-  state: State = {
-  };
-
-  render() {
-
-    return (
-      <Box>
-        <Header size="large" pad={{ horizontal: "medium" }}>
-          <Title responsive={false}>
-            <NavControl />
-            <span>Calendar</span>
-          </Title>
-        </Header>
-        <Box full={true} pad="medium">
-          <BigCalendar
-            events={[]}
-            startAccessor='startDate'
-            endAccessor='endDate'
-          />
-        </Box>
-      </Box>
-    );
-  }
-
-}
-
-export default CalendarContainer;
+export default Calendar;
