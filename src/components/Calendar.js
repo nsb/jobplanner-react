@@ -43,6 +43,9 @@ const Calendar = ({
         endAccessor={visit => {
           return new Date(visit.ends);
         }}
+        allDayAccessor={visit => {
+          return !visit.time_begins
+        }}
         view={view}
         onNavigate={onNavigate}
         onView={onView}
