@@ -15,7 +15,8 @@ type Props = {
   job: Job,
   token: ?string,
   isFetching: boolean,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  totalCount: number
 };
 
 type State = {
@@ -34,9 +35,13 @@ class VisitListContainer extends Component<void, Props, State> {
   }
 
   render() {
-    const { visits, isFetching } = this.props;
+    const { visits, isFetching, totalCount } = this.props;
     return (
-      <VisitList visits={visits} isFetching={isFetching} onMore={this.onMore} />
+      <VisitList
+        visits={visits}
+        isFetching={isFetching}
+        onMore={this.state.offset < totalCount ? this.onMore : null}
+      />
     );
   }
 
@@ -52,7 +57,7 @@ class VisitListContainer extends Component<void, Props, State> {
           offset: this.state.offset
         })
       );
-      this.setState({offset: this.state.offset + this.state.limit})
+      this.setState({ offset: this.state.offset + this.state.limit });
     }
   };
 }
@@ -69,6 +74,7 @@ const mapStateToProps = (
   return {
     job: ownProps.job,
     visits: getVisitsByJob(state, ownProps),
+    totalCount: visits.count,
     isFetching: visits.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch
