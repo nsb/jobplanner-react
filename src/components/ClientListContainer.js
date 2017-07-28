@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
 import { fetchClients } from "../actions/clients";
 import ClientList from "./ClientList";
 import type { Dispatch } from "../types/Store";
@@ -29,14 +28,11 @@ class ClientListContainer extends Component<void, Props, State> {
   state: State = {
     searchText: "",
     offset: 0,
-    limit: 10
+    limit: 2
   };
 
   componentDidMount() {
-    const { business, clients, token, dispatch } = this.props;
-    if (!clients.length && token) {
-      dispatch(fetchClients(token, { business: business.id }));
-    }
+    this.onMore();
   }
 
   render() {
@@ -74,7 +70,7 @@ class ClientListContainer extends Component<void, Props, State> {
         fetchClients(token, {
           business: business.id,
           // ordering: "begins",
-          limit: 10,
+          limit: this.state.limit,
           offset: this.state.offset
         })
       );
