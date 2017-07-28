@@ -18,22 +18,19 @@ type Props = {
   dispatch: Dispatch
 };
 
-type State = {};
+type State = {
+  offset: number,
+  limit: number
+};
 
 class VisitListContainer extends Component<void, Props, State> {
-  state: State = {};
+  state = {
+    offset: 0,
+    limit: 10
+  };
 
   componentDidMount() {
-    const { job, visits, token, dispatch } = this.props;
-    if (!visits.length && token) {
-      dispatch(
-        fetchVisits(token, {
-          job: job.id,
-          ordering: "begins",
-          begins__gt: moment().format("YYYY-MM-DD")
-        })
-      );
-    }
+    this.onMore();
   }
 
   render() {
@@ -43,7 +40,21 @@ class VisitListContainer extends Component<void, Props, State> {
     );
   }
 
-  onMore = () => {};
+  onMore = () => {
+    const { job, token, dispatch } = this.props;
+    if (token) {
+      dispatch(
+        fetchVisits(token, {
+          job: job.id,
+          ordering: "begins",
+          begins__gt: moment().format("YYYY-MM-DD"),
+          limit: 10,
+          offset: this.state.offset
+        })
+      );
+      this.setState({offset: this.state.offset + this.state.limit})
+    }
+  };
 }
 
 const mapStateToProps = (

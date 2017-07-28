@@ -11,11 +11,6 @@ type Props = {
   visits: Array<Visit>
 };
 
-type State = {
-  view: "day" | "week" | "month" | "agenda",
-  date: Date
-};
-
 class CalendarContainer extends Component {
   state: {
     view: "day" | "week" | "month" | "agenda",

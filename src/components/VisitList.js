@@ -25,7 +25,7 @@ const VisitList = ({
   intl
 }: Props) =>
   <Box>
-    <List onMore={isFetching ? onMore : undefined}>
+    <List onMore={isFetching ? undefined : onMore}>
       {visits.map((visit: Visit, index: number) => {
         return (
           <VisitListItem
