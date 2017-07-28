@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import moment from "moment";
 import { fetchClients } from "../actions/clients";
 import ClientList from "./ClientList";
 import type { Dispatch } from "../types/Store";
@@ -14,16 +15,21 @@ type Props = {
   token: ?string,
   isFetching: boolean,
   dispatch: Dispatch,
-  push: string => void
+  push: string => void,
+  totalCount: number
 };
 
 type State = {
-  searchText: string
+  searchText: string,
+  offset: number,
+  limit: number
 };
 
 class ClientListContainer extends Component<void, Props, State> {
   state: State = {
-    searchText: ""
+    searchText: "",
+    offset: 0,
+    limit: 10
   };
 
   componentDidMount() {
@@ -34,7 +40,7 @@ class ClientListContainer extends Component<void, Props, State> {
   }
 
   render() {
-    const { business, clients, isFetching } = this.props;
+    const { business, clients, isFetching, totalCount } = this.props;
 
     const filteredClients = clients.filter(client => {
       const sText = this.state.searchText.toLowerCase();
@@ -52,7 +58,7 @@ class ClientListContainer extends Component<void, Props, State> {
         business={business}
         clients={filteredClients}
         isFetching={isFetching}
-        onMore={this.onMore}
+        onMore={this.state.offset < totalCount ? this.onMore : null}
         onSearch={this.onSearch}
         searchText={this.state.searchText}
         onClick={this.onClick}
@@ -61,7 +67,20 @@ class ClientListContainer extends Component<void, Props, State> {
     );
   }
 
-  onMore = () => {};
+  onMore = () => {
+    const { business, token, dispatch } = this.props;
+    if (token) {
+      dispatch(
+        fetchClients(token, {
+          business: business.id,
+          // ordering: "begins",
+          limit: 10,
+          offset: this.state.offset
+        })
+      );
+      this.setState({ offset: this.state.offset + this.state.limit });
+    }
+  };
 
   onClick = (e: SyntheticInputEvent, client: Client) => {
     const { push, business } = this.props;
@@ -97,7 +116,8 @@ const mapStateToProps = (
     isFetching: clients.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch,
-    push: ownProps.history.push
+    push: ownProps.history.push,
+    totalCount: clients.count
   };
 };
 
