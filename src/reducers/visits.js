@@ -56,7 +56,7 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
 
     case 'FETCH_VISITS_SUCCESS':
       if (action.payload && action.payload.result) {
-        return union([], state, action.payload.result);
+        return union(state, action.payload.result);
       } else {
         return state;
       }

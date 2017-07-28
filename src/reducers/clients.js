@@ -1,6 +1,6 @@
 // @flow
 import { combineReducers } from "redux";
-import { merge } from "lodash/object";
+import { union } from "lodash/array";
 import type { Action } from "../actions/clients";
 
 type IsFetchingState = boolean;
@@ -65,14 +65,14 @@ const result = (state: ResultState = [], action: Action): ResultState => {
 
     case "FETCH_CLIENT_SUCCESS":
       if (action.payload && action.payload.result) {
-        return merge([], state, action.payload.result);
+        return union(state, action.payload.result);
       } else {
         return state;
       }
 
     case "FETCH_CLIENTS_SUCCESS":
       if (action.payload && action.payload.result) {
-        return merge([], state, action.payload.result);
+        return union(state, action.payload.result);
       } else {
         return state;
       }

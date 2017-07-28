@@ -1,6 +1,6 @@
 // @flow
 import { combineReducers } from "redux";
-import { merge } from "lodash/object";
+import { union } from "lodash/array";
 import type { Action } from "../actions/jobs";
 
 const isFetching = (state: boolean = false, action: Action): boolean => {
@@ -55,7 +55,7 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
 
     case "FETCH_JOBS_SUCCESS":
       if (action.payload && action.payload.result) {
-        return merge([], state, action.payload.result);
+        return union(state, action.payload.result);
       } else {
         return state;
       }
