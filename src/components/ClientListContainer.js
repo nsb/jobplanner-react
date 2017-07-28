@@ -28,7 +28,7 @@ class ClientListContainer extends Component<void, Props, State> {
   state: State = {
     searchText: "",
     offset: 0,
-    limit: 2
+    limit: 30
   };
 
   componentDidMount() {
