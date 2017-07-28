@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import { fetchVisits } from "../actions/visits";
 import VisitList from "./VisitList";
+import getVisitsByJob from "../selectors/visitSelectors";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
@@ -52,13 +53,11 @@ const mapStateToProps = (
     job: Job
   }
 ): Props => {
-  const { auth, entities, visits } = state;
+  const { auth, visits } = state;
 
   return {
     job: ownProps.job,
-    visits: visits.result.map((Id: number) => {
-      return entities.visits[Id];
-    }),
+    visits: getVisitsByJob(state, ownProps),
     isFetching: visits.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch

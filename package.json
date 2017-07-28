@@ -79,6 +79,7 @@
     "redux-queue-offline": "^0.4.2",
     "redux-queue-offline-listener": "^0.2.0",
     "redux-thunk": "^2.1.0",
+    "reselect": "^3.0.1",
     "rrule": "^2.2.0",
     "url-search-params-polyfill": "^1.0.2"
   },
