@@ -35,6 +35,7 @@ const Calendar = ({
     </Header>
     <Box full={true} pad="medium">
       <BigCalendar
+        defaultView="week"
         events={visits}
         titleAccessor="client"
         startAccessor={visit => {
