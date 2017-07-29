@@ -12,8 +12,8 @@ BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 type Props = {
   visits: Array<Visit>,
-  view: "day" | "week" | "month" | "agenda",
-  date: Date,
+  defaultView: "day" | "week" | "month" | "agenda",
+  defaultDate: Date,
   onNavigate: Function,
   onView: Function,
   onSelectSlot: Function
@@ -21,7 +21,7 @@ type Props = {
 
 const Calendar = ({
   visits = [],
-  view = "week",
+  defaultView = "week",
   onNavigate,
   onView,
   onSelectSlot
@@ -35,7 +35,7 @@ const Calendar = ({
     </Header>
     <Box full={true} pad="medium">
       <BigCalendar
-        defaultView="week"
+        defaultView={defaultView}
         events={visits}
         titleAccessor="client"
         startAccessor={visit => {

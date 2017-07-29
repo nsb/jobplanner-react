@@ -4,12 +4,15 @@ import { connect } from "react-redux";
 import moment from "moment";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
+import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
 import { fetchVisits } from "../actions/visits";
 import Calendar from "./Calendar";
 
 type Props = {
-  visits: Array<Visit>
+  business: Business,
+  visits: Array<Visit>,
+  token: ?string
 };
 
 class CalendarContainer extends Component {
@@ -19,18 +22,8 @@ class CalendarContainer extends Component {
   } = { view: "week", date: new Date() };
 
   componentDidMount() {
-    const { token, dispatch } = this.props;
-    if (token) {
-      dispatch(
-        fetchVisits(token, {
-          ordering: "begins",
-          // begins__gt: moment().format("YYYY-MM-DD"),
-          limit: 100,
-          offset: 0
-        })
-      );
-    }
-  };
+    this.loadVisits()
+  }
 
   render() {
     const { visits } = this.props;
@@ -38,13 +31,13 @@ class CalendarContainer extends Component {
     return (
       <Calendar
         visits={visits}
-        view={this.state.view}
-        date={this.state.date}
-        onNavigate={e => {
-          console.log(e, "onNavigate");
+        defaultView={this.state.view}
+        defaultDate={this.state.date}
+        onNavigate={date => {
+          this.setState({ date }, this.loadVisits);
         }}
-        onView={e => {
-          console.log(e, "onView");
+        onView={view => {
+          this.setState({ view }, this.loadVisits);
         }}
         onSelectSlot={e => {
           console.log(e, "onSelectSlot");
@@ -52,18 +45,41 @@ class CalendarContainer extends Component {
       />
     );
   }
+
+  loadVisits = () => {
+    const { business, token, dispatch } = this.props;
+    if (token) {
+      dispatch(
+        fetchVisits(token, {
+          business: business.id,
+          ordering: "begins",
+          begins__gte: moment(this.state.date)
+            .startOf(this.state.view)
+            .format("YYYY-MM-DD"),
+          ends__lte: moment(this.state.date)
+            .endOf(this.state.view)
+            .format("YYYY-MM-DD"),
+          limit: 100,
+          offset: 0
+        })
+      );
+    }
+  }
 }
 
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
+    match: { params: { businessId: number } },
     history: { push: Function },
     dispatch: Dispatch
   }
 ): Props => {
   const { visits, entities, auth } = state;
+  const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
+    business: entities.businesses[businessId],
     visits: visits.result.map((Id: number) => {
       return entities.visits[Id];
     }),
