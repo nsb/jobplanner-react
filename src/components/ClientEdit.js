@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { clientSchema } from "../schemas";
@@ -19,8 +18,9 @@ class ClientEdit extends Component {
     business: Business,
     client: Client,
     properties: PropertiesMap,
-    updateClient: (d: Dispatch) => Promise<Client>,
-    push: string => void
+    updateClient: (client: Client, token: string) => Promise<Client>,
+    push: string => void,
+    dispatch: Dispatch
   };
 
   render() {
@@ -40,14 +40,14 @@ class ClientEdit extends Component {
   }
 
   handleSubmit = (values: Client): void => {
-    const { token, client, updateClient } = this.props;
-    updateClient(
+    const { token, client, dispatch } = this.props;
+    dispatch(updateClient(
       {
         client,
         ...values
       },
       token || ""
-    );
+    ));
   };
 
   onClose = () => {
@@ -60,7 +60,8 @@ const mapStateToProps = (
   state: State,
   ownProps: {
     match: { params: { businessId: number, clientId: number } },
-    history: { push: string => void }
+    history: { push: string => void },
+    dispatch: Dispatch
   }
 ) => {
   const { auth, entities } = state;
@@ -76,12 +77,4 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = (dispatch: *) =>
-  bindActionCreators(
-    {
-      updateClient
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(ClientEdit);
+export default connect(mapStateToProps)(ClientEdit);

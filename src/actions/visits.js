@@ -79,7 +79,10 @@ type CreateVisitFailureAction = {
 
 type UpdateVisitAction = {
   type: typeof UPDATE_VISIT,
-  payload: Visit
+  payload: Visit,
+  meta: {
+    isOptimistic: boolean
+  }
 };
 
 type UpdateVisitSuccessAction = {
@@ -204,10 +207,16 @@ export const createVisit = (
   };
 };
 
-export const updateVisitRequest = (payload: Visit): UpdateVisitAction => {
+export const updateVisitRequest = (
+  payload: Visit,
+  isOptimistic: boolean = false
+): UpdateVisitAction => {
   return {
     type: UPDATE_VISIT,
-    payload
+    meta: {
+      isOptimistic
+    },
+    payload: normalize(payload, visitSchema)
   };
 };
 
@@ -228,9 +237,13 @@ export const updateVisitError = (error: string): UpdateVisitFailureAction => {
   };
 };
 
-export const updateVisit = (visit: Visit, token: string) => {
+export const updateVisit = (
+  visit: Visit,
+  token: string,
+  optimistic: boolean = false
+) => {
   return (dispatch: Dispatch) => {
-    dispatch(updateVisitRequest(visit));
+    dispatch(updateVisitRequest(visit, optimistic));
 
     return visitsApi
       .update("visits", visit, token)

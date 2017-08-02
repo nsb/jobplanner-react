@@ -4,11 +4,13 @@ import { createSelector } from "reselect";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
+import { ensureState } from "redux-optimistic-ui";
 
-const getVisits = (state: ReduxState): Array<Visit> =>
-  state.visits.result.map((Id: number): Visit => {
+const getVisits = (state: ReduxState): Array<Visit> => {
+  return ensureState(state.visits).result.map((Id: number): Visit => {
     return state.entities.visits[Id];
   });
+};
 
 const getJob = (state: ReduxState, props: { job: Job }): Job => {
   return props.job;

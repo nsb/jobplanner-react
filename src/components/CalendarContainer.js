@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
+import { ensureState } from "redux-optimistic-ui";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
@@ -43,7 +44,9 @@ class CalendarContainer extends Component {
           console.log(e, "onSelectSlot");
         }}
         onEventDrop={({ event, start, end }) => {
-          dispatch(updateVisit({ ...event, begins: start, ends: end }, token));
+          dispatch(
+            updateVisit({ ...event, begins: start, ends: end }, token, true)
+          );
         }}
       />
     );
@@ -83,7 +86,7 @@ const mapStateToProps = (
 
   return {
     business: entities.businesses[businessId],
-    visits: visits.result.map((Id: number) => {
+    visits: ensureState(visits).result.map((Id: number) => {
       return entities.visits[Id];
     }),
     token: auth.token

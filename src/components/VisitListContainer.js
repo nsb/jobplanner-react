@@ -74,8 +74,8 @@ const mapStateToProps = (
   return {
     job: ownProps.job,
     visits: getVisitsByJob(state, ownProps),
-    totalCount: visits.count,
-    isFetching: visits.isFetching,
+    totalCount: visits.get("current").count,
+    isFetching: visits.get("current").isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch
   };

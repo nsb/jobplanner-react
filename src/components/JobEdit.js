@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Article from "grommet/components/Article";
 import JobForm from "./JobForm";
@@ -18,9 +17,9 @@ class JobEdit extends Component {
     business: Business,
     clients: ClientsState,
     entities: EntitiesState,
-    updateJob: (d: Dispatch) => Promise<Job>,
     job: Job,
-    push: string => void
+    push: string => void,
+    dispatch: Dispatch
   };
 
   render() {
@@ -51,15 +50,15 @@ class JobEdit extends Component {
     // get client Id
     const { client: { value: clientId } } = values;
 
-    const { token, business, updateJob } = this.props;
-    updateJob(
+    const { token, business, dispatch } = this.props;
+    dispatch(updateJob(
       {
         ...values,
         business: business.id,
         client: clientId
       },
       token || ""
-    );
+    ));
   };
 
   onClose = () => {
@@ -72,7 +71,8 @@ const mapStateToProps = (
   state: State,
   ownProps: {
     match: { params: { businessId: number, jobId: number } },
-    history: { push: string => void }
+    history: { push: string => void },
+    dispatch: Dispatch
   }
 ) => {
   const { auth, clients, entities } = state;
@@ -84,17 +84,10 @@ const mapStateToProps = (
     business: entities.businesses[businessId],
     job: entities.jobs[jobId],
     push: ownProps.history.push,
+    dispatch: ownProps.dispatch,
     clients,
     entities
   };
 };
 
-const mapDispatchToProps = (dispatch: *) =>
-  bindActionCreators(
-    {
-      updateJob
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(JobEdit);
+export default connect(mapStateToProps)(JobEdit);
