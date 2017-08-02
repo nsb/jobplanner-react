@@ -233,7 +233,7 @@ export const updateVisit = (visit: Visit, token: string) => {
     dispatch(updateVisitRequest(visit));
 
     return visitsApi
-      .update("visit", visit, token)
+      .update("visits", visit, token)
       .then((responseVisit: Visit) => {
         dispatch(updateVisitSuccess(responseVisit));
         return responseVisit;

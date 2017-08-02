@@ -6,7 +6,7 @@ import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
-import { fetchVisits } from "../actions/visits";
+import { fetchVisits, updateVisit } from "../actions/visits";
 import Calendar from "./Calendar";
 
 type Props = {
@@ -22,11 +22,11 @@ class CalendarContainer extends Component {
   } = { view: "week", date: new Date() };
 
   componentDidMount() {
-    this.loadVisits()
+    this.loadVisits();
   }
 
   render() {
-    const { visits } = this.props;
+    const { visits, dispatch, token } = this.props;
 
     return (
       <Calendar
@@ -41,6 +41,9 @@ class CalendarContainer extends Component {
         }}
         onSelectSlot={e => {
           console.log(e, "onSelectSlot");
+        }}
+        onEventDrop={({ event, start, end }) => {
+          dispatch(updateVisit({ ...event, begins: start, ends: end }, token));
         }}
       />
     );
@@ -64,7 +67,7 @@ class CalendarContainer extends Component {
         })
       );
     }
-  }
+  };
 }
 
 const mapStateToProps = (
