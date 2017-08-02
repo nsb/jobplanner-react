@@ -58,10 +58,10 @@ class CalendarContainer extends Component {
           ordering: "begins",
           begins__gte: moment(this.state.date)
             .startOf(this.state.view)
-            .format("YYYY-MM-DD"),
+            .format("YYYY-MM-DDT00:00"),
           ends__lte: moment(this.state.date)
             .endOf(this.state.view)
-            .format("YYYY-MM-DD"),
+            .format("YYYY-MM-DDT00:00"),
           limit: 100,
           offset: 0
         })
