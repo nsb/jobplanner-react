@@ -52,7 +52,7 @@ class VisitListContainer extends Component<void, Props, State> {
         fetchVisits(token, {
           job: job.id,
           ordering: "begins",
-          begins__gt: moment().format("YYYY-MM-DD"),
+          begins__gt: moment().format("YYYY-MM-DDT00:00"),
           limit: 10,
           offset: this.state.offset
         })
