@@ -54,9 +54,8 @@ class Calendar extends Component<void, Props, void> {
             endAccessor={visit => {
               return new Date(visit.ends);
             }}
-            allDayAccessor={visit => {
-              return !visit.anytime;
-            }}
+            allDayAccessor="anytime"
+            scrollToTime={new Date().setHours(6)}
             onNavigate={onNavigate}
             onView={onView}
             onSelectSlot={onSelectSlot}

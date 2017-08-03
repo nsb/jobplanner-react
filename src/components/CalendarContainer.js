@@ -43,14 +43,36 @@ class CalendarContainer extends Component {
         onSelectSlot={e => {
           console.log(e, "onSelectSlot");
         }}
-        onEventDrop={({ event, start, end }) => {
-          dispatch(
-            updateVisit({ ...event, begins: start, ends: end }, token, true)
-          );
-        }}
+        onEventDrop={this.onEventDrop}
       />
     );
   }
+
+  onEventDrop = ({ event, start, end }) => {
+    const { dispatch, token } = this.props;
+    const origBegins = new Date(event.begins);
+
+    const timeChanged = !(
+      `${origBegins.getHours()}:${origBegins.getMinutes()}` ===
+      `${start.getHours()}:${start.getMinutes()}`
+    );
+
+    const dateChanged = !(
+      `${origBegins.getDate()}-${origBegins.getMonth()}-${origBegins.getFullYear()}` ===
+      `${start.getDate()}-${start.getMonth()}-${start.getFullYear()}`
+    );
+
+    const anytime =
+      (!timeChanged && event.anytime) || (!timeChanged && !dateChanged);
+
+    dispatch(
+      updateVisit(
+        { ...event, begins: start, ends: end, anytime: anytime },
+        token,
+        true
+      )
+    );
+  };
 
   loadVisits = () => {
     const { business, token, dispatch } = this.props;
