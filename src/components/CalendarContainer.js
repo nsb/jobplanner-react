@@ -43,6 +43,9 @@ class CalendarContainer extends Component {
         onSelectSlot={e => {
           console.log(e, "onSelectSlot");
         }}
+        onSelectEvent={e => {
+          console.log(e, "onSelectEvent");
+        }}
         onEventDrop={this.onEventDrop}
       />
     );

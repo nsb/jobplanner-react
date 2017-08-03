@@ -21,6 +21,7 @@ type Props = {
   onNavigate: Function,
   onView: Function,
   onSelectSlot: Function,
+  onSelectEvent: Function,
   onEventDrop: Function
 };
 
@@ -32,6 +33,7 @@ class Calendar extends Component<void, Props, void> {
       onNavigate,
       onView,
       onSelectSlot,
+      onSelectEvent,
       onEventDrop
     } = this.props;
     return (
@@ -44,7 +46,8 @@ class Calendar extends Component<void, Props, void> {
         </Header>
         <Box full={true} pad="medium">
           <DragAndDropCalendar
-            selectable
+            selectable={true}
+            popup={true}
             defaultView={defaultView}
             events={visits}
             titleAccessor="client"
@@ -59,6 +62,7 @@ class Calendar extends Component<void, Props, void> {
             onNavigate={onNavigate}
             onView={onView}
             onSelectSlot={onSelectSlot}
+            onSelectEvent={onSelectEvent}
             onEventDrop={onEventDrop}
           />
         </Box>
