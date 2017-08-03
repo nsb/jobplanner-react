@@ -2,13 +2,13 @@ import {BEGIN, COMMIT, REVERT} from 'redux-optimistic-ui';
 
 //All my redux action types that are optimistic have the following suffixes, yours may vary
 const _SUCCESS = '_SUCCESS';
-const _ERROR = '_ERROR';
+const _FAILURE = '_FAILURE';
 
 //Each optimistic item will need a transaction Id to internally match the BEGIN to the COMMIT/REVERT
 let nextTransactionID = 0;
 
 // That crazy redux middleware that's 3 functions deep!
-export default store => next => action => {
+const optimisticMiddleware = store => next => action => {
   // FSA compliant
   const {type, meta, payload} = action;
 
@@ -21,12 +21,12 @@ export default store => next => action => {
   // Extend the action.meta to let it know we're beginning an optimistic update
   next(Object.assign({}, action, {meta: {optimistic: {type: BEGIN, id: transactionID}}}));
 
-  const error = false
+  const error = true
   // HTTP is boring, I like sending data over sockets, the 3rd arg is a callback
   // socket.emit(type, payload, error => {
     // Create a redux action based on the result of the callback
   next({
-    type: type + (error ? _ERROR : _SUCCESS),
+    type: type + (error ? _FAILURE : _SUCCESS),
     error,
     payload,
     meta: {
@@ -36,3 +36,5 @@ export default store => next => action => {
   });
   // })
 };
+
+export { optimisticMiddleware }

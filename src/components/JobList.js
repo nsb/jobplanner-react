@@ -16,6 +16,7 @@ import JobListItem from './JobListItem';
 import NavControl from './NavControl';
 import type {State} from '../types/State';
 import type {Job} from '../actions/jobs';
+import { ensureState } from "redux-optimistic-ui";
 
 class JobList extends Component {
   state: {
@@ -125,9 +126,9 @@ const mapStateToProps = (
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
-    business: entities.businesses[businessId],
+    business: ensureState(entities).businesses[businessId],
     jobs: jobs.result.map(Id => {
-      return entities.jobs[Id];
+      return ensureState(entities).jobs[Id];
     }),
     isFetching: jobs.isFetching,
     token: auth.token,

@@ -11,6 +11,7 @@ import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { State } from "../types/State";
 import type { PropertiesMap } from "../actions/properties";
+import { ensureState } from "redux-optimistic-ui";
 
 class ClientEdit extends Component {
   props: {
@@ -41,13 +42,15 @@ class ClientEdit extends Component {
 
   handleSubmit = (values: Client): void => {
     const { token, client, dispatch } = this.props;
-    dispatch(updateClient(
-      {
-        client,
-        ...values
-      },
-      token || ""
-    ));
+    dispatch(
+      updateClient(
+        {
+          client,
+          ...values
+        },
+        token || ""
+      )
+    );
   };
 
   onClose = () => {
@@ -70,9 +73,13 @@ const mapStateToProps = (
 
   return {
     token: auth.token,
-    business: entities.businesses[businessId],
-    client: denormalize(entities.clients[clientId], clientSchema, entities),
-    properties: entities.properties,
+    business: ensureState(entities).businesses[businessId],
+    client: denormalize(
+      ensureState(entities).clients[clientId],
+      clientSchema,
+      entities
+    ),
+    properties: ensureState(entities).properties,
     push: ownProps.history.push
   };
 };

@@ -10,6 +10,7 @@ import type { State as ClientsState } from "../reducers/clients";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { State as EntitiesState } from '../reducers/entities';
+import { ensureState } from "redux-optimistic-ui";
 
 class JobEdit extends Component {
   props: {
@@ -81,12 +82,12 @@ const mapStateToProps = (
 
   return {
     token: auth.token,
-    business: entities.businesses[businessId],
-    job: entities.jobs[jobId],
+    business: ensureState(entities).businesses[businessId],
+    job: ensureState(entities).jobs[jobId],
     push: ownProps.history.push,
     dispatch: ownProps.dispatch,
     clients,
-    entities
+    entities: ensureState(entities)
   };
 };
 

@@ -17,7 +17,7 @@ import { addLocaleData } from "react-intl";
 import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
-import optimisticMiddleware from "./middleware/optimisticMiddleware";
+import { optimisticMiddleware } from "./middleware";
 import type { Store } from "./types/Store";
 import rootReducer from "./reducers";
 import App from "./containers/App";
@@ -73,7 +73,7 @@ if ("serviceWorker" in navigator) {
 // const history = syncHistoryWithStore(createBrowserHistory(), store);
 // const history = createHistory();
 
-const middleware = [thunkMiddleware, optimisticMiddleware];
+const middleware = [thunkMiddleware];
 if (process.env.NODE_ENV !== "production") {
   middleware.push(createLogger());
 }

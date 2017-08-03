@@ -80,6 +80,7 @@ type CreateVisitFailureAction = {
 type UpdateVisitAction = {
   type: typeof UPDATE_VISIT,
   payload: Visit,
+  error: boolean,
   meta: {
     isOptimistic: boolean
   }
@@ -207,34 +208,78 @@ export const createVisit = (
   };
 };
 
+import { BEGIN, COMMIT, REVERT } from "redux-optimistic-ui";
+let nextTransactionID = 0;
 export const updateVisitRequest = (
   payload: Visit,
-  isOptimistic: boolean = false
+  optimistic: boolean = false
 ): UpdateVisitAction => {
-  return {
+  let action = {
     type: UPDATE_VISIT,
     meta: {
-      isOptimistic
+      isOptimistic: optimistic
     },
-    payload: normalize(payload, visitSchema)
+    payload: normalize(payload, visitSchema),
+    error: false
   };
+
+  if (optimistic) {
+    let transactionID = nextTransactionID++;
+    return Object.assign({}, action, {
+      meta: {
+        isOptimistic: optimistic,
+        optimistic: { type: BEGIN, id: 1 }
+      }
+    });
+  } else {
+    return action;
+  }
 };
 
 export const updateVisitSuccess = (
-  payload: Visit
+  payload: Visit,
+  optimistic: boolean = false
 ): UpdateVisitSuccessAction => {
-  return {
+  let action = {
     type: UPDATE_VISIT_SUCCESS,
     receivedAt: Date.now(),
     payload
   };
+
+  if (optimistic) {
+    let transactionID = nextTransactionID++;
+    return Object.assign({}, action, {
+      meta: {
+        isOptimistic: optimistic,
+        optimistic: { type: COMMIT, id: 1 }
+      }
+    });
+  } else {
+    return action;
+  }
 };
 
-export const updateVisitError = (error: string): UpdateVisitFailureAction => {
-  return {
+export const updateVisitError = (
+  error: string,
+  optimistic: boolean = false
+): UpdateVisitFailureAction => {
+  let action = {
     type: UPDATE_VISIT_FAILURE,
     error
   };
+
+  if (optimistic) {
+    let transactionID = nextTransactionID++;
+    return Object.assign({}, action, {
+      meta: {
+        isOptimistic: optimistic,
+        optimistic: { type: REVERT, id: 1 }
+      }
+    });
+  } else {
+    return action;
+  }
+
 };
 
 export const updateVisit = (
@@ -248,11 +293,11 @@ export const updateVisit = (
     return visitsApi
       .update("visits", visit, token)
       .then((responseVisit: Visit) => {
-        dispatch(updateVisitSuccess(responseVisit));
+        dispatch(updateVisitSuccess(responseVisit, optimistic));
         return responseVisit;
       })
       .catch((error: string) => {
-        dispatch(updateVisitError(error));
+        dispatch(updateVisitError(error, optimistic));
       });
   };
 };

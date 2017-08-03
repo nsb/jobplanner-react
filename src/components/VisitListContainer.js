@@ -9,6 +9,7 @@ import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
+import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
   visits: Array<Visit>,
@@ -74,8 +75,8 @@ const mapStateToProps = (
   return {
     job: ownProps.job,
     visits: getVisitsByJob(state, ownProps),
-    totalCount: visits.get("current").count,
-    isFetching: visits.get("current").isFetching,
+    totalCount: ensureState(visits).count,
+    isFetching: ensureState(visits).isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch
   };

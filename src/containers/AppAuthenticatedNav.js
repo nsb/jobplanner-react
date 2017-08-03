@@ -15,6 +15,7 @@ import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
+import { ensureState } from "redux-optimistic-ui";
 
 class AppAuthenticatedNav extends Component {
   props: {
@@ -87,7 +88,7 @@ const mapStateToProps = (
   return {
     navActive: nav.active,
     responsive: nav.responsive,
-    business: entities.businesses[businessId],
+    business: ensureState(entities).businesses[businessId],
     match: ownProps.match
   };
 };

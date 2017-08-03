@@ -21,6 +21,7 @@ import type {Job} from '../actions/jobs';
 import type {State} from '../types/State';
 import type {Dispatch} from '../types/Store';
 import type {Responsive} from '../actions/nav';
+import { ensureState } from "redux-optimistic-ui";
 
 class JobsDetail extends Component {
   props: {
@@ -130,10 +131,10 @@ const mapStateToProps = (
 
   return {
     token: auth.token,
-    business: entities.businesses[businessId],
-    job: entities.jobs[jobId],
+    business: ensureState(entities).businesses[businessId],
+    job: ensureState(entities).jobs[jobId],
     clients: clients.result.map(Id => {
-      return entities.clients[Id];
+      return ensureState(entities).clients[Id];
     }),
     push: ownProps.history.push,
     responsive: nav.responsive

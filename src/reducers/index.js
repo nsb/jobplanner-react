@@ -26,7 +26,7 @@ const reducers = {
   network,
   users,
   jobs,
-  entities
+  entities: optimistic(entities)
 };
 
 export type Reducers = typeof reducers;

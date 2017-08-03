@@ -85,9 +85,9 @@ const mapStateToProps = (
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
-    business: entities.businesses[businessId],
+    business: ensureState(entities).businesses[businessId],
     visits: ensureState(visits).result.map((Id: number) => {
-      return entities.visits[Id];
+      return ensureState(entities).visits[Id];
     }),
     token: auth.token
   };

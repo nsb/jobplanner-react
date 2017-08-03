@@ -12,6 +12,7 @@ import type { State as ReduxState } from "../types/State";
 import type { Client } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Responsive } from "../actions/nav";
+import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
   business: Business,
@@ -93,9 +94,9 @@ const mapStateToProps = (
   const clientId = parseInt(ownProps.match.params.clientId, 10);
 
   return {
-    business: entities.businesses[businessId],
-    client: entities.clients[clientId],
-    properties: entities.properties,
+    business: ensureState(entities).businesses[businessId],
+    client: ensureState(entities).clients[clientId],
+    properties: ensureState(entities).properties,
     clientId: clientId,
     isFetching: clients.isFetching,
     token: auth.token,
