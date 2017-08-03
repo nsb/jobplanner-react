@@ -16,6 +16,7 @@ import NavControl from "./NavControl";
 import BusinessListItem from "./businessListItem";
 import type { Business } from "../actions/businesses";
 import type { State } from "../types/State";
+import { ensureState } from "redux-optimistic-ui";
 
 class Businesses extends Component {
   props: {
@@ -114,7 +115,7 @@ const mapStateToProps = (
 
   return {
     businesses: businesses.result.map(Id => {
-      return entities.businesses[Id];
+      return ensureState(entities).businesses[Id];
     }),
     push: ownProps.history.push
   };

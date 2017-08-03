@@ -8,6 +8,7 @@ import type { Client } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
+import { ensureState } from "redux-optimistic-ui";
 
 class ClientAdd extends Component {
   props: {
@@ -58,7 +59,7 @@ const mapStateToProps = (state: State, ownProps: OwnProps) => {
 
   return {
     token: auth.token,
-    business: entities.businesses[businessId],
+    business: ensureState(entities).businesses[businessId],
     dispatch: ownProps.dispatch,
     push: ownProps.history.push
   };

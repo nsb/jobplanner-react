@@ -8,6 +8,7 @@ import {createJob} from '../actions/jobs';
 import type {Business} from '../actions/businesses';
 import type {State} from '../types/State';
 import type {Dispatch} from '../types/Store';
+import { ensureState } from "redux-optimistic-ui";
 
 class JobsAdd extends Component {
   props: {
@@ -72,9 +73,9 @@ const mapStateToProps = (
 
   return {
     token: auth.token,
-    business: entities.businesses[businessId],
+    business: ensureState(entities).businesses[businessId],
     clients: clients.result.map(Id => {
-      return entities.clients[Id];
+      return ensureState(entities).clients[Id];
     }),
     push: ownProps.history.push
   };
