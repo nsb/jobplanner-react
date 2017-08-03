@@ -5,6 +5,8 @@ import visitsApi from "../api";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import history from "../history";
+import { BEGIN, COMMIT, REVERT } from "redux-optimistic-ui";
+
 
 //Create new job
 export const CREATE_VISIT: "CREATE_VISIT" = "CREATE_VISIT";
@@ -208,11 +210,11 @@ export const createVisit = (
   };
 };
 
-import { BEGIN, COMMIT, REVERT } from "redux-optimistic-ui";
 let nextTransactionID = 0;
 export const updateVisitRequest = (
   payload: Visit,
-  optimistic: boolean = false
+  optimistic: boolean = false,
+  transactionID: number = 0
 ): UpdateVisitAction => {
   let action = {
     type: UPDATE_VISIT,
@@ -224,11 +226,10 @@ export const updateVisitRequest = (
   };
 
   if (optimistic) {
-    let transactionID = nextTransactionID++;
     return Object.assign({}, action, {
       meta: {
         isOptimistic: optimistic,
-        optimistic: { type: BEGIN, id: 1 }
+        optimistic: { type: BEGIN, id: transactionID }
       }
     });
   } else {
@@ -238,7 +239,8 @@ export const updateVisitRequest = (
 
 export const updateVisitSuccess = (
   payload: Visit,
-  optimistic: boolean = false
+  optimistic: boolean = false,
+  transactionId: number = 0
 ): UpdateVisitSuccessAction => {
   let action = {
     type: UPDATE_VISIT_SUCCESS,
@@ -247,11 +249,10 @@ export const updateVisitSuccess = (
   };
 
   if (optimistic) {
-    let transactionID = nextTransactionID++;
     return Object.assign({}, action, {
       meta: {
         isOptimistic: optimistic,
-        optimistic: { type: COMMIT, id: 1 }
+        optimistic: { type: COMMIT, id: transactionId }
       }
     });
   } else {
@@ -261,7 +262,8 @@ export const updateVisitSuccess = (
 
 export const updateVisitError = (
   error: string,
-  optimistic: boolean = false
+  optimistic: boolean = false,
+  transactionID: number = 0
 ): UpdateVisitFailureAction => {
   let action = {
     type: UPDATE_VISIT_FAILURE,
@@ -269,11 +271,10 @@ export const updateVisitError = (
   };
 
   if (optimistic) {
-    let transactionID = nextTransactionID++;
     return Object.assign({}, action, {
       meta: {
         isOptimistic: optimistic,
-        optimistic: { type: REVERT, id: 1 }
+        optimistic: { type: REVERT, id: transactionID }
       }
     });
   } else {
@@ -288,16 +289,17 @@ export const updateVisit = (
   optimistic: boolean = false
 ) => {
   return (dispatch: Dispatch) => {
-    dispatch(updateVisitRequest(visit, optimistic));
+    let transactionID = nextTransactionID++;
+    dispatch(updateVisitRequest(visit, optimistic, transactionID));
 
     return visitsApi
       .update("visits", visit, token)
       .then((responseVisit: Visit) => {
-        dispatch(updateVisitSuccess(responseVisit, optimistic));
+        dispatch(updateVisitSuccess(responseVisit, optimistic, transactionID));
         return responseVisit;
       })
       .catch((error: string) => {
-        dispatch(updateVisitError(error, optimistic));
+        dispatch(updateVisitError(error, optimistic, transactionID));
       });
   };
 };
