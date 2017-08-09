@@ -2806,9 +2806,9 @@ grommet@^0.6.2:
     superagent "^2.2.0"
     yargs "^5.0.0"
 
-grommet@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/grommet/-/grommet-1.5.0.tgz#7f92def86d780d9484b659c44f75c60af988ca41"
+grommet@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/grommet/-/grommet-1.6.0.tgz#c8393a301b631b7756985cf22866fbadc4faad0e"
   dependencies:
     classnames "^2.2.3"
     deep-assign "^2.0.0"
