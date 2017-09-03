@@ -36,6 +36,10 @@ class Calendar extends Component<void, Props, void> {
       onSelectEvent,
       onEventDrop
     } = this.props;
+
+    let scrollToTime = new Date();
+    scrollToTime.setHours(6);
+
     return (
       <Box>
         <Header size="large" pad={{ horizontal: "medium" }}>
@@ -58,7 +62,7 @@ class Calendar extends Component<void, Props, void> {
               return new Date(visit.ends);
             }}
             allDayAccessor="anytime"
-            scrollToTime={new Date().setHours(6)}
+            scrollToTime={scrollToTime}
             onNavigate={onNavigate}
             onView={onView}
             onSelectSlot={onSelectSlot}
