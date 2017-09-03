@@ -77,7 +77,7 @@ const mapStateToProps = (
     client: denormalize(
       ensureState(entities).clients[clientId],
       clientSchema,
-      entities
+      ensureState(entities)
     ),
     properties: ensureState(entities).properties,
     push: ownProps.history.push
