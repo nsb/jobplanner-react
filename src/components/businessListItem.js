@@ -4,12 +4,13 @@ import React, { Component } from "react";
 import ListItem from "grommet/components/ListItem";
 import type { Business } from "../actions/businesses";
 
-class BusinessListItem extends Component {
-  props: {
-    business: Business,
-    index: number,
-    onClick: Function
-  };
+type Props = {
+  business: Business,
+  index: number,
+  onClick: Function
+};
+
+class BusinessListItem extends Component<Props> {
 
   render() {
     const { business, index, onClick } = this.props;

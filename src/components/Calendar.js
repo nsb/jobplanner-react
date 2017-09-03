@@ -25,7 +25,7 @@ type Props = {
   onEventDrop: Function
 };
 
-class Calendar extends Component<void, Props, void> {
+class Calendar extends Component<Props, void> {
   render() {
     const {
       visits,

@@ -13,14 +13,19 @@ import Calendar from "./Calendar";
 type Props = {
   business: Business,
   visits: Array<Visit>,
-  token: ?string
+  token: string,
+  dispatch: Dispatch
 };
 
-class CalendarContainer extends Component {
-  state: {
-    view: "day" | "week" | "month" | "agenda",
-    date: Date
-  } = { view: "week", date: new Date() };
+type CalendarView = "day" | "week" | "month" | "agenda";
+
+type State = {
+  view: CalendarView,
+  date: Date
+}
+
+class CalendarContainer extends Component<Props, State> {
+  state: State = { view: "week", date: new Date() };
 
   componentDidMount() {
     this.loadVisits();
@@ -34,16 +39,16 @@ class CalendarContainer extends Component {
         visits={visits}
         defaultView={this.state.view}
         defaultDate={this.state.date}
-        onNavigate={date => {
+        onNavigate={(date: Date) => {
           this.setState({ date }, this.loadVisits);
         }}
-        onView={view => {
+        onView={(view: CalendarView) => {
           this.setState({ view }, this.loadVisits);
         }}
-        onSelectSlot={e => {
+        onSelectSlot={(e: Event) => {
           console.log(e, "onSelectSlot");
         }}
-        onSelectEvent={e => {
+        onSelectEvent={(e: Event) => {
           console.log(e, "onSelectEvent");
         }}
         onEventDrop={this.onEventDrop}
@@ -53,7 +58,7 @@ class CalendarContainer extends Component {
 
   onEventDrop = ({ event, start, end }) => {
     const { dispatch, token } = this.props;
-    const origBegins = new Date(event.begins);
+    const origBegins: Date = new Date(event.begins);
 
     const timeChanged = !(
       `${origBegins.getHours()}:${origBegins.getMinutes()}` ===
@@ -114,7 +119,8 @@ const mapStateToProps = (
     visits: ensureState(visits).result.map((Id: number) => {
       return ensureState(entities).visits[Id];
     }),
-    token: auth.token
+    token: auth.token,
+    dispatch: ownProps.dispatch
   };
 };
 
