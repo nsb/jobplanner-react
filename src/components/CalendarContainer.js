@@ -27,7 +27,7 @@ class CalendarContainer extends Component {
   }
 
   render() {
-    const { visits, dispatch, token } = this.props;
+    const { visits } = this.props;
 
     return (
       <Calendar

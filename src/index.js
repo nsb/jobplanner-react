@@ -17,7 +17,6 @@ import { addLocaleData } from "react-intl";
 import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
-import { optimisticMiddleware } from "./middleware";
 import type { Store } from "./types/Store";
 import rootReducer from "./reducers";
 import App from "./containers/App";
