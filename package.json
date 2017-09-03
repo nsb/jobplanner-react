@@ -36,9 +36,11 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",
+    "build:langs": "BABEL_ENV=production ./node_modules/.bin/babel-node translator.js",
     "manage:translations": "node ./translationRunner.js"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-plugin-react-intl": "^2.3.1",
     "react-intl-translations-manager": "^5.0.0"
   }
