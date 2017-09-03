@@ -3,18 +3,22 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import type { State } from "../types/State";
+import type { State as ReduxState } from "../types/State";
 import type { Business } from "../actions/businesses";
 import Article from "grommet/components/Article";
 import BusinessForm from "./BusinessForm";
 import { createBusiness } from "../actions/businesses";
+import type { Dispatch } from "../types/Store";
 
-class BusinessAdd extends Component {
-  props: {
-    token: ?string,
-    push: string => void,
-    createBusiness: (Business, string) => (d: Dispatch) => Promise<Business>
-  };
+type Props = {
+  token: ?string,
+  push: string => void,
+  createBusiness: (Business, string) => (d: Dispatch) => Promise<Business>
+}
+
+type State = {}
+
+class BusinessAdd extends Component<Props, State> {
 
   render() {
     return (
@@ -37,7 +41,7 @@ class BusinessAdd extends Component {
 }
 
 const mapStateToProps = (
-  { auth }: State,
+  { auth }: ReduxState,
   ownProps: { history: { push: string => void } }
 ) => ({
   token: auth.token,

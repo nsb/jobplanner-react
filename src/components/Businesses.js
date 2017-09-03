@@ -15,18 +15,19 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import NavControl from "./NavControl";
 import BusinessListItem from "./businessListItem";
 import type { Business } from "../actions/businesses";
-import type { State } from "../types/State";
+import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 
-class Businesses extends Component {
-  props: {
-    businesses: Array<Business>,
-    push: string => void
-  };
+type Props = {
+  businesses: Array<Business>,
+  push: string => void
+};
 
-  state: {
-    searchText: string
-  };
+type State = {
+  searchText: string
+};
+
+class Businesses extends Component<Props, State> {
 
   constructor() {
     super();
@@ -74,7 +75,7 @@ class Businesses extends Component {
                   key={business.id}
                   business={business}
                   index={index}
-                  onClick={(e: SyntheticInputEvent) =>
+                  onClick={(e: SyntheticInputEvent<*>) =>
                     this.onClick(e, business)}
                 />
               );
@@ -101,14 +102,14 @@ class Businesses extends Component {
     this.props.push(`/${business.id}`);
   };
 
-  onSearch = (e: SyntheticInputEvent) => {
+  onSearch = (e: SyntheticInputEvent<*>) => {
     const searchText = e.target.value;
     this.setState({ searchText });
   };
 }
 
 const mapStateToProps = (
-  state: State,
+  state: ReduxState,
   ownProps: { history: { push: Function } }
 ) => {
   const { businesses, entities } = state;

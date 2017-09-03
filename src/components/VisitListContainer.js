@@ -28,7 +28,7 @@ type State = {
 class VisitListContainer extends Component<void, Props, State> {
   state = {
     offset: 0,
-    limit: 10
+    limit?: 10
   };
 
   componentDidMount() {
