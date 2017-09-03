@@ -35,7 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "flow": "flow",
+    "manage:translations": "node ./translationRunner.js"
   },
   "devDependencies": {
     "babel-plugin-react-intl": "^2.3.1",
