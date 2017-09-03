@@ -1,6 +1,6 @@
 // @flow
 import { combineReducers } from "redux";
-import { routerReducer } from "react-router-redux";
+// import { routerReducer } from "react-router-redux";
 import { intlReducer } from "react-intl-redux";
 import { reducer as reduxFormReducer } from "redux-form";
 import { optimistic } from "redux-optimistic-ui";
@@ -15,7 +15,7 @@ import visits from "./visits";
 import entities from "./entities";
 
 const reducers = {
-  router: routerReducer,
+  // router: routerReducer,
   form: reduxFormReducer,
   intl: intlReducer,
   visits: optimistic(visits),

@@ -1,5 +1,5 @@
 // @flow
-import "babel-polyfill";
+// import "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
@@ -23,6 +23,7 @@ import App from "./containers/App";
 import "grommet/scss/vanilla/index.scss";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import "grommet-css";
 import "./index.css";
 
 import localeEnData from "./locales/en.json";

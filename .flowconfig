@@ -1,11 +1,12 @@
 [ignore]
-.*/build
+*/build
 .*/config
 
 [include]
-.*/src
+*/src
 
 [libs]
 
+[lints]
+
 [options]
-module.name_mapper='^.*\.scss$' -> 'css-module-flow'
