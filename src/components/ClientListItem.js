@@ -4,13 +4,13 @@ import React, {Component} from 'react';
 import ListItem from 'grommet/components/ListItem';
 import type {Client} from '../actions/clients';
 
-class ClientListItem extends Component {
-  props: {
-    client: Client,
-    index: number,
-    onClick: SyntheticInputEvent => void,
-  };
+type Props = {
+  client: Client,
+  index: number,
+  onClick: SyntheticInputEvent<*> => void,
+};
 
+class ClientListItem extends Component<Props> {
   render() {
     const {client, index, onClick} = this.props;
     return (

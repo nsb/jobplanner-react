@@ -9,13 +9,14 @@ import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type {State} from '../types/State';
 
-class ClientRemove extends Component {
-  props: {
-    client: Client,
-    onClose: Function,
-    dispatch: Dispatch,
-    token: string
-  };
+type Props = {
+  client: Client,
+  onClose: Function,
+  dispatch: Dispatch,
+  token: string
+};
+
+class ClientRemove extends Component<Props> {
 
   _onRemove = () => {
     const { client, token } = this.props;

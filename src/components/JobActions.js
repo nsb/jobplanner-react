@@ -12,11 +12,12 @@ import CloseIcon from 'grommet/components/icons/base/Close';
 import EditIcon from 'grommet/components/icons/base/Edit';
 import TrashIcon from 'grommet/components/icons/base/Trash';
 
-class JobActions extends Component {
-  props: {
-    onClose: Function,
-    onEdit: Function
-  }
+type Props = {
+  onClose?: Function,
+  onEdit: Function
+}
+
+class JobActions extends Component<Props> {
 
   render () {
     const {onClose, onEdit} = this.props;

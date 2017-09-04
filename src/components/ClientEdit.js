@@ -10,20 +10,21 @@ import { updateClient } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { State } from "../types/State";
+import type { Dispatch } from "../types/Store";
 import type { PropertiesMap } from "../actions/properties";
 import { ensureState } from "redux-optimistic-ui";
 
-class ClientEdit extends Component {
-  props: {
-    token?: string,
-    business: Business,
-    client: Client,
-    properties: PropertiesMap,
-    updateClient: (client: Client, token: string) => Promise<Client>,
-    push: string => void,
-    dispatch: Dispatch
-  };
+type Props = {
+  token?: string,
+  business: Business,
+  client: Client,
+  properties: PropertiesMap,
+  updateClient: (client: Client, token: string) => Promise<Client>,
+  push: string => void,
+  dispatch: Dispatch
+};
 
+class ClientEdit extends Component<Props> {
   render() {
     const { client } = this.props;
 

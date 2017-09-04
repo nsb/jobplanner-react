@@ -7,17 +7,17 @@ import { createClient } from "../actions/clients";
 import type { Client } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
-import type { State } from "../types/State";
+import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 
-class ClientAdd extends Component {
-  props: {
-    token: string,
-    business: Business,
-    dispatch: Dispatch,
-    push: string => void
-  };
+type Props = {
+  token: string,
+  business: Business,
+  dispatch: Dispatch,
+  push: string => void
+};
 
+class ClientAdd extends Component<Props> {
   render() {
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -29,7 +29,7 @@ class ClientAdd extends Component {
   }
 
   handleSubmit = (values: Client): void => {
-    const { token, business } = this.props;
+    const { token, business, dispatch } = this.props;
     let action = createClient(
       business,
       {
@@ -38,10 +38,10 @@ class ClientAdd extends Component {
       },
       token
     );
-    this.props.dispatch(action);
+    dispatch(action);
   };
 
-  onClose = (e: SyntheticInputEvent) => {
+  onClose = (e: SyntheticInputEvent<*>) => {
     const { business, push } = this.props;
     push(`/${business.id}/clients`);
   };
@@ -53,7 +53,7 @@ type OwnProps = {
   dispatch: Dispatch
 };
 
-const mapStateToProps = (state: State, ownProps: OwnProps) => {
+const mapStateToProps = (state: ReduxState, ownProps: OwnProps) => {
   const { auth, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 

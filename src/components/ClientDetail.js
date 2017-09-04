@@ -15,20 +15,23 @@ import ClientActions from "../components/ClientActions";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { PropertiesMap } from "../actions/properties";
+import type { Responsive } from "../actions/nav";
 
-class ClientDetail extends Component {
-  props: {
-    business: Business,
-    client: Client,
-    properties: PropertiesMap,
-    responsive: boolean,
-    onEdit: Function,
-    onResponsive: Function
-  };
+type Props = {
+  business: Business,
+  client: Client,
+  properties: PropertiesMap,
+  responsive: Responsive,
+  onEdit: Function,
+  onResponsive: Function
+};
 
-  state: {
-    showSidebarWhenSingle: boolean
-  } = {
+type State = {
+  showSidebarWhenSingle: boolean
+};
+
+class ClientDetail extends Component<Props, State> {
+  state = {
     showSidebarWhenSingle: false
   };
 

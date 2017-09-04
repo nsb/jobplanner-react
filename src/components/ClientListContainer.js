@@ -25,7 +25,7 @@ type State = {
   limit: number
 };
 
-class ClientListContainer extends Component<void, Props, State> {
+class ClientListContainer extends Component<Props, State> {
   state: State = {
     searchText: "",
     offset: 0,
@@ -79,16 +79,16 @@ class ClientListContainer extends Component<void, Props, State> {
     }
   };
 
-  onClick = (e: SyntheticInputEvent, client: Client) => {
+  onClick = (e: SyntheticInputEvent<*>, client: Client) => {
     const { push, business } = this.props;
     push(`/${business.id}/clients/${client.id}`);
   };
 
-  onSearch = ({ target }: SyntheticInputEvent) => {
+  onSearch = ({ target }: SyntheticInputEvent<*>) => {
     this.setState({ searchText: target.value });
   };
 
-  addClient = (e: SyntheticInputEvent) => {
+  addClient = (e: SyntheticInputEvent<*>) => {
     const { push, business } = this.props;
     push(`/${business.id}/clients/add`);
   };

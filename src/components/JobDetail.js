@@ -18,25 +18,27 @@ import VisitListContainer from '../components/VisitListContainer';
 import {navResponsive} from '../actions/nav';
 import type {Business} from '../actions/businesses';
 import type {Job} from '../actions/jobs';
-import type {State} from '../types/State';
+import type {State as ReduxState} from '../types/State';
 import type {Dispatch} from '../types/Store';
 import type {Responsive} from '../actions/nav';
 import { ensureState } from "redux-optimistic-ui";
 
-class JobsDetail extends Component {
-  props: {
-    token: string,
-    business: Business,
-    clients: Array<Client>,
-    job: Job,
-    dispatch: Dispatch,
-    responsive: boolean,
-    push: (string) => void
-  };
+type Props = {
+  token: string,
+  business: Business,
+  clients: Array<Client>,
+  job: Job,
+  dispatch: Dispatch,
+  responsive: boolean,
+  push: (string) => void
+};
 
-  state: {
-    showSidebarWhenSingle: boolean
-  } = {
+type State = {
+  showSidebarWhenSingle: boolean
+};
+
+class JobsDetail extends Component<Props, State> {
+  state = {
     showSidebarWhenSingle: false
   }
 
@@ -119,7 +121,7 @@ class JobsDetail extends Component {
 }
 
 const mapStateToProps = (
-  state: State,
+  state: ReduxState,
   ownProps: {
     match: {params: {businessId: number, jobId: number}},
     history: {push: string => void},

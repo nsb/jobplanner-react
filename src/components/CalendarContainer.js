@@ -22,7 +22,7 @@ type CalendarView = "day" | "week" | "month" | "agenda";
 type State = {
   view: CalendarView,
   date: Date
-}
+};
 
 class CalendarContainer extends Component<Props, State> {
   state: State = { view: "week", date: new Date() };
@@ -56,7 +56,15 @@ class CalendarContainer extends Component<Props, State> {
     );
   }
 
-  onEventDrop = ({ event, start, end }) => {
+  onEventDrop = ({
+    event,
+    start,
+    end
+  }: {
+    event: Visit,
+    start: Date,
+    end: Date
+  }) => {
     const { dispatch, token } = this.props;
     const origBegins: Date = new Date(event.begins);
 

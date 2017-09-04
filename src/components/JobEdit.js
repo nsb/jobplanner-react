@@ -5,24 +5,25 @@ import { connect } from "react-redux";
 import Article from "grommet/components/Article";
 import JobForm from "./JobForm";
 import { updateJob } from "../actions/jobs";
-import type { State } from "../types/State";
+import type { State as ReduxState } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
+import type {Dispatch} from '../types/Store';
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
-import type { State as EntitiesState } from '../reducers/entities';
+import type { State as EntitiesState } from "../reducers/entities";
 import { ensureState } from "redux-optimistic-ui";
 
-class JobEdit extends Component {
-  props: {
-    token?: string,
-    business: Business,
-    clients: ClientsState,
-    entities: EntitiesState,
-    job: Job,
-    push: string => void,
-    dispatch: Dispatch
-  };
+type Props = {
+  token?: string,
+  business: Business,
+  clients: ClientsState,
+  entities: EntitiesState,
+  job: Job,
+  push: string => void,
+  dispatch: Dispatch
+};
 
+class JobEdit extends Component<Props> {
   render() {
     const { clients, entities, job } = this.props;
     const client = entities.clients[job.client];
@@ -52,14 +53,16 @@ class JobEdit extends Component {
     const { client: { value: clientId } } = values;
 
     const { token, business, dispatch } = this.props;
-    dispatch(updateJob(
-      {
-        ...values,
-        business: business.id,
-        client: clientId
-      },
-      token || ""
-    ));
+    dispatch(
+      updateJob(
+        {
+          ...values,
+          business: business.id,
+          client: clientId
+        },
+        token || ""
+      )
+    );
   };
 
   onClose = () => {
@@ -69,13 +72,13 @@ class JobEdit extends Component {
 }
 
 const mapStateToProps = (
-  state: State,
+  state: ReduxState,
   ownProps: {
     match: { params: { businessId: number, jobId: number } },
     history: { push: string => void },
     dispatch: Dispatch
   }
-) => {
+): Props => {
   const { auth, clients, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);

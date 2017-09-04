@@ -11,12 +11,14 @@ import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Client } from "../actions/clients";
 import type { Business } from "../actions/businesses";
+import type { Property } from "../actions/properties";
 import type { Responsive } from "../actions/nav";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
   business: Business,
   client: Client,
+  properties: Array<Property>,
   clientId: number,
   token: ?string,
   isFetching: boolean,
@@ -25,7 +27,7 @@ type Props = {
   responsive: Responsive
 };
 
-class ClientDetailContainer extends Component {
+class ClientDetailContainer extends Component<Props> {
   componentDidMount() {
     const { client, clientId, token, dispatch } = this.props;
     if (!client && token) {

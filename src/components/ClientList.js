@@ -21,10 +21,10 @@ type Props = {
   clients?: Array<Client>,
   isFetching?: boolean,
   searchText?: string,
-  onSearch: SyntheticInputEvent => void,
+  onSearch: SyntheticInputEvent<*> => void,
   onMore: () => void,
-  onClick: (SyntheticInputEvent, Client) => void,
-  addClient: SyntheticInputEvent => void,
+  onClick: (SyntheticInputEvent<*>, Client) => void,
+  addClient: SyntheticInputEvent<*> => void,
   intl: intlShape,
 };
 

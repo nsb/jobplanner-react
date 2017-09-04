@@ -51,11 +51,12 @@ const renderSelect = ({
   );
 };
 
-class ScheduleInput extends Component {
-  props: {
-    value: string,
-    onClick: Function,
-  };
+type Props = {
+  value: string,
+  onClick: Function,
+};
+
+class ScheduleInput extends Component<Props> {
 
   render() {
     const {value, onClick} = this.props;
@@ -78,7 +79,7 @@ class ScheduleInput extends Component {
     );
   }
 
-  onChange(e: SyntheticInputEvent) {
+  onChange(e: SyntheticInputEvent<*>) {
     console.log(e);
   }
 }
@@ -87,31 +88,31 @@ const renderSchedule = ({input, onClick, meta: {touched, error, warning}}) => (
   <ScheduleInput {...input} onClick={onClick} />
 );
 
-class JobForm extends Component {
-  props: {
-    handleSubmit?: Function,
-    valid: boolean,
-    clients: Array<Client>,
-    dirty: boolean,
-    submitting: boolean,
-    onClose?: Function,
-    initialValues: Object,
-    // onChange?: Function,
-    dispatch: Dispatch,
-    change: Function,
-  };
+type JobFormProps = {
+  handleSubmit?: Function,
+  valid: boolean,
+  clients: Array<Client>,
+  dirty: boolean,
+  submitting: boolean,
+  onClose?: Function,
+  initialValues: Object,
+  // onChange?: Function,
+  dispatch: Dispatch,
+  change: Function,
+};
 
-  state: {
-    clientsSearchText: string,
-    scheduleLayer: boolean,
-    schedule: {
-      freq: number,
-      interval: number,
-      byweekday: string,
-    },
-  };
+type JobFormState = {
+  clientsSearchText: string,
+  scheduleLayer: boolean,
+  schedule: {
+    freq: number,
+    interval: number,
+    byweekday: string,
+  },
+};
 
-  constructor(props) {
+class JobForm extends Component<JobFormProps, JobFormState> {
+  constructor(props: JobFormProps) {
     super(props);
 
     let recurrences = props.initialValues
@@ -238,12 +239,12 @@ class JobForm extends Component {
     );
   };
 
-  onSearch = (e: SyntheticInputEvent) => {
+  onSearch = (e: SyntheticInputEvent<*>) => {
     const clientsSearchText = e.target.value;
     this.setState({clientsSearchText});
   };
 
-  onScheduleAdd = (e: SyntheticInputEvent) => {
+  onScheduleAdd = (e: SyntheticInputEvent<*>) => {
     this.setState({scheduleLayer: true});
     e.preventDefault();
   };

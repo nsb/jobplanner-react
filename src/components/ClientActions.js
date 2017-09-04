@@ -18,16 +18,19 @@ const LAYERS = {
   remove: ClientRemove
 };
 
-class ClientActions extends Component {
-  props: {
-    client: Client,
-    onClose: Function,
-    onEdit: Function
-  };
+type Props = {
+  client: Client,
+  onClose?: Function,
+  onEdit: Function
+};
 
-  state: {
-    layerName: ?string
-  } = {
+type State = {
+  layerName: ?string
+};
+
+
+class ClientActions extends Component<Props, State> {
+  state = {
     layerName: undefined
   };
 
