@@ -6,13 +6,13 @@ import ListItem from 'grommet/components/ListItem';
 import CheckBox from 'grommet/components/CheckBox';
 import type {Visit} from '../actions/visits';
 
+type Props = {
+  visit: Visit,
+  index: number,
+  onClick: SyntheticEvent<> => void,
+};
 
-class VisitListItem extends Component {
-  props: {
-    visit: Visit,
-    index: number,
-    onClick: SyntheticInputEvent => void,
-  };
+class VisitListItem extends Component<Props> {
 
   render() {
     const {visit, index, onClick} = this.props;

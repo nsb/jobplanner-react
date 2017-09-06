@@ -5,11 +5,13 @@ import Article from 'grommet/components/Article';
 import Header from 'grommet/components/Header';
 import Search from 'grommet/components/Search';
 import NavControl from '../components/NavControl';
+import type { Element } from 'react';
 
-class AppAuthenticatedSearch extends Component {
-  props: {
-    children?: React.Element<*>,
-  };
+type Props = {
+  children?: Element<*>,
+};
+
+class AppAuthenticatedSearch extends Component<Props> {
 
   render() {
     return (

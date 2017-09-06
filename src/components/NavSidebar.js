@@ -20,7 +20,7 @@ type Props = {
   intl: intlShape,
 };
 
-class NavSidebar extends Component<void, Props, void> {
+class NavSidebar extends Component<Props> {
   render() {
     const {business, intl} = this.props;
 

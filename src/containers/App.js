@@ -9,7 +9,7 @@ import type {State} from '../types/State';
 
 import './App.css';
 
-class App extends Component {
+class App extends Component<*> {
 
   render() {
 

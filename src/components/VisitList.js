@@ -12,7 +12,7 @@ type Props = {
   visits?: Array<Visit>,
   isFetching?: boolean,
   onMore: () => void,
-  onClick: (SyntheticInputEvent, Visit) => void,
+  onClick: (SyntheticEvent<>, Visit) => void,
   intl: intlShape
 };
 

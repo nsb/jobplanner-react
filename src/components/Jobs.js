@@ -7,7 +7,7 @@ import JobsAdd from '../components/JobsAdd';
 import JobDetail from '../components/JobDetail';
 import JobEdit from '../components/JobEdit';
 
-class Jobs extends Component {
+class Jobs extends Component<*> {
 
   render() {
 

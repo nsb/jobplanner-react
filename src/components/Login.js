@@ -13,13 +13,13 @@ import type {Credentials} from '../actions/auth';
 import type {Dispatch} from '../types/Store';
 import type {State} from '../types/State';
 
-class Login extends Component {
-  props: {
-    loginBusy: boolean,
-    isAuthenticated: boolean,
-    dispatch: Dispatch
-  };
+type Props = {
+  loginBusy: boolean,
+  isAuthenticated: boolean,
+  dispatch: Dispatch
+};
 
+class Login extends Component<Props> {
   onSubmit = (credentials: Credentials) => {
     this.props.dispatch(login(credentials));
   };

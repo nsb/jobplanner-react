@@ -17,22 +17,15 @@ import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import { ensureState } from "redux-optimistic-ui";
 
-class AppAuthenticatedNav extends Component {
-  props: {
-    navActive: boolean,
-    responsive: string,
-    business: Business,
-    dispatch: Dispatch,
-    match: { url: string }
-  };
+type Props = {
+  navActive: boolean,
+  responsive: string,
+  business: Business,
+  dispatch: Dispatch,
+  match: { url: string }
+};
 
-  // componentWillMount() {
-  //   const {business, dispatch} = this.props;
-  //   if (business === undefined) {
-  //     this.props.push('/404');
-  //   }
-  // }
-
+class AppAuthenticatedNav extends Component<Props> {
   render() {
     const { navActive, responsive } = this.props;
     const priority = navActive && "single" === responsive ? "left" : "right";

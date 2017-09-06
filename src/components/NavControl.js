@@ -8,11 +8,12 @@ import logo from '../logo.svg';
 import type {State} from '../types/State';
 import type {Dispatch} from '../types/Store';
 
-class NavControl extends Component {
-  props: {
-    nav: {active: boolean},
-    dispatch: Dispatch,
-  }
+type Props = {
+  nav: {active: boolean},
+  dispatch: Dispatch,
+}
+
+class NavControl extends Component<Props> {
   render() {
     const {nav: {active}, dispatch} = this.props;
 

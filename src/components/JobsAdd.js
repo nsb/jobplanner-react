@@ -6,22 +6,24 @@ import Article from 'grommet/components/Article';
 import JobForm from './JobForm';
 import {createJob} from '../actions/jobs';
 import type {Business} from '../actions/businesses';
-import type {State} from '../types/State';
+import type {State as ReduxState} from '../types/State';
 import type {Dispatch} from '../types/Store';
 import { ensureState } from "redux-optimistic-ui";
 
-class JobsAdd extends Component {
-  props: {
-    token: string,
-    business: Business,
-    clients: Array<Client>,
-    dispatch: Dispatch,
-    push: (string) => void
-  };
+type Props = {
+  token: string,
+  business: Business,
+  clients: Array<Client>,
+  dispatch: Dispatch,
+  push: (string) => void
+};
 
-  state: {
-    scheduleLayer: boolean,
-  } = {
+type State = {
+  scheduleLayer: boolean,
+}
+
+class JobsAdd extends Component<Props, State> {
+  state = {
     scheduleLayer: false
   }
 
@@ -62,7 +64,7 @@ class JobsAdd extends Component {
 }
 
 const mapStateToProps = (
-  state: State,
+  state: ReduxState,
   ownProps: {
     match: {params: {businessId: number}},
     history: {push: string => void},

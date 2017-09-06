@@ -11,13 +11,14 @@ import type { User } from '../actions/users'
 import type { Dispatch } from '../types/Store'
 import type { State } from '../types/State'
 
-class SessionMenu extends Component {
-  props: {
-    user: User,
-    dropAlign: Object,
-    colorIndex: string,
-    dispatch: Dispatch
-  };
+type Props = {
+  user: User,
+  dropAlign: Object,
+  colorIndex: string,
+  dispatch: Dispatch
+};
+
+class SessionMenu extends Component<Props> {
 
   render() {
     const {user, dropAlign, colorIndex} = this.props;

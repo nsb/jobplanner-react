@@ -4,12 +4,13 @@ import React, {Component} from 'react';
 import ListItem from 'grommet/components/ListItem';
 import type {Job} from '../actions/jobs';
 
-class JobListItem extends Component {
-  props: {
-    job: Job,
-    index: number,
-    onClick: Function,
-  };
+type Props = {
+  job: Job,
+  index: number,
+  onClick: Function,
+};
+
+class JobListItem extends Component<Props> {
 
   render() {
     const {job, index, onClick} = this.props;

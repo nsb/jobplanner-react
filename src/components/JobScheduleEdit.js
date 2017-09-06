@@ -25,16 +25,18 @@ const rruleByWeekDay = [
   {label: 'Sunday', value: RRule.SU.weekday},
 ];
 
-class JobScheduleEdit extends Component {
-  props: {
-    onClose: Function,
-    onSubmit: Function,
-    schedule: Object,
-  };
+type Props = {
+  onClose: Function,
+  onSubmit: Function,
+  schedule: Object,
+};
 
-  state: {
-    schedule: Object
-  } = {
+type State = {
+  schedule: Object
+};
+
+class JobScheduleEdit extends Component<Props, State> {
+  state = {
     schedule: Object.assign({}, this.props.schedule)
   };
 
@@ -113,12 +115,12 @@ class JobScheduleEdit extends Component {
     );
   }
 
-  onSubmit = (e: SyntheticInputEvent) => {
+  onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
     const {schedule} = this.state;
     this.props.onSubmit(schedule);
   };
 
-  onFreqChange = (e: SyntheticInputEvent) => {
+  onFreqChange = (e: SyntheticEvent<>) => {
     this._onChange(e);
   };
 
@@ -129,7 +131,7 @@ class JobScheduleEdit extends Component {
     this.setState(schedule);
   };
 
-  onIntervalChange = (e: SyntheticInputEvent) => {
+  onIntervalChange = (e: SyntheticEvent<>) => {
     this._onChange(e);
   };
 
