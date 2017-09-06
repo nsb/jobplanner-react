@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
@@ -25,7 +25,7 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}) =>
+}): Component<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>;

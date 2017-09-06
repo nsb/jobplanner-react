@@ -14,15 +14,27 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import {fetchJobs} from '../actions/jobs';
 import JobListItem from './JobListItem';
 import NavControl from './NavControl';
-import type {State} from '../types/State';
+import type {State as ReduxState} from '../types/State';
 import type {Job} from '../actions/jobs';
+import type {Business} from '../actions/businesses';
 import { ensureState } from "redux-optimistic-ui";
+import type { Dispatch } from '../types/Store';
 
-class JobList extends Component {
-  state: {
-    searchText: string,
-  };
+type Props = {
+  business: Business,
+  dispatch: Dispatch,
+  jobs: Array<Job>,
+  token: string,
+  isFetching: boolean,
+  push: Function
+}
 
+type State = {
+  searchText: string,
+};
+
+
+class JobList extends Component<Props, State> {
   constructor() {
     super();
     this.state = {searchText: ''};
@@ -79,7 +91,7 @@ class JobList extends Component {
                 key={job.id}
                 job={job}
                 index={index}
-                onClick={(e: SyntheticInputEvent) => this.onClick(e, job)}
+                onClick={(e: SyntheticEvent<>) => this.onClick(e, job)}
               />
             );
           })}
@@ -104,24 +116,25 @@ class JobList extends Component {
 
   onMore = () => {};
 
-  onClick = (e: SyntheticInputEvent, job: Job) => {
+  onClick = (e: SyntheticEvent<>, job: Job) => {
     const {push, business} = this.props;
     push(`/${business.id}/jobs/${job.id}`);
   };
 
-  onSearch = (event: SyntheticInputEvent) => {
+  onSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
     const searchText = event.target.value;
     this.setState({searchText});
   };
 }
 
 const mapStateToProps = (
-  state: State,
+  state: ReduxState,
   ownProps: {
     match: {params: {businessId: number}},
     history: {push: string => void},
+    dispatch: Dispatch
   }
-) => {
+): Props => {
   const {entities, jobs, auth} = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
@@ -132,7 +145,8 @@ const mapStateToProps = (
     }),
     isFetching: jobs.isFetching,
     token: auth.token,
-    push: ownProps.history.push
+    push: ownProps.history.push,
+    dispatch: ownProps.dispatch
   };
 };
 

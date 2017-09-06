@@ -1,43 +1,49 @@
 // @flow
 
-import React from 'react';
-import {Field, FieldArray, reduxForm} from 'redux-form';
-import Section from 'grommet/components/Section';
-import Anchor from 'grommet/components/Anchor';
-import Button from 'grommet/components/Button';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import Form from 'grommet/components/Form';
-import Footer from 'grommet/components/Footer';
-import FormFields from 'grommet/components/FormFields';
-import FormField from 'grommet/components/FormField';
-import CloseIcon from 'grommet/components/icons/base/Close';
-import type {Client} from '../actions/clients';
+import React, { Component } from "react";
+import { Field, FieldArray, reduxForm } from "redux-form";
+import Section from "grommet/components/Section";
+import Anchor from "grommet/components/Anchor";
+import Button from "grommet/components/Button";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
+import Form from "grommet/components/Form";
+import Footer from "grommet/components/Footer";
+import FormFields from "grommet/components/FormFields";
+import FormField from "grommet/components/FormField";
+import CloseIcon from "grommet/components/icons/base/Close";
+import type { Client } from "../actions/clients";
 
 const validate = (values: Client) => {
   const errors = {};
   if (!values.first_name) {
-    errors.first_name = 'Required';
+    errors.first_name = "Required";
   }
   if (!values.last_name) {
-    errors.last_name = 'Required';
+    errors.last_name = "Required";
   }
   return errors;
 };
 
-const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}): Component<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>
-);
+  </FormField>;
 
-const renderProperties = ({ fields, meta: { error, submitFailed } }) => (
+const renderProperties = ({ fields, meta: { error, submitFailed } }): Component<*> =>
   <Section>
     <div>
-      <button type="button" onClick={() => fields.push({})}>Add Property</button>
+      <button type="button" onClick={() => fields.push({})}>
+        Add Property
+      </button>
       {submitFailed && error && <span>{error}</span>}
     </div>
-    {fields.map((property, index) => (
+    {fields.map((property, index) =>
       <div key={index}>
         <button
           type="button"
@@ -45,11 +51,7 @@ const renderProperties = ({ fields, meta: { error, submitFailed } }) => (
           onClick={() => fields.remove(index)}
         />
         <h4>Propterty #{index + 1}</h4>
-        <Field
-          name={`${property}.id`}
-          type="hidden"
-          component={renderField}
-        />
+        <Field name={`${property}.id`} type="hidden" component={renderField} />
         <Field
           name={`${property}.address1`}
           type="text"
@@ -63,9 +65,8 @@ const renderProperties = ({ fields, meta: { error, submitFailed } }) => (
           label="Address 2"
         />
       </div>
-    ))}
-  </Section>
-)
+    )}
+  </Section>;
 
 type Props = {
   handleSubmit: Function,
@@ -74,7 +75,7 @@ type Props = {
   submitting: boolean,
   onClose: Function,
   initialValues: Object
-}
+};
 
 const ClientForm = (props: Props) => {
   const {
@@ -83,14 +84,14 @@ const ClientForm = (props: Props) => {
     dirty,
     submitting,
     onClose,
-    initialValues,
+    initialValues
   } = props;
   return (
     <Form onSubmit={handleSubmit}>
 
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
-          {initialValues ? 'Edit client' : 'Add Client'}
+          {initialValues ? "Edit client" : "Add Client"}
         </Heading>
         <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
       </Header>
@@ -122,12 +123,12 @@ const ClientForm = (props: Props) => {
 
       </FormFields>
 
-      <Footer pad={{vertical: 'medium'}}>
+      <Footer pad={{ vertical: "medium" }}>
         <span />
         <Button
           type="submit"
           primary={true}
-          label={initialValues ? 'Save' : 'Add'}
+          label={initialValues ? "Save" : "Add"}
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>
@@ -136,6 +137,6 @@ const ClientForm = (props: Props) => {
 };
 
 export default reduxForm({
-  form: 'client', // a unique identifier for this form
-  validate,
+  form: "client", // a unique identifier for this form
+  validate
 })(ClientForm);

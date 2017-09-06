@@ -1,33 +1,37 @@
 // @flow
 
-import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
-import Anchor from 'grommet/components/Anchor';
-import Button from 'grommet/components/Button';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import Form from 'grommet/components/Form';
-import Footer from 'grommet/components/Footer';
-import FormFields from 'grommet/components/FormFields';
-import FormField from 'grommet/components/FormField';
-import Select from 'grommet/components/Select';
-import CloseIcon from 'grommet/components/icons/base/Close';
-import EditIcon from 'grommet/components/icons/base/Edit';
-import JobScheduleEdit from './JobScheduleEdit';
-import {RRule, rrulestr} from 'rrule';
-import type {Client} from '../actions/clients';
-import type {Dispatch} from '../types/Store';
+import React, { Component } from "react";
+import { Field, reduxForm } from "redux-form";
+import Anchor from "grommet/components/Anchor";
+import Button from "grommet/components/Button";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
+import Form from "grommet/components/Form";
+import Footer from "grommet/components/Footer";
+import FormFields from "grommet/components/FormFields";
+import FormField from "grommet/components/FormField";
+import Select from "grommet/components/Select";
+import CloseIcon from "grommet/components/icons/base/Close";
+import EditIcon from "grommet/components/icons/base/Edit";
+import JobScheduleEdit from "./JobScheduleEdit";
+import { RRule, rrulestr } from "rrule";
+import type { Client } from "../actions/clients";
+import type { Dispatch } from "../types/Store";
 
 const validate = () => {
   const errors = {};
   return errors;
 };
 
-const renderField = ({input, label, type, meta: {touched, error, warning}}) => (
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}): Component<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>
-);
+  </FormField>;
 
 const normalizeSelect = value => {
   return value.option;
@@ -38,8 +42,8 @@ const renderSelect = ({
   label,
   options,
   onSearch,
-  meta: {touched, error, warning},
-}) => {
+  meta: { touched, error, warning }
+}): Component<*> => {
   return (
     <FormField
       label={label}
@@ -53,14 +57,13 @@ const renderSelect = ({
 
 type Props = {
   value: string,
-  onClick: Function,
+  onClick: Function
 };
 
 class ScheduleInput extends Component<Props> {
-
   render() {
-    const {value, onClick} = this.props;
-    let rule = value ? rrulestr(value) : new RRule({freq: RRule.WEEKLY});
+    const { value, onClick } = this.props;
+    let rule = value ? rrulestr(value) : new RRule({ freq: RRule.WEEKLY });
     return (
       <div>
         <Anchor
@@ -84,9 +87,11 @@ class ScheduleInput extends Component<Props> {
   }
 }
 
-const renderSchedule = ({input, onClick, meta: {touched, error, warning}}) => (
-  <ScheduleInput {...input} onClick={onClick} />
-);
+const renderSchedule = ({
+  input,
+  onClick,
+  meta: { touched, error, warning }
+}): Component<*> => <ScheduleInput {...input} onClick={onClick} />;
 
 type JobFormProps = {
   handleSubmit?: Function,
@@ -98,7 +103,7 @@ type JobFormProps = {
   initialValues: Object,
   // onChange?: Function,
   dispatch: Dispatch,
-  change: Function,
+  change: Function
 };
 
 type JobFormState = {
@@ -107,8 +112,8 @@ type JobFormState = {
   schedule: {
     freq: number,
     interval: number,
-    byweekday: string,
-  },
+    byweekday: string
+  }
 };
 
 class JobForm extends Component<JobFormProps, JobFormState> {
@@ -120,16 +125,16 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       : null;
     let rrule = recurrences
       ? rrulestr(recurrences)
-      : new RRule({freq: RRule.WEEKLY});
+      : new RRule({ freq: RRule.WEEKLY });
 
     this.state = {
-      clientsSearchText: '',
+      clientsSearchText: "",
       scheduleLayer: false,
       schedule: {
         freq: rrule.options.freq,
         interval: rrule.options.interval,
-        byweekday: rrule.options.byweekday,
-      },
+        byweekday: rrule.options.byweekday
+      }
     };
   }
 
@@ -141,7 +146,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       dirty,
       submitting,
       onClose,
-      initialValues,
+      initialValues
     } = this.props;
 
     const filteredClients = clients.filter(client => {
@@ -158,7 +163,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
     const mappedClients = filteredClients.map(client => {
       return {
         value: client.id,
-        label: `${client.first_name} ${client.last_name}`,
+        label: `${client.first_name} ${client.last_name}`
       };
     });
 
@@ -167,7 +172,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
         <Header size="large" justify="between" pad="none">
           <Heading tag="h2" margin="none" strong={true}>
-            {initialValues ? 'Edit job' : 'Add Job'}
+            {initialValues ? "Edit job" : "Add Job"}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
@@ -199,12 +204,12 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
         </FormFields>
 
-        <Footer pad={{vertical: 'medium'}}>
+        <Footer pad={{ vertical: "medium" }}>
           <span />
           <Button
             type="submit"
             primary={true}
-            label={initialValues ? 'Save' : 'Add'}
+            label={initialValues ? "Save" : "Add"}
             onClick={valid && dirty && !submitting ? () => true : undefined}
           />
         </Footer>
@@ -213,7 +218,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   }
 
   renderSchedules = () => {
-    const {scheduleLayer} = this.state;
+    const { scheduleLayer } = this.state;
     let layer;
 
     if (scheduleLayer) {
@@ -241,34 +246,32 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
   onSearch = (e: SyntheticInputEvent<*>) => {
     const clientsSearchText = e.target.value;
-    this.setState({clientsSearchText});
+    this.setState({ clientsSearchText });
   };
 
   onScheduleAdd = (e: SyntheticInputEvent<*>) => {
-    this.setState({scheduleLayer: true});
+    this.setState({ scheduleLayer: true });
     e.preventDefault();
   };
 
   onScheduleClose = () => {
-    this.setState({scheduleLayer: false});
+    this.setState({ scheduleLayer: false });
   };
 
-  onScheduleSubmit = (
-    schedule: {
-      freq: number,
-      interval: number,
-      byweekday: string,
-    }
-  ) => {
-    const {dispatch, change} = this.props;
+  onScheduleSubmit = (schedule: {
+    freq: number,
+    interval: number,
+    byweekday: string
+  }) => {
+    const { dispatch, change } = this.props;
     dispatch(
-      change('recurrences', `RRULE:${new RRule({...schedule}).toString()}`)
+      change("recurrences", `RRULE:${new RRule({ ...schedule }).toString()}`)
     );
-    this.setState({scheduleLayer: false, schedule});
+    this.setState({ scheduleLayer: false, schedule });
   };
 }
 
 export default reduxForm({
-  form: 'job', // a unique identifier for this form
-  validate,
+  form: "job", // a unique identifier for this form
+  validate
 })(JobForm);
