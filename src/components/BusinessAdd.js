@@ -8,12 +8,12 @@ import type { Business } from "../actions/businesses";
 import Article from "grommet/components/Article";
 import BusinessForm from "./BusinessForm";
 import { createBusiness } from "../actions/businesses";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 
 type Props = {
   token: ?string,
   push: string => void,
-  createBusiness: (Business, string) => (d: Dispatch) => Promise<Business>
+  createBusiness: (Business, string) => ThunkAction
 }
 
 type State = {}
