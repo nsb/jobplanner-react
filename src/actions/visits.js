@@ -2,11 +2,10 @@
 import { normalize } from "normalizr";
 import { visitListSchema, visitSchema } from "../schemas";
 import visitsApi from "../api";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import history from "../history";
 import { BEGIN, COMMIT, REVERT } from "redux-optimistic-ui";
-
 
 //Create new job
 export const CREATE_VISIT: "CREATE_VISIT" = "CREATE_VISIT";
@@ -151,7 +150,10 @@ export const fetchVisitsFailure = (error: string): FetchVisitsFailureAction => {
   };
 };
 
-export const fetchVisits = (token: string, queryParams: Object = {}) => {
+export const fetchVisits = (
+  token: string,
+  queryParams: Object = {}
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(fetchVisitsRequest());
 
@@ -193,7 +195,7 @@ export const createVisit = (
   business: Business,
   visit: Visit,
   token: string
-) => {
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(createVisitRequest(visit));
 
@@ -280,14 +282,13 @@ export const updateVisitError = (
   } else {
     return action;
   }
-
 };
 
 export const updateVisit = (
   visit: Visit,
   token: string,
   optimistic: boolean = false
-) => {
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     let transactionID = nextTransactionID++;
     dispatch(updateVisitRequest(visit, optimistic, transactionID));

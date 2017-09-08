@@ -1,7 +1,7 @@
 // @flow
 import { normalize } from "normalizr";
 import { clientListSchema, clientSchema } from "../schemas";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
 import clientsApi from "../api";
 import history from "../history";
@@ -180,7 +180,7 @@ export const fetchClientsFailure = (
   };
 };
 
-export const fetchClients = (token: string, queryParams: Object = {}) => {
+export const fetchClients = (token: string, queryParams: Object = {}): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(fetchClientsRequest());
 
@@ -219,7 +219,7 @@ export const fetchClientFailure = (error: string): FetchClientFailureAction => {
   };
 };
 
-export const fetchClient = (token: string, id: number) => {
+export const fetchClient = (token: string, id: number): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(fetchClientsRequest());
 
@@ -267,7 +267,7 @@ export const createClient = (
   business: Business,
   client: Client,
   token: string
-) => {
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(createClientRequest(client));
 
@@ -312,7 +312,7 @@ export const updateClientError = (
   };
 };
 
-export const updateClient = (client: Client, token: string) => {
+export const updateClient = (client: Client, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateClientRequest(client));
 
@@ -356,7 +356,7 @@ export const deleteClientError = (
   };
 };
 
-export const deleteClient = (client: Client, token: string) => {
+export const deleteClient = (client: Client, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(deleteClientRequest(client));
 

@@ -2,7 +2,7 @@
 import { normalize } from "normalizr";
 import { businessListSchema, businessSchema } from "../schemas";
 import businessesApi from "../api";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import history from "../history";
 
 //Create new business
@@ -109,7 +109,7 @@ export const fetchBusinessesFailure = (
   };
 };
 
-export const fetchBusinesses = (token: string) => {
+export const fetchBusinesses = (token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(fetchBusinessesRequest());
 
@@ -156,7 +156,7 @@ export const createBusinessError = (
 export const createBusiness = (
   data: Business,
   token: string
-): ((d: Dispatch) => Promise<Business>) => {
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(createBusinessRequest(data));
 
