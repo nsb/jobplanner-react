@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import Anchor from "grommet/components/Anchor";
@@ -18,8 +17,11 @@ import { RRule, rrulestr } from "rrule";
 import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 
-const validate = () => {
+const validate = (values: Object) => {
   const errors = {};
+  if (!values.client) {
+    errors.client = "Required";
+  }
   return errors;
 };
 
