@@ -1,7 +1,6 @@
 // @flow
 import fetch from "isomorphic-fetch";
-// import {push} from 'react-router-redux';
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import type { User } from "./users";
 
 const REQUEST_LOGIN: "REQUEST_LOGIN" = "REQUEST_LOGIN";
@@ -99,7 +98,7 @@ export const receiveLoginError = (error: string): RequestLoginFailureAction => {
   };
 };
 
-export const login = (credentials: Credentials) => {
+export const login = (credentials: Credentials): ThunkAction => {
   const { username, password, rememberMe } = credentials;
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
@@ -171,7 +170,7 @@ export const receiveVerifyError = (
   };
 };
 
-export const verify = (token: string) => {
+export const verify = (token: string): ThunkAction => {
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
   // thus making it able to dispatch actions itself.

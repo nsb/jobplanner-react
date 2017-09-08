@@ -2,7 +2,7 @@
 import { normalize } from "normalizr";
 import { jobListSchema, jobSchema } from "../schemas";
 import jobsApi from "../api";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import history from "../history";
 
@@ -62,7 +62,7 @@ type CreateJobAction = {
 
 type CreateJobSuccessAction = {
   type: typeof CREATE_JOB_SUCCESS,
-  payload: { entities: { jobs: JobsMap }, result: number },
+  payload: { entities: { jobs: JobsMap }, result: number }
 };
 
 type CreateJobFailureAction = {
@@ -138,7 +138,10 @@ export const fetchJobsFailure = (error: string): FetchJobsFailureAction => {
   };
 };
 
-export const fetchJobs = (token: string, queryParams: Object = {}) => {
+export const fetchJobs = (
+  token: string,
+  queryParams: Object = {}
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(fetchJobsRequest());
 
@@ -176,7 +179,7 @@ export const createJobError = (error: string): CreateJobFailureAction => {
   };
 };
 
-export const createJob = (business: Business, job: Job, token: string) => {
+export const createJob = (business: Business, job: Job, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(createJobRequest(job));
 
@@ -215,7 +218,7 @@ export const updateJobError = (error: string): UpdateJobFailureAction => {
   };
 };
 
-export const updateJob = (job: Job, token: string) => {
+export const updateJob = (job: Job, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateJobRequest(job));
 
