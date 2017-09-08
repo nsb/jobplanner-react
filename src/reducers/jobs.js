@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 import { union } from "lodash/array";
 import type { Action } from "../actions/jobs";
 
-const isFetching = (state: boolean = false, action: Action): boolean => {
+const isFetching = (state: boolean = true, action: Action): boolean => {
   switch (action.type) {
     case "FETCH_JOBS":
       return true;
@@ -12,6 +12,15 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
       return false;
 
     case "FETCH_JOBS_FAILURE":
+      return false;
+
+    case "FETCH_JOB":
+      return true;
+
+    case "FETCH_JOB_SUCCESS":
+      return false;
+
+    case "FETCH_JOB_FAILURE":
       return false;
 
     case "UPDATE_JOB":
@@ -52,6 +61,13 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
     case "CREATE_JOB_SUCCESS":
       return [...state, action.payload.result];
+
+    case "FETCH_JOB_SUCCESS":
+      if (action.payload && action.payload.result) {
+        return union(state, action.payload.result);
+      } else {
+        return state;
+      }
 
     case "FETCH_JOBS_SUCCESS":
       if (action.payload && action.payload.result) {

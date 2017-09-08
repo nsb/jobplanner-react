@@ -18,6 +18,11 @@ export const FETCH_JOBS_SUCCESS: "FETCH_JOBS_SUCCESS" = "FETCH_JOBS_SUCCESS";
 export const FETCH_JOBS_FAILURE: "FETCH_JOBS_FAILURE" = "FETCH_JOBS_FAILURE";
 export const RESET_JOBS: "RESET_JOBS" = "RESET_JOBS";
 
+//Fetch job
+export const FETCH_JOB: "FETCH_JOB" = "FETCH_JOB";
+export const FETCH_JOB_SUCCESS: "FETCH_JOB_SUCCESS" = "FETCH_JOB_SUCCESS";
+export const FETCH_JOB_FAILURE: "FETCH_JOB_FAILURE" = "FETCH_JOB_FAILURE";
+
 //Update jobs
 export const UPDATE_JOB: "UPDATE_JOB" = "UPDATE_JOB";
 export const UPDATE_JOB_SUCCESS: "UPDATE_JOB_SUCCESS" = "UPDATE_JOB_SUCCESS";
@@ -70,6 +75,20 @@ type CreateJobFailureAction = {
   error: string
 };
 
+type FetchJobAction = {
+  type: typeof FETCH_JOB
+}
+
+type FetchJobSuccessAction = {
+  type: typeof FETCH_JOB_SUCCESS,
+  payload: Job
+}
+
+type FetchJobFailureAction = {
+  type: typeof FETCH_JOB_FAILURE,
+  error: string
+}
+
 type UpdateJobAction = {
   type: typeof UPDATE_JOB,
   payload: Job
@@ -92,6 +111,9 @@ export type Action =
   | CreateJobAction
   | CreateJobSuccessAction
   | CreateJobFailureAction
+  | FetchJobAction
+  | FetchJobSuccessAction
+  | FetchJobFailureAction
   | UpdateJobAction
   | UpdateJobSuccessAction
   | UpdateJobFailureAction;
@@ -192,6 +214,45 @@ export const createJob = (business: Business, job: Job, token: string): ThunkAct
       })
       .catch((error: string) => {
         throw error;
+      });
+  };
+};
+
+export const fetchJobRequest = (): FetchJobAction => {
+  return {
+    type: FETCH_JOB
+  };
+};
+
+export const fetchJobSuccess = (
+  payload: Job
+): FetchJobSuccessAction => {
+  return {
+    type: FETCH_JOB_SUCCESS,
+    receivedAt: Date.now(),
+    payload: normalize(payload, jobSchema)
+  };
+};
+
+export const fetchJobFailure = (error: string): FetchJobFailureAction => {
+  return {
+    type: FETCH_JOB_FAILURE,
+    error: error
+  };
+};
+
+export const fetchJob = (token: string, id: number): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(fetchJobRequest());
+
+    return jobsApi
+      .getOne("jobs", id, token)
+      .then((responseJob: Job) => {
+        dispatch(fetchJobSuccess(responseJob));
+        return responseJob;
+      })
+      .catch((error: string) => {
+        dispatch(fetchJobFailure(error));
       });
   };
 };

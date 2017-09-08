@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import Split from 'grommet/components/Split';
 import Box from 'grommet/components/Box';
 import Button from 'grommet/components/Button';
@@ -15,36 +14,30 @@ import LinkPreviousIcon from 'grommet/components/icons/base/LinkPrevious';
 import {rrulestr} from 'rrule';
 import JobActions from '../components/JobActions';
 import VisitListContainer from '../components/VisitListContainer';
-import {navResponsive} from '../actions/nav';
 import type {Business} from '../actions/businesses';
 import type {Job} from '../actions/jobs';
-import type {State as ReduxState} from '../types/State';
-import type {Dispatch} from '../types/Store';
 import type {Responsive} from '../actions/nav';
-import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token: string,
   business: Business,
-  clients: Array<Client>,
   job: Job,
-  dispatch: Dispatch,
-  responsive: boolean,
-  push: (string) => void
+  responsive: Responsive,
+  onEdit: Function,
+  onResponsive: Function
 };
 
 type State = {
   showSidebarWhenSingle: boolean
 };
 
-class JobsDetail extends Component<Props, State> {
+class JobDetail extends Component<Props, State> {
   state = {
     showSidebarWhenSingle: false
   }
 
   render() {
 
-    const { business, job, responsive } = this.props;
+    const { business, job, responsive, onEdit, onResponsive } = this.props;
 
     let onSidebarClose;
     let sidebarControl;
@@ -58,13 +51,13 @@ class JobsDetail extends Component<Props, State> {
 
     let sidebar;
     sidebar = (
-      <JobActions job={job} onClose={onSidebarClose} onEdit={this.onEdit} />
+      <JobActions job={job} onClose={onSidebarClose} onEdit={onEdit} />
     );
 
     return (
       <Split flex="left" separator={true}
         priority={this.state.showSidebarWhenSingle ? 'right' : 'left'}
-        onResponsive={this.onResponsive}>
+        onResponsive={onResponsive}>
 
         <div>
           <Header pad={{horizontal: "small", vertical: "medium"}}
@@ -98,49 +91,12 @@ class JobsDetail extends Component<Props, State> {
     );
   }
 
-  onResponsive = (responsive: Responsive) => {
-    this.props.dispatch(navResponsive(responsive));
-  };
-
-  onClose = () => {
-    const {business, push} = this.props;
-    push(`/${business.id}/jobs`);
-  };
-
   _onToggleSidebar = () => {
     this.setState({
       showSidebarWhenSingle: ! this.state.showSidebarWhenSingle
     });
   }
 
-  onEdit = () => {
-    const {business, job, push} = this.props;
-    push(`/${business.id}/jobs/${job.id}/edit`);
-  }
-
 }
 
-const mapStateToProps = (
-  state: ReduxState,
-  ownProps: {
-    match: {params: {businessId: number, jobId: number}},
-    history: {push: string => void},
-  }
-) => {
-  const {auth, entities, clients, nav} = state;
-  const businessId = parseInt(ownProps.match.params.businessId, 10);
-  const jobId = parseInt(ownProps.match.params.jobId, 10);
-
-  return {
-    token: auth.token,
-    business: ensureState(entities).businesses[businessId],
-    job: ensureState(entities).jobs[jobId],
-    clients: clients.result.map(Id => {
-      return ensureState(entities).clients[Id];
-    }),
-    push: ownProps.history.push,
-    responsive: nav.responsive
-  };
-};
-
-export default connect(mapStateToProps)(JobsDetail);
+export default JobDetail;
