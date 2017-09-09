@@ -33,7 +33,12 @@ export type Job = {
   client: number,
   recurrences: string,
   description: string,
-  line_items: [Object]
+  line_items: [Object],
+  begins: Date,
+  ends: Date,
+  starttime?: string,
+  endtime?: string,
+  anytime: boolean
 };
 
 export type JobsMap = { [id: number]: Job };
@@ -268,7 +273,7 @@ export const updateJobSuccess = (payload: Job): UpdateJobSuccessAction => {
   return {
     type: UPDATE_JOB_SUCCESS,
     receivedAt: Date.now(),
-    payload
+    payload: normalize(payload, jobSchema)
   };
 };
 

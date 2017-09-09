@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import Anchor from "grommet/components/Anchor";
@@ -9,6 +10,7 @@ import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
+import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
@@ -17,7 +19,7 @@ import { RRule, rrulestr } from "rrule";
 import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 
-const validate = (values: Object) => {
+const validate = (values: { client: Object }) => {
   const errors = {};
   if (!values.client) {
     errors.client = "Required";
@@ -33,6 +35,15 @@ const renderField = ({
 }): Component<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
+  </FormField>;
+
+const renderCheckBox = ({
+  input,
+  label,
+  meta: { touched, error, warning }
+}): Component<*> =>
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <CheckBox {...input} checked={input.value} />
   </FormField>;
 
 const normalizeSelect = value => {
@@ -198,6 +209,12 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               label="Description"
               component={renderField}
               type="text"
+            />
+            <Field
+              name="anytime"
+              label="Anytime"
+              component={renderCheckBox}
+              parse={(value: boolean | string) => !!value}
             />
 
           </fieldset>

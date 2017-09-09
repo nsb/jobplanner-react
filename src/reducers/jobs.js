@@ -76,6 +76,13 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
         return state;
       }
 
+    case "UPDATE_JOB_SUCCESS":
+      if (action.payload && action.payload.result) {
+        return union(state, action.payload.result)
+      } else {
+        return state;
+      }
+
     default:
       return state;
   }
