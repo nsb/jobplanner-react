@@ -11,6 +11,7 @@ import Heading from 'grommet/components/Heading';
 import Section from 'grommet/components/Section';
 import MoreIcon from 'grommet/components/icons/base/More';
 import LinkPreviousIcon from 'grommet/components/icons/base/LinkPrevious';
+import Toast from 'grommet/components/Toast';
 import {rrulestr} from 'rrule';
 import JobActions from '../components/JobActions';
 import VisitListContainer from '../components/VisitListContainer';
@@ -23,7 +24,8 @@ type Props = {
   job: Job,
   responsive: Responsive,
   onEdit: Function,
-  onResponsive: Function
+  onResponsive: Function,
+  saved: boolean
 };
 
 type State = {
@@ -37,7 +39,7 @@ class JobDetail extends Component<Props, State> {
 
   render() {
 
-    const { business, job, responsive, onEdit, onResponsive } = this.props;
+    const { business, job, responsive, onEdit, onResponsive, saved } = this.props;
 
     let onSidebarClose;
     let sidebarControl;
@@ -53,6 +55,16 @@ class JobDetail extends Component<Props, State> {
     sidebar = (
       <JobActions job={job} onClose={onSidebarClose} onEdit={onEdit} />
     );
+
+    let toast;
+    if (saved) {
+      toast = (
+        <Toast status='ok'
+          onClose={undefined}>
+          Job successfully saved.
+        </Toast>
+      );
+    };
 
     return (
       <Split flex="left" separator={true}
@@ -85,7 +97,7 @@ class JobDetail extends Component<Props, State> {
           </Article>
         </div>
         {sidebar}
-
+        {toast}
       </Split
       >
     );

@@ -31,6 +31,7 @@ export const UPDATE_JOB_FAILURE: "UPDATE_JOB_FAILURE" = "UPDATE_JOB_FAILURE";
 export type Job = {
   id: number,
   client: number,
+  business: number,
   recurrences: string,
   description: string,
   line_items: [Object],
@@ -292,6 +293,7 @@ export const updateJob = (job: Job, token: string): ThunkAction => {
       .update("jobs", job, token)
       .then((responseJob: Job) => {
         dispatch(updateJobSuccess(responseJob));
+        history.push(`/${job.business}/jobs/${job.id}`);
         return responseJob;
       })
       .catch((error: string) => {
