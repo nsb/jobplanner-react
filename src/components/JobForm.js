@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from "react";
-import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { Field, formValueSelector, reduxForm } from "redux-form";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -12,6 +13,7 @@ import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
+import DateTime from "grommet/components/DateTime";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
@@ -68,6 +70,23 @@ const renderSelect = ({
   );
 };
 
+const renderDateTime = ({
+  input,
+  label,
+  dateFormat,
+  meta: { touched, error, warning }
+}): Component<*> => {
+  return (
+    <FormField
+      label={label}
+      htmlFor={input.name}
+      error={touched ? error : null}
+    >
+      <DateTime {...input} format={dateFormat} />
+    </FormField>
+  );
+};
+
 type Props = {
   value: string,
   onClick: Function
@@ -116,7 +135,8 @@ type JobFormProps = {
   initialValues: Object,
   // onChange?: Function,
   dispatch: Dispatch,
-  change: Function
+  change: Function,
+  anytime: boolean
 };
 
 type JobFormState = {
@@ -159,7 +179,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       dirty,
       submitting,
       onClose,
-      initialValues
+      initialValues,
+      anytime
     } = this.props;
 
     const filteredClients = clients.filter(client => {
@@ -210,13 +231,28 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               component={renderField}
               type="text"
             />
+
+          </fieldset>
+
+          <fieldset>
+            <Field
+              name="begins"
+              label="Begins"
+              component={renderDateTime}
+              dateFormat={anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a"}
+            />
+            <Field
+              name="ends"
+              label="Ends"
+              component={renderDateTime}
+              dateFormat={anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a"}
+            />
             <Field
               name="anytime"
               label="Anytime"
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
-
           </fieldset>
 
           {this.renderSchedules()}
@@ -290,7 +326,19 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   };
 }
 
-export default reduxForm({
+let SelectingFormValuesJobForm = reduxForm({
   form: "job", // a unique identifier for this form
   validate
 })(JobForm);
+
+// Decorate with connect to read form values
+const selector = formValueSelector("job"); // <-- same as form name
+SelectingFormValuesJobForm = connect(state => {
+  // can select values individually
+  const anytime: boolean = selector(state, "anytime");
+  return {
+    anytime
+  };
+})(SelectingFormValuesJobForm);
+
+export default SelectingFormValuesJobForm;

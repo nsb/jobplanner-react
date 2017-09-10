@@ -1,4 +1,5 @@
 // @flow
+import { merge } from "lodash/object";
 import { normalize } from "normalizr";
 import { jobListSchema, jobSchema } from "../schemas";
 import jobsApi from "../api";
@@ -37,8 +38,6 @@ export type Job = {
   line_items: [Object],
   begins: Date,
   ends: Date,
-  starttime?: string,
-  endtime?: string,
   anytime: boolean
 };
 
@@ -83,17 +82,17 @@ type CreateJobFailureAction = {
 
 type FetchJobAction = {
   type: typeof FETCH_JOB
-}
+};
 
 type FetchJobSuccessAction = {
   type: typeof FETCH_JOB_SUCCESS,
   payload: Job
-}
+};
 
 type FetchJobFailureAction = {
   type: typeof FETCH_JOB_FAILURE,
   error: string
-}
+};
 
 type UpdateJobAction = {
   type: typeof UPDATE_JOB,
@@ -176,8 +175,17 @@ export const fetchJobs = (
     return jobsApi
       .getAll("jobs", token, queryParams)
       .then((responseJobs: JobsResponse) => {
-        dispatch(fetchJobsSuccess(responseJobs));
-        return responseJobs;
+        const coercedResults = responseJobs.results.map(job => {
+          return merge({}, job, {
+            begins: new Date(job.begins),
+            ends: new Date(job.ends)
+          });
+        });
+        const coercedJobs = merge({}, responseJobs, {
+          results: coercedResults
+        });
+        dispatch(fetchJobsSuccess(coercedJobs));
+        return coercedJobs;
       })
       .catch((error: string) => {
         throw error;
@@ -207,16 +215,24 @@ export const createJobError = (error: string): CreateJobFailureAction => {
   };
 };
 
-export const createJob = (business: Business, job: Job, token: string): ThunkAction => {
+export const createJob = (
+  business: Business,
+  job: Job,
+  token: string
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(createJobRequest(job));
 
     return jobsApi
       .create("jobs", job, token)
       .then((responseJob: Job) => {
-        dispatch(createJobSuccess(responseJob));
+        const coercedJob = merge({}, responseJob, {
+          begins: new Date(responseJob.begins),
+          ends: new Date(responseJob.ends)
+        });
+        dispatch(createJobSuccess(coercedJob));
         history.push(`/${business.id}/jobs/${responseJob.id}`);
-        return responseJob;
+        return coercedJob;
       })
       .catch((error: string) => {
         throw error;
@@ -230,9 +246,7 @@ export const fetchJobRequest = (): FetchJobAction => {
   };
 };
 
-export const fetchJobSuccess = (
-  payload: Job
-): FetchJobSuccessAction => {
+export const fetchJobSuccess = (payload: Job): FetchJobSuccessAction => {
   return {
     type: FETCH_JOB_SUCCESS,
     receivedAt: Date.now(),
@@ -254,8 +268,12 @@ export const fetchJob = (token: string, id: number): ThunkAction => {
     return jobsApi
       .getOne("jobs", id, token)
       .then((responseJob: Job) => {
-        dispatch(fetchJobSuccess(responseJob));
-        return responseJob;
+        const coercedJob = merge({}, responseJob, {
+          begins: new Date(responseJob.begins),
+          ends: new Date(responseJob.ends)
+        });
+        dispatch(fetchJobSuccess(coercedJob));
+        return coercedJob;
       })
       .catch((error: string) => {
         dispatch(fetchJobFailure(error));
