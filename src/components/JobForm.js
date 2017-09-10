@@ -46,7 +46,7 @@ const renderCheckBox = ({
   meta: { touched, error, warning }
 }): Component<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <CheckBox {...input} checked={input.value} />
+    <CheckBox {...input} checked={!!input.value} />
   </FormField>;
 
 const normalizeSelect = value => {

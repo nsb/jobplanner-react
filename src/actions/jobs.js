@@ -123,6 +123,21 @@ export type Action =
   | UpdateJobSuccessAction
   | UpdateJobFailureAction;
 
+
+const parse = (job): Job => {
+  return merge({}, job, {
+    begins: new Date(job.begins),
+    ends: new Date(job.ends)
+  });
+}
+
+const serialize = (job: Job) => {
+  return merge({}, job, {
+    begins: job.begins && job.begins.toISOString(),
+    ends: job.ends && job.ends.toISOString()
+  });
+}
+
 export const fetchJobsRequest = (): FetchJobsAction => {
   return {
     type: FETCH_JOBS
@@ -175,14 +190,8 @@ export const fetchJobs = (
     return jobsApi
       .getAll("jobs", token, queryParams)
       .then((responseJobs: JobsResponse) => {
-        const coercedResults = responseJobs.results.map(job => {
-          return merge({}, job, {
-            begins: new Date(job.begins),
-            ends: new Date(job.ends)
-          });
-        });
         const coercedJobs = merge({}, responseJobs, {
-          results: coercedResults
+          results: responseJobs.results.map(parse)
         });
         dispatch(fetchJobsSuccess(coercedJobs));
         return coercedJobs;
@@ -224,12 +233,9 @@ export const createJob = (
     dispatch(createJobRequest(job));
 
     return jobsApi
-      .create("jobs", job, token)
+      .create("jobs", serialize(job), token)
       .then((responseJob: Job) => {
-        const coercedJob = merge({}, responseJob, {
-          begins: new Date(responseJob.begins),
-          ends: new Date(responseJob.ends)
-        });
+        const coercedJob = parse(responseJob)
         dispatch(createJobSuccess(coercedJob));
         history.push(`/${business.id}/jobs/${responseJob.id}`);
         return coercedJob;
@@ -268,10 +274,7 @@ export const fetchJob = (token: string, id: number): ThunkAction => {
     return jobsApi
       .getOne("jobs", id, token)
       .then((responseJob: Job) => {
-        const coercedJob = merge({}, responseJob, {
-          begins: new Date(responseJob.begins),
-          ends: new Date(responseJob.ends)
-        });
+        const coercedJob = parse(responseJob)
         dispatch(fetchJobSuccess(coercedJob));
         return coercedJob;
       })
@@ -307,18 +310,10 @@ export const updateJob = (job: Job, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateJobRequest(job));
 
-    const coercedJob = merge({}, job, {
-      begins: job.begins.toISOString(),
-      ends: job.ends.toISOString()
-    });
-
     return jobsApi
-      .update("jobs", coercedJob, token)
+      .update("jobs", serialize(job), token)
       .then((responseJob: Job) => {
-        const coercedJob = merge({}, responseJob, {
-          begins: new Date(responseJob.begins),
-          ends: new Date(responseJob.ends)
-        });
+        const coercedJob = parse(responseJob)
         dispatch(updateJobSuccess(coercedJob));
         history.push(`/${job.business}/jobs/${job.id}`);
         return coercedJob;

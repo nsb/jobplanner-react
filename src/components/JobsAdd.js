@@ -37,6 +37,10 @@ class JobsAdd extends Component<Props, State> {
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
           clients={clients}
+          initialValues={{
+            begins: new Date(),
+            anytime: true,
+          }}
         />
       </Article>
     );

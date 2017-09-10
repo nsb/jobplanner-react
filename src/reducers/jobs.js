@@ -61,6 +61,9 @@ const count = (state: number = 0, action: Action): number => {
     case "FETCH_JOBS_SUCCESS":
       return action.meta.count;
 
+    case "CREATE_JOB_SUCCESS":
+      return state + 1
+
     default:
       return state;
   }
