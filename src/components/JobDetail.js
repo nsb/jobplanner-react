@@ -24,6 +24,7 @@ type Props = {
   job: Job,
   responsive: Responsive,
   onEdit: Function,
+  onCloseJob: Function,
   onResponsive: Function,
   saved: boolean
 };
@@ -39,7 +40,7 @@ class JobDetail extends Component<Props, State> {
 
   render() {
 
-    const { business, job, responsive, onEdit, onResponsive, saved } = this.props;
+    const { business, job, responsive, onEdit, onResponsive, saved, onCloseJob } = this.props;
 
     let onSidebarClose;
     let sidebarControl;
@@ -53,7 +54,7 @@ class JobDetail extends Component<Props, State> {
 
     let sidebar;
     sidebar = (
-      <JobActions job={job} onClose={onSidebarClose} onEdit={onEdit} />
+      <JobActions job={job} onClose={onSidebarClose} onEdit={onEdit} onCloseJob={onCloseJob} />
     );
 
     let toast;

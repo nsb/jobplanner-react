@@ -6,7 +6,7 @@ import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
 import JobDetail from "./JobDetail";
-import { fetchJob } from "../actions/jobs";
+import { fetchJob, partialUpdateJob } from "../actions/jobs";
 import { navResponsive } from "../actions/nav";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
@@ -37,17 +37,11 @@ class JobDetailContainer extends Component<Props> {
 
   componentWillUnmount() {
     const { dispatch } = this.props;
-    dispatch({type: "CLEAR_JOB_NOTIFICATIONS"});
+    dispatch({ type: "CLEAR_JOB_NOTIFICATIONS" });
   }
 
   render() {
-    const {
-      business,
-      job,
-      responsive,
-      isFetching,
-      saved
-    } = this.props;
+    const { business, job, responsive, isFetching, saved } = this.props;
 
     const jobDetail = (
       <JobDetail
@@ -55,6 +49,7 @@ class JobDetailContainer extends Component<Props> {
         job={job}
         responsive={responsive}
         onEdit={this.onEdit}
+        onCloseJob={this.onCloseJob}
         onClose={this.onClose}
         onResponsive={this.onResponsive}
         saved={saved}
@@ -86,6 +81,17 @@ class JobDetailContainer extends Component<Props> {
   onClose = () => {
     const { business, push } = this.props;
     push(`/${business.id}/jobs`);
+  };
+
+  onCloseJob = () => {
+    const { job, token, dispatch } = this.props;
+    dispatch(
+      partialUpdateJob(
+        { id: job.id, closed: true },
+        token || "",
+        true
+      )
+    );
   };
 
   onEdit = () => {

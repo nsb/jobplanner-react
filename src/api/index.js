@@ -53,9 +53,14 @@ class Api {
       });
   }
 
-  static update(resource: string, item: { id: number }, token: string) {
+  static update(
+    resource: string,
+    item: { id: number },
+    token: string,
+    patch = false
+  ) {
     const request = new Request(`${API_ENDPOINT}/${resource}/${item.id}/`, {
-      method: "PUT",
+      method: patch ? "PATCH" : "PUT",
       headers: new Headers({
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
