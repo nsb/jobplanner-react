@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, formValueSelector, reduxForm } from "redux-form";
+import moment from "moment";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -201,6 +202,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       };
     });
 
+    const dateFormat = anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a";
+
     return (
       <Form onSubmit={handleSubmit}>
 
@@ -239,13 +242,15 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               name="begins"
               label="Begins"
               component={renderDateTime}
-              dateFormat={anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a"}
+              dateFormat={dateFormat}
+              normalize={(value: string) => moment(value, dateFormat)}
             />
             <Field
               name="ends"
               label="Ends"
               component={renderDateTime}
-              dateFormat={anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a"}
+              dateFormat={dateFormat}
+              normalize={(value: string) => moment(value, dateFormat)}
             />
             <Field
               name="anytime"

@@ -306,13 +306,23 @@ export const updateJobError = (error: string): UpdateJobFailureAction => {
 export const updateJob = (job: Job, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateJobRequest(job));
+    console.log(job)
+
+    const coercedJob = merge({}, job, {
+      begins: job.begins.toISOString(),
+      ends: job.ends.toISOString()
+    });
 
     return jobsApi
-      .update("jobs", job, token)
+      .update("jobs", coercedJob, token)
       .then((responseJob: Job) => {
-        dispatch(updateJobSuccess(responseJob));
+        const coercedJob = merge({}, responseJob, {
+          begins: new Date(responseJob.begins),
+          ends: new Date(responseJob.ends)
+        });
+        dispatch(updateJobSuccess(coercedJob));
         history.push(`/${job.business}/jobs/${job.id}`);
-        return responseJob;
+        return coercedJob;
       })
       .catch((error: string) => {
         dispatch(updateJobError(error));
