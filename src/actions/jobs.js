@@ -306,7 +306,6 @@ export const updateJobError = (error: string): UpdateJobFailureAction => {
 export const updateJob = (job: Job, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateJobRequest(job));
-    console.log(job)
 
     const coercedJob = merge({}, job, {
       begins: job.begins.toISOString(),
