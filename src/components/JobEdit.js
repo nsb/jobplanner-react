@@ -7,7 +7,7 @@ import JobForm from "./JobForm";
 import { updateJob } from "../actions/jobs";
 import type { State as ReduxState } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
-import type {Dispatch} from '../types/Store';
+import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { State as EntitiesState } from "../reducers/entities";
@@ -25,11 +25,7 @@ type Props = {
 
 class JobEdit extends Component<Props> {
   render() {
-    const { clients, entities, job } = this.props;
-    const client = entities.clients[job.client];
-    const clientList = clients.result.map(Id => {
-      return entities.clients[Id];
-    });
+    const { job } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -37,10 +33,12 @@ class JobEdit extends Component<Props> {
         <JobForm
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
-          clients={clientList}
           initialValues={{
             ...job,
-            client: { label: client.first_name, value: client.id }
+            client: {
+              label: `${job.client_firstname} ${job.client_lastname}`,
+              value: job.client
+            }
           }}
         />
 

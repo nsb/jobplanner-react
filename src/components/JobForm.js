@@ -99,12 +99,12 @@ const renderDateTime = ({
   );
 };
 
-type Props = {
+type ScheduleProps = {
   value: string,
   onClick: Function
 };
 
-class ScheduleInput extends Component<Props> {
+class ScheduleInput extends Component<ScheduleProps> {
   render() {
     const { value, onClick } = this.props;
     let rule = value ? rrulestr(value) : new RRule({ freq: RRule.WEEKLY });
@@ -137,10 +137,55 @@ const renderSchedule = ({
   meta: { touched, error, warning }
 }): Element<*> => <ScheduleInput {...input} onClick={onClick} />;
 
+type ClientInputProps = {
+  label: string,
+  value: { label: string },
+  onClick: Function,
+  onClientSearch: Function,
+  clients?: Array<Client>
+};
+
+class ClientInput extends Component<ClientInputProps> {
+  render() {
+    const { value, label, onClick, onClientSearch, clients } = this.props;
+    return value
+      ? <Anchor
+          icon={<EditIcon />}
+          label="Label"
+          href="#"
+          reverse={true}
+          onClick={onClick}
+        >
+          <Heading tag="h3">
+            Client
+          </Heading>
+          {value.label}
+        </Anchor>
+      : <FormField label={label}>
+          <TextInput onDOMChange={onClientSearch} suggestions={clients && clients.map((c) => c.first_name)} />
+        </FormField>;
+  }
+}
+
+const renderClient = ({
+  input,
+  label,
+  onClick,
+  onClientSearch,
+  clients,
+  meta: { touched, error, warning }
+}): Element<*> =>
+  <ClientInput
+    {...input}
+    label={label}
+    onClick={onClick}
+    onClientSearch={onClientSearch}
+    clients={clients}
+  />;
+
 type JobFormProps = {
   handleSubmit?: Function,
   valid: boolean,
-  clients: Array<Client>,
   dirty: boolean,
   submitting: boolean,
   onClose?: Function,
@@ -148,7 +193,9 @@ type JobFormProps = {
   // onChange?: Function,
   dispatch: Dispatch,
   change: Function,
-  anytime: boolean
+  anytime: boolean,
+  onClientSearch: Function,
+  clients?: Array<Client>
 };
 
 type JobFormState = {
@@ -185,33 +232,34 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
   render() {
     const {
-      clients,
       handleSubmit,
       valid,
       dirty,
       submitting,
       onClose,
       initialValues,
-      anytime
+      anytime,
+      onClientSearch,
+      clients
     } = this.props;
 
-    const filteredClients = clients.filter(client => {
-      const searchText = this.state.clientsSearchText.toLowerCase();
-      if (searchText) {
-        return `${client.first_name} ${client.last_name}`
-          .toLowerCase()
-          .includes(searchText);
-      } else {
-        return true;
-      }
-    });
-
-    const mappedClients = filteredClients.map(client => {
-      return {
-        value: client.id,
-        label: `${client.first_name} ${client.last_name}`
-      };
-    });
+    // const filteredClients = clients.filter(client => {
+    //   const searchText = this.state.clientsSearchText.toLowerCase();
+    //   if (searchText) {
+    //     return `${client.first_name} ${client.last_name}`
+    //       .toLowerCase()
+    //       .includes(searchText);
+    //   } else {
+    //     return true;
+    //   }
+    // });
+    //
+    // const mappedClients = filteredClients.map(client => {
+    //   return {
+    //     value: client.id,
+    //     label: `${client.first_name} ${client.last_name}`
+    //   };
+    // });
 
     const dateFormat = anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a";
 
@@ -220,7 +268,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
         <Header size="large" justify="between" pad="none">
           <Heading tag="h2" margin="none" strong={true}>
-            {initialValues ? "Edit job" : "Add Job"}
+            {initialValues.id ? "Edit job" : "Add Job"}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
@@ -228,17 +276,18 @@ class JobForm extends Component<JobFormProps, JobFormState> {
         <FormFields>
 
           <fieldset>
-
-            <Heading tag="h3">Job details</Heading>
             <Field
               name="client"
               label="Client"
-              component={renderSelect}
-              options={mappedClients}
-              onSearch={this.onSearch}
-              // onChange={this.onChange}
-              normalize={normalizeSelect}
+              component={renderClient}
+              onClientSearch={onClientSearch}
+              clients={clients}
             />
+          </fieldset>
+
+          <fieldset>
+
+            <Heading tag="h3">Details</Heading>
             <Field
               name="description"
               label="Description"

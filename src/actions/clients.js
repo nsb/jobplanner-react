@@ -49,7 +49,7 @@ export type Client = {
 
 export type ClientsMap = { [id: number]: Client };
 
-type ClientsResponse = {
+export type ClientsResponse = {
   results: Array<Client>,
   count: number,
   next: ?string,

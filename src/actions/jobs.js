@@ -32,6 +32,8 @@ export const UPDATE_JOB_FAILURE: "UPDATE_JOB_FAILURE" = "UPDATE_JOB_FAILURE";
 export type Job = {
   id: number,
   client: number,
+  client_firstname: string,
+  client_lastname: string,
   business: number,
   recurrences: string,
   description: string,
