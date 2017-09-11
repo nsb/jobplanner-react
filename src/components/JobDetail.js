@@ -11,7 +11,6 @@ import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
 import MoreIcon from "grommet/components/icons/base/More";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
-import Toast from "grommet/components/Toast";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
 import VisitListContainer from "../components/VisitListContainer";
@@ -69,15 +68,6 @@ class JobDetail extends Component<Props, State> {
       />
     );
 
-    let toast;
-    if (saved) {
-      toast = (
-        <Toast status="ok" onClose={undefined}>
-          Job successfully saved.
-        </Toast>
-      );
-    }
-
     return (
       <Split
         flex="left"
@@ -125,7 +115,6 @@ class JobDetail extends Component<Props, State> {
           </Article>
         </div>
         {sidebar}
-        {toast}
       </Split>
     );
   }
