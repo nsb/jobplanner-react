@@ -11,6 +11,7 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
+import type { Element } from "react";
 
 const validate = (values: Object): Object => {
   const errors = {};
@@ -25,7 +26,7 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Component<*> =>
+}): Element<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>;

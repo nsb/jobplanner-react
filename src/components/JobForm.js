@@ -13,6 +13,7 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
+import TextInput from "grommet/components/TextInput";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import CloseIcon from "grommet/components/icons/base/Close";
@@ -21,6 +22,7 @@ import JobScheduleEdit from "./JobScheduleEdit";
 import { RRule, rrulestr } from "rrule";
 import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
+import type { Element } from "react";
 
 const validate = (values: { client: Object }) => {
   const errors = {};
@@ -35,16 +37,25 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Component<*> =>
+}): Element<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
+  </FormField>;
+
+const renderTextInput = ({
+  input,
+  label,
+  meta: { touched, error, warning }
+}): Element<*> =>
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <TextInput {...input} />
   </FormField>;
 
 const renderCheckBox = ({
   input,
   label,
   meta: { touched, error, warning }
-}): Component<*> =>
+}): Element<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <CheckBox {...input} checked={!!input.value} />
   </FormField>;
@@ -59,7 +70,7 @@ const renderSelect = ({
   options,
   onSearch,
   meta: { touched, error, warning }
-}): Component<*> => {
+}): Element<*> => {
   return (
     <FormField
       label={label}
@@ -76,7 +87,7 @@ const renderDateTime = ({
   label,
   dateFormat,
   meta: { touched, error, warning }
-}): Component<*> => {
+}): Element<*> => {
   return (
     <FormField
       label={label}
@@ -124,7 +135,7 @@ const renderSchedule = ({
   input,
   onClick,
   meta: { touched, error, warning }
-}): Component<*> => <ScheduleInput {...input} onClick={onClick} />;
+}): Element<*> => <ScheduleInput {...input} onClick={onClick} />;
 
 type JobFormProps = {
   handleSubmit?: Function,

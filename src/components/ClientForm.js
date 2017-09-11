@@ -13,6 +13,7 @@ import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
 import type { Client } from "../actions/clients";
+import type { Element } from "react";
 
 const validate = (values: Client) => {
   const errors = {};
@@ -30,12 +31,12 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Component<*> =>
+}): Element<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>;
 
-const renderProperties = ({ fields, meta: { error, submitFailed } }): Component<*> =>
+const renderProperties = ({ fields, meta: { error, submitFailed } }): Element<*> =>
   <Section>
     <div>
       <button type="button" onClick={() => fields.push({})}>
