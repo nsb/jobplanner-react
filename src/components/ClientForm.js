@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
+import React from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";

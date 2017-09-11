@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
+import React from "react";
 import { Field, reduxForm } from "redux-form";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";

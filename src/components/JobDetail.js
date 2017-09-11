@@ -44,7 +44,6 @@ class JobDetail extends Component<Props, State> {
       responsive,
       onEdit,
       onResponsive,
-      saved,
       onToggleCloseJob
     } = this.props;
 
