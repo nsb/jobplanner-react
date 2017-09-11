@@ -38,7 +38,8 @@ export type Job = {
   line_items: [Object],
   begins: Date,
   ends: Date,
-  anytime: boolean
+  anytime: boolean,
+  closed: boolean
 };
 
 export type JobsMap = { [id: number]: Job };
@@ -328,13 +329,12 @@ export const updateJob = (job: Job, token: string): ThunkAction => {
 export const partialUpdateJob = (
   job: { id: number },
   token: string,
-  patch: boolean = false
 ): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateJobRequest(job));
 
     return jobsApi
-      .update("jobs", job, token, patch=patch)
+      .update("jobs", job, token, true)
       .then((responseJob: Job) => {
         const coercedJob = parse(responseJob);
         dispatch(updateJobSuccess(coercedJob));

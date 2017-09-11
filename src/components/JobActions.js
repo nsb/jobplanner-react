@@ -16,14 +16,14 @@ import type { Job } from "../actions/jobs";
 
 type Props = {
   job: Job,
-  onCloseJob: Function,
+  onToggleCloseJob: Function,
   onClose?: Function,
   onEdit: Function
 };
 
 class JobActions extends Component<Props> {
   render() {
-    const { onClose, onEdit, onCloseJob, job } = this.props;
+    const { onClose, onEdit, onToggleCloseJob, job } = this.props;
 
     let closeControl;
     if (onClose) {
@@ -43,7 +43,7 @@ class JobActions extends Component<Props> {
           plain={true}
           icon={<RevertIcon />}
           label="Reopen job"
-          onClick={onCloseJob}
+          onClick={onToggleCloseJob}
           a11yTitle={`Reopen Job`}
         />
       : <Button
@@ -51,7 +51,7 @@ class JobActions extends Component<Props> {
           plain={true}
           icon={<TaskIcon />}
           label="Close job"
-          onClick={onCloseJob}
+          onClick={onToggleCloseJob}
           a11yTitle={`Close Job`}
         />;
 

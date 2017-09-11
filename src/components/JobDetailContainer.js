@@ -49,7 +49,7 @@ class JobDetailContainer extends Component<Props> {
         job={job}
         responsive={responsive}
         onEdit={this.onEdit}
-        onCloseJob={this.onCloseJob}
+        onToggleCloseJob={this.onToggleCloseJob}
         onClose={this.onClose}
         onResponsive={this.onResponsive}
         saved={saved}
@@ -83,15 +83,12 @@ class JobDetailContainer extends Component<Props> {
     push(`/${business.id}/jobs`);
   };
 
-  onCloseJob = () => {
+  onToggleCloseJob = (e: SyntheticEvent<HTMLButtonElement>) => {
     const { job, token, dispatch } = this.props;
     dispatch(
-      partialUpdateJob(
-        { id: job.id, closed: true },
-        token || "",
-        true
-      )
+      partialUpdateJob({ id: job.id, closed: !job.closed }, token || "")
     );
+    e.preventDefault();
   };
 
   onEdit = () => {
