@@ -192,6 +192,14 @@ const renderClient = ({
   onSelectClient,
   clients,
   meta: { touched, error, warning }
+}: {
+  input: Object,
+  label: string,
+  onClick: Function,
+  onClientSearch: Function,
+  onSelectClient: Function,
+  clients: Array<Client>,
+  meta: { touched: boolean, error: string, warning: string }
 }): Element<*> =>
   <ClientInput
     {...input}
