@@ -142,12 +142,21 @@ type ClientInputProps = {
   value: { label: string },
   onClick: Function,
   onClientSearch: Function,
+  onSelectClient?: Function,
   clients?: Array<Client>
 };
 
 class ClientInput extends Component<ClientInputProps> {
   render() {
-    const { value, label, onClick, onClientSearch, clients } = this.props;
+    const {
+      value,
+      label,
+      onClick,
+      onClientSearch,
+      onSelectClient,
+      clients
+    } = this.props;
+    console.log(value);
     return value
       ? <Anchor
           icon={<EditIcon />}
@@ -162,7 +171,15 @@ class ClientInput extends Component<ClientInputProps> {
           {value.label}
         </Anchor>
       : <FormField label={label}>
-          <TextInput onDOMChange={onClientSearch} suggestions={clients && clients.map((c) => c.first_name)} />
+          <Select
+            placeHolder="None"
+            onSearch={onClientSearch}
+            inline={true}
+            multiple={false}
+            options={clients}
+            value="first"
+            onChange={onSelectClient}
+          />
         </FormField>;
   }
 }
@@ -172,6 +189,7 @@ const renderClient = ({
   label,
   onClick,
   onClientSearch,
+  onSelectClient,
   clients,
   meta: { touched, error, warning }
 }): Element<*> =>
@@ -180,6 +198,7 @@ const renderClient = ({
     label={label}
     onClick={onClick}
     onClientSearch={onClientSearch}
+    onSelectClient={onSelectClient}
     clients={clients}
   />;
 
@@ -195,7 +214,8 @@ type JobFormProps = {
   change: Function,
   anytime: boolean,
   onClientSearch: Function,
-  clients?: Array<Client>
+  onSelectClient?: Function,
+  clients: Array<Client>
 };
 
 type JobFormState = {
@@ -209,6 +229,10 @@ type JobFormState = {
 };
 
 class JobForm extends Component<JobFormProps, JobFormState> {
+  static defaultProps = {
+    clients: []
+  };
+
   constructor(props: JobFormProps) {
     super(props);
 
@@ -240,28 +264,18 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       initialValues,
       anytime,
       onClientSearch,
+      onSelectClient,
       clients
     } = this.props;
 
-    // const filteredClients = clients.filter(client => {
-    //   const searchText = this.state.clientsSearchText.toLowerCase();
-    //   if (searchText) {
-    //     return `${client.first_name} ${client.last_name}`
-    //       .toLowerCase()
-    //       .includes(searchText);
-    //   } else {
-    //     return true;
-    //   }
-    // });
-    //
-    // const mappedClients = filteredClients.map(client => {
-    //   return {
-    //     value: client.id,
-    //     label: `${client.first_name} ${client.last_name}`
-    //   };
-    // });
-
     const dateFormat = anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a";
+
+    const mappedClients = clients.map(client => {
+      return {
+        value: client.id,
+        label: `${client.first_name} ${client.last_name}`
+      };
+    });
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -281,7 +295,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               label="Client"
               component={renderClient}
               onClientSearch={onClientSearch}
-              clients={clients}
+              onSelectClient={this.onSelectClient}
+              clients={mappedClients}
             />
           </fieldset>
 
@@ -362,6 +377,14 @@ class JobForm extends Component<JobFormProps, JobFormState> {
         {layer}
       </fieldset>
     );
+  };
+
+  onSelectClient = (selection: {
+    option: { value: number, label: string },
+    value: { value: number, label: string }
+  }) => {
+    const { dispatch, change } = this.props;
+    dispatch(change("client", selection.option));
   };
 
   onSearch = (e: SyntheticInputEvent<*>) => {
