@@ -13,7 +13,6 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
-import TextInput from "grommet/components/TextInput";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import CloseIcon from "grommet/components/icons/base/Close";
@@ -42,15 +41,6 @@ const renderField = ({
     <input {...input} type={type} />
   </FormField>;
 
-const renderTextInput = ({
-  input,
-  label,
-  meta: { touched, error, warning }
-}): Element<*> =>
-  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <TextInput {...input} />
-  </FormField>;
-
 const renderCheckBox = ({
   input,
   label,
@@ -59,28 +49,6 @@ const renderCheckBox = ({
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <CheckBox {...input} checked={!!input.value} />
   </FormField>;
-
-const normalizeSelect = value => {
-  return value.option;
-};
-
-const renderSelect = ({
-  input,
-  label,
-  options,
-  onSearch,
-  meta: { touched, error, warning }
-}): Element<*> => {
-  return (
-    <FormField
-      label={label}
-      htmlFor={input.name}
-      error={touched ? error : null}
-    >
-      <Select {...input} options={options} onSearch={onSearch} />
-    </FormField>
-  );
-};
 
 const renderDateTime = ({
   input,
@@ -272,7 +240,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       initialValues,
       anytime,
       onClientSearch,
-      onSelectClient,
       clients
     } = this.props;
 
