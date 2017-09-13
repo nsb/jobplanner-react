@@ -32,7 +32,6 @@ class JobsAdd extends Component<Props, State> {
   };
 
   render() {
-
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
 
@@ -73,7 +72,7 @@ class JobsAdd extends Component<Props, State> {
   onClientSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
     const { token } = this.props;
     clientsApi
-      .getAll("clients", token, {search: event.target.value})
+      .getAll("clients", token, { search: event.target.value, limit: "10" })
       .then((responseClients: ClientsResponse) => {
         this.setState({ clients: responseClients.results });
       })
