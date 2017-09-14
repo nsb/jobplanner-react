@@ -10,7 +10,6 @@ import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Client, ClientsResponse } from "../actions/clients";
 import { ensureState } from "redux-optimistic-ui";
-import clientsApi from "../api";
 
 type Props = {
   token: string,
@@ -21,29 +20,28 @@ type Props = {
 };
 
 type State = {
-  scheduleLayer: boolean,
-  clients: Array<Client>
+  scheduleLayer: boolean
 };
 
 class JobsAdd extends Component<Props, State> {
   state = {
-    scheduleLayer: false,
-    clients: []
+    scheduleLayer: false
   };
 
   render() {
+    const { token } = this.props;
+
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
 
         <JobForm
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
-          clients={this.state.clients}
-          onClientSearch={this.onClientSearch}
           initialValues={{
             begins: new Date(),
             anytime: true
           }}
+          token={token}
         />
       </Article>
     );
@@ -68,19 +66,7 @@ class JobsAdd extends Component<Props, State> {
     const { business, push } = this.props;
     push(`/${business.id}/jobs`);
   };
-
-  onClientSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    const { token } = this.props;
-    clientsApi
-      .getAll("clients", token, { search: event.target.value, limit: "10" })
-      .then((responseClients: ClientsResponse) => {
-        this.setState({ clients: responseClients.results });
-      })
-      .catch((error: string) => {
-        throw error;
-      });
-  };
-}
+};
 
 const mapStateToProps = (
   state: ReduxState,

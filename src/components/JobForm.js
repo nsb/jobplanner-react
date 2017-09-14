@@ -19,7 +19,8 @@ import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
 import { RRule, rrulestr } from "rrule";
-import type { Client } from "../actions/clients";
+import clientsApi from "../api";
+import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Element } from "react";
 
@@ -108,7 +109,7 @@ const renderSchedule = ({
 type ClientInputProps = {
   label: string,
   value: { label: string },
-  onClick: Function,
+  onClick?: Function,
   onClientSearch: Function,
   onSelectClient?: Function,
   clients?: Array<Client>
@@ -126,7 +127,8 @@ class ClientInput extends Component<ClientInputProps> {
     } = this.props;
     console.log(value);
     return value
-      ? <Anchor
+      ? onClick ?
+        <Anchor
           icon={<EditIcon />}
           label="Label"
           href="#"
@@ -138,6 +140,12 @@ class ClientInput extends Component<ClientInputProps> {
           </Heading>
           {value.label}
         </Anchor>
+        : <div>
+          <Heading tag="h3">
+            Client
+          </Heading>
+          {value.label}
+        </div>
       : <FormField label={label}>
           <Select
             placeHolder="None"
@@ -163,7 +171,7 @@ const renderClient = ({
 }: {
   input: Object,
   label: string,
-  onClick: Function,
+  onClick?: Function,
   onClientSearch: Function,
   onSelectClient: Function,
   clients: Array<Client>,
@@ -191,11 +199,12 @@ type JobFormProps = {
   anytime: boolean,
   onClientSearch: Function,
   onSelectClient?: Function,
-  clients: Array<Client>
+  token?: string
 };
 
 type JobFormState = {
   clientsSearchText: string,
+  clients: Array<Client>,
   scheduleLayer: boolean,
   schedule: {
     freq: number,
@@ -205,10 +214,6 @@ type JobFormState = {
 };
 
 class JobForm extends Component<JobFormProps, JobFormState> {
-  static defaultProps = {
-    clients: []
-  };
-
   constructor(props: JobFormProps) {
     super(props);
 
@@ -221,6 +226,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
     this.state = {
       clientsSearchText: "",
+      clients: [],
       scheduleLayer: false,
       schedule: {
         freq: rrule.options.freq,
@@ -239,13 +245,12 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       onClose,
       initialValues,
       anytime,
-      onClientSearch,
-      clients
+      onClientSearch
     } = this.props;
 
     const dateFormat = anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a";
 
-    const mappedClients = clients.map(client => {
+    const mappedClients = this.state.clients.map(client => {
       return {
         value: client.id,
         label: `${client.first_name} ${client.last_name}`
@@ -269,8 +274,9 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               name="client"
               label="Client"
               component={renderClient}
-              onClientSearch={onClientSearch}
+              onClientSearch={this.onClientSearch}
               onSelectClient={this.onSelectClient}
+              onClick={initialValues.id ? null : this.onEditClient}
               clients={mappedClients}
             />
           </fieldset>
@@ -360,6 +366,30 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   }) => {
     const { dispatch, change } = this.props;
     dispatch(change("client", selection.option));
+  };
+
+  onEditClient = (e: SyntheticMouseEvent<*>) => {
+    const { dispatch, change } = this.props;
+    this.setState({clients: []}, () => dispatch(change("client", null)));
+    e.preventDefault();
+  };
+
+  onClientSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    const { token } = this.props;
+    const value = event.target.value;
+
+    if (value && token) {
+      clientsApi
+        .getAll("clients", token, { search: event.target.value, limit: "10" })
+        .then((responseClients: ClientsResponse) => {
+          this.setState({ clients: responseClients.results });
+        })
+        .catch((error: string) => {
+          throw error;
+        });
+    } else {
+      this.setState({ clients: [] });
+    }
   };
 
   onSearch = (e: SyntheticInputEvent<*>) => {
