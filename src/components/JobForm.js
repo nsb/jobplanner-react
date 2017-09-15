@@ -245,7 +245,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       onClose,
       initialValues,
       anytime,
-      onClientSearch
     } = this.props;
 
     const dateFormat = anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a";

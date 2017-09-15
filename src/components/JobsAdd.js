@@ -8,7 +8,7 @@ import { createJob } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
-import type { Client, ClientsResponse } from "../actions/clients";
+import type { Client } from "../actions/clients";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
