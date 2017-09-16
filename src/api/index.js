@@ -1,5 +1,4 @@
 // @flow
-import fetch from "isomorphic-fetch";
 import "url-search-params-polyfill";
 
 const API_ENDPOINT =
@@ -18,15 +17,15 @@ class Api {
     });
 
     const url: string = `${API_ENDPOINT}/${resource}/?${searchParams.toString()}`;
-    const request = new Request(url, {
+    const options = {
       method: "GET",
       headers: new Headers({
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
       })
-    });
+    };
 
-    return fetch(request).then(response => {
+    return fetch(url, options).then(response => {
       if (!response.ok) {
         throw Error(response.statusText);
       }

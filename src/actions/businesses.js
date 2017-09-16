@@ -96,7 +96,6 @@ export const fetchBusinessesSuccess = (
       next: response.next,
       previous: response.previous
     },
-    receivedAt: Date.now()
   };
 };
 
