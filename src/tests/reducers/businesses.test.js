@@ -1,5 +1,5 @@
-import reducer from "./businesses";
-import { FETCH_BUSINESSES } from "../actions/businesses";
+import reducer from "../../reducers/businesses";
+import { FETCH_BUSINESSES } from "../../actions/businesses";
 
 describe("businesses reducer", () => {
   it("should return the initial state", () => {

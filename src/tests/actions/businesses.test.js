@@ -7,7 +7,7 @@ import {
   FETCH_BUSINESSES,
   fetchBusinesses,
   FETCH_BUSINESSES_SUCCESS
-} from "./businesses";
+} from "../../actions/businesses";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

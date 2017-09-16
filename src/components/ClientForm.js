@@ -78,7 +78,7 @@ type Props = {
   initialValues: Object
 };
 
-const ClientForm = (props: Props) => {
+export const ClientForm = (props: Props) => {
   const {
     handleSubmit,
     valid,

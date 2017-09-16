@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import BusinessListItem from "./businessListItem";
+import BusinessListItem from "../../components/businessListItem";
 
 function setup() {
   const props = {
