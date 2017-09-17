@@ -105,6 +105,11 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
         return state;
       }
 
+    case "DELETE_JOB_SUCCESS":
+      const newState = [...state];
+      newState.splice(state.indexOf(action.payload.id), 1);
+      return newState;
+
     default:
       return state;
   }
