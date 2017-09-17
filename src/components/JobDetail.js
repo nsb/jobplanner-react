@@ -10,6 +10,7 @@ import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
 import MoreIcon from "grommet/components/icons/base/More";
+import ToolsIcon from "grommet/components/icons/base/Tools";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
@@ -96,8 +97,11 @@ class JobDetail extends Component<Props, State> {
                 path={`/${business.id}/jobs`}
                 a11yTitle="Return"
               />
-              <Heading tag="h1" margin="none">
-                <strong>{`Job ${job.id}`}</strong>
+
+              <Heading tag="h3" margin="none">
+                <strong>
+                  {`${job.client_firstname} ${job.client_lastname}`}
+                </strong>
               </Heading>
             </Box>
             {sidebarControl}
@@ -106,9 +110,20 @@ class JobDetail extends Component<Props, State> {
 
             <Box full="horizontal">
               <Section pad="medium" full="horizontal">
-                <Heading tag="h2" margin="none">
+                <Heading tag="h4" margin="none">
+                <Box>
+                  {`Job #${job.id}`}
+                </Box>
                   {rrulestr(job.recurrences).toText()}
                 </Heading>
+              </Section>
+              <Section pad="medium" full="horizontal">
+                Property Address: My street
+
+              </Section>
+              <Section pad="medium" full="horizontal">
+                Contact details: 61 67 15 14
+
               </Section>
               <Section pad="medium" full="horizontal">
                 <VisitListContainer job={job} />
