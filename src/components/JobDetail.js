@@ -23,6 +23,7 @@ type Props = {
   job: Job,
   responsive: Responsive,
   onEdit: Function,
+  onRemove: Function,
   onToggleCloseJob: Function,
   onResponsive: Function,
   saved: boolean
@@ -43,6 +44,7 @@ class JobDetail extends Component<Props, State> {
       job,
       responsive,
       onEdit,
+      onRemove,
       onResponsive,
       onToggleCloseJob
     } = this.props;
@@ -64,6 +66,7 @@ class JobDetail extends Component<Props, State> {
         onClose={onSidebarClose}
         onEdit={onEdit}
         onToggleCloseJob={onToggleCloseJob}
+        onRemove={onRemove}
       />
     );
 

@@ -29,6 +29,13 @@ export const UPDATE_JOB: "UPDATE_JOB" = "UPDATE_JOB";
 export const UPDATE_JOB_SUCCESS: "UPDATE_JOB_SUCCESS" = "UPDATE_JOB_SUCCESS";
 export const UPDATE_JOB_FAILURE: "UPDATE_JOB_FAILURE" = "UPDATE_JOB_FAILURE";
 
+//Delete job
+export const DELETE_JOB: "DELETE_JOB" = "DELETE_JOB";
+export const DELETE_JOB_SUCCESS: "DELETE_JOB_SUCCESS" =
+  "DELETE_JOB_SUCCESS";
+export const DELETE_JOB_FAILURE: "DELETE_JOB_FAILURE" =
+  "DELETE_JOB_FAILURE";
+
 export type Job = {
   id: number,
   client: number,
@@ -112,6 +119,23 @@ type UpdateJobFailureAction = {
   error: string
 };
 
+type DeleteJobAction = {
+  type: typeof DELETE_JOB,
+  payload: Job
+};
+
+type DeleteJobSuccessAction = {
+  type: typeof DELETE_JOB_SUCCESS,
+  payload: Job
+};
+
+type DeleteJobFailureAction = {
+  type: typeof DELETE_JOB_FAILURE,
+  payload: Job,
+  error: string
+};
+
+
 export type Action =
   | FetchJobsAction
   | FetchJobsSuccessAction
@@ -124,7 +148,10 @@ export type Action =
   | FetchJobFailureAction
   | UpdateJobAction
   | UpdateJobSuccessAction
-  | UpdateJobFailureAction;
+  | UpdateJobFailureAction
+  | DeleteJobAction
+  | DeleteJobSuccessAction
+  | DeleteJobFailureAction;
 
 const parse = (job): Job => {
   return merge({}, job, {
@@ -330,7 +357,7 @@ export const updateJob = (job: Job, token: string): ThunkAction => {
 
 export const partialUpdateJob = (
   job: { id: number },
-  token: string,
+  token: string
 ): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateJobRequest(job));
@@ -344,6 +371,49 @@ export const partialUpdateJob = (
       })
       .catch((error: string) => {
         dispatch(updateJobError(error));
+      });
+  };
+};
+
+export const deleteJobRequest = (payload: Job): DeleteJobAction => {
+  return {
+    type: DELETE_JOB,
+    payload
+  };
+};
+
+export const deleteJobSuccess = (
+  payload: Job
+): DeleteJobSuccessAction => {
+  return {
+    type: DELETE_JOB_SUCCESS,
+    payload
+  };
+};
+
+export const deleteJobError = (
+  payload: Job,
+  error: string
+): DeleteJobFailureAction => {
+  return {
+    type: DELETE_JOB_FAILURE,
+    error,
+    payload
+  };
+};
+
+export const deleteJob = (job: Job, token: string): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(deleteJobRequest(job));
+
+    return jobsApi
+      .delete("jobs", job, token)
+      .then(() => {
+        dispatch(deleteJobSuccess(job));
+        history.push(`/${job.business}/jobs`);
+      })
+      .catch((error: string) => {
+        dispatch(deleteJobError(job, error));
       });
   };
 };

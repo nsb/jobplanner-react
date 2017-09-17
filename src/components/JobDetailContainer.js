@@ -6,7 +6,7 @@ import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
 import JobDetail from "./JobDetail";
-import { fetchJob, partialUpdateJob } from "../actions/jobs";
+import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
 import { navResponsive } from "../actions/nav";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
@@ -19,7 +19,7 @@ type Props = {
   business: Business,
   job: Job,
   jobId: number,
-  token: ?string,
+  token: string,
   isFetching: boolean,
   dispatch: Dispatch,
   push: string => void,
@@ -49,6 +49,7 @@ class JobDetailContainer extends Component<Props> {
         job={job}
         responsive={responsive}
         onEdit={this.onEdit}
+        onRemove={this.onRemove}
         onToggleCloseJob={this.onToggleCloseJob}
         onClose={this.onClose}
         onResponsive={this.onResponsive}
@@ -95,6 +96,11 @@ class JobDetailContainer extends Component<Props> {
     const { business, job, push } = this.props;
     push(`/${business.id}/jobs/${job.id}/edit`);
   };
+
+  onRemove = () => {
+    const { job, token, dispatch } = this.props;
+    dispatch(deleteJob(job, token));
+  }
 }
 
 const mapStateToProps = (

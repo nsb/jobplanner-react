@@ -18,12 +18,13 @@ type Props = {
   job: Job,
   onToggleCloseJob: Function,
   onClose?: Function,
-  onEdit: Function
+  onEdit: Function,
+  onRemove: Function
 };
 
 class JobActions extends Component<Props> {
   render() {
-    const { onClose, onEdit, onToggleCloseJob, job } = this.props;
+    const { onClose, onEdit, onToggleCloseJob, onRemove, job } = this.props;
 
     let closeControl;
     if (onClose) {
@@ -33,6 +34,20 @@ class JobActions extends Component<Props> {
           icon={<CloseIcon />}
           onClick={onClose}
           a11yTitle={`Close job name`}
+        />
+      );
+    }
+
+    let editButton;
+    if (!job.closed) {
+      editButton = (
+        <Button
+          align="start"
+          plain={true}
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={onEdit}
+          a11yTitle={`Edit Job Name`}
         />
       );
     }
@@ -55,6 +70,20 @@ class JobActions extends Component<Props> {
           a11yTitle={`Close Job`}
         />;
 
+    let removeButton;
+    if (job.closed) {
+      removeButton = (
+        <Button
+          align="start"
+          plain={true}
+          icon={<TrashIcon />}
+          label="Remove job"
+          onClick={onRemove}
+          a11yTitle={`Remove Job Name`}
+        />
+      );
+    }
+
     return (
       <Sidebar size="medium" colorIndex="light-2">
         <SkipLinkAnchor label="Right Panel" />
@@ -67,23 +96,9 @@ class JobActions extends Component<Props> {
         </Header>
         <Box pad="medium">
           <Menu>
-            <Button
-              align="start"
-              plain={true}
-              icon={<EditIcon />}
-              label="Edit"
-              onClick={onEdit}
-              a11yTitle={`Edit Job Name`}
-            />
+            {editButton}
             {closeButton}
-            <Button
-              align="start"
-              plain={true}
-              icon={<TrashIcon />}
-              label="Remove job"
-              onClick={undefined}
-              a11yTitle={`Remove Job Name`}
-            />
+            {removeButton}
           </Menu>
         </Box>
       </Sidebar>
