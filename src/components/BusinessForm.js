@@ -39,7 +39,7 @@ type Props = {
   onClose?: Function
 };
 
-const BusinessForm = ({
+export const BusinessForm = ({
   handleSubmit,
   valid,
   dirty,
