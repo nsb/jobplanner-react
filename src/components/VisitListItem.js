@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from "react";
-import moment from "moment";
 import ListItem from "grommet/components/ListItem";
 import CheckBox from "grommet/components/CheckBox";
 import Timestamp from "grommet/components/Timestamp";

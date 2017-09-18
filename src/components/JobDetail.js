@@ -10,7 +10,6 @@ import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
 import MoreIcon from "grommet/components/icons/base/More";
-import ToolsIcon from "grommet/components/icons/base/Tools";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
