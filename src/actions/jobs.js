@@ -1,5 +1,6 @@
 // @flow
 import { merge } from "lodash/object";
+import moment from "moment";
 import { normalize } from "normalizr";
 import { jobListSchema, jobSchema } from "../schemas";
 import jobsApi from "../api";
@@ -31,10 +32,8 @@ export const UPDATE_JOB_FAILURE: "UPDATE_JOB_FAILURE" = "UPDATE_JOB_FAILURE";
 
 //Delete job
 export const DELETE_JOB: "DELETE_JOB" = "DELETE_JOB";
-export const DELETE_JOB_SUCCESS: "DELETE_JOB_SUCCESS" =
-  "DELETE_JOB_SUCCESS";
-export const DELETE_JOB_FAILURE: "DELETE_JOB_FAILURE" =
-  "DELETE_JOB_FAILURE";
+export const DELETE_JOB_SUCCESS: "DELETE_JOB_SUCCESS" = "DELETE_JOB_SUCCESS";
+export const DELETE_JOB_FAILURE: "DELETE_JOB_FAILURE" = "DELETE_JOB_FAILURE";
 
 export type Job = {
   id: number,
@@ -135,7 +134,6 @@ type DeleteJobFailureAction = {
   error: string
 };
 
-
 export type Action =
   | FetchJobsAction
   | FetchJobsSuccessAction
@@ -155,15 +153,21 @@ export type Action =
 
 const parse = (job): Job => {
   return merge({}, job, {
-    begins: new Date(job.begins),
-    ends: new Date(job.ends)
+    begins: job.begins && new Date(job.begins),
+    ends: job.ends && new Date(job.ends),
+    start_time: job.start_time && moment(job.start_time, "HH:mm"),
+    finish_time: job.finish_time && moment(job.finish_time, "HH:mm")
   });
 };
 
 const serialize = (job: Job) => {
   return merge({}, job, {
-    begins: job.begins && job.begins.toISOString(),
-    ends: job.ends && job.ends.toISOString()
+    begins: job.begins && moment(job.begins).format("YYYY-MM-DD"),
+    ends: job.ends && moment(job.ends).format("YYYY-MM-DD"),
+    start_time:
+      job.start_time && moment(job.start_time, "h:mm a").format("HH:mm"),
+    finish_time:
+      job.finish_time && moment(job.finish_time, "h:mm a").format("HH:mm")
   });
 };
 
@@ -382,9 +386,7 @@ export const deleteJobRequest = (payload: Job): DeleteJobAction => {
   };
 };
 
-export const deleteJobSuccess = (
-  payload: Job
-): DeleteJobSuccessAction => {
+export const deleteJobSuccess = (payload: Job): DeleteJobSuccessAction => {
   return {
     type: DELETE_JOB_SUCCESS,
     payload

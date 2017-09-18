@@ -125,7 +125,6 @@ class ClientInput extends Component<ClientInputProps> {
       onSelectClient,
       clients
     } = this.props;
-    console.log(value);
     return value
       ? onClick ?
         <Anchor
@@ -247,7 +246,35 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       anytime,
     } = this.props;
 
-    const dateFormat = anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a";
+    const dateFormat = "M/D/YYYY";
+    const timeFormat = "h:mm a"
+
+    let start_time;
+    if (!anytime) {
+      start_time = (
+        <Field
+          name="start_time"
+          label="Start time"
+          component={renderDateTime}
+          dateFormat={timeFormat}
+          // normalize={(value: string) => moment(value, timeFormat)}
+        />
+      )
+    }
+
+    let finish_time;
+    if (!anytime) {
+      finish_time = (
+        <Field
+          name="finish_time"
+          label="Finish time"
+          component={renderDateTime}
+          dateFormat={timeFormat}
+          // normalize={(value: string) => moment(value, timeFormat)}
+        />
+      )
+    }
+
 
     const mappedClients = this.state.clients.map(client => {
       return {
@@ -307,6 +334,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               dateFormat={dateFormat}
               normalize={(value: string) => moment(value, dateFormat)}
             />
+            {start_time}
+            {finish_time}
             <Field
               name="anytime"
               label="Anytime"
