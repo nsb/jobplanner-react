@@ -37,18 +37,18 @@ const validate = (values: {
   }
 
   if (!values.begins) {
-    errors.begins = "Required"
+    errors.begins = "Required";
   } else {
     if (!moment(values.begins).isValid()) {
-      errors.begins = "Invalid"
+      errors.begins = "Invalid";
     }
   }
 
   if (!values.ends) {
-    errors.ends = "Required"
+    errors.ends = "Required";
   } else {
     if (!moment(values.ends).isValid()) {
-      errors.ends = "Invalid"
+      errors.ends = "Invalid";
     }
   }
 
@@ -117,8 +117,8 @@ class ScheduleInput extends Component<ScheduleProps> {
           reverse={true}
           onClick={onClick}
         >
-          <Heading tag="h3">
-            Schedule
+          <Heading tag="h4">
+            Visit frequency
           </Heading>
           {rule.toText()}
         </Anchor>
@@ -313,29 +313,38 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       };
     });
 
+    let clientField;
+    if (!initialValues.id) {
+      clientField = (
+        <fieldset>
+          <Field
+            name="client"
+            label="Client"
+            component={renderClient}
+            onClientSearch={this.onClientSearch}
+            onSelectClient={this.onSelectClient}
+            onClick={initialValues.id ? null : this.onEditClient}
+            clients={mappedClients}
+          />
+        </fieldset>
+      )
+    }
+
     return (
       <Form onSubmit={handleSubmit}>
 
         <Header size="large" justify="between" pad="none">
-          <Heading tag="h2" margin="none" strong={true}>
-            {initialValues.id ? "Edit job" : "Add Job"}
+          <Heading tag="h3" margin="none" strong={true}>
+            {initialValues.id
+              ? `Job for ${initialValues.client_firstname} ${initialValues.client_lastname}`
+              : "Add Job"}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
 
         <FormFields>
 
-          <fieldset>
-            <Field
-              name="client"
-              label="Client"
-              component={renderClient}
-              onClientSearch={this.onClientSearch}
-              onSelectClient={this.onSelectClient}
-              onClick={initialValues.id ? null : this.onEditClient}
-              clients={mappedClients}
-            />
-          </fieldset>
+          {clientField}
 
           <fieldset>
 
@@ -350,6 +359,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           </fieldset>
 
           <fieldset>
+            <Heading tag="h3">Schedule</Heading>
             <Field
               name="begins"
               label="Begins"
