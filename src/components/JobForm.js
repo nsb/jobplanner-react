@@ -24,10 +24,41 @@ import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Element } from "react";
 
-const validate = (values: { client: Object }) => {
+const validate = (values: {
+  client: Object,
+  anytime: boolean,
+  start_time: Date,
+  finish_time: Date,
+  description: string
+}) => {
   const errors = {};
   if (!values.client) {
     errors.client = "Required";
+  }
+
+  if (!values.begins) {
+    errors.begins = "Required"
+  } else {
+    if (!moment(values.begins).isValid()) {
+      errors.begins = "Invalid"
+    }
+  }
+
+  if (!values.ends) {
+    errors.ends = "Required"
+  } else {
+    if (!moment(values.ends).isValid()) {
+      errors.ends = "Invalid"
+    }
+  }
+
+  if (!values.anytime) {
+    if (!values.start_time) {
+      errors.start_time = "Required";
+    }
+    if (!values.finish_time) {
+      errors.finish_time = "Required";
+    }
   }
   return errors;
 };
@@ -126,25 +157,25 @@ class ClientInput extends Component<ClientInputProps> {
       clients
     } = this.props;
     return value
-      ? onClick ?
-        <Anchor
-          icon={<EditIcon />}
-          label="Label"
-          href="#"
-          reverse={true}
-          onClick={onClick}
-        >
-          <Heading tag="h3">
-            Client
-          </Heading>
-          {value.label}
-        </Anchor>
+      ? onClick
+        ? <Anchor
+            icon={<EditIcon />}
+            label="Label"
+            href="#"
+            reverse={true}
+            onClick={onClick}
+          >
+            <Heading tag="h3">
+              Client
+            </Heading>
+            {value.label}
+          </Anchor>
         : <div>
-          <Heading tag="h3">
-            Client
-          </Heading>
-          {value.label}
-        </div>
+            <Heading tag="h3">
+              Client
+            </Heading>
+            {value.label}
+          </div>
       : <FormField label={label}>
           <Select
             placeHolder="None"
@@ -243,11 +274,11 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       submitting,
       onClose,
       initialValues,
-      anytime,
+      anytime
     } = this.props;
 
     const dateFormat = "M/D/YYYY";
-    const timeFormat = "h:mm a"
+    const timeFormat = "h:mm a";
 
     let start_time;
     if (!anytime) {
@@ -259,7 +290,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           dateFormat={timeFormat}
           // normalize={(value: string) => moment(value, timeFormat)}
         />
-      )
+      );
     }
 
     let finish_time;
@@ -272,9 +303,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           dateFormat={timeFormat}
           // normalize={(value: string) => moment(value, timeFormat)}
         />
-      )
+      );
     }
-
 
     const mappedClients = this.state.clients.map(client => {
       return {
@@ -325,14 +355,14 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               label="Begins"
               component={renderDateTime}
               dateFormat={dateFormat}
-              normalize={(value: string) => moment(value, dateFormat)}
+              normalize={(value: string) => moment(value, dateFormat).toDate()}
             />
             <Field
               name="ends"
               label="Ends"
               component={renderDateTime}
               dateFormat={dateFormat}
-              normalize={(value: string) => moment(value, dateFormat)}
+              normalize={(value: string) => moment(value, dateFormat).toDate()}
             />
             {start_time}
             {finish_time}
@@ -398,7 +428,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
   onEditClient = (e: SyntheticMouseEvent<*>) => {
     const { dispatch, change } = this.props;
-    this.setState({clients: []}, () => dispatch(change("client", null)));
+    this.setState({ clients: [] }, () => dispatch(change("client", null)));
     e.preventDefault();
   };
 
