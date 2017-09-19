@@ -95,7 +95,7 @@ class JobScheduleEdit extends Component<Props, State> {
 
     return (
       <LayerForm
-        title="Add schedule"
+        title="Repeat"
         submitLabel="OK"
         onClose={onClose}
         onSubmit={this.onSubmit}
