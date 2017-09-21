@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {Switch, Route} from 'react-router-dom';
-import JobList from '../components/JobList';
+import JobList from '../components/JobListRouterContainer';
 import JobsAdd from '../components/JobsAdd';
 import JobDetailContainer from '../components/JobDetailContainer';
 import JobEdit from '../components/JobEdit';

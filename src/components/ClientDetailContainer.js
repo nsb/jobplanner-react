@@ -36,7 +36,7 @@ class ClientDetailContainer extends Component<Props> {
   }
 
   render() {
-    const { business, client, properties, responsive, isFetching } = this.props;
+    const { business, client, properties, responsive, isFetching, push } = this.props;
 
     const clientDetail = (
       <ClientDetail
@@ -47,6 +47,7 @@ class ClientDetailContainer extends Component<Props> {
         onEdit={this.onEdit}
         onClose={this.onClose}
         onResponsive={this.onResponsive}
+        push={push}
       />
     );
 
@@ -94,11 +95,17 @@ const mapStateToProps = (
   const { clients, entities, auth, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
+  const client = ensureState(entities).clients[clientId];
 
   return {
     business: ensureState(entities).businesses[businessId],
-    client: ensureState(entities).clients[clientId],
-    properties: ensureState(entities).properties,
+    client: client,
+    // properties: client.properties.map((propertyId => {
+    //   return ensureState(entities).properties[propertyId]
+    // })),
+    properties: client ? client.properties.map(propertyId => {
+      return ensureState(entities).properties[propertyId];
+    }) : [],
     clientId: clientId,
     isFetching: clients.isFetching,
     token: auth.token,

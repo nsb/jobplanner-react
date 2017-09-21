@@ -12,8 +12,10 @@ import Section from "grommet/components/Section";
 import MoreIcon from "grommet/components/icons/base/More";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import ClientActions from "../components/ClientActions";
+import JobList from "../components/JobList";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
+import type { Property } from "../actions/properties";
 import type { PropertiesMap } from "../actions/properties";
 import type { Responsive } from "../actions/nav";
 
@@ -23,7 +25,8 @@ type Props = {
   properties: PropertiesMap,
   responsive: Responsive,
   onEdit: Function,
-  onResponsive: Function
+  onResponsive: Function,
+  push: string => void
 };
 
 type State = {
@@ -36,7 +39,15 @@ class ClientDetail extends Component<Props, State> {
   };
 
   render() {
-    const { business, client, responsive, onEdit, onResponsive } = this.props;
+    const {
+      business,
+      client,
+      properties,
+      responsive,
+      onEdit,
+      onResponsive,
+      push
+    } = this.props;
 
     let onSidebarClose;
     let sidebarControl;
@@ -79,19 +90,29 @@ class ClientDetail extends Component<Props, State> {
                 path={`/${business.id}/clients`}
                 a11yTitle="Return"
               />
-              <Heading tag="h1" margin="none">
-                <strong>{`Client ${client.id}`}</strong>
+              <Heading tag="h3" margin="none">
+                <strong>{`${client.first_name} ${client.last_name}`}</strong>
               </Heading>
             </Box>
             {sidebarControl}
           </Header>
           <Article pad="none" align="start" primary={true}>
-
-            <Box full="horizontal">
-              <Section pad="medium" full="horizontal">
-                <Heading tag="h2" margin="none">{client.first_name}</Heading>
-              </Section>
-            </Box>
+            <Section pad="medium" full="horizontal">
+              <Heading tag="h4" margin="none">Properties</Heading>
+              {properties.map((property: Property, index: number) => {
+                return (
+                  <div>
+                    <div>{property.address1}</div>
+                    <div>{property.address2}</div>
+                    <div>{property.zip_code}</div>
+                    <div>{property.country}</div>
+                  </div>
+                );
+              })}
+            </Section>
+            <Section pad="medium" full="horizontal">
+              <JobList businessId={business.id} push={push} />
+            </Section>
           </Article>
         </div>
         {sidebar}

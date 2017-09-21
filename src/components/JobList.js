@@ -130,22 +130,21 @@ class JobList extends Component<Props, State> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    match: {params: {businessId: number}},
-    history: {push: string => void},
+    businessId: number,
+    push: string => void,
     dispatch: Dispatch
   }
 ): Props => {
   const {entities, jobs, auth} = state;
-  const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
-    business: ensureState(entities).businesses[businessId],
+    business: ensureState(entities).businesses[ownProps.businessId],
     jobs: jobs.result.map(Id => {
       return ensureState(entities).jobs[Id];
     }),
     isFetching: jobs.isFetching,
     token: auth.token,
-    push: ownProps.history.push,
+    push: ownProps.push,
     dispatch: ownProps.dispatch
   };
 };

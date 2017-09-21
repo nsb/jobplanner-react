@@ -3,6 +3,7 @@ import { normalize } from "normalizr";
 import { clientListSchema, clientSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
+import type { Property } from "./properties";
 import clientsApi from "../api";
 import history from "../history";
 
@@ -44,7 +45,8 @@ export type Client = {
   id: number,
   business: number,
   first_name: string,
-  last_name: string
+  last_name: string,
+  properties: Array<Property>
 };
 
 export type ClientsMap = { [id: number]: Client };
