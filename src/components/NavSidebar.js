@@ -44,7 +44,6 @@ class NavSidebar extends Component<Props> {
           />
         </Header>
         <Menu fill={true} primary={true}>
-          <Anchor key="dashboard" path={`/${business.id}/dashboard`} label="Dashboard" />
           <Anchor key="calendar" path={`/${business.id}/calendar`} label="Calendar" />
           <Anchor
             key="clients"
@@ -55,6 +54,14 @@ class NavSidebar extends Component<Props> {
             })}
           />
           <Anchor key="jobs" path={`/${business.id}/jobs`} label="Jobs" />
+          <Anchor
+            key="settings"
+            path={`/${business.id}/settings`}
+            label={intl.formatMessage({
+              id: 'settings.title',
+              defaultMessage: 'Settings',
+            })}
+          />
         </Menu>
         <Footer pad={{horizontal: 'medium', vertical: 'small'}}>
           <SessionMenu

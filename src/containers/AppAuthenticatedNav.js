@@ -11,6 +11,7 @@ import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
 import ClientEdit from "../components/ClientEdit";
 import Jobs from "../components/Jobs";
+import Settings from "../components/Settings";
 import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
 import type { Dispatch } from "../types/Store";
@@ -56,6 +57,7 @@ class AppAuthenticatedNav extends Component<Props> {
             component={ClientListContainer}
           />
           <Route path="/:businessId/jobs" component={Jobs} />
+          <Route path="/:businessId/settings" component={Settings} />
           <Route component={ClientListContainer} />
         </Switch>
       </Split>
