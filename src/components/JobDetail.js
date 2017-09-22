@@ -110,9 +110,9 @@ class JobDetail extends Component<Props, State> {
             <Box full="horizontal">
               <Section pad="medium" full="horizontal">
                 <Heading tag="h4" margin="none">
-                <Box>
-                  {`Job #${job.id}`}
-                </Box>
+                  <Box>
+                    {`Job #${job.id}`}
+                  </Box>
                   {rrulestr(job.recurrences).toText()}
                 </Heading>
               </Section>
@@ -124,7 +124,12 @@ class JobDetail extends Component<Props, State> {
                 Contact details: 61 67 15 14
 
               </Section>
-              <Section pad="medium" full="horizontal">
+              <Section full="horizontal">
+                <Box pad={{ horizontal: "medium", vertial: "none" }}>
+                  <Heading tag="h4">
+                    Visits
+                  </Heading>
+                </Box>
                 <VisitListContainer job={job} />
               </Section>
             </Box>
