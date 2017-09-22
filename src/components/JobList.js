@@ -1,24 +1,25 @@
 // @flow
 
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
-import Title from 'grommet/components/Title';
-import Search from 'grommet/components/Search';
-import Anchor from 'grommet/components/Anchor';
-import Button from 'grommet/components/Button';
-import AddIcon from 'grommet/components/icons/base/Add';
-import List from 'grommet/components/List';
-import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
-import {fetchJobs} from '../actions/jobs';
-import JobListItem from './JobListItem';
-import NavControl from './NavControl';
-import type {State as ReduxState} from '../types/State';
-import type {Job} from '../actions/jobs';
-import type {Business} from '../actions/businesses';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Box from "grommet/components/Box";
+import Header from "grommet/components/Header";
+import Title from "grommet/components/Title";
+import Search from "grommet/components/Search";
+import Anchor from "grommet/components/Anchor";
+import Button from "grommet/components/Button";
+import AddIcon from "grommet/components/icons/base/Add";
+import List from "grommet/components/List";
+import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import { fetchJobs } from "../actions/jobs";
+import JobListItem from "./JobListItem";
+import NavControl from "./NavControl";
 import { ensureState } from "redux-optimistic-ui";
-import type { Dispatch } from '../types/Store';
+
+import type { State as ReduxState } from "../types/State";
+import type { Job } from "../actions/jobs";
+import type { Business } from "../actions/businesses";
+import type { Dispatch } from "../types/Store";
 
 type Props = {
   business: Business,
@@ -27,28 +28,27 @@ type Props = {
   token: string,
   isFetching: boolean,
   push: Function
-}
-
-type State = {
-  searchText: string,
 };
 
+type State = {
+  searchText: string
+};
 
 class JobList extends Component<Props, State> {
   constructor() {
     super();
-    this.state = {searchText: ''};
+    this.state = { searchText: "" };
   }
 
   componentDidMount() {
-    const {business, jobs, token, dispatch} = this.props;
+    const { business, jobs, token, dispatch } = this.props;
     if (!jobs.length) {
-      dispatch(fetchJobs(token, {business: business.id}));
+      dispatch(fetchJobs(token, { business: business.id }));
     }
   }
 
   render() {
-    const {jobs, business, isFetching} = this.props;
+    const { jobs, business, isFetching } = this.props;
 
     const filteredJobs = jobs.filter(job => {
       const searchText = this.state.searchText.toLowerCase();
@@ -69,7 +69,7 @@ class JobList extends Component<Props, State> {
 
     return (
       <Box>
-        <Header size="large" pad={{horizontal: 'medium'}}>
+        <Header size="large" pad={{ horizontal: "medium" }}>
           <Title responsive={false}>
             <NavControl />
             <span>Jobs</span>
@@ -117,13 +117,13 @@ class JobList extends Component<Props, State> {
   onMore = () => {};
 
   onClick = (e: SyntheticEvent<>, job: Job) => {
-    const {push, business} = this.props;
+    const { push, business } = this.props;
     push(`/${business.id}/jobs/${job.id}`);
   };
 
   onSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
     const searchText = event.target.value;
-    this.setState({searchText});
+    this.setState({ searchText });
   };
 }
 
@@ -135,7 +135,7 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const {entities, jobs, auth} = state;
+  const { entities, jobs, auth } = state;
 
   return {
     business: ensureState(entities).businesses[ownProps.businessId],

@@ -6,7 +6,6 @@ import SettingsEdit from "./SettingsEdit";
 
 class Settings extends Component<*> {
   render() {
-    console.log('settings')
     return (
       <Switch>
         <Route component={SettingsEdit} />
