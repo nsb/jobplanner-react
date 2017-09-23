@@ -6,6 +6,7 @@ import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
 import List from "grommet/components/List";
 import NavControl from "./NavControl";
+import BusinessSection from "./SettingsBusinessSection";
 import SettingsServicesSection from "./SettingsServicesSection";
 
 class Settings extends Component<*> {
@@ -19,6 +20,7 @@ class Settings extends Component<*> {
           </Title>
         </Header>
         <List>
+          <BusinessSection />
           <SettingsServicesSection productName="Services" />
         </List>
       </Box>
