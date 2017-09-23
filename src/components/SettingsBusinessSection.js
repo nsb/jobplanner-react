@@ -6,7 +6,7 @@ import EditIcon from "grommet/components/icons/base/Edit";
 import SettingsListItem from "./SettingsListItem";
 
 type Props = {
-  onOpen?: Function
+  onOpen: Function
 };
 
 const BusinessSection = (props: Props) => {

@@ -21,6 +21,13 @@ export const FETCH_BUSINESSES_FAILURE: "FETCH_BUSINESSES_FAILURE" =
   "FETCH_BUSINESSES_FAILURE";
 export const RESET_BUSINESSES: "RESET_BUSINESSES" = "RESET_BUSINESSES";
 
+//Update business
+export const UPDATE_BUSINESS: "UPDATE_BUSINESS" = "UPDATE_BUSINESS";
+export const UPDATE_BUSINESS_SUCCESS: "UPDATE_BUSINESS_SUCCESS" =
+  "UPDATE_BUSINESS_SUCCESS";
+export const UPDATE_BUSINESS_FAILURE: "UPDATE_BUSINESS_FAILURE" =
+  "UPDATE_BUSINESS_FAILURE";
+
 export type Business = {
   id: number,
   name: string
@@ -71,13 +78,34 @@ type CreateBusinessFailureAction = {
   error: string
 };
 
+type UpdateBusinessAction = {
+  type: typeof UPDATE_BUSINESS,
+  payload: Business
+};
+
+type UpdateBusinessSuccessAction = {
+  type: typeof UPDATE_BUSINESS_SUCCESS,
+  payload: Business
+};
+
+type UpdateBusinessFailureAction = {
+  type: typeof UPDATE_BUSINESS_FAILURE,
+  payload: Business,
+  error: string
+};
+
+
 export type Action =
   | FetchBusinessesAction
   | FetchBusinessesSuccessAction
   | FetchBusinessesAction
   | CreateBusinessAction
   | CreateBusinessSuccessAction
-  | CreateBusinessFailureAction;
+  | CreateBusinessFailureAction
+  | UpdateBusinessAction
+  | UpdateBusinessSuccessAction
+  | UpdateBusinessFailureAction;
+
 
 export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   return {
@@ -172,6 +200,50 @@ export const createBusiness = (
       })
       .catch((error: string) => {
         throw error;
+      });
+  };
+};
+
+export const updateBusinessRequest = (payload: Business): UpdateBusinessAction => {
+  return {
+    type: UPDATE_BUSINESS,
+    payload
+  };
+};
+
+export const updateBusinessSuccess = (
+  payload: Business
+): UpdateBusinessSuccessAction => {
+  return {
+    type: UPDATE_BUSINESS_SUCCESS,
+    receivedAt: Date.now(),
+    payload: normalize(payload, businessSchema)
+  };
+};
+
+export const updateBusinessError = (
+  payload: Business,
+  error: string
+): UpdateBusinessFailureAction => {
+  return {
+    type: UPDATE_BUSINESS_FAILURE,
+    error,
+    payload
+  };
+};
+
+export const updateBusiness = (business: Business, token: string): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(updateBusinessRequest(business));
+
+    return businessesApi
+      .update("businesses", business, token)
+      .then((responseBusiness: Business) => {
+        dispatch(updateBusinessSuccess(responseBusiness));
+        return responseBusiness;
+      })
+      .catch((error: string) => {
+        dispatch(updateBusinessError(business, error));
       });
   };
 };
