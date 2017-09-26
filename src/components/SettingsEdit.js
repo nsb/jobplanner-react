@@ -64,21 +64,31 @@ class SettingsEdit extends Component<Props, State> {
     let layer;
     if (this.state.layer) {
       const Layer = LAYERS[this.state.layer];
-      layer = <Layer onClose={this.onLayerClose} {...this.props} />;
+      layer = (
+        <Layer
+          onClose={this.onLayerClose}
+          handleSubmit={this.handleSubmit}
+          {...this.props}
+        />
+      );
     }
     return layer;
-  }
+  };
 
   onLayerOpen = (name: string) => {
     this.setState({ layer: name });
-  }
+  };
 
   onLayerClose = (nextLayer: string | null = null) => {
     if (nextLayer && typeof nextLayer !== "string") {
       nextLayer = null;
     }
     this.setState({ layer: nextLayer });
-  }
+  };
+
+  handleSubmit = e => {
+    console.log(e);
+  };
 }
 
 const mapStateToProps = (
@@ -97,7 +107,7 @@ const mapStateToProps = (
     isFetching: businesses.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch,
-    push: ownProps.history.push,
+    push: ownProps.history.push
   };
 };
 

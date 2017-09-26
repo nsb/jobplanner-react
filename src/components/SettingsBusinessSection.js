@@ -13,18 +13,18 @@ const BusinessSection = (props: Props) => {
   const { onOpen } = props;
   let control;
   control = (
-    <Button icon={<EditIcon />} onClick={onOpen} a11yTitle="Edit Business" />
+    <Button icon={<EditIcon />} onClick={onOpen} a11yTitle="Edit Company" />
   );
 
   let details;
   details = (
     <span>
-      Edit your business details here.
+      Update your company details here.
     </span>
   );
   return (
     <SettingsListItem key="business" control={control} first={true}>
-      <strong>Business</strong>
+      <strong>Company</strong>
       {details}
     </SettingsListItem>
   );

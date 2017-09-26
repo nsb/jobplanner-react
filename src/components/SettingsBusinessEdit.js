@@ -1,11 +1,14 @@
 // @flow
 
 import React, { Component } from "react";
-import { updateBusiness } from '../actions/businesses';
-import LayerForm from "grommet-templates/components/LayerForm";
-import Paragraph from "grommet/components/Paragraph";
+import { connect } from "react-redux";
+import { updateBusiness } from "../actions/businesses";
+import Layer from "grommet/components/Layer";
+import BusinessForm from "./SettingsBusinessForm";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
+import type { Element } from "react";
+import type { State as ReduxState } from "../types/State";
 
 type Props = {
   business: Business,
@@ -15,32 +18,40 @@ type Props = {
 };
 
 class BusinessEdit extends Component<Props> {
-
-  _onRemove = () => {
-    const { business, token } = this.props;
-    this.props.dispatch(updateBusiness(business, token));
-    this.props.onClose();
-  }
-
   render() {
     const { business, onClose } = this.props;
     return (
-      <LayerForm
-        title="Edit"
-        submitLabel="Edit"
-        compact={true}
-        onClose={onClose}
-        onSubmit={undefined}
-      >
-        <fieldset>
-          <Paragraph>
-            Are you sure you want to
-            edit <strong>{business.name}</strong>?
-          </Paragraph>
-        </fieldset>
-      </LayerForm>
+      <Layer align="right" closer={true} onClose={onClose}>
+        <BusinessForm
+          onSubmit={this.handleSubmit}
+          onClose={onClose}
+          initialValues={business}
+        />
+      </Layer>
     );
   }
+
+  handleSubmit = (business: Business) => {
+    const { token, dispatch, onClose } = this.props;
+    if (token) {
+      dispatch(updateBusiness(business, token));
+      onClose();
+    }
+  };
 }
 
-export default BusinessEdit;
+const mapStateToProps = (
+  { auth }: ReduxState,
+  ownProps: {
+    history: { push: string => void },
+    business: Business,
+    dispatch: Dispatch
+  }
+) => ({
+  token: auth.token,
+  push: ownProps.history.push,
+  business: ownProps.business,
+  dispatch: ownProps.dispatch
+});
+
+export default connect(mapStateToProps)(BusinessEdit);
