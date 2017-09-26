@@ -19,7 +19,7 @@ const ServicesSection = (props: Props) => {
   let details;
   details = (
     <span>
-      Services are the different type of work your company offers.
+      Services are the different types of work your company offers.
     </span>
   );
   return (
