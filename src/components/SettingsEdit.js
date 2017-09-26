@@ -10,17 +10,15 @@ import NavControl from "./NavControl";
 import BusinessSection from "./SettingsBusinessSection";
 import SettingsServicesSection from "./SettingsServicesSection";
 import BusinessEdit from "./SettingsBusinessEdit";
+import ServicesEdit from "./SettingsServicesEdit";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
-import type { Element } from "react";
 
-const LAYERS: {
-  servicesEdit: Element<*> | null
-} = {
+const LAYERS: {} = {
   businessEdit: BusinessEdit,
-  servicesEdit: null
+  servicesEdit: ServicesEdit
 };
 
 type Props = {
