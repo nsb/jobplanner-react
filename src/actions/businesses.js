@@ -30,7 +30,9 @@ export const UPDATE_BUSINESS_FAILURE: "UPDATE_BUSINESS_FAILURE" =
 
 export type Business = {
   id: number,
-  name: string
+  name: string,
+  timezone: string,
+  services: Array<number>
 };
 
 export type BusinessesMap = { [id: number]: Business };

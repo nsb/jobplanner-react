@@ -6,6 +6,7 @@ import Layer from "grommet/components/Layer";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
+import ServiceList from "./SettingsServiceList";
 
 type Props = {
   business: Business,
@@ -16,9 +17,10 @@ type Props = {
 
 class ServicesEdit extends Component<Props> {
   render() {
-    const { onClose } = this.props;
+    const { onClose, business } = this.props;
     return (
       <Layer align="right" closer={true} onClose={onClose}>
+        <ServiceList business={business} />
       </Layer>
     );
   }
