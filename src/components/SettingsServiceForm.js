@@ -9,6 +9,7 @@ import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
 import type { Element } from "react";
+import type { Service } from "../actions/services";
 
 const validate = (values: Object): Object => {
   const errors = {};
@@ -37,13 +38,13 @@ const renderNumberField = ({
     <NumberInput {...input} />
   </FormField>;
 
-
 type Props = {
   handleSubmit: Function,
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  onClose: Function
+  onClose: Function,
+  initialValues?: Service
 };
 
 export const ServiceForm = ({
@@ -51,7 +52,8 @@ export const ServiceForm = ({
   valid,
   dirty,
   submitting,
-  onClose
+  onClose,
+  initialValues
 }: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
@@ -61,8 +63,17 @@ export const ServiceForm = ({
         <fieldset>
 
           <Field name="name" label="Name" component={renderField} type="text" />
-          <Field name="description" label="Description" component={renderField} type="text" />
-          <Field name="unit_cost" label="Unit cost" component={renderNumberField} />
+          <Field
+            name="description"
+            label="Description"
+            component={renderField}
+            type="text"
+          />
+          <Field
+            name="unit_cost"
+            label="Unit cost"
+            component={renderNumberField}
+          />
 
         </fieldset>
 
@@ -73,7 +84,9 @@ export const ServiceForm = ({
         <Button
           type="submit"
           primary={true}
-          label="Update service"
+          label={
+            initialValues && initialValues.id ? "Update service" : "Add service"
+          }
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>

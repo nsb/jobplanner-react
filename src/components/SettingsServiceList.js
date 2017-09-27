@@ -24,7 +24,17 @@ type Props = {
   token: string
 };
 
-class ServiceList extends Component<Props> {
+type State = {
+  activePanel?: number
+}
+
+class ServiceList extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    const { services } = props;
+    this.state = { activePanel: services.length };
+  }
+
   render() {
     const { services } = this.props;
     return (
@@ -34,7 +44,7 @@ class ServiceList extends Component<Props> {
             Services
           </Heading>
         </Header>
-        <Accordion>
+        <Accordion onActive={this.onActive} active={this.state.activePanel}>
           {services.map((service, index: number) => {
             return (
               <AccordionPanel heading={service.name} key={service.id}>
@@ -48,9 +58,24 @@ class ServiceList extends Component<Props> {
               </AccordionPanel>
             );
           })}
+          <AccordionPanel heading="Add service" key="service-new">
+            <Paragraph>
+              <ServiceForm
+                form={`serviceform-new`}
+                onSubmit={this.onSubmit}
+              />
+            </Paragraph>
+          </AccordionPanel>
         </Accordion>
       </Box>
     );
+  }
+
+  onActive = (activePanel: number) => {
+    if (!activePanel) {
+      const { services } = this.props;
+      this.setState({activePanel: services.length })
+    }
   }
 
   onSubmit = (service: Service) => {
