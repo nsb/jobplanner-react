@@ -30,11 +30,11 @@ const renderField = ({
   </FormField>;
 
 type Props = {
-  handleSubmit?: Function,
+  handleSubmit: Function,
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  onClose?: Function
+  onClose: Function
 };
 
 export const BusinessForm = ({

@@ -1,10 +1,11 @@
 // @flow
 import {schema} from 'normalizr';
 
-const service = new schema.Entity('services');
+export const serviceSchema = new schema.Entity('services');
+export const serviceListSchema = new schema.Array(serviceSchema);
 
 export const businessSchema = new schema.Entity('businesses', {
-  services: [service]
+  services: [serviceSchema]
 });
 export const businessListSchema = new schema.Array(businessSchema);
 

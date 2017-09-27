@@ -3,8 +3,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import Button from "grommet/components/Button";
-import Header from "grommet/components/Header";
-import Heading from "grommet/components/Heading";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
@@ -30,11 +28,11 @@ const renderField = ({
   </FormField>;
 
 type Props = {
-  handleSubmit?: Function,
+  handleSubmit: Function,
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  onClose?: Function
+  onClose: Function
 };
 
 export const ServiceForm = ({
@@ -52,6 +50,7 @@ export const ServiceForm = ({
         <fieldset>
 
           <Field name="name" label="Name" component={renderField} type="text" />
+          <Field name="description" label="Description" component={renderField} type="text" />
 
         </fieldset>
 
@@ -62,7 +61,7 @@ export const ServiceForm = ({
         <Button
           type="submit"
           primary={true}
-          label="Update settings"
+          label="Update service"
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>

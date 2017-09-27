@@ -7,6 +7,7 @@ import { optimistic } from "redux-optimistic-ui";
 import auth from "./auth";
 import nav from "./nav";
 import businesses from "./businesses";
+import services from "./services";
 import clients from "./clients";
 import network from "./network";
 import users from "./users";
@@ -22,6 +23,7 @@ const reducers = {
   auth,
   nav,
   businesses,
+  services,
   clients,
   network,
   users,
