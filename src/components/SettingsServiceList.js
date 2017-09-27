@@ -6,6 +6,9 @@ import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
+import Box from "grommet/components/Box";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
 import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
@@ -22,20 +25,27 @@ class ServiceList extends Component<Props> {
   render() {
     const { services } = this.props;
     return (
-      <Accordion>
-        {services.map((service: Object, index: number) => {
-          return (
-            <AccordionPanel heading="First Title">
-              <Paragraph>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-              </Paragraph>
-            </AccordionPanel>
-          );
-        })}
-      </Accordion>
+      <Box>
+        <Header size="large" justify="between" pad="none">
+          <Heading tag="h2" margin="none" strong={true}>
+            Services
+          </Heading>
+        </Header>
+        <Accordion>
+          {services.map((service: Object, index: number) => {
+            return (
+              <AccordionPanel heading={service.name}>
+                <Paragraph>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                  nisi ut aliquip ex ea commodo consequat.
+                </Paragraph>
+              </AccordionPanel>
+            );
+          })}
+        </Accordion>
+      </Box>
     );
   }
 }
