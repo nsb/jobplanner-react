@@ -12,6 +12,7 @@ import Heading from "grommet/components/Heading";
 import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
+import ServiceForm from "./SettingsServiceForm";
 
 type Props = {
   business: Business,
@@ -34,12 +35,12 @@ class ServiceList extends Component<Props> {
         <Accordion>
           {services.map((service: Object, index: number) => {
             return (
-              <AccordionPanel heading={service.name}>
+              <AccordionPanel heading={service.name} key={service.id}>
                 <Paragraph>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                  nisi ut aliquip ex ea commodo consequat.
+                  <ServiceForm
+                    form={`serviceform-${service.id}`}
+                    initialValues={service}
+                  />
                 </Paragraph>
               </AccordionPanel>
             );
