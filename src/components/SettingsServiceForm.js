@@ -7,6 +7,7 @@ import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
+import NumberInput from "grommet/components/NumberInput";
 import type { Element } from "react";
 
 const validate = (values: Object): Object => {
@@ -26,6 +27,16 @@ const renderField = ({
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>;
+
+const renderNumberField = ({
+  input,
+  label,
+  meta: { touched, error, warning }
+}): Element<*> =>
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <NumberInput {...input} />
+  </FormField>;
+
 
 type Props = {
   handleSubmit: Function,
@@ -51,6 +62,7 @@ export const ServiceForm = ({
 
           <Field name="name" label="Name" component={renderField} type="text" />
           <Field name="description" label="Description" component={renderField} type="text" />
+          <Field name="unit_cost" label="Unit cost" component={renderNumberField} />
 
         </fieldset>
 
