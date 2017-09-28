@@ -3,6 +3,7 @@ import { flatMap } from "lodash/collection";
 import { combineReducers } from "redux";
 import { union } from "lodash/array";
 import type { Action } from "../actions/services";
+import type { Action as BusinessesAction } from "../actions/services";
 
 type IsFetchingState = boolean;
 type ResultState = Array<number>;
@@ -13,7 +14,7 @@ export type State = {
 
 const isFetching = (
   state: IsFetchingState = true,
-  action: Action
+  action: Action | BusinessesAction
 ): IsFetchingState => {
   switch (action.type) {
     case "FETCH_SERVICES":
@@ -51,7 +52,10 @@ const isFetching = (
   }
 };
 
-const count = (state: number = 0, action: Action): number => {
+const count = (
+  state: number = 0,
+  action: Action | BusinessesAction
+): number => {
   switch (action.type) {
     case "FETCH_SERVICES_SUCCESS":
       return action.meta.count;
@@ -65,7 +69,6 @@ const count = (state: number = 0, action: Action): number => {
       } else {
         return state;
       }
-
 
     default:
       return state;
@@ -82,7 +85,10 @@ const next = (state: ?string = null, action: Action): ?string => {
   }
 };
 
-const result = (state: ResultState = [], action: Action): ResultState => {
+const result = (
+  state: ResultState = [],
+  action: Action | BusinessesAction
+): ResultState => {
   switch (action.type) {
     case "CREATE_SERVICE_SUCCESS":
       return [...state, action.payload.result];
