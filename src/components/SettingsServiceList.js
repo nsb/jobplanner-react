@@ -69,7 +69,7 @@ class ServiceList extends Component<Props, State> {
     );
   }
 
-  onActive = (activePanel: number) => {
+  onActive = (activePanel?: number) => {
     if (!activePanel) {
       const { services } = this.props;
       this.setState({ activePanel: services.length });
