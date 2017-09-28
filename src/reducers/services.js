@@ -43,6 +43,9 @@ const isFetching = (
     case "UPDATE_SERVICE_FAILURE":
       return false;
 
+    case "FETCH_BUSINESSES_SUCCESS":
+      return false;
+
     default:
       return state;
   }
@@ -52,6 +55,17 @@ const count = (state: number = 0, action: Action): number => {
   switch (action.type) {
     case "FETCH_SERVICES_SUCCESS":
       return action.meta.count;
+
+    case "FETCH_BUSINESSES_SUCCESS":
+      if (action.payload && action.payload.entities) {
+        return flatMap(
+          action.payload.entities.businesses,
+          business => business.services
+        ).length;
+      } else {
+        return state;
+      }
+
 
     default:
       return state;
