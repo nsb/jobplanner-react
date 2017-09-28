@@ -1,5 +1,6 @@
 // @flow
 
+import { merge } from "lodash/object";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ensureState } from "redux-optimistic-ui";
@@ -7,7 +8,7 @@ import type { Business } from "../actions/businesses";
 import type { Service } from "../actions/services";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
-import { updateService } from "../actions/services";
+import { createService, updateService } from "../actions/services";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
@@ -26,7 +27,7 @@ type Props = {
 
 type State = {
   activePanel?: number
-}
+};
 
 class ServiceList extends Component<Props, State> {
   constructor(props: Props) {
@@ -60,10 +61,7 @@ class ServiceList extends Component<Props, State> {
           })}
           <AccordionPanel heading="Add service" key="service-new">
             <Paragraph>
-              <ServiceForm
-                form={`serviceform-new`}
-                onSubmit={this.onSubmit}
-              />
+              <ServiceForm form={`serviceform-new`} onSubmit={this.onSubmit} />
             </Paragraph>
           </AccordionPanel>
         </Accordion>
@@ -74,19 +72,25 @@ class ServiceList extends Component<Props, State> {
   onActive = (activePanel: number) => {
     if (!activePanel) {
       const { services } = this.props;
-      this.setState({activePanel: services.length })
+      this.setState({ activePanel: services.length });
     }
-  }
+  };
 
   onSubmit = (service: Service) => {
-    const { dispatch, token } = this.props;
-    console.log(service);
-    dispatch(updateService(service, token));
+    const { business, dispatch, token } = this.props;
+    if (service.id) {
+      dispatch(updateService(service, token));
+    } else {
+      dispatch(
+        createService(merge({}, { business: business.id }, service), token)
+      );
+      this.onActive()
+    }
   };
 }
 
 const mapStateToProps = (
-  { auth, entities }: ReduxState,
+  { auth, services, entities }: ReduxState,
   ownProps: {
     business: Business,
     dispatch: Dispatch
@@ -94,10 +98,9 @@ const mapStateToProps = (
 ) => ({
   token: auth.token,
   business: ownProps.business,
-  services: ownProps.business.services.map((Id: number) => {
+  services: services.result.map((Id: number) => {
     return ensureState(entities).services[Id];
   }),
-
   dispatch: ownProps.dispatch
 });
 

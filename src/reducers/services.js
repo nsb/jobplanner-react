@@ -1,4 +1,5 @@
 // @flow
+import { flatMap } from "lodash/collection";
 import { combineReducers } from "redux";
 import { union } from "lodash/array";
 import type { Action } from "../actions/services";
@@ -97,6 +98,17 @@ const result = (state: ResultState = [], action: Action): ResultState => {
       const newState = [...state];
       newState.splice(state.indexOf(action.payload.id), 1);
       return newState;
+
+    // services are inlined under business entity
+    case "FETCH_BUSINESSES_SUCCESS":
+      if (action.payload && action.payload.entities) {
+        return flatMap(
+          action.payload.entities.businesses,
+          business => business.services
+        );
+      } else {
+        return state;
+      }
 
     default:
       return state;

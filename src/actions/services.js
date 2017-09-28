@@ -268,7 +268,6 @@ export const createServiceError = (
 };
 
 export const createService = (
-  business: Business,
   service: Service,
   token: string
 ): ThunkAction => {
@@ -279,7 +278,6 @@ export const createService = (
       .create("services", service, token)
       .then((responseService: Service) => {
         dispatch(createServiceSuccess(responseService));
-        history.push(`/${business.id}/services/${responseService.id}`);
         return responseService;
       })
       .catch((error: string) => {
