@@ -84,7 +84,7 @@ class ServiceList extends Component<Props, State> {
       dispatch(
         createService(merge({}, { business: business.id }, service), token)
       );
-      this.onActive()
+      this.onActive();
     }
   };
 }
@@ -98,9 +98,13 @@ const mapStateToProps = (
 ) => ({
   token: auth.token,
   business: ownProps.business,
-  services: services.result.map((Id: number) => {
-    return ensureState(entities).services[Id];
-  }),
+  services: services.result
+    .map((Id: number) => {
+      return ensureState(entities).services[Id];
+    })
+    .filter(service => {
+      return service.business === ownProps.business.id ? service : false;
+    }),
   dispatch: ownProps.dispatch
 });
 
