@@ -8,9 +8,11 @@ import Title from "grommet/components/Title";
 import List from "grommet/components/List";
 import NavControl from "./NavControl";
 import BusinessSection from "./SettingsBusinessSection";
-import SettingsServicesSection from "./SettingsServicesSection";
+import ServicesSection from "./SettingsServicesSection";
+import EmployeesSection from "./SettingsEmployeesSection";
 import BusinessEdit from "./SettingsBusinessEdit";
 import ServicesEdit from "./SettingsServicesEdit";
+import EmployeesEdit from "./SettingsEmployeesEdit";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
@@ -18,7 +20,8 @@ import type { Business } from "../actions/businesses";
 
 const LAYERS: {} = {
   businessEdit: BusinessEdit,
-  servicesEdit: ServicesEdit
+  servicesEdit: ServicesEdit,
+  employeesEdit: EmployeesEdit,
 };
 
 type Props = {
@@ -49,8 +52,11 @@ class SettingsEdit extends Component<Props, State> {
           <BusinessSection
             onOpen={this.onLayerOpen.bind(this, "businessEdit")}
           />
-          <SettingsServicesSection
+          <ServicesSection
             onOpen={this.onLayerOpen.bind(this, "servicesEdit")}
+          />
+          <EmployeesSection
+            onOpen={this.onLayerOpen.bind(this, "employeesEdit")}
           />
         </List>
         {layer}

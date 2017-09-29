@@ -8,6 +8,7 @@ import auth from "./auth";
 import nav from "./nav";
 import businesses from "./businesses";
 import services from "./services";
+import employees from "./employees";
 import clients from "./clients";
 import network from "./network";
 import users from "./users";
@@ -24,6 +25,7 @@ const reducers = {
   nav,
   businesses,
   services,
+  employees,
   clients,
   network,
   users,
