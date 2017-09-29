@@ -6,7 +6,6 @@ import {Switch, Redirect, Route} from 'react-router-dom';
 import Article from 'grommet/components/Article';
 import Section from 'grommet/components/Section';
 import logo from '../logo.svg';
-import {navToggle, navResponsive} from '../actions/nav';
 import {verifyAuthAndFetchBusinesses} from '../actions';
 import type {Dispatch} from '../types/Store';
 import type {State} from '../types/State';
@@ -65,14 +64,6 @@ class AppAuthenticated extends Component {
       );
     }
   }
-
-  onResponsive = (responsive: 'multiple') => {
-    this.props.dispatch(navResponsive(responsive));
-  };
-
-  toggleNav = () => {
-    this.props.dispatch(navToggle());
-  };
 }
 
 const mapStateToProps = (state: State) => {
