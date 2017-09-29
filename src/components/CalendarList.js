@@ -26,9 +26,9 @@ class CalendarList extends Component<Props> {
           <Title responsive={false}>
             <NavControl />
             <FormattedMessage
-              id="visits.title"
-              description="Visits title"
-              defaultMessage="Visits"
+              id="calendarlist.title"
+              description="Calendarlist title"
+              defaultMessage="Calendar"
             />
           </Title>
         </Header>
