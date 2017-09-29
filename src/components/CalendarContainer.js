@@ -31,7 +31,10 @@ class CalendarContainer extends Component<Props, State> {
   state: State = { view: "week", date: new Date() };
 
   componentDidMount() {
-    this.loadVisits();
+    this.loadVisits(
+      this.state.date,
+      moment(this.state.date).add(1, "years").toDate()
+    );
   }
 
   render() {
@@ -93,18 +96,18 @@ class CalendarContainer extends Component<Props, State> {
     );
   };
 
-  loadVisits = () => {
+  loadVisits = (begins = null, ends = null) => {
     const { business, token, dispatch } = this.props;
     if (token) {
       dispatch(
         fetchVisits(token, {
           business: business.id,
           ordering: "begins",
-          begins__gte: moment(this.state.date)
-            .startOf(this.state.view)
+          begins__gte: ((begins && moment(begins)) ||
+            moment(this.state.date).startOf(this.state.view))
             .format("YYYY-MM-DDT00:00"),
-          ends__lte: moment(this.state.date)
-            .endOf(this.state.view)
+          ends__lte: ((ends && moment(ends)) ||
+            moment(this.state.date).endOf(this.state.view))
             .format("YYYY-MM-DDT00:00"),
           limit: 100,
           offset: 0
