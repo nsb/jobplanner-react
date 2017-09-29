@@ -7,7 +7,6 @@ import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
-import NumberInput from "grommet/components/NumberInput";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
 
@@ -27,15 +26,6 @@ const renderField = ({
 }): Element<*> =>
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>;
-
-const renderNumberField = ({
-  input,
-  label,
-  meta: { touched, error, warning }
-}): Element<*> =>
-  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <NumberInput {...input} />
   </FormField>;
 
 type Props = {

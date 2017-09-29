@@ -2,9 +2,7 @@
 import { normalize } from "normalizr";
 import { employeeListSchema, employeeSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
-import type { Business } from "./businesses";
 import employeesApi from "../api";
-import history from "../history";
 
 //Create new employee
 export const CREATE_EMPLOYEE: "CREATE_EMPLOYEE" = "CREATE_EMPLOYEE";

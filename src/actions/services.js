@@ -2,7 +2,6 @@
 import { normalize } from "normalizr";
 import { serviceListSchema, serviceSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
-import type { Business } from "./businesses";
 import servicesApi from "../api";
 import history from "../history";
 
