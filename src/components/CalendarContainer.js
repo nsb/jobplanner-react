@@ -7,14 +7,17 @@ import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
+import type { Responsive } from "../actions/nav";
 import { fetchVisits, updateVisit } from "../actions/visits";
 import Calendar from "./Calendar";
+import CalendarList from "./CalendarList";
 
 type Props = {
   business: Business,
   visits: Array<Visit>,
   token: string,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  responsive: Responsive
 };
 
 type CalendarView = "day" | "week" | "month" | "agenda";
@@ -32,28 +35,28 @@ class CalendarContainer extends Component<Props, State> {
   }
 
   render() {
-    const { visits } = this.props;
+    const { business, visits, responsive } = this.props;
 
-    return (
-      <Calendar
-        visits={visits}
-        defaultView={this.state.view}
-        defaultDate={this.state.date}
-        onNavigate={(date: Date) => {
-          this.setState({ date }, this.loadVisits);
-        }}
-        onView={(view: CalendarView) => {
-          this.setState({ view }, this.loadVisits);
-        }}
-        onSelectSlot={(e: Event) => {
-          console.log(e, "onSelectSlot");
-        }}
-        onSelectEvent={(e: Event) => {
-          console.log(e, "onSelectEvent");
-        }}
-        onEventDrop={this.onEventDrop}
-      />
-    );
+    return responsive === "multiple"
+      ? <Calendar
+          visits={visits}
+          defaultView={this.state.view}
+          defaultDate={this.state.date}
+          onNavigate={(date: Date) => {
+            this.setState({ date }, this.loadVisits);
+          }}
+          onView={(view: CalendarView) => {
+            this.setState({ view }, this.loadVisits);
+          }}
+          onSelectSlot={(e: Event) => {
+            console.log(e, "onSelectSlot");
+          }}
+          onSelectEvent={(e: Event) => {
+            console.log(e, "onSelectEvent");
+          }}
+          onEventDrop={this.onEventDrop}
+        />
+      : <CalendarList visits={visits} business={business} />;
   }
 
   onEventDrop = ({
@@ -119,7 +122,7 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { visits, entities, auth } = state;
+  const { visits, entities, auth, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
@@ -128,7 +131,8 @@ const mapStateToProps = (
       return ensureState(entities).visits[Id];
     }),
     token: auth.token,
-    dispatch: ownProps.dispatch
+    dispatch: ownProps.dispatch,
+    responsive: nav.responsive
   };
 };
 

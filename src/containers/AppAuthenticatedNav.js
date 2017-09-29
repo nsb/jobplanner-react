@@ -28,7 +28,7 @@ type Props = {
 
 class AppAuthenticatedNav extends Component<Props> {
   render() {
-    const { navActive, responsive, business } = this.props;
+    const { business } = this.props;
 
     return (
       <Split flex="right" onResponsive={this.onResponsive}>
