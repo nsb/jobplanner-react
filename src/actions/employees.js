@@ -187,7 +187,7 @@ export const fetchEmployees = (
     dispatch(fetchEmployeesRequest());
 
     return employeesApi
-      .getAll("employees", token, queryParams)
+      .getAll("users", token, queryParams)
       .then((responseEmployees: EmployeesResponse) => {
         dispatch(fetchEmployeesSuccess(responseEmployees));
         return responseEmployees;
@@ -226,7 +226,7 @@ export const fetchEmployee = (token: string, id: number): ThunkAction => {
     dispatch(fetchEmployeesRequest());
 
     return employeesApi
-      .getOne("employees", id, token)
+      .getOne("users", id, token)
       .then((responseEmployee: Employee) => {
         dispatch(fetchEmployeeSuccess(responseEmployee));
         return responseEmployee;
@@ -273,7 +273,7 @@ export const createEmployee = (
     dispatch(createEmployeeRequest(employee));
 
     return employeesApi
-      .create("employees", employee, token)
+      .create("users", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(createEmployeeSuccess(responseEmployee));
         return responseEmployee;
@@ -317,7 +317,7 @@ export const updateEmployee = (employee: Employee, token: string): ThunkAction =
     dispatch(updateEmployeeRequest(employee));
 
     return employeesApi
-      .update("employees", employee, token)
+      .update("users", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(updateEmployeeSuccess(responseEmployee));
         return responseEmployee;
@@ -361,7 +361,7 @@ export const deleteEmployee = (employee: Employee, token: string): ThunkAction =
     dispatch(deleteEmployeeRequest(employee));
 
     return employeesApi
-      .delete("employees", employee, token)
+      .delete("users", employee, token)
       .then(() => {
         dispatch(deleteEmployeeSuccess(employee));
       })
