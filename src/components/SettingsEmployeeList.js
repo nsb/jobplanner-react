@@ -85,7 +85,7 @@ class EmployeeList extends Component<Props, State> {
       dispatch(updateEmployee(employee, token));
     } else {
       dispatch(
-        createEmployee(merge({}, { business: business.id }, employee), token)
+        createEmployee(merge({}, { businesses: [business.id] }, employee), token)
       );
       this.onActive();
     }
