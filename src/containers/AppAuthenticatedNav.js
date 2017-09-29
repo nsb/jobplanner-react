@@ -28,19 +28,18 @@ type Props = {
 
 class AppAuthenticatedNav extends Component<Props> {
   render() {
+    const { navActive, responsive } = this.props;
+    const priority = navActive && "single" === responsive ? "left" : "right";
+
     const { business } = this.props;
 
     return (
-      <Split flex="right" onResponsive={this.onResponsive}>
+      <Split priority={priority} flex="right" onResponsive={this.onResponsive}>
         {this.props.navActive
           ? <NavSidebar toggleNav={this.toggleNav} business={business} />
           : null}
         <Switch>
-          <Route
-            exact
-            path="/:businessId/calendar"
-            component={CalendarContainer}
-          />
+          <Route exact path="/:businessId/calendar" component={CalendarContainer} />
           <Route exact path="/:businessId/clients/add" component={ClientAdd} />
           <Route
             exact
