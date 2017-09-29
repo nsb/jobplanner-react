@@ -106,7 +106,7 @@ const mapStateToProps = (
       return ensureState(entities).employees[Id];
     })
     .filter(employee => {
-      return employee.businesses.indexOf(ownProps.business.id)
+      return employee.businesses.indexOf(ownProps.business.id) > -1
         ? employee
         : false;
     }),
