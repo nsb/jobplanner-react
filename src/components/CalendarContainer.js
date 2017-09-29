@@ -32,7 +32,7 @@ class CalendarContainer extends Component<Props, State> {
 
   componentDidMount() {
     this.loadVisits(
-      this.state.date,
+      moment(this.state.date).startOf(this.state.view).toDate(),
       moment(this.state.date).add(1, "years").toDate()
     );
   }
