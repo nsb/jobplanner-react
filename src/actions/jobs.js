@@ -6,6 +6,7 @@ import { jobListSchema, jobSchema } from "../schemas";
 import jobsApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
+import type { Property } from "../actions/properties";
 import history from "../history";
 
 //Create new job
@@ -95,7 +96,13 @@ type FetchJobAction = {
 
 type FetchJobSuccessAction = {
   type: typeof FETCH_JOB_SUCCESS,
-  payload: Job
+  payload: {
+    entities: {
+      properties: { [id: number]: Property },
+      jobs: { [id: number]: Job }
+    },
+    result: number
+  }
 };
 
 type FetchJobFailureAction = {

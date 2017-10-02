@@ -10,6 +10,7 @@ import businesses from "./businesses";
 import services from "./services";
 import employees from "./employees";
 import clients from "./clients";
+import properties from "./properties";
 import network from "./network";
 import users from "./users";
 import jobs from "./jobs";
@@ -27,6 +28,7 @@ const reducers = {
   services,
   employees,
   clients,
+  properties,
   network,
   users,
   jobs,

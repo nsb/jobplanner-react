@@ -26,10 +26,13 @@ const lineItem = new schema.Entity('lineItem');
 
 export const jobSchema = new schema.Entity('jobs', {
   line_items: [lineItem],
+  property: property
 });
 export const jobListSchema = new schema.Array(jobSchema);
 
 export const visitSchema = new schema.Entity('visits', {
   line_items: [lineItem],
+  assigned: [employeeSchema],
+  property: property
 });
 export const visitListSchema = new schema.Array(visitSchema);

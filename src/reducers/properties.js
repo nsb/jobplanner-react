@@ -1,54 +1,36 @@
 // @flow
 import { combineReducers } from "redux";
+import { flatMap } from "lodash/collection";
 import { union } from "lodash/array";
-import type { Action } from "../actions/jobs";
-
-const saved = (state: boolean = false, action: any): boolean => {
-  switch (action.type) {
-    case "@@redux-form/SET_SUBMIT_SUCCEEDED":
-      return true
-      // if (action.meta && action.meta.form) {
-      //   if (action.meta.form === "job") {
-      //     return true;
-      //   }
-      // }
-      // return state;
-
-    case "CLEAR_JOB_NOTIFICATIONS":
-      return false
-
-    default:
-      return state;
-  }
-};
+import type { Action } from "../actions/properties";
 
 const isFetching = (state: boolean = true, action: Action): boolean => {
   switch (action.type) {
-    case "FETCH_JOBS":
+    case "FETCH_PROPERTIES":
       return true;
 
-    case "FETCH_JOBS_SUCCESS":
+    case "FETCH_PROPERTIES_SUCCESS":
       return false;
 
-    case "FETCH_JOBS_FAILURE":
+    case "FETCH_PROPERTIES_FAILURE":
       return false;
 
-    case "FETCH_JOB":
+    case "FETCH_PROPERTY":
       return true;
 
-    case "FETCH_JOB_SUCCESS":
+    case "FETCH_PROPERTY_SUCCESS":
       return false;
 
-    case "FETCH_JOB_FAILURE":
+    case "FETCH_PROPERTY_FAILURE":
       return false;
 
-    case "UPDATE_JOB":
+    case "UPDATE_PROPERTY":
       return true;
 
-    case "UPDATE_JOB_SUCCESS":
+    case "UPDATE_PROPERTY_SUCCESS":
       return false;
 
-    case "UPDATE_JOB_FAILURE":
+    case "UPDATE_PROPERTY_FAILURE":
       return false;
 
     default:
@@ -58,14 +40,11 @@ const isFetching = (state: boolean = true, action: Action): boolean => {
 
 const count = (state: number = 0, action: Action): number => {
   switch (action.type) {
-    case "FETCH_JOBS_SUCCESS":
+    case "FETCH_PROPERTIES_SUCCESS":
       return action.meta.count;
 
-    case "CREATE_JOB_SUCCESS":
-      return state + 1;
-
-    case "FETCH_JOB_SUCCESS":
-      return state + 1;
+    case "CREATE_PROPERTIES_SUCCESS":
+      return state + 1
 
     default:
       return state;
@@ -74,7 +53,7 @@ const count = (state: number = 0, action: Action): number => {
 
 const next = (state: ?string = null, action: Action): ?string => {
   switch (action.type) {
-    case "FETCH_JOBS_SUCCESS":
+    case "FETCH_PROPERTIES_SUCCESS":
       return action.meta.next;
 
     default:
@@ -84,34 +63,56 @@ const next = (state: ?string = null, action: Action): ?string => {
 
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
-    case "CREATE_JOB_SUCCESS":
+    case "CREATE_PROPERTIES_SUCCESS":
       return [...state, action.payload.result];
 
-    case "FETCH_JOB_SUCCESS":
-      if (action.payload && action.payload.result) {
-        return [...state, action.payload.result];
-      } else {
-        return state;
-      }
-
-    case "FETCH_JOBS_SUCCESS":
+    case "FETCH_PROPERTY_SUCCESS":
       if (action.payload && action.payload.result) {
         return union(state, action.payload.result);
       } else {
         return state;
       }
 
-    case "UPDATE_JOB_SUCCESS":
+    case "FETCH_PROPERTIES_SUCCESS":
       if (action.payload && action.payload.result) {
         return union(state, action.payload.result);
       } else {
         return state;
       }
 
-    case "DELETE_JOB_SUCCESS":
+    case "UPDATE_PROPERTY_SUCCESS":
+      if (action.payload && action.payload.result) {
+        return union(state, action.payload.result);
+      } else {
+        return state;
+      }
+
+    case "DELETE_PROPERTY_SUCCESS":
       const newState = [...state];
       newState.splice(state.indexOf(action.payload.id), 1);
       return newState;
+
+    // property is inlined under visit
+    case "FETCH_VISITS_SUCCESS":
+      if (action.payload && action.payload.entities) {
+        return flatMap(
+          action.payload.entities.visits,
+          visit => visit.property
+        );
+      } else {
+        return state;
+      }
+
+    // property is inlined under job
+    case "FETCH_JOBS_SUCCESS":
+      if (action.payload && action.payload.entities) {
+        return flatMap(
+          action.payload.entities.jobs,
+          job => job.property
+        );
+      } else {
+        return state;
+      }
 
     default:
       return state;
@@ -119,7 +120,6 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
 };
 
 export default combineReducers({
-  saved,
   isFetching,
   count,
   next,
