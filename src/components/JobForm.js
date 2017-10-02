@@ -23,6 +23,7 @@ import clientsApi from "../api";
 import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Element } from "react";
+import type { Employee } from "../actions/employees";
 
 const validate = (values: {
   client: Object,
@@ -72,6 +73,25 @@ const renderField = ({
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>;
+
+const renderSelect = ({
+  input,
+  label,
+  options,
+  meta: { touched, error, warning }
+}): Element<*> => {
+  return (
+    <Select
+      {...input}
+      placeHolder="None"
+      inline={false}
+      multiple={true}
+      value={input.value}
+      options={options}
+      onChange={input.onChange}
+    />
+  );
+};
 
 const renderCheckBox = ({
   input,
@@ -229,7 +249,8 @@ type JobFormProps = {
   anytime: boolean,
   onClientSearch: Function,
   onSelectClient?: Function,
-  token?: string
+  token?: string,
+  employees: Array<Employee>
 };
 
 type JobFormState = {
@@ -244,6 +265,10 @@ type JobFormState = {
 };
 
 class JobForm extends Component<JobFormProps, JobFormState> {
+  static defaultProps = {
+    employees: []
+  };
+
   constructor(props: JobFormProps) {
     super(props);
 
@@ -274,7 +299,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       submitting,
       onClose,
       initialValues,
-      anytime
+      anytime,
+      employees
     } = this.props;
 
     const dateFormat = "M/D/YYYY";
@@ -327,7 +353,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
             clients={mappedClients}
           />
         </fieldset>
-      )
+      );
     }
 
     return (
@@ -385,6 +411,21 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           </fieldset>
 
           {this.renderSchedules()}
+
+          <fieldset>
+
+            <Heading tag="h3">Team</Heading>
+            <Field
+              name="assigned"
+              label="Assigned team members"
+              component={renderSelect}
+              options={employees.map(employee => {
+                return { value: employee.id, label: employee.username };
+              })}
+              normalize={selected => selected.value}
+            />
+
+          </fieldset>
 
         </FormFields>
 

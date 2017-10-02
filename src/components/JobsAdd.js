@@ -6,6 +6,7 @@ import Article from "grommet/components/Article";
 import JobForm from "./JobForm";
 import { createJob } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
+import type { Employee } from "../actions/employees";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Client } from "../actions/clients";
@@ -16,7 +17,8 @@ type Props = {
   business: Business,
   clients: Array<Client>,
   dispatch: Dispatch,
-  push: string => void
+  push: string => void,
+  employees: Array<Employee>
 };
 
 type State = {
@@ -29,7 +31,7 @@ class JobsAdd extends Component<Props, State> {
   };
 
   render() {
-    const { token } = this.props;
+    const { token, employees } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -37,6 +39,7 @@ class JobsAdd extends Component<Props, State> {
         <JobForm
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
+          employees={employees}
           initialValues={{
             begins: new Date(),
             anytime: true
@@ -55,7 +58,8 @@ class JobsAdd extends Component<Props, State> {
       business,
       {
         ...values,
-        client: clientId
+        client: clientId,
+        assigned: values.assigned.map(v => v.value)
       },
       token
     );
@@ -75,13 +79,22 @@ const mapStateToProps = (
     history: { push: string => void }
   }
 ) => {
-  const { auth, entities } = state;
+  const { auth, employees, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     token: auth.token,
     business: ensureState(entities).businesses[businessId],
-    push: ownProps.history.push
+    push: ownProps.history.push,
+    employees: employees.result
+      .map((Id: number) => {
+        return ensureState(entities).employees[Id];
+      })
+      .filter(employee => {
+        return employee.businesses.indexOf(businessId) > -1
+          ? employee
+          : false;
+      }),
   };
 };
 
