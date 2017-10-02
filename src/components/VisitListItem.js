@@ -5,16 +5,35 @@ import ListItem from "grommet/components/ListItem";
 import CheckBox from "grommet/components/CheckBox";
 import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
+import VisitDetailContainer from "./VisitLayerContainer";
 
 type Props = {
   visit: Visit,
-  index: number,
-  onClick: (SyntheticEvent<>) => void
+  index: number
 };
 
-class VisitListItem extends Component<Props> {
+type State = {
+  selected?: Visit
+};
+
+class VisitListItem extends Component<Props, State> {
+  state = {
+    selected: undefined
+  };
+
   render() {
-    const { visit, index, onClick } = this.props;
+    const { visit, index } = this.props;
+
+    let visitLayer;
+    if (this.state.selected) {
+      visitLayer = (
+        <VisitDetailContainer
+          visit={this.state.selected}
+          onClose={this.onClose}
+        />
+      );
+    }
+
     return (
       <ListItem
         direction="row"
@@ -23,7 +42,7 @@ class VisitListItem extends Component<Props> {
         separator={index === 0 ? "horizontal" : "bottom"}
         pad={{ horizontal: "medium", vertical: "small", between: "medium" }}
         responsive={false}
-        onClick={onClick}
+        onClick={this.onClick}
         selected={false}
       >
         <CheckBox label="" />
@@ -33,9 +52,19 @@ class VisitListItem extends Component<Props> {
             value={visit.begins}
           />
         </span>
+        {visitLayer}
       </ListItem>
     );
   }
+
+  onClick = () => {
+    const { visit } = this.props;
+    this.setState({ selected: visit });
+  };
+
+  onClose = () => {
+    this.setState({ selected: undefined });
+  };
 }
 
 export default VisitListItem;
