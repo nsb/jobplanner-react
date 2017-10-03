@@ -4,12 +4,9 @@ import VisitLayer from "./VisitLayer";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
-
-type Props = {
-  visit: Visit,
-  dispatch: Dispatch,
-  onClose: Function
-};
+import type { Property } from "../actions/properties";
+import { ensureState } from "redux-optimistic-ui";
+import type { Props } from "./VisitLayer";
 
 const mapStateToProps = (
   state: ReduxState,
@@ -19,11 +16,13 @@ const mapStateToProps = (
     onClose: Function
   }
 ): Props => {
+  const { properties, entities } = state;
 
   return {
     visit: ownProps.visit,
     dispatch: ownProps.dispatch,
-    onClose: ownProps.onClose
+    onClose: ownProps.onClose,
+    property: ensureState(entities).properties[ownProps.visit.property],
   };
 };
 

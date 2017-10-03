@@ -33,10 +33,13 @@ export const UPDATE_VISIT_FAILURE: "UPDATE_VISIT_FAILURE" =
 export type Visit = {
   id: number,
   job: number,
+  property: number,
   line_items: [Object],
   completed: boolean,
   begins: Date,
-  ends: Date
+  ends: Date,
+  client_name: string,
+  client_phone: string
 };
 
 type VisitsResponse = {

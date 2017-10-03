@@ -5,6 +5,7 @@ import { injectIntl, intlShape } from "react-intl";
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import VisitDetailContainer from "./VisitLayerContainer";
 import VisitListItem from "./VisitListItem";
 import type { Visit } from "../actions/visits";
 
@@ -15,15 +16,40 @@ type Props = {
   intl: intlShape
 };
 
-class VisitList extends Component<Props> {
+type State = {
+  selected?: Visit
+};
+
+class VisitList extends Component<Props, State> {
+  state = {
+    selected: undefined
+  };
+
   render() {
     const { visits = [], isFetching = true, onMore, intl } = this.props;
+
+    let visitLayer;
+    if (this.state.selected) {
+      visitLayer = (
+        <VisitDetailContainer
+          visit={this.state.selected}
+          onClose={this.onClose}
+        />
+      );
+    }
 
     return (
       <Box>
         <List onMore={isFetching ? undefined : onMore}>
           {visits.map((visit: Visit, index: number) => {
-            return <VisitListItem key={visit.id} visit={visit} index={index} />;
+            return (
+              <VisitListItem
+                key={visit.id}
+                visit={visit}
+                index={index}
+                onClick={e => this.onClick(visit)}
+              />
+            );
           })}
         </List>
         <ListPlaceholder
@@ -34,9 +60,18 @@ class VisitList extends Component<Props> {
             defaultMessage: "You do not have any visits at the moment."
           })}
         />
+        {visitLayer}
       </Box>
     );
   }
+
+  onClick = (visit: Visit) => {
+    this.setState({ selected: visit });
+  };
+
+  onClose = () => {
+    this.setState({ selected: undefined });
+  };
 }
 
 export default injectIntl(VisitList);

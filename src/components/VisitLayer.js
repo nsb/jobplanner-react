@@ -1,12 +1,14 @@
 // @flow
 
 import React, { Component } from "react";
-import type { Visit } from "../actions/visits";
 import Layer from "grommet/components/Layer";
 import VisitDetail from "./VisitDetail";
+import type { Visit } from "../actions/visits";
+import type { Property } from "../actions/properties";
 
-type Props = {
+export type Props = {
   visit: Visit,
+  property: Property,
   dispatch: Dispatch,
   onClose: Function
 };
@@ -21,11 +23,11 @@ class VisitLayer extends Component<Props, State> {
   };
 
   render() {
-    const { visit, onClose } = this.props;
+    const { visit, property, onClose } = this.props;
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <VisitDetail visit={visit} />
+        <VisitDetail visit={visit} property={property} />
       </Layer>
     );
   }
