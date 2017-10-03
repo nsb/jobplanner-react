@@ -9,6 +9,7 @@ import Anchor from "grommet/components/Anchor";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
+import Columns from "grommet/components/Columns";
 import MoreIcon from "grommet/components/icons/base/More";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import { rrulestr } from "rrule";
@@ -16,11 +17,13 @@ import JobActions from "../components/JobActions";
 import VisitListContainer from "../components/VisitListContainer";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
+import type { Property } from "../actions/properties";
 import type { Responsive } from "../actions/nav";
 
 type Props = {
   business: Business,
   job: Job,
+  property: Property,
   responsive: Responsive,
   onEdit: Function,
   onRemove: Function,
@@ -42,6 +45,7 @@ class JobDetail extends Component<Props, State> {
     const {
       business,
       job,
+      property,
       responsive,
       onEdit,
       onRemove,
@@ -116,13 +120,23 @@ class JobDetail extends Component<Props, State> {
                   {rrulestr(job.recurrences).toText()}
                 </Heading>
               </Section>
-              <Section pad="medium" full="horizontal">
-                Property Address: My street
 
-              </Section>
               <Section pad="medium" full="horizontal">
-                Contact details: 61 67 15 14
-
+                <Columns masonry={false} maxCount={2}>
+                  <Box>
+                    <Heading tag="h4" margin="none">
+                      Property address
+                    </Heading>
+                    {property.address1}<br />
+                    {property.address2}<br />
+                  </Box>
+                  <Box>
+                    <Heading tag="h4" margin="none">
+                      Contact details
+                    </Heading>
+                    61 67 15 14
+                  </Box>
+                </Columns>
               </Section>
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertial: "none" }}>

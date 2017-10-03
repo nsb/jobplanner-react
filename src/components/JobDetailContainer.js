@@ -10,6 +10,7 @@ import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
 import { navResponsive } from "../actions/nav";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
+import type { Property } from "../actions/properties";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Responsive } from "../actions/nav";
@@ -19,6 +20,7 @@ type Props = {
   business: Business,
   job: Job,
   jobId: number,
+  property: Property,
   token: string,
   isFetching: boolean,
   dispatch: Dispatch,
@@ -41,12 +43,20 @@ class JobDetailContainer extends Component<Props> {
   }
 
   render() {
-    const { business, job, responsive, isFetching, saved } = this.props;
+    const {
+      business,
+      job,
+      property,
+      responsive,
+      isFetching,
+      saved
+    } = this.props;
 
     const jobDetail = (
       <JobDetail
         business={business}
         job={job}
+        property={property}
         responsive={responsive}
         onEdit={this.onEdit}
         onRemove={this.onRemove}
@@ -100,7 +110,7 @@ class JobDetailContainer extends Component<Props> {
   onRemove = () => {
     const { job, token, dispatch } = this.props;
     dispatch(deleteJob(job, token));
-  }
+  };
 }
 
 const mapStateToProps = (
@@ -110,18 +120,20 @@ const mapStateToProps = (
     history: { push: string => void }
   }
 ) => {
-  const { auth, entities, jobs, nav } = state;
+  const { auth, entities, jobs, properties, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
+  const job = ensureState(entities).jobs[jobId];
 
   return {
     token: auth.token,
     business: ensureState(entities).businesses[businessId],
-    job: ensureState(entities).jobs[jobId],
     isFetching: jobs.isFetching,
     saved: jobs.saved,
     push: ownProps.history.push,
     responsive: nav.responsive,
+    property: job && ensureState(entities).properties[job.property],
+    job,
     jobId
   };
 };
