@@ -138,6 +138,12 @@ class JobDetail extends Component<Props, State> {
                   </Box>
                 </Columns>
               </Section>
+              <Section pad="medium" full="horizontal">
+                <Heading tag="h4" margin="none">
+                  Lineitems
+                </Heading>
+
+              </Section>
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertial: "none" }}>
                   <Heading tag="h4">
