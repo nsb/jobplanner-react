@@ -22,7 +22,7 @@ export const clientSchema = new schema.Entity('clients', {
 });
 export const clientListSchema = new schema.Array(clientSchema);
 
-const lineItem = new schema.Entity('lineItem');
+const lineItem = new schema.Entity('lineItems');
 
 export const jobSchema = new schema.Entity('jobs', {
   line_items: [lineItem],

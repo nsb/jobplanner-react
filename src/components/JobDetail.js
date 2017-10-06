@@ -23,6 +23,7 @@ import type { Responsive } from "../actions/nav";
 type Props = {
   business: Business,
   job: Job,
+  lineItems: Array<Object>,
   property: Property,
   responsive: Responsive,
   onEdit: Function,
@@ -45,6 +46,7 @@ class JobDetail extends Component<Props, State> {
     const {
       business,
       job,
+      lineItems,
       property,
       responsive,
       onEdit,
@@ -142,6 +144,9 @@ class JobDetail extends Component<Props, State> {
                 <Heading tag="h4" margin="none">
                   Lineitems
                 </Heading>
+                {lineItems.map((line_item, index) =>
+                  <div>{line_item.name} {index}</div>
+                )}
 
               </Section>
               <Section full="horizontal">

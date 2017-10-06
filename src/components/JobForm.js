@@ -2,8 +2,9 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, formValueSelector, reduxForm } from "redux-form";
+import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
 import moment from "moment";
+import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -264,6 +265,40 @@ type JobFormState = {
   }
 };
 
+const renderLineItems = ({ fields, meta: { error, submitFailed } }): Element<*> =>
+  <Section>
+    <div>
+      <button type="button" onClick={() => fields.push({})}>
+        Add Line item
+      </button>
+      {submitFailed && error && <span>{error}</span>}
+    </div>
+    {fields.map((lineItem, index) =>
+      <div key={index}>
+        <button
+          type="button"
+          title="Remove line item"
+          onClick={() => fields.remove(index)}
+        />
+        <h4>Line item #{index + 1}</h4>
+        <Field name={`${lineItem}.id`} type="hidden" component={renderField} />
+        <Field
+          name={`${lineItem}.name`}
+          type="text"
+          component={renderField}
+          label="Name"
+        />
+        <Field
+          name={`${lineItem}.description`}
+          type="text"
+          component={renderField}
+          label="Description"
+        />
+      </div>
+    )}
+  </Section>;
+
+
 class JobForm extends Component<JobFormProps, JobFormState> {
   static defaultProps = {
     employees: []
@@ -425,6 +460,14 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               normalize={selected => selected.value}
             />
 
+          </fieldset>
+
+          <fieldset>
+            <FieldArray
+              name="line_items"
+              label="Line items"
+              component={renderLineItems}
+            />
           </fieldset>
 
         </FormFields>

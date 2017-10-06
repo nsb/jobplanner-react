@@ -19,6 +19,7 @@ import { ensureState } from "redux-optimistic-ui";
 type Props = {
   business: Business,
   job: Job,
+  lineItems: Array<Object>,
   jobId: number,
   property: Property,
   token: string,
@@ -46,6 +47,7 @@ class JobDetailContainer extends Component<Props> {
     const {
       business,
       job,
+      lineItems,
       property,
       responsive,
       isFetching,
@@ -56,6 +58,7 @@ class JobDetailContainer extends Component<Props> {
       <JobDetail
         business={business}
         job={job}
+        lineItems={lineItems}
         property={property}
         responsive={responsive}
         onEdit={this.onEdit}
@@ -120,7 +123,7 @@ const mapStateToProps = (
     history: { push: string => void }
   }
 ) => {
-  const { auth, entities, jobs, properties, nav } = state;
+  const { auth, entities, jobs, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
@@ -133,6 +136,11 @@ const mapStateToProps = (
     push: ownProps.history.push,
     responsive: nav.responsive,
     property: job && ensureState(entities).properties[job.property],
+    lineItems:
+      job &&
+        job.line_items.map(
+          lineItem => ensureState(entities).lineItems[lineItem]
+        ),
     job,
     jobId
   };
