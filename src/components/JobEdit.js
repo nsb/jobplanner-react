@@ -2,6 +2,8 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { denormalize } from "normalizr";
+import { jobSchemaDenormalize } from "../schemas";
 import Article from "grommet/components/Article";
 import JobForm from "./JobForm";
 import { updateJob } from "../actions/jobs";
@@ -108,7 +110,11 @@ const mapStateToProps = (
         return employee.businesses.indexOf(businessId) > -1 ? employee : false;
       }),
     clients,
-    job
+    job: denormalize(
+      ensureState(entities).jobs[jobId],
+      jobSchemaDenormalize,
+      ensureState(entities)
+    )
   };
 };
 
