@@ -5,12 +5,14 @@ import Layer from "grommet/components/Layer";
 import VisitDetail from "./VisitDetail";
 import type { Visit } from "../actions/visits";
 import type { Property } from "../actions/properties";
+import type { LineItem } from "../actions/lineitems";
 
 export type Props = {
   visit: Visit,
   property: Property,
   dispatch: Dispatch,
   assigned: Array<Object>,
+  lineItems: Array<LineItem>,
   onClose: Function
 };
 
@@ -24,11 +26,16 @@ class VisitLayer extends Component<Props, State> {
   };
 
   render() {
-    const { visit, property, assigned, onClose } = this.props;
+    const { visit, property, assigned, lineItems, onClose } = this.props;
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <VisitDetail visit={visit} property={property} assigned={assigned} />
+        <VisitDetail
+          visit={visit}
+          property={property}
+          assigned={assigned}
+          lineItems={lineItems}
+        />
       </Layer>
     );
   }

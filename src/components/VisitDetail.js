@@ -10,14 +10,16 @@ import Timestamp from "grommet/components/Timestamp";
 import ScheduleIcon from "grommet/components/icons/base/Schedule";
 import type { Visit } from "../actions/visits";
 import type { Property } from "../actions/properties";
+import type { LineItem } from "../actions/lineitems";
 
 type Props = {
   visit: Visit,
   property: Property,
-  assigned: Array<Object>
+  assigned: Array<Object>,
+  lineItems: Array<LineItem>
 };
 
-export default ({ visit, property, assigned }: Props) =>
+export default ({ visit, property, assigned, lineItems }: Props) =>
   <Box>
     <Header size="large" justify="between" pad="none">
       <Heading tag="h2" margin="none" strong={true}>
@@ -69,6 +71,16 @@ export default ({ visit, property, assigned }: Props) =>
             : <div>Unassigned</div>}
         </Box>
       </Columns>
+      <Box>
+        <Heading tag="h4" strong={true}>
+          <Box direction="row">
+            Line Items
+          </Box>
+        </Heading>
+        {lineItems.map(item => {
+          return <div>{item.name}</div>;
+        })}
+      </Box>
     </Section>
 
   </Box>;

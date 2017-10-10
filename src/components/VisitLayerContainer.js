@@ -24,6 +24,9 @@ const mapStateToProps = (
     property: ensureState(entities).properties[ownProps.visit.property],
     assigned: ownProps.visit.assigned.map((Id: number) => {
       return ensureState(entities).employees[Id];
+    }),
+    lineItems: ownProps.visit.line_items.map((Id) => {
+      return ensureState(entities).lineItems[Id]
     })
   };
 };
