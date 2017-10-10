@@ -9,6 +9,7 @@ import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
 import type { Responsive } from "../actions/nav";
 import { fetchVisits, updateVisit } from "../actions/visits";
+import VisitDetailContainer from "./VisitLayerContainer";
 import Calendar from "./Calendar";
 import CalendarList from "./CalendarList";
 
@@ -24,7 +25,8 @@ type CalendarView = "day" | "week" | "month" | "agenda";
 
 type State = {
   view: CalendarView,
-  date: Date
+  date: Date,
+  selected?: Visit
 };
 
 class CalendarContainer extends Component<Props, State> {
@@ -40,7 +42,17 @@ class CalendarContainer extends Component<Props, State> {
   render() {
     const { business, visits, responsive } = this.props;
 
-    return responsive === "multiple"
+    let visitLayer;
+    if (this.state.selected) {
+      visitLayer = (
+        <VisitDetailContainer
+          visit={this.state.selected}
+          onClose={this.onClose}
+        />
+      );
+    }
+
+    const calendar = responsive === "multiple"
       ? <Calendar
           visits={visits}
           defaultView={this.state.view}
@@ -54,12 +66,17 @@ class CalendarContainer extends Component<Props, State> {
           onSelectSlot={(e: Event) => {
             console.log(e, "onSelectSlot");
           }}
-          onSelectEvent={(e: Event) => {
-            console.log(e, "onSelectEvent");
-          }}
+          onSelectEvent={this.onClick}
           onEventDrop={this.onEventDrop}
         />
       : <CalendarList visits={visits} business={business} />;
+
+    return (
+      <div>
+        {calendar}
+        {visitLayer}
+      </div>
+    )
   }
 
   onEventDrop = ({
@@ -95,6 +112,15 @@ class CalendarContainer extends Component<Props, State> {
       )
     );
   };
+
+  onClick = (visit: Visit) => {
+    this.setState({ selected: visit });
+  };
+
+  onClose = () => {
+    this.setState({ selected: undefined });
+  };
+
 
   loadVisits = (begins = null, ends = null) => {
     const { business, token, dispatch } = this.props;
