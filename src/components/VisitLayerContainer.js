@@ -22,6 +22,9 @@ const mapStateToProps = (
     dispatch: ownProps.dispatch,
     onClose: ownProps.onClose,
     property: ensureState(entities).properties[ownProps.visit.property],
+    assigned: ownProps.visit.assigned.map((Id: number) => {
+      return ensureState(entities).employees[Id];
+    })
   };
 };
 

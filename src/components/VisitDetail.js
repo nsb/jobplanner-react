@@ -13,10 +13,11 @@ import type { Property } from "../actions/properties";
 
 type Props = {
   visit: Visit,
-  property: Property
+  property: Property,
+  assigned: Array<Object>
 };
 
-export default ({ visit, property }: Props) =>
+export default ({ visit, property, assigned }: Props) =>
   <Box>
     <Header size="large" justify="between" pad="none">
       <Heading tag="h2" margin="none" strong={true}>
@@ -24,7 +25,7 @@ export default ({ visit, property }: Props) =>
       </Heading>
     </Header>
 
-    <Section pad="medium">
+    <Section pad="small">
       <Columns masonry={false} maxCount={2}>
         <Box>
           <Heading tag="h4" margin="none">
@@ -34,7 +35,7 @@ export default ({ visit, property }: Props) =>
           {property.address2}<br />
         </Box>
         <Box>
-          <Heading tag="h4" margin="none">
+          <Heading tag="h4">
             <Box direction="row">
               <ScheduleIcon />
               <Timestamp
@@ -43,7 +44,29 @@ export default ({ visit, property }: Props) =>
               />
             </Box>
           </Heading>
+        </Box>
+        <Box margin="small">
           {visit.client_phone}
+        </Box>
+        <Box colorIndex="light-2" pad="small" margin="small">
+          <Heading tag="h4" strong={true}>
+            <Box direction="row">
+              Job
+            </Box>
+          </Heading>
+          Job #{visit.job}
+        </Box>
+        <Box colorIndex="light-2" pad="small" margin="small">
+          <Heading tag="h4" strong={true}>
+            <Box direction="row">
+              Team
+            </Box>
+          </Heading>
+          {assigned
+            ? assigned.map(employee => {
+                return <div>{employee.username}</div>;
+              })
+            : <div>Unassigned</div>}
         </Box>
       </Columns>
     </Section>

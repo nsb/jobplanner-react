@@ -39,7 +39,8 @@ export type Visit = {
   begins: Date,
   ends: Date,
   client_name: string,
-  client_phone: string
+  client_phone: string,
+  assigned: Array<number>
 };
 
 type VisitsResponse = {

@@ -10,6 +10,7 @@ export type Props = {
   visit: Visit,
   property: Property,
   dispatch: Dispatch,
+  assigned: Array<Object>,
   onClose: Function
 };
 
@@ -23,11 +24,11 @@ class VisitLayer extends Component<Props, State> {
   };
 
   render() {
-    const { visit, property, onClose } = this.props;
+    const { visit, property, assigned, onClose } = this.props;
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <VisitDetail visit={visit} property={property} />
+        <VisitDetail visit={visit} property={property} assigned={assigned} />
       </Layer>
     );
   }
