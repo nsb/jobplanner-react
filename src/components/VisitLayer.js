@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import Layer from "grommet/components/Layer";
 import VisitDetail from "./VisitDetail";
+import VisitEdit from "./VisitEdit";
 import type { Visit } from "../actions/visits";
 import type { Property } from "../actions/properties";
 import type { LineItem } from "../actions/lineitems";
@@ -28,17 +29,26 @@ class VisitLayer extends Component<Props, State> {
   render() {
     const { visit, property, assigned, lineItems, onClose } = this.props;
 
-    return (
-      <Layer align="right" closer={true} onClose={onClose}>
-        <VisitDetail
+    const visitView = this.state.edit
+      ? <VisitEdit visit={visit} />
+      : <VisitDetail
           visit={visit}
           property={property}
           assigned={assigned}
           lineItems={lineItems}
-        />
+          onEdit={this.onEdit}
+        />;
+
+    return (
+      <Layer align="right" closer={true} onClose={onClose}>
+        {visitView}
       </Layer>
     );
   }
+
+  onEdit = () => {
+    this.setState({ edit: true });
+  };
 }
 
 export default VisitLayer;
