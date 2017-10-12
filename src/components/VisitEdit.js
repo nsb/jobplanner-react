@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { visitSchemaDenormalize } from "../schemas";
+import { updateVisit } from "../actions/visits";
 import VisitForm from "./VisitForm";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
@@ -15,7 +16,8 @@ export type Props = {
   dispatch: Dispatch,
   visit: Visit,
   employees: Array<Employee>,
-  assigned: Array<Employee>
+  assigned: Array<Employee>,
+  token: string
 };
 
 class VisitEdit extends Component<Props> {
@@ -36,8 +38,17 @@ class VisitEdit extends Component<Props> {
     );
   }
 
-  handleSubmit = () => {
-    console.log("handleSubmit");
+  handleSubmit = values => {
+    const { token, dispatch } = this.props;
+    dispatch(
+      updateVisit(
+        {
+          ...values,
+          assigned: values.assigned.map(v => v.value)
+        },
+        token || ""
+      )
+    );
   };
 }
 
