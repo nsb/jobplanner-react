@@ -88,7 +88,7 @@ const mapStateToProps = (
   const { auth, clients, employees, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
-  const job = ensureState(entities).jobs[jobId]
+  const job = ensureState(entities).jobs[jobId];
 
   return {
     token: auth.token,
@@ -102,13 +102,9 @@ const mapStateToProps = (
       .filter(employee => {
         return employee.businesses.indexOf(businessId) > -1 ? employee : false;
       }),
-    assigned: job.assigned
-      .map((Id: number) => {
-        return ensureState(entities).employees[Id];
-      })
-      .filter(employee => {
-        return employee.businesses.indexOf(businessId) > -1 ? employee : false;
-      }),
+    assigned: job.assigned.map((Id: number) => {
+      return ensureState(entities).employees[Id];
+    }),
     clients,
     job: denormalize(
       ensureState(entities).jobs[jobId],

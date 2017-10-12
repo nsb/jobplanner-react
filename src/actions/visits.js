@@ -32,6 +32,7 @@ export const UPDATE_VISIT_FAILURE: "UPDATE_VISIT_FAILURE" =
 
 export type Visit = {
   id: number,
+  business: number,
   job: number,
   property: number,
   line_items: [Object],

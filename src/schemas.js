@@ -41,3 +41,7 @@ export const visitSchema = new schema.Entity("visits", {
   property: property
 });
 export const visitListSchema = new schema.Array(visitSchema);
+
+export const visitSchemaDenormalize = new schema.Entity("visits", {
+  line_items: [lineItem]
+});
