@@ -1,4 +1,5 @@
 // @flow
+import { merge } from "lodash/object";
 import { normalize } from "normalizr";
 import { visitListSchema, visitSchema } from "../schemas";
 import visitsApi from "../api";
@@ -7,7 +8,7 @@ import type { Business } from "../actions/businesses";
 import history from "../history";
 import { BEGIN, COMMIT, REVERT } from "redux-optimistic-ui";
 
-//Create new job
+//Create new visit
 export const CREATE_VISIT: "CREATE_VISIT" = "CREATE_VISIT";
 export const CREATE_VISIT_SUCCESS: "CREATE_VISIT_SUCCESS" =
   "CREATE_VISIT_SUCCESS";
@@ -113,6 +114,13 @@ export type Action =
   | UpdateVisitSuccessAction
   | UpdateVisitFailureAction;
 
+const parse = (visit): Visit => {
+  return merge({}, visit, {
+    begins: visit.begins && new Date(visit.begins),
+    ends: visit.ends && new Date(visit.ends),
+  });
+};
+
 export const fetchVisitsRequest = (): FetchVisitsAction => {
   return {
     type: FETCH_VISITS
@@ -165,8 +173,11 @@ export const fetchVisits = (
     return visitsApi
       .getAll("visits", token, queryParams)
       .then((responseVisits: VisitsResponse) => {
-        dispatch(fetchVisitsSuccess(responseVisits));
-        return responseVisits;
+        const coercedVisits = merge({}, responseVisits, {
+          results: responseVisits.results.map(parse)
+        });
+        dispatch(fetchVisitsSuccess(coercedVisits));
+        return coercedVisits;
       })
       .catch((error: string) => {
         throw error;
@@ -181,7 +192,7 @@ export const createVisitRequest = (payload: Visit): CreateVisitAction => {
   };
 };
 
-export const createJobSuccess = (payload: Visit): CreateVisitSuccessAction => {
+export const createVisitSuccess = (payload: Visit): CreateVisitSuccessAction => {
   return {
     type: CREATE_VISIT_SUCCESS,
     receivedAt: Date.now(),
@@ -207,9 +218,10 @@ export const createVisit = (
     return visitsApi
       .create("visits", visit, token)
       .then((responseVisit: Visit) => {
-        dispatch(createJobSuccess(responseVisit));
-        history.push(`/${business.id}/visits/${responseVisit.id}`);
-        return responseVisit;
+        const coercedVisit = parse(responseVisit);
+        dispatch(createVisitSuccess(coercedVisit));
+        history.push(`/${business.id}/visits/${coercedVisit.id}`);
+        return coercedVisit;
       })
       .catch((error: string) => {
         throw error;
@@ -301,8 +313,9 @@ export const updateVisit = (
     return visitsApi
       .update("visits", visit, token)
       .then((responseVisit: Visit) => {
-        dispatch(updateVisitSuccess(responseVisit, optimistic, transactionID));
-        return responseVisit;
+        const coercedVisit = parse(responseVisit);
+        dispatch(updateVisitSuccess(coercedVisit, optimistic, transactionID));
+        return coercedVisit;
       })
       .catch((error: string) => {
         dispatch(updateVisitError(error, optimistic, transactionID));
