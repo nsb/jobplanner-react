@@ -1,4 +1,3 @@
-// @flow
 import { merge, assign } from "lodash/object";
 import type {
   Action as BusinessesAction,
