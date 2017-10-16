@@ -39,20 +39,29 @@ const entities = (
   },
   action: Action
 ): State => {
+  // when updating merging does not work. Instead we assign the updated entity
   if (action.type && action.type.match(/^UPDATE_[A-Z]+_SUCCESS/)) {
     let newState = { ...state };
-    for (var entity of Object.keys(action.payload.entities)) {
-      for (var id of Object.keys(action.payload.entities[entity])) {
-        try {
-            newState[entity][id] = assign({}, action.payload.entities[entity][id]);
-        } catch (e) {
-          if (e instanceof TypeError) {
-            newState[entity] = assign({}[id], action.payload.entities[entity][id]);
+    if (action.payload && action.payload.entities) {
+      for (var entity of Object.keys(action.payload.entities)) {
+        for (var id of Object.keys(action.payload.entities[entity])) {
+          try {
+            newState[entity][id] = assign(
+              {},
+              action.payload.entities[entity][id]
+            );
+          } catch (e) {
+            if (e instanceof TypeError) {
+              newState[entity] = assign(
+                {}[id],
+                action.payload.entities[entity][id]
+              );
+            }
           }
         }
       }
+      return newState;
     }
-    return newState;
   } else {
     if (action.payload && action.payload.entities) {
       return merge({}, state, action.payload.entities);
@@ -61,32 +70,5 @@ const entities = (
 
   return state;
 };
-
-// const plan = (state = {}, action) => {
-//   switch (action.type) {
-//   case 'UPDATE_PLAN':
-//     return Object.assign({}, state, action.plan);
-//   default:
-//     return state;
-//   }
-// }
-//
-// const plans = (state = [], action) => {
-//   if (typeof action.idx === 'undefined') {
-//     return state;
-//   }
-//   return [
-//     ...state.slice(0, action.idx),
-//     plan(state[action.idx], action),
-//     ...state.slice(action.idx + 1)
-//   ];
-// };
-//
-// // somewhere
-// case 'UPDATE_PLAN':
-//   return {
-//     ...state,
-//     plans: plans(state.plans, action)
-//   };
 
 export default entities;
