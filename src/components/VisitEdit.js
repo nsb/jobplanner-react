@@ -17,7 +17,8 @@ export type Props = {
   visit: Visit,
   employees: Array<Employee>,
   assigned: Array<Employee>,
-  token: string
+  token: string,
+  toggleEdit: Function
 };
 
 class VisitEdit extends Component<Props> {
@@ -39,7 +40,7 @@ class VisitEdit extends Component<Props> {
   }
 
   handleSubmit = values => {
-    const { token, dispatch } = this.props;
+    const { token, dispatch, toggleEdit } = this.props;
     dispatch(
       updateVisit(
         {
@@ -49,6 +50,7 @@ class VisitEdit extends Component<Props> {
         token || ""
       )
     );
+    toggleEdit()
   };
 }
 
@@ -56,7 +58,8 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     dispatch: Dispatch,
-    visit: Visit
+    visit: Visit,
+    toggleEdit: Function
   }
 ): Props => {
   const { auth, employees, entities } = state;
@@ -80,7 +83,8 @@ const mapStateToProps = (
       ensureState(entities).visits[ownProps.visit.id],
       visitSchemaDenormalize,
       ensureState(entities)
-    )
+    ),
+    toggleEdit: ownProps.toggleEdit
   };
 };
 

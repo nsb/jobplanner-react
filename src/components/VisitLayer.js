@@ -30,13 +30,13 @@ class VisitLayer extends Component<Props, State> {
     const { visit, property, assigned, lineItems, onClose } = this.props;
 
     const visitView = this.state.edit
-      ? <VisitEdit visit={visit} />
+      ? <VisitEdit visit={visit} toggleEdit={this.toggleEdit} />
       : <VisitDetail
           visit={visit}
           property={property}
           assigned={assigned}
           lineItems={lineItems}
-          onEdit={this.onEdit}
+          onEdit={this.toggleEdit}
         />;
 
     return (
@@ -46,8 +46,8 @@ class VisitLayer extends Component<Props, State> {
     );
   }
 
-  onEdit = () => {
-    this.setState({ edit: true });
+  toggleEdit = () => {
+    this.setState({ edit: !this.state.edit });
   };
 }
 

@@ -264,7 +264,7 @@ export const updateVisitSuccess = (
   let action = {
     type: UPDATE_VISIT_SUCCESS,
     receivedAt: Date.now(),
-    payload
+    payload: normalize(payload, visitSchema)
   };
 
   if (optimistic) {
