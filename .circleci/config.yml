@@ -37,6 +37,9 @@ jobs:
   deploy:
     docker:
       - image: google/cloud-sdk:alpine
+
+    working_directory: ~/repo
+
     steps:
       - checkout
 
