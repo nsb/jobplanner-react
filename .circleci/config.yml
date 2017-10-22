@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Deploy static files
           command: |
-            gsutil rsync -R buid/ gs://www-jobplanner-test
+            gsutil rsync -R build/ gs://www-jobplanner-test
 
       - run:
           name: discarding all changes
