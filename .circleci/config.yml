@@ -45,7 +45,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-build-{{ checksum .Environment.CIRCLE_SHA1 }}
+            - v1-build-{{ .Environment.CIRCLE_SHA1 }}
 
       - run:
           name: Deploy static files
