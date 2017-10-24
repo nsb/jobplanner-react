@@ -32,7 +32,7 @@ jobs:
       - save_cache:
           paths:
             - build
-          key: v1-build
+          key: v1-build-{{ epoch }}
 
   deploy:
     docker:
@@ -45,7 +45,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-build
+            - v1-build-{{ epoch }}
 
       - run:
           name: Deploy static files
