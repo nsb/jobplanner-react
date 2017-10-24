@@ -53,6 +53,12 @@ jobs:
       - run: yarn build
 
       - run:
+          name: Authenticate with Google Cloud
+          command: |
+            echo $GCLOUD_KEY_JSON > /tmp/.gcloud-key
+            gcloud auth activate-service-account --key-file=/tmp/.gcloud-key
+
+      - run:
           name: Deploy static files
           command: |
             gsutil rsync -R build/ gs://www-jobplanner-test
