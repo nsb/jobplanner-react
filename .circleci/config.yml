@@ -3,9 +3,9 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.7
 
-    # working_directory: ~/repo
+    working_directory: ~/repo
 
     steps:
       - checkout
@@ -27,25 +27,16 @@ jobs:
       # run tests!
       - run: yarn test
 
-      - run: yarn build
-
-      - save_cache:
-          paths:
-            - build
-          key: v1-build-{{ .Environment.CIRCLE_SHA1 }}
-
   deploy:
     docker:
-      - image: google/cloud-sdk:alpine
+      - image: niels/jobplanner-react-node-gcloud:0.0.1
 
-    # working_directory: ~/repo
+    working_directory: ~/repo
 
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - v1-build-{{ .Environment.CIRCLE_SHA1 }}
+      - run: yarn build
 
       - run:
           name: Deploy static files
