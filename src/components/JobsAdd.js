@@ -59,7 +59,7 @@ class JobsAdd extends Component<Props, State> {
       {
         ...values,
         client: clientId,
-        assigned: values.assigned.map(v => v.value)
+        assigned: values.assigned && values.assigned.map(v => v.value)
       },
       token
     );
