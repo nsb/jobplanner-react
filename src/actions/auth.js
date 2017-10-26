@@ -3,6 +3,9 @@ import fetch from "isomorphic-fetch";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { User } from "./users";
 
+const API_ENDPOINT =
+  process.env.REACT_APP_API_ENDPOINT || "http://localhost:8000";
+
 const REQUEST_LOGIN: "REQUEST_LOGIN" = "REQUEST_LOGIN";
 const REQUEST_LOGIN_FAILURE: "REQUEST_LOGIN_FAILURE" = "REQUEST_LOGIN_FAILURE";
 const REQUEST_LOGIN_SUCCESS: "REQUEST_LOGIN_SUCCESS" = "REQUEST_LOGIN_SUCCESS";
@@ -116,7 +119,7 @@ export const login = (credentials: Credentials): ThunkAction => {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch("http://localhost:8000/api-token-auth/", {
+    return fetch(`${API_ENDPOINT}/api-token-auth/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -187,7 +190,7 @@ export const verify = (token: string): ThunkAction => {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch("http://localhost:8000/api-token-verify/", {
+    return fetch(`${API_ENDPOINT}/api-token-verify/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
