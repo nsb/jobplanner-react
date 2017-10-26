@@ -1,4 +1,4 @@
-import { StackTrace } from "stacktrace-js";
+import StackTrace from "stacktrace-js";
 
 /**
  * URL endpoint of the Stackdriver Error Reporting report API.
