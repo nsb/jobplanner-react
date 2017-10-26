@@ -6915,12 +6915,6 @@ stack-generator@^2.0.1:
   dependencies:
     stackframe "^1.0.4"
 
-stackdriver-errors-js@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/stackdriver-errors-js/-/stackdriver-errors-js-0.2.0.tgz#3b26d2670a7407383ec811a1a48a98a68ae5db4d"
-  dependencies:
-    stacktrace-js "^2.0.0"
-
 stackframe@^1.0.3, stackframe@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-1.0.4.tgz#357b24a992f9427cba6b545d96a14ed2cbca187b"

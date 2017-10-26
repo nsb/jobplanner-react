@@ -10,7 +10,7 @@ import { Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { updateIntl, Provider } from "react-intl-redux";
 import { addLocaleData } from "react-intl";
-import { StackdriverErrorReporter } from 'stackdriver-errors-js';
+import StackdriverErrorReporter from './stackdriver';
 import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
