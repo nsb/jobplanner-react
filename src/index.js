@@ -10,6 +10,7 @@ import { Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { updateIntl, Provider } from "react-intl-redux";
 import { addLocaleData } from "react-intl";
+import { StackdriverErrorReporter } from 'stackdriver-errors-js';
 import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
@@ -38,6 +39,21 @@ if (languageWithoutRegionCode === "da") {
   messages = localeDaData;
 } else {
   messages = localeEnData;
+}
+
+// Set error reporting
+const errorHandler = new StackdriverErrorReporter();
+
+if (process.env.NODE_ENV === "production") {
+  errorHandler.start({
+    key: 'AIzaSyBGHOWXlPKZaQpvOv06CQRMtQYn7Bfzg9Y',
+    projectId: 'jobplanner-184011',
+    // service: '<my-service>',              // (optional)
+    // version: '<my-service-version>',      // (optional)
+    // reportUncaughtExceptions: false    // (optional) Set to false to stop reporting unhandled exceptions.
+    // disabled: true                     // (optional) Set to true to not report errors when calling report(), this can be used when developping locally.
+    // context: {user: 'user1'}           // (optional) You can set the user later using setUser()
+  });
 }
 
 // Setup service worker
