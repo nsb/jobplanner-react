@@ -54,7 +54,7 @@ class Calendar extends Component<Props, void> {
             popup={true}
             defaultView={defaultView}
             events={visits}
-            titleAccessor="client"
+            titleAccessor="client_name"
             startAccessor={visit => {
               return new Date(visit.begins);
             }}
