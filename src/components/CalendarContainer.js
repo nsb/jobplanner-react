@@ -76,7 +76,7 @@ class CalendarContainer extends Component<Props, State> {
         {calendar}
         {visitLayer}
       </div>
-    )
+    );
   }
 
   onEventDrop = ({
@@ -102,12 +102,13 @@ class CalendarContainer extends Component<Props, State> {
     );
 
     const anytime =
-      (!timeChanged && event.anytime) || (!timeChanged && !dateChanged);
+      !!(!timeChanged && event.anytime) || (!timeChanged && !dateChanged);
 
     dispatch(
       updateVisit(
-        { ...event, begins: start, ends: end, anytime: anytime },
+        { id: event.id, begins: start, ends: end, anytime: anytime },
         token,
+        true,
         true
       )
     );
@@ -120,7 +121,6 @@ class CalendarContainer extends Component<Props, State> {
   onClose = () => {
     this.setState({ selected: undefined });
   };
-
 
   loadVisits = (begins = null, ends = null) => {
     const { business, token, dispatch } = this.props;

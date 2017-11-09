@@ -117,7 +117,7 @@ export type Action =
 const parse = (visit): Visit => {
   return merge({}, visit, {
     begins: visit.begins && new Date(visit.begins),
-    ends: visit.ends && new Date(visit.ends),
+    ends: visit.ends && new Date(visit.ends)
   });
 };
 
@@ -192,7 +192,9 @@ export const createVisitRequest = (payload: Visit): CreateVisitAction => {
   };
 };
 
-export const createVisitSuccess = (payload: Visit): CreateVisitSuccessAction => {
+export const createVisitSuccess = (
+  payload: Visit
+): CreateVisitSuccessAction => {
   return {
     type: CREATE_VISIT_SUCCESS,
     receivedAt: Date.now(),
@@ -231,7 +233,7 @@ export const createVisit = (
 
 let nextTransactionID = 0;
 export const updateVisitRequest = (
-  payload: Visit,
+  payload: { id: number, begins: Date, ends: Date, anytime: boolean },
   optimistic: boolean = false,
   transactionID: number = 0
 ): UpdateVisitAction => {
@@ -302,16 +304,17 @@ export const updateVisitError = (
 };
 
 export const updateVisit = (
-  visit: Visit,
+  visit: { id: number, begins: Date, ends: Date, anytime: boolean },
   token: string,
-  optimistic: boolean = false
+  optimistic: boolean = false,
+  patch: boolean = false
 ): ThunkAction => {
   return (dispatch: Dispatch) => {
     let transactionID = nextTransactionID++;
     dispatch(updateVisitRequest(visit, optimistic, transactionID));
 
     return visitsApi
-      .update("visits", visit, token)
+      .update("visits", visit, token, patch)
       .then((responseVisit: Visit) => {
         const coercedVisit = parse(responseVisit);
         dispatch(updateVisitSuccess(coercedVisit, optimistic, transactionID));
