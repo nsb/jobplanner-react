@@ -96,7 +96,6 @@ type UpdateBusinessFailureAction = {
   error: string
 };
 
-
 export type Action =
   | FetchBusinessesAction
   | FetchBusinessesSuccessAction
@@ -107,7 +106,6 @@ export type Action =
   | UpdateBusinessAction
   | UpdateBusinessSuccessAction
   | UpdateBusinessFailureAction;
-
 
 export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   return {
@@ -125,7 +123,7 @@ export const fetchBusinessesSuccess = (
       count: response.count,
       next: response.next,
       previous: response.previous
-    },
+    }
   };
 };
 
@@ -182,31 +180,26 @@ export const createBusinessError = (
   };
 };
 
-export const createBusiness = (
-  data: Business,
-  token: string
-): ThunkAction => {
+export const createBusiness = (data: Business, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(createBusinessRequest(data));
 
     return businessesApi
       .create("businesses", data, token)
       .then((responseBusiness: Business) => {
-        if (responseBusiness.id) {
-          dispatch(createBusinessSuccess(responseBusiness));
-          history.push(`/${responseBusiness.id}`);
-        } else {
-          dispatch(createBusinessError("error"));
-        }
+        dispatch(createBusinessSuccess(responseBusiness));
+        history.push(`/${responseBusiness.id}`);
         return responseBusiness;
       })
       .catch((error: string) => {
-        throw error;
+        dispatch(createBusinessError(error));
       });
   };
 };
 
-export const updateBusinessRequest = (payload: Business): UpdateBusinessAction => {
+export const updateBusinessRequest = (
+  payload: Business
+): UpdateBusinessAction => {
   return {
     type: UPDATE_BUSINESS,
     payload
@@ -234,7 +227,10 @@ export const updateBusinessError = (
   };
 };
 
-export const updateBusiness = (business: Business, token: string): ThunkAction => {
+export const updateBusiness = (
+  business: Business,
+  token: string
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateBusinessRequest(business));
 
