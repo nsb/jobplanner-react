@@ -1,5 +1,6 @@
 // @flow
 import fetch from "isomorphic-fetch";
+import authApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { User } from "./users";
 
@@ -169,50 +170,20 @@ export const receiveVerifyError = (
 ): RequestVerifyFacilureAction => {
   return {
     type: REQUEST_VERIFY_FAILURE,
-    error: "Oops"
+    error: error
   };
 };
 
 export const verify = (token: string): ThunkAction => {
-  // Thunk middleware knows how to handle functions.
-  // It passes the dispatch method as an argument to the function,
-  // thus making it able to dispatch actions itself.
-
   return (dispatch: Dispatch) => {
-    // First dispatch: the app state is updated to inform
-    // that the API call is starting.
-
     dispatch(requestVerify(token));
 
-    // The function called by the thunk middleware can return a value,
-    // that is passed on as the return value of the dispatch method.
-
-    // In this case, we return a promise to wait for.
-    // This is not required by thunk middleware, but it is convenient for us.
-
-    return fetch(`${API_ENDPOINT}/api-token-verify/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        token
+    return authApi
+      .create("api-token-verify", { token })
+      .then((response: { token: string, user: User }) => {
+        dispatch(receiveVerify(response));
       })
-    })
-      .then((response: Response) =>
-        response.json().then((json: { token: string, user: User }) => ({
-          status: response.status,
-          json
-        }))
-      )
-      .then(({ status, json }) => {
-        if (status >= 400) {
-          dispatch(receiveVerifyError("error"));
-        } else {
-          dispatch(receiveVerify(json));
-        }
-      })
-      .catch((error: string) => {
+      .catch(error => {
         dispatch(receiveVerifyError(error));
       });
   };

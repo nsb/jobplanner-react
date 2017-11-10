@@ -27,7 +27,7 @@ class Api {
 
     return fetch(url, options).then(response => {
       if (!response.ok) {
-        throw Error(response.statusText);
+        return Promise.reject(response.json())
       }
       return response.json();
     });
@@ -45,10 +45,13 @@ class Api {
 
     return fetch(request)
       .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response.json())
+        }
         return response.json();
       })
       .catch((error: string) => {
-        return error;
+        return Promise.reject(error);
       });
   }
 
@@ -69,18 +72,21 @@ class Api {
 
     return fetch(request)
       .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response.json())
+        }
         return response.json();
       })
       .catch((error: string) => {
-        throw error;
+        return Promise.reject(error)
       });
   }
 
-  static create(resource: string, item: {}, token: string) {
+  static create(resource: string, item: {}, token?: string) {
     const request = new Request(`${API_ENDPOINT}/${resource}/`, {
       method: "POST",
       headers: new Headers({
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token||''}`,
         "Content-Type": "application/json"
       }),
       body: JSON.stringify(item)
@@ -88,10 +94,13 @@ class Api {
 
     return fetch(request)
       .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response.json())
+        }
         return response.json();
       })
       .catch((error: string) => {
-        throw error;
+        return Promise.reject(error)
       });
   }
 

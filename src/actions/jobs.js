@@ -237,7 +237,7 @@ export const fetchJobs = (
         return coercedJobs;
       })
       .catch((error: string) => {
-        throw error;
+        dispatch(fetchJobsFailure(error))
       });
   };
 };
