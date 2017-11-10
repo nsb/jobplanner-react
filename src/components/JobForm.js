@@ -25,6 +25,7 @@ import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
+import Notification from "grommet/components/Notification";
 
 const validate = (values: {
   client: Object,
@@ -262,10 +263,14 @@ type JobFormState = {
     freq: number,
     interval: number,
     byweekday: string
-  }
+  },
+  visitsWillBeRegenerated: boolean
 };
 
-const renderLineItems = ({ fields, meta: { error, submitFailed } }): Element<*> =>
+const renderLineItems = ({
+  fields,
+  meta: { error, submitFailed }
+}): Element<*> =>
   <Section>
     <div>
       <button type="button" onClick={() => fields.push({})}>
@@ -298,7 +303,6 @@ const renderLineItems = ({ fields, meta: { error, submitFailed } }): Element<*> 
     )}
   </Section>;
 
-
 class JobForm extends Component<JobFormProps, JobFormState> {
   static defaultProps = {
     employees: []
@@ -322,7 +326,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
         freq: rrule.options.freq,
         interval: rrule.options.interval,
         byweekday: rrule.options.byweekday
-      }
+      },
+      visitsWillBeRegenerated: false
     };
   }
 
@@ -350,6 +355,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           component={renderDateTime}
           dateFormat={timeFormat}
           // normalize={(value: string) => moment(value, timeFormat)}
+          onChange={e => this.setState({ visitsWillBeRegenerated: true })}
         />
       );
     }
@@ -363,6 +369,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           component={renderDateTime}
           dateFormat={timeFormat}
           // normalize={(value: string) => moment(value, timeFormat)}
+          onChange={e => this.setState({ visitsWillBeRegenerated: true })}
         />
       );
     }
@@ -388,6 +395,17 @@ class JobForm extends Component<JobFormProps, JobFormState> {
             clients={mappedClients}
           />
         </fieldset>
+      );
+    }
+
+    let scheduleNotification;
+    if (this.state.visitsWillBeRegenerated) {
+      scheduleNotification = (
+        <Notification
+          message="Editing this schedule will clear all incomplete visits from this job and new visits will be created using the updated information."
+          status="warning"
+          size="small"
+        />
       );
     }
 
@@ -427,6 +445,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               component={renderDateTime}
               dateFormat={dateFormat}
               normalize={(value: string) => moment(value, dateFormat).toDate()}
+              onChange={e => this.setState({ visitsWillBeRegenerated: true })}
             />
             <Field
               name="ends"
@@ -434,6 +453,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               component={renderDateTime}
               dateFormat={dateFormat}
               normalize={(value: string) => moment(value, dateFormat).toDate()}
+              onChange={e => this.setState({ visitsWillBeRegenerated: true })}
             />
             {start_time}
             {finish_time}
@@ -442,10 +462,13 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               label="Anytime"
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
+              onChange={e => this.setState({ visitsWillBeRegenerated: true })}
             />
           </fieldset>
 
           {this.renderSchedules()}
+
+          {scheduleNotification}
 
           <fieldset>
 
@@ -474,6 +497,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
         <Footer pad={{ vertical: "medium" }}>
           <span />
+
           <Button
             type="submit"
             primary={true}
@@ -506,6 +530,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           label="Schedule"
           component={renderSchedule}
           onClick={this.onScheduleAdd}
+          onChange={e => this.setState({ visitsWillBeRegenerated: true })}
         />
         {layer}
       </fieldset>
@@ -567,7 +592,11 @@ class JobForm extends Component<JobFormProps, JobFormState> {
     dispatch(
       change("recurrences", `RRULE:${new RRule({ ...schedule }).toString()}`)
     );
-    this.setState({ scheduleLayer: false, schedule });
+    this.setState({
+      scheduleLayer: false,
+      visitsWillBeRegenerated: true,
+      schedule
+    });
   };
 }
 
