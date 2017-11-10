@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "flow-bin": "^0.54.0",
-    "grommet": "^1.7.0",
+    "grommet": "^1.8.3",
     "grommet-addons": "^0.4.0",
-    "grommet-css": "^1.6.0",
     "grommet-templates": "^0.2.0",
+    "nielsbusch-grommet-css": "^1.8.3",
     "normalizr": "^3.2.3",
     "react": "^15.6.1",
     "react-big-calendar": "^0.16.1",
