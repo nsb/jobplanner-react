@@ -19,7 +19,7 @@ import rootReducer from "./reducers";
 import App from "./containers/App";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import "nielsbusch-grommet-css";
+import "grommet-css";
 import "./index.css";
 
 import localeEnData from "./locales/en.json";
