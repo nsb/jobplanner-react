@@ -27,7 +27,7 @@ class Api {
 
     return fetch(url, options).then(response => {
       if (!response.ok) {
-        return Promise.reject(response.json())
+        return Promise.reject(response.json());
       }
       return response.json();
     });
@@ -46,7 +46,7 @@ class Api {
     return fetch(request)
       .then(response => {
         if (!response.ok) {
-          return Promise.reject(response.json())
+          return Promise.reject(response.json());
         }
         return response.json();
       })
@@ -59,7 +59,7 @@ class Api {
     resource: string,
     item: { id: number },
     token: string,
-    patch = false
+    patch: boolean = false
   ) {
     const request = new Request(`${API_ENDPOINT}/${resource}/${item.id}/`, {
       method: patch ? "PATCH" : "PUT",
@@ -73,12 +73,12 @@ class Api {
     return fetch(request)
       .then(response => {
         if (!response.ok) {
-          return Promise.reject(response.json())
+          return Promise.reject(response.json());
         }
         return response.json();
       })
       .catch((error: string) => {
-        return Promise.reject(error)
+        return Promise.reject(error);
       });
   }
 
@@ -86,7 +86,7 @@ class Api {
     const request = new Request(`${API_ENDPOINT}/${resource}/`, {
       method: "POST",
       headers: new Headers({
-        Authorization: `Bearer ${token||''}`,
+        Authorization: `Bearer ${token || ""}`,
         "Content-Type": "application/json"
       }),
       body: JSON.stringify(item)
@@ -95,12 +95,12 @@ class Api {
     return fetch(request)
       .then(response => {
         if (!response.ok) {
-          return Promise.reject(response.json())
+          return Promise.reject(response.json());
         }
         return response.json();
       })
       .catch((error: string) => {
-        return Promise.reject(error)
+        return Promise.reject(error);
       });
   }
 

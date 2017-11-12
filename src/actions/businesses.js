@@ -99,7 +99,7 @@ type UpdateBusinessFailureAction = {
 export type Action =
   | FetchBusinessesAction
   | FetchBusinessesSuccessAction
-  | FetchBusinessesAction
+  | FetchBusinessesFailureAction
   | CreateBusinessAction
   | CreateBusinessSuccessAction
   | CreateBusinessFailureAction

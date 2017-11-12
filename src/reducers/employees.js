@@ -3,7 +3,7 @@ import { flatMap } from "lodash/collection";
 import { combineReducers } from "redux";
 import { union } from "lodash/array";
 import type { Action } from "../actions/employees";
-import type { Action as BusinessesAction } from "../actions/employees";
+import type { Action as BusinessesAction } from "../actions/businesses";
 
 type IsFetchingState = boolean;
 type ResultState = Array<number>;

@@ -10,7 +10,7 @@ import { Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { updateIntl, Provider } from "react-intl-redux";
 import { addLocaleData } from "react-intl";
-import StackdriverErrorReporter from './stackdriver';
+import StackdriverErrorReporter from "./stackdriver";
 import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
@@ -46,8 +46,8 @@ const errorHandler = new StackdriverErrorReporter();
 
 if (process.env.NODE_ENV === "production") {
   errorHandler.start({
-    key: 'AIzaSyBGHOWXlPKZaQpvOv06CQRMtQYn7Bfzg9Y',
-    projectId: 'jobplanner-184011',
+    key: "AIzaSyBGHOWXlPKZaQpvOv06CQRMtQYn7Bfzg9Y",
+    projectId: "jobplanner-184011"
     // service: '<my-service>',              // (optional)
     // version: '<my-service-version>',      // (optional)
     // reportUncaughtExceptions: false    // (optional) Set to false to stop reporting unhandled exceptions.
@@ -114,17 +114,14 @@ store.dispatch(
   })
 );
 
-// const authRequired = (nextState: State) => {
-//   if (!store.getState().auth.token) {
-//     store.dispatch(push('/login'));
-//   }
-// };
-
-ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <App />
-    </Router>
-  </Provider>,
-  document.getElementById("root")
-);
+const root = document.getElementById("root");
+if (root) {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router history={history}>
+        <App />
+      </Router>
+    </Provider>,
+    root
+  );
+}
