@@ -1,4 +1,4 @@
-// flow-typed signature: 8afd70852a8e8485cdb9f4f3319bf4dd
+// flow-typed signature: 22be2eb6f437f9d831eb2283433ac57d
 // flow-typed version: <<STUB>>/react-intl-translations-manager_v^5.0.0/flow_v0.54.0
 
 /**
@@ -130,14 +130,6 @@ declare module 'react-intl-translations-manager/src/stringify' {
   declare module.exports: any;
 }
 
-declare module 'react-intl-translations-manager/test/getDefaultMessages.test' {
-  declare module.exports: any;
-}
-
-declare module 'react-intl-translations-manager/test/getLanguageReport.test' {
-  declare module.exports: any;
-}
-
 // Filename aliases
 declare module 'react-intl-translations-manager/dist/compareByKey.js' {
   declare module.exports: $Exports<'react-intl-translations-manager/dist/compareByKey'>;
@@ -219,10 +211,4 @@ declare module 'react-intl-translations-manager/src/readMessageFiles.js' {
 }
 declare module 'react-intl-translations-manager/src/stringify.js' {
   declare module.exports: $Exports<'react-intl-translations-manager/src/stringify'>;
-}
-declare module 'react-intl-translations-manager/test/getDefaultMessages.test.js' {
-  declare module.exports: $Exports<'react-intl-translations-manager/test/getDefaultMessages.test'>;
-}
-declare module 'react-intl-translations-manager/test/getLanguageReport.test.js' {
-  declare module.exports: $Exports<'react-intl-translations-manager/test/getLanguageReport.test'>;
 }

@@ -1,4 +1,4 @@
-// flow-typed signature: 4e443d32d7be4f051989775309901f2e
+// flow-typed signature: d4ea706138c4968208b0aa88aee20ef1
 // flow-typed version: <<STUB>>/normalizr_v^3.2.3/flow_v0.54.0
 
 /**
@@ -27,6 +27,14 @@ declare module 'normalizr/dist/normalizr.amd' {
 }
 
 declare module 'normalizr/dist/normalizr.amd.min' {
+  declare module.exports: any;
+}
+
+declare module 'normalizr/dist/normalizr.browser' {
+  declare module.exports: any;
+}
+
+declare module 'normalizr/dist/normalizr.browser.min' {
   declare module.exports: any;
 }
 
@@ -84,6 +92,12 @@ declare module 'normalizr/dist/normalizr.amd.js' {
 }
 declare module 'normalizr/dist/normalizr.amd.min.js' {
   declare module.exports: $Exports<'normalizr/dist/normalizr.amd.min'>;
+}
+declare module 'normalizr/dist/normalizr.browser.js' {
+  declare module.exports: $Exports<'normalizr/dist/normalizr.browser'>;
+}
+declare module 'normalizr/dist/normalizr.browser.min.js' {
+  declare module.exports: $Exports<'normalizr/dist/normalizr.browser.min'>;
 }
 declare module 'normalizr/dist/normalizr.js' {
   declare module.exports: $Exports<'normalizr/dist/normalizr'>;
