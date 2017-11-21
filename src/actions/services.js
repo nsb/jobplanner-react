@@ -1,5 +1,6 @@
 // @flow
 import { normalize } from "normalizr";
+import { addSuccess, addError } from "redux-flash-messages";
 import { serviceListSchema, serviceSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import servicesApi from "../api";
@@ -215,7 +216,9 @@ export const fetchServiceSuccess = (
   };
 };
 
-export const fetchServiceFailure = (error: string): FetchServiceFailureAction => {
+export const fetchServiceFailure = (
+  error: string
+): FetchServiceFailureAction => {
   return {
     type: FETCH_SERVICE_FAILURE,
     error: error
@@ -266,10 +269,7 @@ export const createServiceError = (
   };
 };
 
-export const createService = (
-  service: Service,
-  token: string
-): ThunkAction => {
+export const createService = (service: Service, token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(createServiceRequest(service));
 
@@ -277,10 +277,16 @@ export const createService = (
       .create("services", service, token)
       .then((responseService: Service) => {
         dispatch(createServiceSuccess(responseService));
+        addSuccess({
+          text: "Saved"
+        });
         return responseService;
       })
       .catch((error: string) => {
         dispatch(createServiceError(service, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
@@ -321,10 +327,16 @@ export const updateService = (service: Service, token: string): ThunkAction => {
       .update("services", service, token)
       .then((responseService: Service) => {
         dispatch(updateServiceSuccess(responseService));
+        addSuccess({
+          text: "Saved"
+        });
         return responseService;
       })
       .catch((error: string) => {
         dispatch(updateServiceError(service, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
@@ -366,9 +378,15 @@ export const deleteService = (service: Service, token: string): ThunkAction => {
       .then(() => {
         dispatch(deleteServiceSuccess(service));
         history.push(`/${service.business}/services`);
+        addSuccess({
+          text: "Deleted"
+        });
       })
       .catch((error: string) => {
         dispatch(deleteServiceError(service, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
