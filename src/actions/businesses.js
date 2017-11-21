@@ -149,9 +149,6 @@ export const fetchBusinesses = (token: string): ThunkAction => {
       })
       .catch((error: string) => {
         dispatch(fetchBusinessesFailure(error));
-        addError({
-          text: "An error occurred"
-        });
       });
   };
 };
