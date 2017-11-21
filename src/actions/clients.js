@@ -1,6 +1,6 @@
 // @flow
 import { normalize } from "normalizr";
-import { addError } from "redux-flash-messages";
+import { addSuccess, addError } from "redux-flash-messages";
 import { clientListSchema, clientSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
@@ -237,6 +237,9 @@ export const fetchClient = (token: string, id: number): ThunkAction => {
       })
       .catch((error: string) => {
         dispatch(fetchClientsFailure("error"));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
@@ -282,10 +285,16 @@ export const createClient = (
       .then((responseClient: Client) => {
         dispatch(createClientSuccess(responseClient));
         history.push(`/${business.id}/clients/${responseClient.id}`);
+        addSuccess({
+          text: "Created"
+        });
         return responseClient;
       })
       .catch((error: string) => {
         dispatch(createClientError(client, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
@@ -326,6 +335,10 @@ export const updateClient = (client: Client, token: string): ThunkAction => {
       .update("clients", client, token)
       .then((responseClient: Client) => {
         dispatch(updateClientSuccess(responseClient));
+        history.push(`/${client.business}/clients/${responseClient.id}`);
+        addSuccess({
+          text: "Saved"
+        });
         return responseClient;
       })
       .catch((error: string) => {
@@ -374,9 +387,15 @@ export const deleteClient = (client: Client, token: string): ThunkAction => {
       .then(() => {
         dispatch(deleteClientSuccess(client));
         history.push(`/${client.business}/clients`);
+        addSuccess({
+          text: "Deleted"
+        });
       })
       .catch((error: string) => {
         dispatch(deleteClientError(client, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
