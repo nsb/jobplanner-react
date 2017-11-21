@@ -4,6 +4,7 @@ import { combineReducers } from "redux";
 import { intlReducer } from "react-intl-redux";
 import { reducer as reduxFormReducer } from "redux-form";
 import { optimistic } from "redux-optimistic-ui";
+import { flashMessage } from 'redux-flash-messages';
 import auth from "./auth";
 import nav from "./nav";
 import businesses from "./businesses";
@@ -32,6 +33,7 @@ const reducers = {
   network,
   users,
   jobs,
+  flashMessage,
   entities: optimistic(entities)
 };
 

@@ -1,5 +1,6 @@
 // @flow
 import { normalize } from "normalizr";
+import { addError } from "redux-flash-messages";
 import { clientListSchema, clientSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
@@ -182,7 +183,10 @@ export const fetchClientsFailure = (
   };
 };
 
-export const fetchClients = (token: string, queryParams: Object = {}): ThunkAction => {
+export const fetchClients = (
+  token: string,
+  queryParams: Object = {}
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(fetchClientsRequest());
 
@@ -326,6 +330,9 @@ export const updateClient = (client: Client, token: string): ThunkAction => {
       })
       .catch((error: string) => {
         dispatch(updateClientError(client, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };

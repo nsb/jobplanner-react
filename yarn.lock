@@ -6394,6 +6394,10 @@ redux-devtools@^3.4.0:
     prop-types "^15.5.7"
     redux-devtools-instrument "^1.0.1"
 
+redux-flash-messages@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/redux-flash-messages/-/redux-flash-messages-0.0.5.tgz#5e9bccd34fc9a2d1b65376d7da47585eda9a822c"
+
 redux-form@^7.0.4:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-7.1.2.tgz#6b0f25c57fd8130a05ce00f6435fe1b051f402af"

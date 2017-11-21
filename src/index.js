@@ -10,6 +10,7 @@ import { Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { updateIntl, Provider } from "react-intl-redux";
 import { addLocaleData } from "react-intl";
+import { configureFlashMessages } from 'redux-flash-messages';
 import StackdriverErrorReporter from "./stackdriver";
 import history from "./history";
 import en from "react-intl/locale-data/en";
@@ -113,6 +114,11 @@ store.dispatch(
     messages
   })
 );
+
+configureFlashMessages({
+  // The dispatch function for the Redux store.
+  dispatch: store.dispatch
+});
 
 const root = document.getElementById("root");
 if (root) {
