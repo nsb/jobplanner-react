@@ -1,5 +1,6 @@
 // @flow
 import { normalize } from "normalizr";
+import { addSuccess, addError } from "redux-flash-messages";
 import { employeeListSchema, employeeSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import employeesApi from "../api";
@@ -214,7 +215,9 @@ export const fetchEmployeeSuccess = (
   };
 };
 
-export const fetchEmployeeFailure = (error: string): FetchEmployeeFailureAction => {
+export const fetchEmployeeFailure = (
+  error: string
+): FetchEmployeeFailureAction => {
   return {
     type: FETCH_EMPLOYEE_FAILURE,
     error: error
@@ -237,7 +240,9 @@ export const fetchEmployee = (token: string, id: number): ThunkAction => {
   };
 };
 
-export const createEmployeeRequest = (payload: Employee): CreateEmployeeAction => {
+export const createEmployeeRequest = (
+  payload: Employee
+): CreateEmployeeAction => {
   return {
     type: CREATE_EMPLOYEE,
     payload
@@ -276,15 +281,23 @@ export const createEmployee = (
       .create("users", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(createEmployeeSuccess(responseEmployee));
+        addSuccess({
+          text: "Saved"
+        });
         return responseEmployee;
       })
       .catch((error: string) => {
         dispatch(createEmployeeError(employee, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
 
-export const updateEmployeeRequest = (payload: Employee): UpdateEmployeeAction => {
+export const updateEmployeeRequest = (
+  payload: Employee
+): UpdateEmployeeAction => {
   return {
     type: UPDATE_EMPLOYEE,
     payload
@@ -312,7 +325,10 @@ export const updateEmployeeError = (
   };
 };
 
-export const updateEmployee = (employee: Employee, token: string): ThunkAction => {
+export const updateEmployee = (
+  employee: Employee,
+  token: string
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(updateEmployeeRequest(employee));
 
@@ -320,15 +336,23 @@ export const updateEmployee = (employee: Employee, token: string): ThunkAction =
       .update("users", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(updateEmployeeSuccess(responseEmployee));
+        addSuccess({
+          text: "Saved"
+        });
         return responseEmployee;
       })
       .catch((error: string) => {
         dispatch(updateEmployeeError(employee, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
 
-export const deleteEmployeeRequest = (payload: Employee): DeleteEmployeeAction => {
+export const deleteEmployeeRequest = (
+  payload: Employee
+): DeleteEmployeeAction => {
   return {
     type: DELETE_EMPLOYEE,
     payload
@@ -356,7 +380,10 @@ export const deleteEmployeeError = (
   };
 };
 
-export const deleteEmployee = (employee: Employee, token: string): ThunkAction => {
+export const deleteEmployee = (
+  employee: Employee,
+  token: string
+): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(deleteEmployeeRequest(employee));
 
@@ -364,9 +391,15 @@ export const deleteEmployee = (employee: Employee, token: string): ThunkAction =
       .delete("users", employee, token)
       .then(() => {
         dispatch(deleteEmployeeSuccess(employee));
+        addSuccess({
+          text: "Deleted"
+        });
       })
       .catch((error: string) => {
         dispatch(deleteEmployeeError(employee, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
