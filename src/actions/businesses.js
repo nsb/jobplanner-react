@@ -1,5 +1,6 @@
 // @flow
 import { normalize } from "normalizr";
+import { addSuccess, addError } from "redux-flash-messages";
 import { businessListSchema, businessSchema } from "../schemas";
 import businessesApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
@@ -148,6 +149,9 @@ export const fetchBusinesses = (token: string): ThunkAction => {
       })
       .catch((error: string) => {
         dispatch(fetchBusinessesFailure(error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
@@ -189,10 +193,16 @@ export const createBusiness = (data: Business, token: string): ThunkAction => {
       .then((responseBusiness: Business) => {
         dispatch(createBusinessSuccess(responseBusiness));
         history.push(`/${responseBusiness.id}`);
+        addSuccess({
+          text: "Saved"
+        });
         return responseBusiness;
       })
       .catch((error: string) => {
         dispatch(createBusinessError(error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
@@ -238,10 +248,16 @@ export const updateBusiness = (
       .update("businesses", business, token)
       .then((responseBusiness: Business) => {
         dispatch(updateBusinessSuccess(responseBusiness));
+        addSuccess({
+          text: "Saved"
+        });
         return responseBusiness;
       })
       .catch((error: string) => {
         dispatch(updateBusinessError(business, error));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };

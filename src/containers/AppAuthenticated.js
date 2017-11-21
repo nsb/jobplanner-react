@@ -32,6 +32,7 @@ class AppAuthenticated extends Component {
 
   renderToast = message => {
     const status = {
+      SUCCESS: "ok",
       ERROR: "critical"
     }
 
