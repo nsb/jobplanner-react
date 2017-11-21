@@ -1,6 +1,7 @@
 // @flow
 import { merge } from "lodash/object";
 import { normalize } from "normalizr";
+import { addSuccess, addError } from "redux-flash-messages";
 import { visitListSchema, visitSchema } from "../schemas";
 import visitsApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
@@ -223,10 +224,16 @@ export const createVisit = (
         const coercedVisit = parse(responseVisit);
         dispatch(createVisitSuccess(coercedVisit));
         history.push(`/${business.id}/visits/${coercedVisit.id}`);
+        addSuccess({
+          text: "Saved"
+        });
         return coercedVisit;
       })
       .catch((error: string) => {
-        throw error;
+        dispatch(createVisitError(error))
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
@@ -318,10 +325,16 @@ export const updateVisit = (
       .then((responseVisit: Visit) => {
         const coercedVisit = parse(responseVisit);
         dispatch(updateVisitSuccess(coercedVisit, optimistic, transactionID));
+        addSuccess({
+          text: "Saved"
+        });
         return coercedVisit;
       })
       .catch((error: string) => {
         dispatch(updateVisitError(error, optimistic, transactionID));
+        addError({
+          text: "An error occurred"
+        });
       });
   };
 };
