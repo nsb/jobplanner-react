@@ -16,6 +16,7 @@ import network from "./network";
 import users from "./users";
 import jobs from "./jobs";
 import visits from "./visits";
+import asyncTasks from "./asynctasks";
 import entities from "./entities";
 
 const reducers = {
@@ -33,6 +34,7 @@ const reducers = {
   network,
   users,
   jobs,
+  asyncTasks,
   flashMessage,
   entities: optimistic(entities)
 };

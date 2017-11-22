@@ -45,3 +45,6 @@ export const visitListSchema = new schema.Array(visitSchema);
 export const visitSchemaDenormalize = new schema.Entity("visits", {
   line_items: [lineItem]
 });
+
+export const asyncTaskSchema = new schema.Entity("asyncTasks", {});
+export const asyncTaskListSchema = new schema.Array(asyncTaskSchema);

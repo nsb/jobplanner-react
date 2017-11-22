@@ -49,7 +49,8 @@ export type Job = {
   begins: Date,
   ends: Date,
   anytime: boolean,
-  closed: boolean
+  closed: boolean,
+  schedule_visits_task: number
 };
 
 export type JobsMap = { [id: number]: Job };
