@@ -2187,8 +2187,8 @@ entities@^1.1.1, entities@~1.1.1:
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
 enzyme-adapter-react-16@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.4.tgz#67f898cc053452f5c786424e395fe0c63a0607fe"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.0.tgz#86c5db7c10f0be6ec25d54ca41b59f2abb397cf4"
   dependencies:
     enzyme-adapter-utils "^1.1.0"
     lodash "^4.17.4"
@@ -2206,18 +2206,19 @@ enzyme-adapter-utils@^1.1.0:
     prop-types "^15.5.10"
 
 enzyme@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.1.1.tgz#c6948dfccd055d75fbd8627ad1c96a024d0e247b"
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.2.0.tgz#998bdcda0fc71b8764a0017f7cc692c943f54a7a"
   dependencies:
     cheerio "^1.0.0-rc.2"
     function.prototype.name "^1.0.3"
+    has "^1.0.1"
     is-subset "^0.1.1"
     lodash "^4.17.4"
     object-is "^1.0.1"
     object.assign "^4.0.4"
     object.entries "^1.0.4"
     object.values "^1.0.4"
-    raf "^3.3.2"
+    raf "^3.4.0"
     rst-selector-parser "^2.2.3"
 
 errno@^0.1.3, errno@^0.1.4:
@@ -3090,13 +3091,12 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6,
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-grommet-addons@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/grommet-addons/-/grommet-addons-0.4.0.tgz#aaf428797697253742ad17afa5418c12978fb1a2"
+grommet-addons@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/grommet-addons/-/grommet-addons-0.5.0.tgz#acfc98a2fe9bb4a407f3e49f7187e26555f928c4"
   dependencies:
     grommet "^1.5.0"
     prop-types "^15.5.10"
-    react "^15.6.1"
     react-router "^3.0.0"
 
 grommet-templates@^0.2.0:
@@ -3104,6 +3104,32 @@ grommet-templates@^0.2.0:
   resolved "https://registry.yarnpkg.com/grommet-templates/-/grommet-templates-0.2.0.tgz#5cf895080489160f4ecc132afb71734289b08ca2"
   dependencies:
     grommet "^0.6.2"
+
+grommet@1.9.0, grommet@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/grommet/-/grommet-1.9.0.tgz#2edc4e5b3724cec7b51978f3a881f36fc4692064"
+  dependencies:
+    classnames "^2.2.3"
+    deep-assign "^2.0.0"
+    hammerjs "^2.0.1"
+    intl "^1.0.0"
+    inuit-defaults "~0.2.1"
+    inuit-functions "~0.2.0"
+    inuit-mixins "~0.2.3"
+    inuit-normalize "~4.1.1"
+    inuit-reset "~0.1.1"
+    inuit-responsive-settings "~0.1.2"
+    inuit-responsive-tools "~0.1.1"
+    inuit-shared "~0.1.5"
+    lodash.zip "^4.2.0"
+    markdown-to-jsx "^5.3.3"
+    moment "^2.13.0"
+    prop-types "^15.5.8"
+    react-desc "^1.0.0"
+    react-intl "^2.2.3"
+    react-router "2 - 4"
+    react-transition-group "^1.1.1"
+    superagent "^3.6.0"
 
 grommet@^0.6.2:
   version "0.6.12"
@@ -3168,32 +3194,6 @@ grommet@^1.5.0:
     react-router "2 - 4"
     react-transition-group "^1.1.1"
     superagent "^3.3.1"
-
-grommet@^1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/grommet/-/grommet-1.8.3.tgz#5c5d232b5b27dcb90a084074f87581bcc3f6512c"
-  dependencies:
-    classnames "^2.2.3"
-    deep-assign "^2.0.0"
-    hammerjs "^2.0.1"
-    intl "^1.0.0"
-    inuit-defaults "~0.2.1"
-    inuit-functions "~0.2.0"
-    inuit-mixins "~0.2.3"
-    inuit-normalize "~4.1.1"
-    inuit-reset "~0.1.1"
-    inuit-responsive-settings "~0.1.2"
-    inuit-responsive-tools "~0.1.1"
-    inuit-shared "~0.1.5"
-    lodash.zip "^4.2.0"
-    markdown-to-jsx "^5.3.3"
-    moment "^2.13.0"
-    prop-types "^15.5.8"
-    react-desc "^1.0.0"
-    react-intl "^2.2.3"
-    react-router "2 - 4"
-    react-transition-group "^1.1.1"
-    superagent "^3.6.0"
 
 growly@^1.3.0:
   version "1.3.0"
@@ -4977,11 +4977,11 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-nielsbusch-grommet-css@^1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/nielsbusch-grommet-css/-/nielsbusch-grommet-css-1.8.3.tgz#3b7c5b3c627a301bcfc7773e296b126f7a494226"
+nielsbusch-grommet-css@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/nielsbusch-grommet-css/-/nielsbusch-grommet-css-1.9.0.tgz#5762d949e05100de07a34187639fe27194f54b2d"
   dependencies:
-    grommet "^1.8.3"
+    grommet "^1.9.0"
 
 no-case@^2.2.0:
   version "2.3.1"
@@ -5948,7 +5948,7 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-raf@3.4.0, raf@^3.3.2:
+raf@3.4.0, raf@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
   dependencies:
@@ -6069,8 +6069,8 @@ react-dom@^15.3.0:
     prop-types "^15.5.10"
 
 react-dom@^16.1.0:
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.1.0.tgz#ab6fd2a285096f388aeba51919a573d06c9bdde4"
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.1.1.tgz#b2e331b6d752faf1a2d31399969399a41d8d45f8"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -6089,12 +6089,11 @@ react-gravatar@^2.0.0:
     md5 "^2.1.0"
     query-string "^4.2.2"
 
-react-intl-redux@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/react-intl-redux/-/react-intl-redux-0.6.0.tgz#398589c56c3f19d27628015f8e490e610be19202"
+react-intl-redux@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-intl-redux/-/react-intl-redux-0.7.0.tgz#614f481c7f53fb7cd81a88b49de8c0e4059fd181"
   dependencies:
-    prop-types "^15.5.10"
-    warning "^3.0.0"
+    prop-types "^15.6.0"
 
 react-intl-translations-manager@^5.0.0:
   version "5.0.1"
@@ -6219,9 +6218,17 @@ react-scripts@1.0.17:
   optionalDependencies:
     fsevents "1.1.2"
 
-react-test-renderer@^16.0.0-0, react-test-renderer@^16.1.0:
+react-test-renderer@^16.0.0-0:
   version "16.1.0"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.1.0.tgz#33a1d3ce896311e0dd1547649b1456ffa7fda415"
+  dependencies:
+    fbjs "^0.8.16"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
+react-test-renderer@^16.1.0:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.1.1.tgz#a05184688d564be799f212449262525d1e350537"
   dependencies:
     fbjs "^0.8.16"
     object-assign "^4.1.1"
@@ -6247,19 +6254,9 @@ react@^15.3.0, react@^15.5.4:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react@^15.6.1:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
-  dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
-
-react@^16.1.0:
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.1.0.tgz#1c2bdac3c17fe7ee9282fa35aca6cc36387903e1"
+react@^16.1.1:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.1.1.tgz#d5c4ef795507e3012282dd51261ff9c0e824fe1f"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -6387,8 +6384,8 @@ redux-devtools-instrument@^1.0.1:
     symbol-observable "^1.0.2"
 
 redux-devtools@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/redux-devtools/-/redux-devtools-3.4.0.tgz#9bf8415154301f56906f26a36f5bc1f5ca913bb5"
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/redux-devtools/-/redux-devtools-3.4.1.tgz#09d342ce0ab6087be679e953a1d7c530efa1138e"
   dependencies:
     lodash "^4.2.0"
     prop-types "^15.5.7"
