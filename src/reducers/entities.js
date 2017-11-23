@@ -57,7 +57,7 @@ type Action =
   | AsyncTasksAction;
 
 // Updates an entity cache in response to any action with entities.
-const entities = (
+const entities: (State, Action) => State = (
   state: State = {
     businesses: {},
     clients: {},
@@ -73,16 +73,16 @@ const entities = (
 ): State => {
   // when updating, merging does not work. Instead we assign the updated entity
   if (action.type && action.type.match(/^UPDATE_[A-Z]+_SUCCESS/)) {
-    let newState = { ...state };
+    let newState: State = { ...state };
     if (action.payload && action.payload.entities) {
       for (var entity of Object.keys(action.payload.entities)) {
-        for (var id of Object.keys(action.payload.entities[entity])) {
+        for (var id: number of Object.keys(action.payload.entities[entity])) {
           try {
             newState[entity][id] = assign(
               {},
               action.payload.entities[entity][id]
             );
-          } catch (e) {
+          } catch (e: TypeError) {
             if (e instanceof TypeError) {
               newState[entity] = assign(
                 {}[id],
