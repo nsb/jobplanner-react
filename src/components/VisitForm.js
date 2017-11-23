@@ -233,7 +233,7 @@ let SelectingFormValuesVisitForm = reduxForm({
 })(VisitForm);
 
 const selector = formValueSelector("visit");
-SelectingFormValuesVisitForm = connect(state => {
+SelectingFormValuesVisitForm = connect((state): * => {
   const anytime: boolean = selector(state, "anytime");
   return {
     anytime

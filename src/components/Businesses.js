@@ -111,7 +111,7 @@ class Businesses extends Component<Props, State> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: { history: { push: Function } }
-) => {
+): Props => {
   const { businesses, entities } = state;
 
   return {

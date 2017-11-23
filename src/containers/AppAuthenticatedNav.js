@@ -35,11 +35,15 @@ class AppAuthenticatedNav extends Component<Props> {
 
     return (
       <Split priority={priority} flex="right" onResponsive={this.onResponsive}>
-        {this.props.navActive
-          ? <NavSidebar toggleNav={this.toggleNav} business={business} />
-          : null}
+        {this.props.navActive ? (
+          <NavSidebar toggleNav={this.toggleNav} business={business} />
+        ) : null}
         <Switch>
-          <Route exact path="/:businessId/calendar" component={CalendarContainer} />
+          <Route
+            exact
+            path="/:businessId/calendar"
+            component={CalendarContainer}
+          />
           <Route exact path="/:businessId/clients/add" component={ClientAdd} />
           <Route
             exact
@@ -88,4 +92,6 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(AppAuthenticatedNav);
+export default connect(mapStateToProps, (dispatch: Dispatch) => ({
+  dispatch: dispatch
+}))(AppAuthenticatedNav);

@@ -120,9 +120,10 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     match: { params: { businessId: number, jobId: number } },
-    history: { push: string => void }
+    history: { push: string => void },
+    dispatch: Dispatch
   }
-) => {
+): Props => {
   const { auth, entities, jobs, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
@@ -141,6 +142,7 @@ const mapStateToProps = (
         job.line_items.map(
           lineItem => ensureState(entities).lineItems[lineItem]
         ),
+    dispatch: ownProps.dispatch,
     job,
     jobId
   };

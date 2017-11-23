@@ -53,7 +53,7 @@ type OwnProps = {
   dispatch: Dispatch
 };
 
-const mapStateToProps = (state: ReduxState, ownProps: OwnProps) => {
+const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
   const { auth, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 

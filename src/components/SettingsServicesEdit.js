@@ -33,7 +33,7 @@ const mapStateToProps = (
     business: Business,
     dispatch: Dispatch
   }
-) => ({
+): Props => ({
   token: auth.token,
   push: ownProps.history.push,
   business: ownProps.business,

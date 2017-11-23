@@ -31,13 +31,15 @@ const mapStateToProps = (
   ownProps: {
     history: { push: string => void },
     business: Business,
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    onClose: Function
   }
-) => ({
+): Props => ({
   token: auth.token,
   push: ownProps.history.push,
   business: ownProps.business,
-  dispatch: ownProps.dispatch
+  dispatch: ownProps.dispatch,
+  onClose: ownProps.onClose
 });
 
 export default connect(mapStateToProps)(EmployeesEdit);
