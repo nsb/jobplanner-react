@@ -4,11 +4,9 @@ import { connect } from "react-redux";
 import VisitListContainer from "../components/VisitListContainer";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
-import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { AsyncTask, AsyncTaskState } from "../actions/asynctasks";
 import { ensureState } from "redux-optimistic-ui";
-import { fetchAsyncTask } from "../actions/asynctasks";
 import asyncTasksApi from "../api";
 
 type Props = {
@@ -30,7 +28,7 @@ class VisitAsyncTask extends Component<Props, State> {
   };
 
   componentDidMount() {
-    const { token, job, dispatch } = this.props;
+    const { token, job } = this.props;
     if (token) {
       this.intervalId = setInterval(() => {
         this.fetchAsyncTask(
@@ -54,7 +52,7 @@ class VisitAsyncTask extends Component<Props, State> {
   }
 
   render() {
-    const { job, isFetching, task } = this.props;
+    const { job } = this.props;
     if (!this.state.taskState) {
       return <div>Fetching</div>;
     } else if (this.state.taskState === "PENDING") {

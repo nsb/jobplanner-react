@@ -71,7 +71,7 @@ const mapStateToProps = (
     job: Job
   }
 ): Props => {
-  const { auth, visits, asyncTasks } = state;
+  const { auth, visits } = state;
 
   return {
     job: ownProps.job,
