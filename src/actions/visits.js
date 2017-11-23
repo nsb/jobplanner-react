@@ -104,6 +104,10 @@ type UpdateVisitFailureAction = {
   error: string
 };
 
+type ResetVisitsAction = {
+  type: typeof RESET_VISITS
+};
+
 export type Action =
   | FetchVisitsAction
   | FetchVisitsSuccessAction
@@ -113,7 +117,8 @@ export type Action =
   | CreateVisitFailureAction
   | UpdateVisitAction
   | UpdateVisitSuccessAction
-  | UpdateVisitFailureAction;
+  | UpdateVisitFailureAction
+  | ResetVisitsAction;
 
 const parse = (visit): Visit => {
   return merge({}, visit, {
@@ -230,7 +235,7 @@ export const createVisit = (
         return coercedVisit;
       })
       .catch((error: string) => {
-        dispatch(createVisitError(error))
+        dispatch(createVisitError(error));
         addError({
           text: "An error occurred"
         });

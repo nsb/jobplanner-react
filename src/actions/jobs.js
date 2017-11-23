@@ -50,7 +50,7 @@ export type Job = {
   ends: Date,
   anytime: boolean,
   closed: boolean,
-  schedule_visits_task: number
+  schedule_visits_task: ?number
 };
 
 export type JobsMap = { [id: number]: Job };
@@ -365,6 +365,7 @@ export const updateJob = (job: Job, token: string): ThunkAction => {
       .then((responseJob: Job) => {
         const coercedJob = parse(responseJob);
         dispatch(updateJobSuccess(coercedJob));
+        dispatch({ type: "RESET_VISITS" });
         history.push(`/${job.business}/jobs/${job.id}`);
         addSuccess({
           text: "Saved"

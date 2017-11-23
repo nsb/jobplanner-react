@@ -1,26 +1,26 @@
 // @flow
-import {combineReducers} from 'redux';
-import {union} from 'lodash/array';
-import type {Action} from '../actions/visits';
+import { combineReducers } from "redux";
+import { union } from "lodash/array";
+import type { Action } from "../actions/visits";
 
 const isFetching = (state: boolean = true, action: Action): boolean => {
   switch (action.type) {
-    case 'FETCH_VISITS':
+    case "FETCH_VISITS":
       return true;
 
-    case 'FETCH_VISITS_SUCCESS':
+    case "FETCH_VISITS_SUCCESS":
       return false;
 
-    case 'FETCH_VISITS_FAILURE':
+    case "FETCH_VISITS_FAILURE":
       return false;
 
-    case 'UPDATE_VISIT':
+    case "UPDATE_VISIT":
       return true;
 
-    case 'UPDATE_VISIT_SUCCESS':
+    case "UPDATE_VISIT_SUCCESS":
       return false;
 
-    case 'UPDATE_VISIT_FAILURE':
+    case "UPDATE_VISIT_FAILURE":
       return false;
 
     default:
@@ -48,13 +48,12 @@ const next = (state: ?string = null, action: Action): ?string => {
   }
 };
 
-
 const result = (state: Array<number> = [], action: Action): Array<number> => {
   switch (action.type) {
-    case 'CREATE_VISIT_SUCCESS':
+    case "CREATE_VISIT_SUCCESS":
       return [...state, action.payload.id];
 
-    case 'FETCH_VISITS_SUCCESS':
+    case "FETCH_VISITS_SUCCESS":
       if (action.payload && action.payload.result) {
         return union(state, action.payload.result);
       } else {
@@ -68,6 +67,9 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
         return state;
       }
 
+    case "RESET_VISITS":
+      return [];
+
     default:
       return state;
   }
@@ -77,5 +79,5 @@ export default combineReducers({
   isFetching,
   count,
   next,
-  result,
+  result
 });

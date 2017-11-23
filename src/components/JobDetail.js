@@ -18,7 +18,7 @@ import MoreIcon from "grommet/components/icons/base/More";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
-import VisitListContainer from "../components/VisitListContainer";
+import VisitAsyncTask from "../components/VisitAsyncTask";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
@@ -185,7 +185,7 @@ class JobDetail extends Component<Props, State> {
                     Visits
                   </Heading>
                 </Box>
-                <VisitListContainer job={job} />
+                <VisitAsyncTask job={job} />
               </Section>
             </Box>
           </Article>
