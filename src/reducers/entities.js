@@ -4,9 +4,21 @@ import type {
   BusinessesMap
 } from "../actions/businesses";
 import type { Action as ClientsAction, ClientsMap } from "../actions/clients";
-import type { PropertiesMap } from "../actions/properties";
+import type {
+  Action as PropertiesAction,
+  PropertiesMap
+} from "../actions/properties";
 import type { Action as JobsAction, JobsMap } from "../actions/jobs";
 import type { Action as VisitsAction, VisitsMap } from "../actions/visits";
+import type {
+  Action as ServicesAction,
+  ServicesMap
+} from "../actions/services";
+import type {
+  Action as EmployeesAction,
+  EmployeesMap
+} from "../actions/employees";
+import type { LineItemsMap } from "../actions/lineitems";
 import type {
   Action as AsyncTasksAction,
   AsyncTasksMap
@@ -17,6 +29,9 @@ type ClientsState = ClientsMap;
 type PropertiesState = PropertiesMap;
 type JobsState = JobsMap;
 type VisitsState = VisitsMap;
+type ServicesState = ServicesMap;
+type EmployeesState = EmployeesMap;
+type LineItemsState = LineItemsMap;
 type AsyncTaskState = AsyncTasksMap;
 
 export type State = {
@@ -25,14 +40,20 @@ export type State = {
   properties: PropertiesState,
   jobs: JobsState,
   visits: VisitsState,
+  services: ServicesState,
+  employees: EmployeesState,
+  lineItems: LineItemsState,
   asyncTasks: AsyncTaskState
 };
 
 type Action =
   | BusinessesAction
   | ClientsAction
+  | PropertiesAction
   | JobsAction
   | VisitsAction
+  | ServicesAction
+  | EmployeesAction
   | AsyncTasksAction;
 
 // Updates an entity cache in response to any action with entities.
@@ -50,7 +71,7 @@ const entities = (
   },
   action: Action
 ): State => {
-  // when updating merging does not work. Instead we assign the updated entity
+  // when updating, merging does not work. Instead we assign the updated entity
   if (action.type && action.type.match(/^UPDATE_[A-Z]+_SUCCESS/)) {
     let newState = { ...state };
     if (action.payload && action.payload.entities) {
