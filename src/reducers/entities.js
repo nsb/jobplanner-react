@@ -82,7 +82,7 @@ const entities: (State, Action) => State = (
               {},
               action.payload.entities[entity][id]
             );
-          } catch (e: TypeError) {
+          } catch (e) {
             if (e instanceof TypeError) {
               newState[entity] = assign(
                 {}[id],
