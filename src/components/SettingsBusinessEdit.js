@@ -42,14 +42,14 @@ class BusinessEdit extends Component<Props> {
 const mapStateToProps = (
   { auth }: ReduxState,
   ownProps: {
-    history: { push: string => void },
     business: Business,
+    onClose: Function,
     dispatch: Dispatch
   }
-) => ({
+): Props => ({
   token: auth.token,
-  push: ownProps.history.push,
   business: ownProps.business,
+  onClose: ownProps.onClose,
   dispatch: ownProps.dispatch
 });
 
