@@ -20,6 +20,7 @@ import EmployeeForm from "./SettingsEmployeeForm";
 type Props = {
   business: Business,
   employees: Array<Employee>,
+  onClose: Function,
   dispatch: Dispatch,
   token: string
 };
@@ -95,20 +96,21 @@ const mapStateToProps = (
   { auth, employees, entities }: ReduxState,
   ownProps: {
     business: Business,
+    dispatch: Dispatch
   }
-): * => ({
+) => ({
   token: auth.token,
   business: ownProps.business,
   employees: employees.result
-    .map((Id: number): Array<Employee> => {
+    .map((Id: number) => {
       return ensureState(entities).employees[Id];
     })
-    .filter((employee): boolean => {
+    .filter(employee => {
       return employee.businesses.indexOf(ownProps.business.id) > -1
-        ? true
+        ? employee
         : false;
     }),
+  dispatch: ownProps.dispatch
 });
-
 
 export default connect(mapStateToProps)(EmployeeList);

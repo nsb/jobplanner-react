@@ -4,12 +4,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layer from "grommet/components/Layer";
 import type { Business } from "../actions/businesses";
+import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import ServiceList from "./SettingsServiceList";
 
 type Props = {
   business: Business,
   onClose: Function,
+  dispatch: Dispatch,
   token: string
 };
 
@@ -27,13 +29,15 @@ class ServicesEdit extends Component<Props> {
 const mapStateToProps = (
   { auth }: ReduxState,
   ownProps: {
+    history: { push: string => void },
     business: Business,
-    onClose: Function
+    dispatch: Dispatch
   }
 ): Props => ({
   token: auth.token,
+  push: ownProps.history.push,
   business: ownProps.business,
-  onClose: ownProps.onClose
+  dispatch: ownProps.dispatch
 });
 
 export default connect(mapStateToProps)(ServicesEdit);

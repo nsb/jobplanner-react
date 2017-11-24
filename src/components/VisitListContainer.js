@@ -1,12 +1,11 @@
 // @flow
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import moment from "moment";
 import { fetchVisits } from "../actions/visits";
 import VisitList from "./VisitList";
 import getVisitsByJob from "../selectors/visitSelectors";
-import type { Dispatch, ThunkAction } from "../types/Store";
+import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
@@ -17,8 +16,8 @@ type Props = {
   job: Job,
   token: ?string,
   isFetching: boolean,
-  totalCount: number,
-  fetchVisits: (string, Object) => ThunkAction
+  dispatch: Dispatch,
+  totalCount: number
 };
 
 type State = {
@@ -49,15 +48,17 @@ class VisitListContainer extends Component<Props, State> {
   }
 
   onMore = () => {
-    const { job, token } = this.props;
+    const { job, token, dispatch } = this.props;
     if (token) {
-      fetchVisits(token, {
-        job: job.id,
-        ordering: "begins",
-        begins__gt: moment().format("YYYY-MM-DDT00:00"),
-        limit: 10,
-        offset: this.state.offset
-      });
+      dispatch(
+        fetchVisits(token, {
+          job: job.id,
+          ordering: "begins",
+          begins__gt: moment().format("YYYY-MM-DDT00:00"),
+          limit: 10,
+          offset: this.state.offset
+        })
+      );
       this.setState({ offset: this.state.offset + this.state.limit });
     }
   };
@@ -66,9 +67,10 @@ class VisitListContainer extends Component<Props, State> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
+    dispatch: Dispatch,
     job: Job
   }
-) => {
+): Props => {
   const { auth, visits } = state;
 
   return {
@@ -76,16 +78,9 @@ const mapStateToProps = (
     visits: getVisitsByJob(state, ownProps),
     totalCount: ensureState(visits).count,
     isFetching: ensureState(visits).isFetching,
-    token: auth.token
+    token: auth.token,
+    dispatch: ownProps.dispatch
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      fetchVisits
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(VisitListContainer);
+export default connect(mapStateToProps)(VisitListContainer);

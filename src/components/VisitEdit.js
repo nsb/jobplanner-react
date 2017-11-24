@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { visitSchemaDenormalize } from "../schemas";
@@ -14,6 +13,7 @@ import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 
 export type Props = {
+  dispatch: Dispatch,
   visit: Visit,
   employees: Array<Employee>,
   assigned: Array<Employee>,
@@ -40,21 +40,24 @@ class VisitEdit extends Component<Props> {
   }
 
   handleSubmit = values => {
-    const { token, toggleEdit } = this.props;
-    updateVisit(
-      {
-        ...values,
-        assigned: values.assigned.map(v => v.value)
-      },
-      token || ""
+    const { token, dispatch, toggleEdit } = this.props;
+    dispatch(
+      updateVisit(
+        {
+          ...values,
+          assigned: values.assigned.map(v => v.value)
+        },
+        token || ""
+      )
     );
-    toggleEdit();
+    toggleEdit()
   };
 }
 
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
+    dispatch: Dispatch,
     visit: Visit,
     toggleEdit: Function
   }
@@ -63,6 +66,7 @@ const mapStateToProps = (
 
   return {
     token: auth.token,
+    dispatch: ownProps.dispatch,
     employees: employees.result
       .map((Id: number) => {
         return ensureState(entities).employees[Id];
@@ -84,12 +88,4 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      updateVisit
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(VisitEdit);
+export default connect(mapStateToProps)(VisitEdit);

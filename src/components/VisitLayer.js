@@ -11,6 +11,7 @@ import type { LineItem } from "../actions/lineitems";
 export type Props = {
   visit: Visit,
   property: Property,
+  dispatch: Dispatch,
   assigned: Array<Object>,
   lineItems: Array<LineItem>,
   onClose: Function

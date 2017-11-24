@@ -2,7 +2,6 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
@@ -20,10 +19,11 @@ import { ensureState } from "redux-optimistic-ui";
 import type { State as ReduxState } from "../types/State";
 import type { Job } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
-import type { Dispatch } from '../types/Store'
+import type { Dispatch } from "../types/Store";
 
 type Props = {
   business: Business,
+  dispatch: Dispatch,
   jobs: Array<Job>,
   token: string,
   isFetching: boolean,
@@ -41,9 +41,9 @@ class JobList extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { business, jobs, token } = this.props;
+    const { business, jobs, token, dispatch } = this.props;
     if (!jobs.length) {
-      fetchJobs(token, { business: business.id });
+      dispatch(fetchJobs(token, { business: business.id }));
     }
   }
 
@@ -132,6 +132,7 @@ const mapStateToProps = (
   ownProps: {
     businessId: number,
     push: string => void,
+    dispatch: Dispatch
   }
 ): Props => {
   const { entities, jobs, auth } = state;
@@ -144,15 +145,8 @@ const mapStateToProps = (
     isFetching: jobs.isFetching,
     token: auth.token,
     push: ownProps.push,
+    dispatch: ownProps.dispatch
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      fetchJobs
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(JobList);
+export default connect(mapStateToProps)(JobList);

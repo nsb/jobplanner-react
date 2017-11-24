@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import VisitListContainer from "../components/VisitListContainer";
+import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Job } from "../actions/jobs";
 import type { AsyncTask, AsyncTaskState } from "../actions/asynctasks";
@@ -13,6 +14,7 @@ type Props = {
   task: ?AsyncTask,
   token: ?string,
   isFetching: boolean,
+  dispatch: Dispatch
 };
 
 type State = {
@@ -70,6 +72,7 @@ class VisitAsyncTask extends Component<Props, State> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
+    dispatch: Dispatch,
     job: Job
   }
 ): Props => {
@@ -80,6 +83,7 @@ const mapStateToProps = (
     job: ownProps.job,
     isFetching: asyncTasks.isFetching,
     token: auth.token,
+    dispatch: ownProps.dispatch
   };
 };
 

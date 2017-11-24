@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import { bindActionCreators } from "redux";
 import {connect} from 'react-redux';
 import {withRouter, Redirect} from 'react-router-dom';
 import LoginForm from 'grommet/components/LoginForm';
@@ -11,18 +10,18 @@ import Footer from 'grommet/components/Footer';
 import logo from '../logo.svg';
 import {login} from '../actions/auth';
 import type {Credentials} from '../actions/auth';
-import type { Dispatch, ThunkAction } from '../types/Store'
+import type {Dispatch} from '../types/Store';
 import type {State} from '../types/State';
 
 type Props = {
   loginBusy: boolean,
   isAuthenticated: boolean,
-  login: (Credentials) => ThunkAction
+  dispatch: Dispatch
 };
 
 class Login extends Component<Props> {
   onSubmit = (credentials: Credentials) => {
-    this.props.login(credentials);
+    this.props.dispatch(login(credentials));
   };
 
   render() {
@@ -65,12 +64,4 @@ const mapStateToProps = (state: State) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      login
-    },
-    dispatch
-  );
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(mapStateToProps)(Login));

@@ -1,16 +1,14 @@
 // @flow
 
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Article from "grommet/components/Article";
 import JobForm from "./JobForm";
 import { createJob } from "../actions/jobs";
-import type { Job } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
 import type { State as ReduxState } from "../types/State";
-import type { Dispatch, ThunkAction } from "../types/Store";
+import type { Dispatch } from "../types/Store";
 import type { Client } from "../actions/clients";
 import { ensureState } from "redux-optimistic-ui";
 
@@ -18,9 +16,9 @@ type Props = {
   token: string,
   business: Business,
   clients: Array<Client>,
+  dispatch: Dispatch,
   push: string => void,
-  employees: Array<Employee>,
-  createJob: (Business, Job, string) => ThunkAction
+  employees: Array<Employee>
 };
 
 type State = {
@@ -37,6 +35,7 @@ class JobsAdd extends Component<Props, State> {
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
+
         <JobForm
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
@@ -55,7 +54,7 @@ class JobsAdd extends Component<Props, State> {
     const { client: { value: clientId } } = values;
     const { token, business } = this.props;
 
-    createJob(
+    let action = createJob(
       business,
       {
         ...values,
@@ -64,13 +63,14 @@ class JobsAdd extends Component<Props, State> {
       },
       token
     );
+    this.props.dispatch(action);
   };
 
   onClose = () => {
     const { business, push } = this.props;
     push(`/${business.id}/jobs`);
   };
-}
+};
 
 const mapStateToProps = (
   state: ReduxState,
@@ -91,17 +91,11 @@ const mapStateToProps = (
         return ensureState(entities).employees[Id];
       })
       .filter(employee => {
-        return employee.businesses.indexOf(businessId) > -1 ? employee : false;
-      })
+        return employee.businesses.indexOf(businessId) > -1
+          ? employee
+          : false;
+      }),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      createJob
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(JobsAdd);
+export default connect(mapStateToProps)(JobsAdd);

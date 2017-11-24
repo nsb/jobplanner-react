@@ -1,6 +1,5 @@
 // @flow
 import React, {Component} from 'react';
-import { bindActionCreators } from "redux";
 import {connect} from 'react-redux';
 import Menu from 'grommet/components/Menu';
 import Anchor from 'grommet/components/Anchor';
@@ -9,21 +8,17 @@ import Heading from 'grommet/components/Heading';
 import UserIcon from 'grommet/components/icons/base/User';
 import {logout} from '../actions/auth';
 import type { User } from '../actions/users'
-import type { Dispatch, ThunkAction } from '../types/Store'
+import type { Dispatch } from '../types/Store'
 import type { State } from '../types/State'
 
 type Props = {
   user: User,
   dropAlign: Object,
   colorIndex: string,
-  logout: () => ThunkAction
+  dispatch: Dispatch
 };
 
 class SessionMenu extends Component<Props> {
-  static defaultProps = {
-    dropAlign: {bottom: 'bottom'},
-    colorIndex: "neutral-1-a"
-  };
 
   render() {
     const {user, dropAlign, colorIndex} = this.props;
@@ -44,31 +39,16 @@ class SessionMenu extends Component<Props> {
   }
 
   onLogout = () => {
-    this.props.logout();
+    this.props.dispatch(logout());
   };
 }
 
-const mapStateToProps = (
-  state: State,
-  ownProps: {
-    dropAlign: Object,
-    colorIndex: string,
-  }) => {
+const mapStateToProps = (state: State) => {
   const {users} = state;
 
   return {
     user: users.me,
-    dropAlign: ownProps.dropAlign,
-    colorIndex: ownProps.colorIndex
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      logout
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(SessionMenu);
+export default connect(mapStateToProps)(SessionMenu);
