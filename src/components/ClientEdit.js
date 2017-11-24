@@ -67,7 +67,7 @@ const mapStateToProps = (
     history: { push: string => void },
     dispatch: Dispatch
   }
-) => {
+): * => {
   const { auth, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);

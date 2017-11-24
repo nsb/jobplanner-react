@@ -47,7 +47,7 @@ class ClientRemove extends Component<Props> {
 
 const mapStateToProps = (
   {auth}: State,
-) => ({
+): * => ({
   token: auth.token
 });
 

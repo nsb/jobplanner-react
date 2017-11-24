@@ -607,7 +607,7 @@ let SelectingFormValuesJobForm = reduxForm({
 
 // Decorate with connect to read form values
 const selector = formValueSelector("job"); // <-- same as form name
-SelectingFormValuesJobForm = connect(state => {
+SelectingFormValuesJobForm = connect((state): * => {
   // can select values individually
   const anytime: boolean = selector(state, "anytime");
   return {
