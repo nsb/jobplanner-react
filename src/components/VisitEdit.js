@@ -9,7 +9,7 @@ import { updateVisit } from "../actions/visits";
 import VisitForm from "./VisitForm";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
-import type { Dispatch, ThunkAction } from "../types/Store";
+import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 

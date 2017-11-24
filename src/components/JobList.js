@@ -20,7 +20,7 @@ import { ensureState } from "redux-optimistic-ui";
 import type { State as ReduxState } from "../types/State";
 import type { Job } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
-import type { Dispatch, ThunkAction } from '../types/Store'
+import type { Dispatch } from '../types/Store'
 
 type Props = {
   business: Business,

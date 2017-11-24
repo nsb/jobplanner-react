@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import VisitListContainer from "../components/VisitListContainer";
-import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Job } from "../actions/jobs";
 import type { AsyncTask, AsyncTaskState } from "../actions/asynctasks";

@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 import type { Service } from "../actions/services";
-import type { Dispatch, ThunkAction } from "../types/Store";
+import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { createService, updateService } from "../actions/services";
 import Box from "grommet/components/Box";
