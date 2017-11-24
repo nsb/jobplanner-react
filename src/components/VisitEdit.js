@@ -18,13 +18,7 @@ export type Props = {
   employees: Array<Employee>,
   assigned: Array<Employee>,
   token: string,
-  toggleEdit: Function,
-  updateVisit: (
-    { id: number, begins: Date, ends: Date, anytime: boolean },
-    string,
-    boolean,
-    boolean
-  ) => ThunkAction
+  toggleEdit: Function
 };
 
 class VisitEdit extends Component<Props> {

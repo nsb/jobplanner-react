@@ -2,11 +2,12 @@
 
 import { merge } from "lodash/object";
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 import type { Service } from "../actions/services";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { createService, updateService } from "../actions/services";
 import Box from "grommet/components/Box";
@@ -20,8 +21,6 @@ import ServiceForm from "./SettingsServiceForm";
 type Props = {
   business: Business,
   services: Array<Service>,
-  onClose: Function,
-  dispatch: Dispatch,
   token: string
 };
 
@@ -77,13 +76,11 @@ class ServiceList extends Component<Props, State> {
   };
 
   onSubmit = (service: Service) => {
-    const { business, dispatch, token } = this.props;
+    const { business, token } = this.props;
     if (service.id) {
-      dispatch(updateService(service, token));
+      updateService(service, token);
     } else {
-      dispatch(
-        createService(merge({}, { business: business.id }, service), token)
-      );
+      createService(merge({}, { business: business.id }, service), token);
       this.onActive();
     }
   };
@@ -92,8 +89,7 @@ class ServiceList extends Component<Props, State> {
 const mapStateToProps = (
   { auth, services, entities }: ReduxState,
   ownProps: {
-    business: Business,
-    dispatch: Dispatch
+    business: Business
   }
 ): Props => ({
   token: auth.token,
@@ -104,8 +100,16 @@ const mapStateToProps = (
     })
     .filter(service => {
       return service.business === ownProps.business.id ? service : false;
-    }),
-  dispatch: ownProps.dispatch
+    })
 });
 
-export default connect(mapStateToProps)(ServiceList);
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      createService,
+      updateService
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(ServiceList);
