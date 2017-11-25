@@ -43,7 +43,7 @@ class SessionMenu extends Component<Props> {
   };
 }
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: State): * => {
   const {users} = state;
 
   return {

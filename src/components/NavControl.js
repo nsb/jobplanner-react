@@ -36,7 +36,7 @@ class NavControl extends Component<Props> {
   }
 }
 
-let select = (state: State) => ({
+let select = (state: State): * => ({
   nav: state.nav,
 });
 

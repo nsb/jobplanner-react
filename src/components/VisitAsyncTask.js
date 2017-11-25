@@ -31,12 +31,11 @@ class VisitAsyncTask extends Component<Props, State> {
     const { token, job } = this.props;
     if (token) {
       this.intervalId = setInterval(() => {
-        this.fetchAsyncTask(
-          job.schedule_visits_task,
-          token
-        ).then((responseAsyncTask: AsyncTask) => {
-          this.setState({ taskState: responseAsyncTask.state });
-        });
+        this.fetchAsyncTask(job.schedule_visits_task, token).then(
+          (responseAsyncTask: AsyncTask) => {
+            this.setState({ taskState: responseAsyncTask.state });
+          }
+        );
       }, 1000);
     }
   }
@@ -72,18 +71,16 @@ class VisitAsyncTask extends Component<Props, State> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    dispatch: Dispatch,
     job: Job
   }
-): Props => {
+): * => {
   const { auth, asyncTasks, entities } = state;
 
   return {
     task: ensureState(entities).asyncTasks[ownProps.job.schedule_visits_task],
     job: ownProps.job,
     isFetching: asyncTasks.isFetching,
-    token: auth.token,
-    dispatch: ownProps.dispatch
+    token: auth.token
   };
 };
 

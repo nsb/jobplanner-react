@@ -57,16 +57,14 @@ class VisitEdit extends Component<Props> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    dispatch: Dispatch,
     visit: Visit,
     toggleEdit: Function
   }
-): Props => {
+): * => {
   const { auth, employees, entities } = state;
 
   return {
     token: auth.token,
-    dispatch: ownProps.dispatch,
     employees: employees.result
       .map((Id: number) => {
         return ensureState(entities).employees[Id];

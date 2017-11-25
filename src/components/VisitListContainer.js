@@ -67,10 +67,9 @@ class VisitListContainer extends Component<Props, State> {
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    dispatch: Dispatch,
     job: Job
   }
-): Props => {
+): * => {
   const { auth, visits } = state;
 
   return {
@@ -78,8 +77,7 @@ const mapStateToProps = (
     visits: getVisitsByJob(state, ownProps),
     totalCount: ensureState(visits).count,
     isFetching: ensureState(visits).isFetching,
-    token: auth.token,
-    dispatch: ownProps.dispatch
+    token: auth.token
   };
 };
 

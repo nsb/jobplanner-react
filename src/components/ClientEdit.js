@@ -19,7 +19,6 @@ type Props = {
   business: Business,
   client: Client,
   properties: PropertiesMap,
-  updateClient: (client: Client, token: string) => Promise<Client>,
   push: string => void,
   dispatch: Dispatch
 };
@@ -67,7 +66,7 @@ const mapStateToProps = (
     history: { push: string => void },
     dispatch: Dispatch
   }
-) => {
+): Props => {
   const { auth, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
@@ -81,7 +80,8 @@ const mapStateToProps = (
       ensureState(entities)
     ),
     properties: ensureState(entities).properties,
-    push: ownProps.history.push
+    push: ownProps.history.push,
+    dispatch: ownProps.dispatch
   };
 };
 

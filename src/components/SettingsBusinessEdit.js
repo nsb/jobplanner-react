@@ -46,7 +46,7 @@ const mapStateToProps = (
     business: Business,
     dispatch: Dispatch
   }
-) => ({
+): * => ({
   token: auth.token,
   push: ownProps.history.push,
   business: ownProps.business,

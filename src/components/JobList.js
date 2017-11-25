@@ -132,9 +132,8 @@ const mapStateToProps = (
   ownProps: {
     businessId: number,
     push: string => void,
-    dispatch: Dispatch
   }
-): Props => {
+): * => {
   const { entities, jobs, auth } = state;
 
   return {
@@ -145,7 +144,6 @@ const mapStateToProps = (
     isFetching: jobs.isFetching,
     token: auth.token,
     push: ownProps.push,
-    dispatch: ownProps.dispatch
   };
 };
 

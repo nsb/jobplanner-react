@@ -20,7 +20,6 @@ import ServiceForm from "./SettingsServiceForm";
 type Props = {
   business: Business,
   services: Array<Service>,
-  onClose: Function,
   dispatch: Dispatch,
   token: string
 };

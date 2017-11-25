@@ -17,10 +17,10 @@ type Props = {
 
 class ServicesEdit extends Component<Props> {
   render() {
-    const { onClose, business } = this.props;
+    const { onClose, business, dispatch } = this.props;
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <ServiceList business={business} />
+        <ServiceList business={business} dispatch={dispatch} />
       </Layer>
     );
   }
@@ -29,15 +29,15 @@ class ServicesEdit extends Component<Props> {
 const mapStateToProps = (
   { auth }: ReduxState,
   ownProps: {
-    history: { push: string => void },
     business: Business,
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    onClose: Function
   }
 ): Props => ({
   token: auth.token,
-  push: ownProps.history.push,
   business: ownProps.business,
-  dispatch: ownProps.dispatch
+  dispatch: ownProps.dispatch,
+  onClose: ownProps.onClose
 });
 
 export default connect(mapStateToProps)(ServicesEdit);
