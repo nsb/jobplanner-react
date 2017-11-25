@@ -39,7 +39,7 @@ class ClientListContainer extends Component<Props, State> {
   componentDidUpdate(prevProps, prevState) {
     const { dispatch } = this.props;
 
-    if (prevState.searchText != this.state.searchText) {
+    if (prevState.searchText !== this.state.searchText) {
       dispatch({ type: "RESET_CLIENTS" });
       this.onMore();
     }
@@ -47,17 +47,6 @@ class ClientListContainer extends Component<Props, State> {
 
   render() {
     const { business, clients, isFetching, totalCount } = this.props;
-
-    // const filteredClients = clients.filter(client => {
-    //   const sText = this.state.searchText.toLowerCase();
-    //   if (sText) {
-    //     return `${client.first_name} ${client.last_name}`
-    //       .toLowerCase()
-    //       .includes(sText);
-    //   } else {
-    //     return true;
-    //   }
-    // });
 
     return (
       <ClientList
