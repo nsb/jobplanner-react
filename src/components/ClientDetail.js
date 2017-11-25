@@ -11,19 +11,23 @@ import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
 import Columns from "grommet/components/Columns";
 import MoreIcon from "grommet/components/icons/base/More";
+import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import ClientActions from "../components/ClientActions";
-import JobList from "../components/JobList";
+import List from "grommet/components/List";
+import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import JobListItem from "./JobListItem";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Property } from "../actions/properties";
-import type { PropertiesMap } from "../actions/properties";
+import type { Job } from "../actions/jobs";
 import type { Responsive } from "../actions/nav";
 
 type Props = {
   business: Business,
   client: Client,
-  properties: PropertiesMap,
+  properties: Array<Property>,
+  jobs: Array<Job>,
   responsive: Responsive,
   onEdit: Function,
   onResponsive: Function,
@@ -44,10 +48,10 @@ class ClientDetail extends Component<Props, State> {
       business,
       client,
       properties,
+      jobs,
       responsive,
       onEdit,
       onResponsive,
-      push
     } = this.props;
 
     let onSidebarClose;
@@ -104,9 +108,7 @@ class ClientDetail extends Component<Props, State> {
               <Columns>
                 {properties.map((property: Property, index: number) => {
                   return (
-                    <Box
-                      margin={{ horizontal: "none", vertical: "small" }}
-                    >
+                    <Box margin={{ horizontal: "none", vertical: "small" }}>
                       <div>{property.address1}</div>
                       <div>{property.address2}</div>
                       <div>{property.zip_code}</div>
@@ -116,8 +118,37 @@ class ClientDetail extends Component<Props, State> {
                 })}
               </Columns>
             </Section>
+
             <Section pad="medium" full="horizontal">
-              <JobList businessId={business.id} push={push} />
+              <Heading tag="h4" margin="none">
+                Job
+              </Heading>
+              <List>
+                {jobs.map((job, index) => {
+                  return (
+                    <JobListItem
+                      key={job.id}
+                      job={job}
+                      index={index}
+                      onClick={(e: SyntheticEvent<>) => this.onClick(e, job)}
+                    />
+                  );
+                })}
+              </List>
+              <ListPlaceholder
+                filteredTotal={jobs.length}
+                unfilteredTotal={jobs.length}
+                emptyMessage="no jobs."
+                addControl={
+                  <Button
+                    icon={<AddIcon />}
+                    label="Add job"
+                    primary={true}
+                    a11yTitle={`Add job`}
+                    path={`/${business.id}/jobs/add`}
+                  />
+                }
+              />
             </Section>
           </Article>
         </div>
@@ -125,6 +156,11 @@ class ClientDetail extends Component<Props, State> {
       </Split>
     );
   }
+
+  onClick = (e: SyntheticEvent<>, job: Job) => {
+    const { push, business } = this.props;
+    push(`/${business.id}/jobs/${job.id}`);
+  };
 
   _onToggleSidebar = () => {
     this.setState({
