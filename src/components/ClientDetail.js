@@ -13,6 +13,7 @@ import Columns from "grommet/components/Columns";
 import MoreIcon from "grommet/components/icons/base/More";
 import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
+import Spinning from "grommet/components/icons/Spinning";
 import ClientActions from "../components/ClientActions";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
@@ -23,15 +24,19 @@ import type { Property } from "../actions/properties";
 import type { Job } from "../actions/jobs";
 import type { Responsive } from "../actions/nav";
 
-type Props = {
+export type Props = {
   business: Business,
   client: Client,
   properties: Array<Property>,
   jobs: Array<Job>,
+  clientId: number,
+  token: ?string,
+  isFetching: boolean,
+  push: string => void,
   responsive: Responsive,
-  onEdit: Function,
-  onResponsive: Function,
-  push: string => void
+  fetchClient: Function,
+  fetchJobs: Function,
+  navResponsive: Function
 };
 
 type State = {
@@ -43,6 +48,23 @@ class ClientDetail extends Component<Props, State> {
     showSidebarWhenSingle: false
   };
 
+  componentDidMount() {
+    const {
+      client,
+      jobs,
+      clientId,
+      token,
+      fetchClient,
+      fetchJobs
+    } = this.props;
+    if (!client && token) {
+      fetchClient(token, clientId);
+    }
+    if (!jobs.length && token) {
+      fetchJobs(token, { client: clientId });
+    }
+  }
+
   render() {
     const {
       business,
@@ -50,8 +72,7 @@ class ClientDetail extends Component<Props, State> {
       properties,
       jobs,
       responsive,
-      onEdit,
-      onResponsive
+      isFetching
     } = this.props;
 
     let onSidebarClose;
@@ -66,114 +87,148 @@ class ClientDetail extends Component<Props, State> {
 
     let sidebar;
     sidebar = (
-      <ClientActions client={client} onClose={onSidebarClose} onEdit={onEdit} />
+      <ClientActions
+        client={client}
+        onClose={onSidebarClose}
+        onEdit={this.onEdit}
+      />
     );
 
-    return (
-      <Split
-        flex="left"
-        separator={true}
-        priority={this.state.showSidebarWhenSingle ? "right" : "left"}
-        onResponsive={onResponsive}
-      >
-        <div>
-          <Header
-            pad={{ horizontal: "small", vertical: "medium" }}
-            justify="between"
-            size="large"
-            colorIndex="light-2"
+    if (isFetching) {
+      return (
+        <Article scrollStep={true} controls={true}>
+          <Section
+            full={true}
+            colorIndex="dark"
+            pad="large"
+            justify="center"
+            align="center"
           >
-            <Box
-              direction="row"
-              align="center"
-              pad={{ between: "small" }}
-              responsive={false}
+            <Spinning />
+          </Section>
+        </Article>
+      );
+    } else {
+      return (
+        <Split
+          flex="left"
+          separator={true}
+          priority={this.state.showSidebarWhenSingle ? "right" : "left"}
+          onResponsive={this.onResponsive}
+        >
+          <div>
+            <Header
+              pad={{ horizontal: "small", vertical: "medium" }}
+              justify="between"
+              size="large"
+              colorIndex="light-2"
             >
-              <Anchor
-                icon={<LinkPreviousIcon />}
-                path={`/${business.id}/clients`}
-                a11yTitle="Return"
-              />
-              <Heading tag="h3" margin="none">
-                <strong>{`${client.first_name} ${client.last_name}`}</strong>
-              </Heading>
-            </Box>
-            {sidebarControl}
-          </Header>
-          <Article pad="none" align="start" primary={true}>
-            <Section pad="medium" full="horizontal">
-              <Heading tag="h4" margin="none">
-                Contact
-              </Heading>
-              <Columns>
-                <Box margin={{ horizontal: "none", vertical: "small" }}>
-                  <div>{client.phone}</div>
-                  <div>
-                    <Anchor path={`mailto:${client.email}`}>
-                      {client.email}
-                    </Anchor>
-                  </div>
-                </Box>
-              </Columns>
-            </Section>
-
-            <Section pad="medium" full="horizontal">
-              <Heading tag="h4" margin="none">
-                Properties
-              </Heading>
-              <Columns>
-                {properties.map((property: Property, index: number) => {
-                  return (
-                    <Box margin={{ horizontal: "none", vertical: "small" }}>
-                      <div>{property.address1}</div>
-                      <div>{property.address2}</div>
-                      <div>{property.zip_code}</div>
-                      <div>{property.country}</div>
-                    </Box>
-                  );
-                })}
-              </Columns>
-            </Section>
-
-            <Section full="horizontal">
-              <Box pad={{ horizontal: "medium", vertical: "none" }}>
-                <Heading tag="h4" pad="medium" margin="medium">
-                  Jobs
+              <Box
+                direction="row"
+                align="center"
+                pad={{ between: "small" }}
+                responsive={false}
+              >
+                <Anchor
+                  icon={<LinkPreviousIcon />}
+                  path={`/${business.id}/clients`}
+                  a11yTitle="Return"
+                />
+                <Heading tag="h3" margin="none">
+                  <strong>{`${client.first_name} ${client.last_name}`}</strong>
                 </Heading>
               </Box>
-              <List>
-                {jobs.map((job, index) => {
-                  return (
-                    <JobListItem
-                      key={job.id}
-                      job={job}
-                      index={index}
-                      onClick={(e: SyntheticEvent<>) => this.onClick(e, job)}
+              {sidebarControl}
+            </Header>
+            <Article pad="none" align="start" primary={true}>
+              <Section pad="medium" full="horizontal">
+                <Heading tag="h4" margin="none">
+                  Contact
+                </Heading>
+                <Columns>
+                  <Box margin={{ horizontal: "none", vertical: "small" }}>
+                    <div>{client.phone}</div>
+                    <div>
+                      <Anchor path={`mailto:${client.email}`}>
+                        {client.email}
+                      </Anchor>
+                    </div>
+                  </Box>
+                </Columns>
+              </Section>
+
+              <Section pad="medium" full="horizontal">
+                <Heading tag="h4" margin="none">
+                  Properties
+                </Heading>
+                <Columns>
+                  {properties.map((property: Property, index: number) => {
+                    return (
+                      <Box margin={{ horizontal: "none", vertical: "small" }}>
+                        <div>{property.address1}</div>
+                        <div>{property.address2}</div>
+                        <div>{property.zip_code}</div>
+                        <div>{property.country}</div>
+                      </Box>
+                    );
+                  })}
+                </Columns>
+              </Section>
+
+              <Section full="horizontal">
+                <Box pad={{ horizontal: "medium", vertical: "none" }}>
+                  <Heading tag="h4" pad="medium" margin="medium">
+                    Jobs
+                  </Heading>
+                </Box>
+                <List>
+                  {jobs.map((job, index) => {
+                    return (
+                      <JobListItem
+                        key={job.id}
+                        job={job}
+                        index={index}
+                        onClick={(e: SyntheticEvent<>) => this.onClick(e, job)}
+                      />
+                    );
+                  })}
+                </List>
+                <ListPlaceholder
+                  filteredTotal={jobs.length}
+                  unfilteredTotal={jobs.length}
+                  emptyMessage="no jobs."
+                  addControl={
+                    <Button
+                      icon={<AddIcon />}
+                      label="Add job"
+                      primary={true}
+                      a11yTitle={`Add job`}
+                      path={`/${business.id}/jobs/add`}
                     />
-                  );
-                })}
-              </List>
-              <ListPlaceholder
-                filteredTotal={jobs.length}
-                unfilteredTotal={jobs.length}
-                emptyMessage="no jobs."
-                addControl={
-                  <Button
-                    icon={<AddIcon />}
-                    label="Add job"
-                    primary={true}
-                    a11yTitle={`Add job`}
-                    path={`/${business.id}/jobs/add`}
-                  />
-                }
-              />
-            </Section>
-          </Article>
-        </div>
-        {sidebar}
-      </Split>
-    );
+                  }
+                />
+              </Section>
+            </Article>
+          </div>
+          {sidebar}
+        </Split>
+      );
+    }
   }
+
+  onResponsive = (responsive: Responsive) => {
+    this.props.navResponsive(responsive);
+  };
+
+  onClose = () => {
+    const { business, client, push } = this.props;
+    push(`/${business.id}/clients/${client.id}`);
+  };
+
+  onEdit = () => {
+    const { business, client, push } = this.props;
+    push(`/${business.id}/clients/${client.id}/edit`);
+  };
 
   onClick = (e: SyntheticEvent<>, job: Job) => {
     const { push, business } = this.props;
