@@ -1,6 +1,7 @@
 // @flow
 import { connect } from "react-redux";
 import VisitLayer from "./VisitLayer";
+import type { Props } from "./VisitLayer";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
 import { ensureState } from "redux-optimistic-ui";
@@ -11,7 +12,7 @@ const mapStateToProps = (
     visit: Visit,
     onClose: Function
   }
-): * => {
+): Props => {
   const { entities } = state;
 
   return {
