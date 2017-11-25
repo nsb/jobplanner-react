@@ -7,7 +7,6 @@ import Sidebar from "grommet/components/Sidebar";
 import Menu from "grommet/components/Menu";
 import Button from "grommet/components/Button";
 import SkipLinkAnchor from "grommet/components/SkipLinkAnchor";
-import CameraIcon from "grommet/components/icons/base/Camera";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import TrashIcon from "grommet/components/icons/base/Trash";
@@ -78,13 +77,6 @@ class ClientActions extends Component<Props, State> {
         </Header>
         <Box pad="medium">
           <Menu>
-            <Button
-              align="start"
-              plain={true}
-              icon={<CameraIcon />}
-              label="Take Snapshot"
-              onClick={undefined}
-            />
             <Button
               align="start"
               plain={true}
