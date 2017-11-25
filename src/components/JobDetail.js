@@ -104,16 +104,12 @@ class JobDetail extends Component<Props, State> {
             >
               <Anchor
                 icon={<LinkPreviousIcon />}
-                path={`/${business.id}/jobs`}
+                path={`/${business.id}/clients/${job.client}`}
                 a11yTitle="Return"
               />
 
               <Heading tag="h3" margin="none">
-                <strong>
-                  <Anchor path={`/${business.id}/clients/${job.client}`}>
-                    {`${job.client_firstname} ${job.client_lastname}`}
-                  </Anchor>
-                </strong>
+                <strong>Job #{job.id}</strong>
               </Heading>
             </Box>
             {sidebarControl}
@@ -121,8 +117,9 @@ class JobDetail extends Component<Props, State> {
           <Article pad="none" align="start" primary={true}>
             <Box full="horizontal">
               <Section pad="medium" full="horizontal">
+                {`${job.client_firstname} ${job.client_lastname}`}
                 <Columns masonry={false} maxCount={2}>
-                  <Box pad={{horizontal:"none", vertical: "small"}}>
+                  <Box pad={{ horizontal: "none", vertical: "small" }}>
                     <Heading tag="h4" margin="none">
                       Property address
                     </Heading>
@@ -130,14 +127,14 @@ class JobDetail extends Component<Props, State> {
                     <br />
                     {property.address2}
                   </Box>
-                  <Box pad={{horizontal:"none", vertical: "small"}}>
+                  <Box pad={{ horizontal: "none", vertical: "small" }}>
                     <Heading tag="h4" margin="none">
                       Contact details
                     </Heading>
                     61 67 15 14
                     <br />
                   </Box>
-                  <Box pad={{horizontal:"none", vertical: "small"}}>
+                  <Box pad={{ horizontal: "none", vertical: "small" }}>
                     <Heading tag="h4" margin="none">
                       Job details
                     </Heading>

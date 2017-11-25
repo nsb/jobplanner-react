@@ -108,7 +108,11 @@ class ClientDetail extends Component<Props, State> {
               <Columns>
                 <Box margin={{ horizontal: "none", vertical: "small" }}>
                   <div>{client.phone}</div>
-                  <div>{client.email}</div>
+                  <div>
+                    <Anchor path={`mailto:${client.email}`}>
+                      {client.email}
+                    </Anchor>
+                  </div>
                 </Box>
               </Columns>
             </Section>
