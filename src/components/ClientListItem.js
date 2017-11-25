@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import ListItem from 'grommet/components/ListItem';
+import UserIcon from 'grommet/components/icons/base/User';
 import type {Client} from '../actions/clients';
 
 type Props = {
@@ -24,7 +25,7 @@ class ClientListItem extends Component<Props> {
         onClick={onClick}
         selected={false}
       >
-        <span>{client.first_name} {client.last_name}</span>
+        <span><UserIcon type="logo" size="xsmall" /> {client.first_name} {client.last_name}</span>
       </ListItem>
     );
   }
