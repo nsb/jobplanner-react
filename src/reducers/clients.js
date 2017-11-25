@@ -82,6 +82,9 @@ const result = (state: ResultState = [], action: Action): ResultState => {
       newState.splice(state.indexOf(action.payload.id), 1);
       return newState;
 
+    case "RESET_CLIENTS":
+      return [];
+
     default:
       return state;
   }

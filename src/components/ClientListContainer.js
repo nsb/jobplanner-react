@@ -36,24 +36,33 @@ class ClientListContainer extends Component<Props, State> {
     this.onMore();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { dispatch } = this.props;
+
+    if (prevState.searchText != this.state.searchText) {
+      dispatch({ type: "RESET_CLIENTS" });
+      this.onMore();
+    }
+  }
+
   render() {
     const { business, clients, isFetching, totalCount } = this.props;
 
-    const filteredClients = clients.filter(client => {
-      const sText = this.state.searchText.toLowerCase();
-      if (sText) {
-        return `${client.first_name} ${client.last_name}`
-          .toLowerCase()
-          .includes(sText);
-      } else {
-        return true;
-      }
-    });
+    // const filteredClients = clients.filter(client => {
+    //   const sText = this.state.searchText.toLowerCase();
+    //   if (sText) {
+    //     return `${client.first_name} ${client.last_name}`
+    //       .toLowerCase()
+    //       .includes(sText);
+    //   } else {
+    //     return true;
+    //   }
+    // });
 
     return (
       <ClientList
         business={business}
-        clients={filteredClients}
+        clients={clients}
         isFetching={isFetching}
         onMore={this.state.offset < totalCount ? this.onMore : null}
         onSearch={this.onSearch}
@@ -72,7 +81,8 @@ class ClientListContainer extends Component<Props, State> {
           business: business.id,
           ordering: "first_name",
           limit: this.state.limit,
-          offset: this.state.offset
+          offset: this.state.offset,
+          search: this.state.searchText
         })
       );
       this.setState({ offset: this.state.offset + this.state.limit });
@@ -85,7 +95,7 @@ class ClientListContainer extends Component<Props, State> {
   };
 
   onSearch = ({ target }: SyntheticInputEvent<*>) => {
-    this.setState({ searchText: target.value });
+    this.setState({ searchText: target.value, offset: 0 });
   };
 
   addClient = (e: SyntheticInputEvent<*>) => {

@@ -21,6 +21,7 @@ export const FETCH_CLIENTS_SUCCESS: "FETCH_CLIENTS_SUCCESS" =
   "FETCH_CLIENTS_SUCCESS";
 export const FETCH_CLIENTS_FAILURE: "FETCH_CLIENTS_FAILURE" =
   "FETCH_CLIENTS_FAILURE";
+export const RESET_CLIENTS: "RESET_CLIENTS" = "RESET_CLIENTS";
 
 export const FETCH_CLIENT: "FETCH_CLIENT" = "FETCH_CLIENT";
 export const FETCH_CLIENT_SUCCESS: "FETCH_CLIENT_SUCCESS" =
@@ -139,6 +140,10 @@ type DeleteClientFailureAction = {
   error: string
 };
 
+type ResetClientsAction = {
+  type: typeof RESET_CLIENTS
+};
+
 export type Action =
   | FetchClientsAction
   | FetchClientsSuccessAction
@@ -154,7 +159,8 @@ export type Action =
   | UpdateClientFailureAction
   | DeleteClientAction
   | DeleteClientSuccessAction
-  | DeleteClientFailureAction;
+  | DeleteClientFailureAction
+  | ResetClientsAction
 
 export const fetchClientsRequest = (): FetchClientsAction => {
   return {
