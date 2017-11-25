@@ -70,7 +70,7 @@ class ClientListContainer extends Component<Props, State> {
       dispatch(
         fetchClients(token, {
           business: business.id,
-          // ordering: "begins",
+          ordering: "first_name",
           limit: this.state.limit,
           offset: this.state.offset
         })

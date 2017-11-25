@@ -47,6 +47,9 @@ export type Client = {
   business: number,
   first_name: string,
   last_name: string,
+  email: string,
+  phone: string,
+  notes: string,
   properties: Array<Property>
 };
 

@@ -114,13 +114,30 @@ export const ClientForm = (props: Props) => {
             component={renderField}
             type="text"
           />
-          <FieldArray
-            name="properties"
-            label="Properties"
-            component={renderProperties}
-          />
 
         </fieldset>
+
+        <fieldset>
+          <Heading tag="h3">Contact details</Heading>
+          <Field
+            name="email"
+            label="E-mail"
+            component={renderField}
+            type="email"
+          />
+          <Field
+            name="phone"
+            label="Phone"
+            component={renderField}
+            type="text"
+          />
+        </fieldset>
+
+        <FieldArray
+          name="properties"
+          label="Properties"
+          component={renderProperties}
+        />
 
       </FormFields>
 
