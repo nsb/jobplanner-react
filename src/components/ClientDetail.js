@@ -51,7 +51,7 @@ class ClientDetail extends Component<Props, State> {
       jobs,
       responsive,
       onEdit,
-      onResponsive,
+      onResponsive
     } = this.props;
 
     let onSidebarClose;
@@ -121,7 +121,7 @@ class ClientDetail extends Component<Props, State> {
 
             <Section pad="medium" full="horizontal">
               <Heading tag="h4" margin="none">
-                Job
+                Jobs
               </Heading>
               <List>
                 {jobs.map((job, index) => {
