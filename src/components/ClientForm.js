@@ -65,6 +65,18 @@ const renderProperties = ({ fields, meta: { error, submitFailed } }): Element<*>
           component={renderField}
           label="Address 2"
         />
+        <Field
+          name={`${property}.city`}
+          type="text"
+          component={renderField}
+          label="City"
+        />
+        <Field
+          name={`${property}.zip_code`}
+          type="text"
+          component={renderField}
+          label="Zip Code"
+        />
       </div>
     )}
   </Section>;
