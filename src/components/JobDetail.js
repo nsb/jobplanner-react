@@ -89,7 +89,6 @@ class JobDetail extends Component<Props, State> {
         priority={this.state.showSidebarWhenSingle ? "right" : "left"}
         onResponsive={onResponsive}
       >
-
         <div>
           <Header
             pad={{ horizontal: "small", vertical: "medium" }}
@@ -111,63 +110,67 @@ class JobDetail extends Component<Props, State> {
 
               <Heading tag="h3" margin="none">
                 <strong>
-                  {`${job.client_firstname} ${job.client_lastname}`}
+                  <Anchor path={`/${business.id}/clients/${job.client}`}>
+                    {`${job.client_firstname} ${job.client_lastname}`}
+                  </Anchor>
                 </strong>
               </Heading>
             </Box>
             {sidebarControl}
           </Header>
           <Article pad="none" align="start" primary={true}>
-
             <Box full="horizontal">
               <Section pad="medium" full="horizontal">
-                <Heading tag="h4" margin="none">
-                  <Box>
-                    {`Job #${job.id}`}
-                  </Box>
-                  {rrulestr(job.recurrences).toText()}
-                </Heading>
-              </Section>
-
-              <Section pad="medium" full="horizontal">
                 <Columns masonry={false} maxCount={2}>
-                  <Box>
+                  <Box pad={{horizontal:"none", vertical: "small"}}>
                     <Heading tag="h4" margin="none">
                       Property address
                     </Heading>
-                    {property.address1}<br />
-                    {property.address2}<br />
+                    {property.address1}
+                    <br />
+                    {property.address2}
                   </Box>
-                  <Box>
+                  <Box pad={{horizontal:"none", vertical: "small"}}>
                     <Heading tag="h4" margin="none">
                       Contact details
                     </Heading>
                     61 67 15 14
+                    <br />
+                  </Box>
+                  <Box pad={{horizontal:"none", vertical: "small"}}>
+                    <Heading tag="h4" margin="none">
+                      Job details
+                    </Heading>
+                    {`Job #${job.id}`}
+                    <br />
+                    {rrulestr(job.recurrences).toText()}
                   </Box>
                 </Columns>
               </Section>
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertical: "none" }}>
-                  <Heading tag="h4">
-                    Line items
-                  </Heading>
+                  <Heading tag="h4">Line items</Heading>
                 </Box>
                 <Box>
                   <List onMore={undefined}>
-                    {lineItems.map((line_item, index) =>
+                    {lineItems.map((line_item, index) => (
                       <ListItem
                         direction="row"
                         align="center"
                         justify="between"
                         separator={index === 0 ? "horizontal" : "bottom"}
-                        pad={{ horizontal: "medium", vertical: "small", between: "medium" }}
+                        pad={{
+                          horizontal: "medium",
+                          vertical: "small",
+                          between: "medium"
+                        }}
                         responsive={false}
                         onClick={undefined}
                         selected={false}
                       >
                         {line_item.name} {index}
                       </ListItem>
-                    )}
+                    ))}
                   </List>
                   <ListPlaceholder
                     filteredTotal={lineItems.length}
@@ -181,9 +184,7 @@ class JobDetail extends Component<Props, State> {
               </Section>
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertical: "none" }}>
-                  <Heading tag="h4">
-                    Visits
-                  </Heading>
+                  <Heading tag="h4">Visits</Heading>
                 </Box>
                 <VisitAsyncTask job={job} />
               </Section>
