@@ -103,6 +103,18 @@ class ClientDetail extends Component<Props, State> {
           <Article pad="none" align="start" primary={true}>
             <Section pad="medium" full="horizontal">
               <Heading tag="h4" margin="none">
+                Contact
+              </Heading>
+              <Columns>
+                <Box margin={{ horizontal: "none", vertical: "small" }}>
+                  <div>{client.phone}</div>
+                  <div>{client.email}</div>
+                </Box>
+              </Columns>
+            </Section>
+
+            <Section pad="medium" full="horizontal">
+              <Heading tag="h4" margin="none">
                 Properties
               </Heading>
               <Columns>
@@ -119,10 +131,12 @@ class ClientDetail extends Component<Props, State> {
               </Columns>
             </Section>
 
-            <Section pad="medium" full="horizontal">
-              <Heading tag="h4" margin="none">
-                Jobs
-              </Heading>
+            <Section full="horizontal">
+              <Box pad={{ horizontal: "medium", vertical: "none" }}>
+                <Heading tag="h4" pad="medium" margin="medium">
+                  Jobs
+                </Heading>
+              </Box>
               <List>
                 {jobs.map((job, index) => {
                   return (
