@@ -9,6 +9,7 @@ import Anchor from "grommet/components/Anchor";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
+import Columns from "grommet/components/Columns";
 import MoreIcon from "grommet/components/icons/base/More";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import ClientActions from "../components/ClientActions";
@@ -71,7 +72,6 @@ class ClientDetail extends Component<Props, State> {
         priority={this.state.showSidebarWhenSingle ? "right" : "left"}
         onResponsive={onResponsive}
       >
-
         <div>
           <Header
             pad={{ horizontal: "small", vertical: "medium" }}
@@ -98,17 +98,23 @@ class ClientDetail extends Component<Props, State> {
           </Header>
           <Article pad="none" align="start" primary={true}>
             <Section pad="medium" full="horizontal">
-              <Heading tag="h4" margin="none">Properties</Heading>
-              {properties.map((property: Property, index: number) => {
-                return (
-                  <div>
-                    <div>{property.address1}</div>
-                    <div>{property.address2}</div>
-                    <div>{property.zip_code}</div>
-                    <div>{property.country}</div>
-                  </div>
-                );
-              })}
+              <Heading tag="h4" margin="none">
+                Properties
+              </Heading>
+              <Columns>
+                {properties.map((property: Property, index: number) => {
+                  return (
+                    <Box
+                      margin={{ horizontal: "none", vertical: "small" }}
+                    >
+                      <div>{property.address1}</div>
+                      <div>{property.address2}</div>
+                      <div>{property.zip_code}</div>
+                      <div>{property.country}</div>
+                    </Box>
+                  );
+                })}
+              </Columns>
             </Section>
             <Section pad="medium" full="horizontal">
               <JobList businessId={business.id} push={push} />
@@ -116,7 +122,6 @@ class ClientDetail extends Component<Props, State> {
           </Article>
         </div>
         {sidebar}
-
       </Split>
     );
   }
