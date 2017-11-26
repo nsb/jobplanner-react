@@ -10,7 +10,8 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     visit: Visit,
-    index: number
+    index: number,
+    onClick: Function,
   }
 ): Props => {
   const { entities } = state;
@@ -20,7 +21,7 @@ const mapStateToProps = (
     assigned: ownProps.visit.assigned.map(Id => {
       return ensureState(entities).employees[Id];
     }),
-    onClick: () => console.log("hejsa"),
+    onClick: ownProps.onClick,
     index: ownProps.index
   };
 };
