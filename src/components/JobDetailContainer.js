@@ -38,11 +38,6 @@ class JobDetailContainer extends Component<Props> {
     }
   }
 
-  componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch({ type: "CLEAR_JOB_NOTIFICATIONS" });
-  }
-
   render() {
     const {
       business,
