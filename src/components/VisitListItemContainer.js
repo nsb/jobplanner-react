@@ -2,7 +2,6 @@
 import { connect } from "react-redux";
 import VisitListItem from "./VisitListItem";
 import type { Props } from "./VisitListItem";
-import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
 import { ensureState } from "redux-optimistic-ui";
