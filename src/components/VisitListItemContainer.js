@@ -11,7 +11,7 @@ const mapStateToProps = (
   ownProps: {
     visit: Visit,
     index: number,
-    onClick: Function
+    onClick: (Visit) => void
   }
 ): Props => {
   const { entities } = state;
