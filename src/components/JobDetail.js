@@ -37,19 +37,14 @@ export type Props = {
   isFetching: boolean,
   dispatch: Dispatch,
   push: string => void,
-  responsive: Responsive,
-  onEdit: Function,
-  onRemove: Function,
-  onToggleCloseJob: Function,
-  onResponsive: Function,
-  intl: intlShape
+  responsive: Responsive
 };
 
 type State = {
   showSidebarWhenSingle: boolean
 };
 
-class JobDetail extends Component<Props, State> {
+class JobDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
     showSidebarWhenSingle: false
   };
@@ -68,7 +63,6 @@ class JobDetail extends Component<Props, State> {
       lineItems,
       property,
       responsive,
-      onResponsive,
       isFetching,
       intl
     } = this.props;
@@ -115,7 +109,7 @@ class JobDetail extends Component<Props, State> {
           flex="left"
           separator={true}
           priority={this.state.showSidebarWhenSingle ? "right" : "left"}
-          onResponsive={onResponsive}
+          onResponsive={this.onResponsive}
         >
           <div>
             <Header
@@ -256,4 +250,4 @@ class JobDetail extends Component<Props, State> {
   };
 }
 
-export default injectIntl(JobDetail);
+export default JobDetail;
