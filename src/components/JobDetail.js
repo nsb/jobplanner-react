@@ -68,10 +68,7 @@ class JobDetail extends Component<Props, State> {
       lineItems,
       property,
       responsive,
-      onEdit,
-      onRemove,
       onResponsive,
-      onToggleCloseJob,
       isFetching,
       intl
     } = this.props;

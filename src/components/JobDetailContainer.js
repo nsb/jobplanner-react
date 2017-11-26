@@ -1,10 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
 import { connect } from "react-redux";
-import Article from "grommet/components/Article";
-import Section from "grommet/components/Section";
-import Spinning from "grommet/components/icons/Spinning";
 import JobDetail from "./JobDetail";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
