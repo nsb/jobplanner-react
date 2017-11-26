@@ -1,15 +1,14 @@
 // @flow
 
 import { connect } from "react-redux";
-import { injectIntl, intlShape } from "react-intl";
+import { bindActionCreators } from "redux";
+import { injectIntl } from "react-intl";
 import JobDetail from "./JobDetail";
+import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
+import { navResponsive } from "../actions/nav";
 import type { Props } from "./JobDetail";
-import type { Business } from "../actions/businesses";
-import type { Job } from "../actions/jobs";
-import type { Property } from "../actions/properties";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
-import type { Responsive } from "../actions/nav";
 import { ensureState } from "redux-optimistic-ui";
 
 const mapStateToProps = (
@@ -17,7 +16,10 @@ const mapStateToProps = (
   ownProps: {
     match: { params: { businessId: number, jobId: number } },
     history: { push: string => void },
-    dispatch: Dispatch
+    fetchJob: Function,
+    partialUpdateJob: Function,
+    deleteJob: Function,
+    navResponsive: Function
   }
 ): Props => {
   const { auth, entities, jobs, nav } = state;
@@ -36,10 +38,26 @@ const mapStateToProps = (
     lineItems:
       job &&
       job.line_items.map(lineItem => ensureState(entities).lineItems[lineItem]),
-    dispatch: ownProps.dispatch,
+    fetchJob: ownProps.fetchJob,
+    partialUpdateJob: ownProps.partialUpdateJob,
+    deleteJob: ownProps.deleteJob,
+    navResponsive: ownProps.navResponsive,
     job,
     jobId
   };
 };
 
-export default injectIntl(connect(mapStateToProps)(JobDetail));
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      fetchJob,
+      partialUpdateJob,
+      deleteJob,
+      navResponsive
+    },
+    dispatch
+  );
+
+export default injectIntl(
+  connect(mapStateToProps, mapDispatchToProps)(JobDetail)
+);

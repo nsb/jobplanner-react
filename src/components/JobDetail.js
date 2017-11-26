@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
-import { injectIntl, intlShape } from "react-intl";
+import { intlShape } from "react-intl";
 import Split from "grommet/components/Split";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
@@ -18,8 +18,6 @@ import Spinning from "grommet/components/icons/Spinning";
 import MoreIcon from "grommet/components/icons/base/More";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import { rrulestr } from "rrule";
-import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
-import { navResponsive } from "../actions/nav";
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import type { Business } from "../actions/businesses";
@@ -35,9 +33,12 @@ export type Props = {
   property: Property,
   token: string,
   isFetching: boolean,
-  dispatch: Dispatch,
   push: string => void,
-  responsive: Responsive
+  responsive: Responsive,
+  fetchJob: Function,
+  partialUpdateJob: Function,
+  deleteJob: Function,
+  navResponsive: Function
 };
 
 type State = {
@@ -50,9 +51,9 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   componentDidMount() {
-    const { job, jobId, token, dispatch } = this.props;
+    const { job, jobId, token, fetchJob } = this.props;
     if (!job && token) {
-      dispatch(fetchJob(token, jobId));
+      fetchJob(token, jobId);
     }
   }
 
@@ -217,7 +218,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   }
 
   onResponsive = (responsive: Responsive) => {
-    this.props.dispatch(navResponsive(responsive));
+    this.props.navResponsive(responsive);
   };
 
   onClose = () => {
@@ -226,10 +227,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   onToggleCloseJob = (e: SyntheticEvent<HTMLButtonElement>) => {
-    const { job, token, dispatch } = this.props;
-    dispatch(
-      partialUpdateJob({ id: job.id, closed: !job.closed }, token || "")
-    );
+    const { job, token, partialUpdateJob } = this.props;
+    partialUpdateJob({ id: job.id, closed: !job.closed }, token || "");
     e.preventDefault();
   };
 
@@ -239,8 +238,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   onRemove = () => {
-    const { job, token, dispatch } = this.props;
-    dispatch(deleteJob(job, token));
+    const { job, token, deleteJob } = this.props;
+    deleteJob(job, token);
   };
 
   _onToggleSidebar = () => {
