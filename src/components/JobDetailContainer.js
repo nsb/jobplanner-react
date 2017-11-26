@@ -6,9 +6,10 @@ import { injectIntl } from "react-intl";
 import JobDetail from "./JobDetail";
 import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
 import { navResponsive } from "../actions/nav";
+import type { Job } from "../actions/jobs";
 import type { Props } from "./JobDetail";
 import type { State as ReduxState } from "../types/State";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import { ensureState } from "redux-optimistic-ui";
 
 const mapStateToProps = (
@@ -16,9 +17,9 @@ const mapStateToProps = (
   ownProps: {
     match: { params: { businessId: number, jobId: number } },
     history: { push: string => void },
-    fetchJob: Function,
-    partialUpdateJob: Function,
-    deleteJob: Function,
+    fetchJob: (string, number) => ThunkAction,
+    partialUpdateJob: (number, string) => ThunkAction,
+    deleteJob: (Job, string) => ThunkAction,
     navResponsive: Function
   }
 ): Props => {
