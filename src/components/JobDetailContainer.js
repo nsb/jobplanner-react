@@ -6,8 +6,6 @@ import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
 import JobDetail from "./JobDetail";
-import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
-import { navResponsive } from "../actions/nav";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
@@ -29,87 +27,6 @@ type Props = {
   responsive: Responsive,
   saved: boolean
 };
-
-class JobDetailContainer extends Component<Props> {
-  componentDidMount() {
-    const { job, jobId, token, dispatch } = this.props;
-    if (!job && token) {
-      dispatch(fetchJob(token, jobId));
-    }
-  }
-
-  render() {
-    const {
-      business,
-      job,
-      lineItems,
-      property,
-      responsive,
-      isFetching,
-      saved
-    } = this.props;
-
-    const jobDetail = (
-      <JobDetail
-        business={business}
-        job={job}
-        lineItems={lineItems}
-        property={property}
-        responsive={responsive}
-        onEdit={this.onEdit}
-        onRemove={this.onRemove}
-        onToggleCloseJob={this.onToggleCloseJob}
-        onClose={this.onClose}
-        onResponsive={this.onResponsive}
-        saved={saved}
-      />
-    );
-
-    const loadingJob = (
-      <Article scrollStep={true} controls={true}>
-        <Section
-          full={true}
-          colorIndex="dark"
-          // texture="url(img/ferret_background.png)"
-          pad="large"
-          justify="center"
-          align="center"
-        >
-          <Spinning />
-        </Section>
-      </Article>
-    );
-
-    return isFetching ? loadingJob : jobDetail;
-  }
-
-  onResponsive = (responsive: Responsive) => {
-    this.props.dispatch(navResponsive(responsive));
-  };
-
-  onClose = () => {
-    const { business, push } = this.props;
-    push(`/${business.id}/jobs`);
-  };
-
-  onToggleCloseJob = (e: SyntheticEvent<HTMLButtonElement>) => {
-    const { job, token, dispatch } = this.props;
-    dispatch(
-      partialUpdateJob({ id: job.id, closed: !job.closed }, token || "")
-    );
-    e.preventDefault();
-  };
-
-  onEdit = () => {
-    const { business, job, push } = this.props;
-    push(`/${business.id}/jobs/${job.id}/edit`);
-  };
-
-  onRemove = () => {
-    const { job, token, dispatch } = this.props;
-    dispatch(deleteJob(job, token));
-  };
-}
 
 const mapStateToProps = (
   state: ReduxState,
@@ -143,4 +60,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(JobDetailContainer);
+export default connect(mapStateToProps)(JobDetail);
