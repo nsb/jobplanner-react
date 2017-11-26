@@ -11,7 +11,7 @@ export type Props = {
   visit: Visit,
   assigned: Array<Employee>,
   index: number,
-  onClick: Function
+  onClick: (Visit) => void
 };
 
 class VisitListItem extends Component<Props> {
