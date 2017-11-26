@@ -5,17 +5,18 @@ import ListItem from "grommet/components/ListItem";
 import CheckBox from "grommet/components/CheckBox";
 import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
+import type { Employee } from "../actions/employees";
 
-type Props = {
+export type Props = {
   visit: Visit,
+  assigned: Array<Employee>,
   index: number,
   onClick: Function
 };
 
 class VisitListItem extends Component<Props> {
-
   render() {
-    const { visit, index, onClick } = this.props;
+    const { visit, assigned, index, onClick } = this.props;
 
     return (
       <ListItem
@@ -28,12 +29,17 @@ class VisitListItem extends Component<Props> {
         onClick={onClick}
         selected={false}
       >
-        <CheckBox label="" />
         <span>
+          <CheckBox label="" />
           <Timestamp
             fields={visit.anytime ? "date" : ["date", "time"]}
             value={visit.begins}
           />
+        </span>
+        <span>
+          {visit.assigned
+            ? assigned.map(a => a.username).join(", ")
+            : "Not assigned yet"}
         </span>
       </ListItem>
     );

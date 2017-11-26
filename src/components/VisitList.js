@@ -6,7 +6,7 @@ import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import VisitDetailContainer from "./VisitLayerContainer";
-import VisitListItem from "./VisitListItem";
+import VisitListItemContainer from "./VisitListItemContainer";
 import type { Visit } from "../actions/visits";
 
 type Props = {
@@ -43,7 +43,7 @@ class VisitList extends Component<Props, State> {
         <List onMore={isFetching ? undefined : onMore}>
           {visits.map((visit: Visit, index: number) => {
             return (
-              <VisitListItem
+              <VisitListItemContainer
                 key={visit.id}
                 visit={visit}
                 index={index}
