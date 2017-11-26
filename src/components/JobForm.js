@@ -507,7 +507,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   }
 
   renderSchedules = () => {
-    const { initialValues } = this.props;
     const { scheduleLayer } = this.state;
     let layer;
 
