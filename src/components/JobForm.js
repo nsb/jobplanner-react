@@ -71,10 +71,11 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Element<*> =>
+}): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>;
+  </FormField>
+);
 
 const renderSelect = ({
   input,
@@ -99,10 +100,11 @@ const renderCheckBox = ({
   input,
   label,
   meta: { touched, error, warning }
-}): Element<*> =>
+}): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <CheckBox {...input} checked={!!input.value} />
-  </FormField>;
+  </FormField>
+);
 
 const renderDateTime = ({
   input,
@@ -139,9 +141,7 @@ class ScheduleInput extends Component<ScheduleProps> {
           reverse={true}
           onClick={onClick}
         >
-          <Heading tag="h4">
-            Visit frequency
-          </Heading>
+          <Heading tag="h4">Visit frequency</Heading>
           {rule.toText()}
         </Anchor>
       </div>
@@ -178,37 +178,37 @@ class ClientInput extends Component<ClientInputProps> {
       onSelectClient,
       clients
     } = this.props;
-    return value
-      ? onClick
-        ? <Anchor
-            icon={<EditIcon />}
-            label="Label"
-            href="#"
-            reverse={true}
-            onClick={onClick}
-          >
-            <Heading tag="h3">
-              Client
-            </Heading>
-            {value.label}
-          </Anchor>
-        : <div>
-            <Heading tag="h3">
-              Client
-            </Heading>
-            {value.label}
-          </div>
-      : <FormField label={label}>
-          <Select
-            placeHolder="None"
-            onSearch={onClientSearch}
-            inline={true}
-            multiple={false}
-            options={clients}
-            value="first"
-            onChange={onSelectClient}
-          />
-        </FormField>;
+    return value ? (
+      onClick ? (
+        <Anchor
+          icon={<EditIcon />}
+          label="Label"
+          href="#"
+          reverse={true}
+          onClick={onClick}
+        >
+          <Heading tag="h3">Client</Heading>
+          {value.label}
+        </Anchor>
+      ) : (
+        <div>
+          <Heading tag="h3">Client</Heading>
+          {value.label}
+        </div>
+      )
+    ) : (
+      <FormField label={label}>
+        <Select
+          placeHolder="None"
+          onSearch={onClientSearch}
+          inline={true}
+          multiple={false}
+          options={clients}
+          value="first"
+          onChange={onSelectClient}
+        />
+      </FormField>
+    );
   }
 }
 
@@ -228,7 +228,7 @@ const renderClient = ({
   onSelectClient: Function,
   clients: Array<Client>,
   meta: { touched: boolean, error: string, warning: string }
-}): Element<*> =>
+}): Element<*> => (
   <ClientInput
     {...input}
     label={label}
@@ -236,7 +236,8 @@ const renderClient = ({
     onClientSearch={onClientSearch}
     onSelectClient={onSelectClient}
     clients={clients}
-  />;
+  />
+);
 
 type JobFormProps = {
   handleSubmit?: Function,
@@ -270,7 +271,7 @@ type JobFormState = {
 const renderLineItems = ({
   fields,
   meta: { error, submitFailed }
-}): Element<*> =>
+}): Element<*> => (
   <Section>
     <div>
       <button type="button" onClick={() => fields.push({})}>
@@ -278,7 +279,7 @@ const renderLineItems = ({
       </button>
       {submitFailed && error && <span>{error}</span>}
     </div>
-    {fields.map((lineItem, index) =>
+    {fields.map((lineItem, index) => (
       <div key={index}>
         <button
           type="button"
@@ -300,8 +301,9 @@ const renderLineItems = ({
           label="Description"
         />
       </div>
-    )}
-  </Section>;
+    ))}
+  </Section>
+);
 
 class JobForm extends Component<JobFormProps, JobFormState> {
   static defaultProps = {
@@ -411,22 +413,21 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
     return (
       <Form onSubmit={handleSubmit}>
-
         <Header size="large" justify="between" pad="none">
           <Heading tag="h3" margin="none" strong={true}>
             {initialValues.id
-              ? `Job for ${initialValues.client_firstname} ${initialValues.client_lastname}`
+              ? `Job for ${initialValues.client_firstname} ${
+                  initialValues.client_lastname
+                }`
               : "Add Job"}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
 
         <FormFields>
-
           {clientField}
 
           <fieldset>
-
             <Heading tag="h3">Details</Heading>
             <Field
               name="description"
@@ -434,7 +435,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               component={renderField}
               type="text"
             />
-
           </fieldset>
 
           <fieldset>
@@ -445,7 +445,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               component={renderDateTime}
               dateFormat={dateFormat}
               normalize={(value: string) => moment(value, dateFormat).toDate()}
-              onChange={e => this.setState({ visitsWillBeRegenerated: true })}
+              onChange={this.onChangeSchedule}
             />
             <Field
               name="ends"
@@ -453,7 +453,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               component={renderDateTime}
               dateFormat={dateFormat}
               normalize={(value: string) => moment(value, dateFormat).toDate()}
-              onChange={e => this.setState({ visitsWillBeRegenerated: true })}
+              onChange={this.onChangeSchedule}
             />
             {start_time}
             {finish_time}
@@ -462,7 +462,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               label="Anytime"
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
-              onChange={e => this.setState({ visitsWillBeRegenerated: true })}
+              onChange={this.onChangeSchedule}
             />
           </fieldset>
 
@@ -471,7 +471,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           {scheduleNotification}
 
           <fieldset>
-
             <Heading tag="h3">Team</Heading>
             <Field
               name="assigned"
@@ -482,7 +481,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               })}
               normalize={selected => selected.value}
             />
-
           </fieldset>
 
           <fieldset>
@@ -492,7 +490,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               component={renderLineItems}
             />
           </fieldset>
-
         </FormFields>
 
         <Footer pad={{ vertical: "medium" }}>
@@ -510,6 +507,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   }
 
   renderSchedules = () => {
+    const { initialValues } = this.props;
     const { scheduleLayer } = this.state;
     let layer;
 
@@ -530,11 +528,16 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           label="Schedule"
           component={renderSchedule}
           onClick={this.onScheduleAdd}
-          onChange={e => this.setState({ visitsWillBeRegenerated: true })}
+          onChange={this.onChangeSchedule}
         />
         {layer}
       </fieldset>
     );
+  };
+
+  onChangeSchedule = () => {
+    const { initialValues } = this.props;
+    if (initialValues.id) this.setState({ visitsWillBeRegenerated: true });
   };
 
   onSelectClient = (selection: {
