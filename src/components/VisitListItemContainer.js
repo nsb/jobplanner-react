@@ -18,10 +18,9 @@ const mapStateToProps = (
 
   return {
     visit: ownProps.visit,
-    assigned: ownProps.visit.assigned
-      .map(Id => {
-        return ensureState(entities).employees[Id];
-      }),
+    assigned: ownProps.visit.assigned.map(Id => {
+      return ensureState(entities).employees[Id];
+    }),
     onClick: () => console.log("hejsa"),
     index: ownProps.index
   };
