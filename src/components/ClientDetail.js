@@ -179,6 +179,11 @@ class ClientDetail extends Component<Props, State> {
                 <Box pad={{ horizontal: "medium", vertical: "none" }}>
                   <Heading tag="h4" pad="medium" margin="medium">
                     Jobs
+                    <Anchor
+                      path={`/${business.id}/jobs/add?client=${client.id}`}
+                    >
+                      <AddIcon />
+                    </Anchor>
                   </Heading>
                 </Box>
                 <List>

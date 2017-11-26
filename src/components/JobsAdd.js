@@ -1,5 +1,5 @@
 // @flow
-
+import "url-search-params-polyfill";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Article from "grommet/components/Article";
@@ -18,7 +18,8 @@ type Props = {
   clients: Array<Client>,
   dispatch: Dispatch,
   push: string => void,
-  employees: Array<Employee>
+  employees: Array<Employee>,
+  client: ?{ value: number, label: string }
 };
 
 type State = {
@@ -31,18 +32,18 @@ class JobsAdd extends Component<Props, State> {
   };
 
   render() {
-    const { token, employees } = this.props;
+    const { token, employees, client } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
-
         <JobForm
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
           employees={employees}
           initialValues={{
             begins: new Date(),
-            anytime: true
+            anytime: true,
+            client: client
           }}
           token={token}
         />
@@ -70,7 +71,7 @@ class JobsAdd extends Component<Props, State> {
     const { business, push } = this.props;
     push(`/${business.id}/jobs`);
   };
-};
+}
 
 const mapStateToProps = (
   state: ReduxState,
@@ -81,6 +82,15 @@ const mapStateToProps = (
 ): * => {
   const { auth, employees, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
+  const searchParams: URLSearchParams = new URLSearchParams(
+    document.location.search
+  );
+
+  let client;
+  const clientId: number = parseInt(searchParams.get("client"), 10);
+  if (clientId) {
+    client = ensureState(entities).clients[clientId];
+  }
 
   return {
     token: auth.token,
@@ -91,10 +101,11 @@ const mapStateToProps = (
         return ensureState(entities).employees[Id];
       })
       .filter(employee => {
-        return employee.businesses.indexOf(businessId) > -1
-          ? employee
-          : false;
+        return employee.businesses.indexOf(businessId) > -1 ? employee : false;
       }),
+    client: client
+      ? { value: client.id, label: `${client.first_name} ${client.last_name}` }
+      : null
   };
 };
 
