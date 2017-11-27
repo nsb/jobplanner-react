@@ -190,6 +190,7 @@ export const verify = (token: string): ThunkAction => {
 };
 
 export const logout = (): LogoutAction => {
+  localStorage.removeItem("token");
   return {
     type: LOGOUT
   };

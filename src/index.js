@@ -10,7 +10,7 @@ import { Router } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { updateIntl, Provider } from "react-intl-redux";
 import { addLocaleData } from "react-intl";
-import { configureFlashMessages } from 'redux-flash-messages';
+import { configureFlashMessages } from "redux-flash-messages";
 import StackdriverErrorReporter from "./stackdriver";
 import history from "./history";
 import en from "react-intl/locale-data/en";
@@ -100,7 +100,13 @@ if (process.env.NODE_ENV !== "production") {
 
 function configureStore(): Store {
   return createStore(
-    rootReducer,
+    (state, action) => {
+      if (action.type === "LOGOUT") {
+        state = undefined;
+      }
+
+      return rootReducer(state, action);
+    },
     // initialState,
     composeWithDevTools(applyMiddleware(...middleware))
   );
