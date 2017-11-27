@@ -25,8 +25,7 @@ export const clientListSchema = new schema.Array(clientSchema);
 const lineItem = new schema.Entity("lineItems");
 
 export const jobSchema = new schema.Entity("jobs", {
-  line_items: [lineItem],
-  property: property
+  line_items: [lineItem]
 });
 
 export const jobSchemaDenormalize = new schema.Entity("jobs", {

@@ -22,15 +22,17 @@ import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
+import type { Client } from "../actions/clients";
 import type { Property } from "../actions/properties";
 import type { Responsive } from "../actions/nav";
 
 export type Props = {
   business: Business,
   job: Job,
+  client: ?Client,
   lineItems: Array<Object>,
   jobId: number,
-  property: Property,
+  property: ?Property,
   token: string,
   isFetching: boolean,
   push: string => void,
@@ -38,6 +40,7 @@ export type Props = {
   fetchJob: Function,
   partialUpdateJob: Function,
   deleteJob: Function,
+  fetchClient: Function,
   navResponsive: Function
 };
 
@@ -51,9 +54,18 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   componentDidMount() {
-    const { job, jobId, token, fetchJob } = this.props;
+    const { job, client, jobId, token, fetchJob, fetchClient } = this.props;
     if (!job && token) {
       fetchJob(token, jobId);
+    } else if (job && !client && token) {
+      fetchClient(token, job.client);
+    }
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const { job, client, token, fetchClient } = this.props;
+    if (!prevProps.job && job && !client && token) {
+      fetchClient(token, job.client);
     }
   }
 
@@ -61,6 +73,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     const {
       business,
       job,
+      client,
       lineItems,
       property,
       responsive,
@@ -88,6 +101,33 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
         onRemove={this.onRemove}
       />
     );
+
+    let propertyAddress;
+    if (property) {
+      propertyAddress = (
+        <Box pad={{ horizontal: "none", vertical: "small" }}>
+          <Heading tag="h4" margin="none">
+            Property address
+          </Heading>
+          {property.address1}
+          <br />
+          {property.address2}
+        </Box>
+      );
+    }
+
+    let clientDetails;
+    if (client) {
+      clientDetails = (
+        <Box pad={{ horizontal: "none", vertical: "small" }}>
+          <Heading tag="h4" margin="none">
+            Contact details
+          </Heading>
+          {client.phone}
+          <br />
+        </Box>
+      );
+    }
 
     if (isFetching) {
       return (
@@ -142,21 +182,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                 <Section pad="medium" full="horizontal">
                   {`${job.client_firstname} ${job.client_lastname}`}
                   <Columns masonry={false} maxCount={2}>
-                    <Box pad={{ horizontal: "none", vertical: "small" }}>
-                      <Heading tag="h4" margin="none">
-                        Property address
-                      </Heading>
-                      {property.address1}
-                      <br />
-                      {property.address2}
-                    </Box>
-                    <Box pad={{ horizontal: "none", vertical: "small" }}>
-                      <Heading tag="h4" margin="none">
-                        Contact details
-                      </Heading>
-                      61 67 15 14
-                      <br />
-                    </Box>
+                    {propertyAddress}
+                    {clientDetails}
                     <Box pad={{ horizontal: "none", vertical: "small" }}>
                       <Heading tag="h4" margin="none">
                         Job details

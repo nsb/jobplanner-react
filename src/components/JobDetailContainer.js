@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
 import JobDetail from "./JobDetail";
 import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
+import { fetchClient } from "../actions/clients";
 import { navResponsive } from "../actions/nav";
 import type { Job } from "../actions/jobs";
 import type { Props } from "./JobDetail";
@@ -20,10 +21,11 @@ const mapStateToProps = (
     fetchJob: (string, number) => ThunkAction,
     partialUpdateJob: (number, string) => ThunkAction,
     deleteJob: (Job, string) => ThunkAction,
+    fetchClient: (string, number) => ThunkAction,
     navResponsive: Function
   }
 ): Props => {
-  const { auth, entities, jobs, nav } = state;
+  const { auth, entities, jobs, clients, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
@@ -31,10 +33,11 @@ const mapStateToProps = (
   return {
     token: auth.token,
     business: ensureState(entities).businesses[businessId],
-    isFetching: jobs.isFetching,
+    isFetching: jobs.isFetching || clients.isFetching,
     saved: jobs.saved,
     push: ownProps.history.push,
     responsive: nav.responsive,
+    client: job && ensureState(entities).clients[job.client],
     property: job && ensureState(entities).properties[job.property],
     lineItems:
       job &&
@@ -42,6 +45,7 @@ const mapStateToProps = (
     fetchJob: ownProps.fetchJob,
     partialUpdateJob: ownProps.partialUpdateJob,
     deleteJob: ownProps.deleteJob,
+    fetchClient: ownProps.fetchClient,
     navResponsive: ownProps.navResponsive,
     job,
     jobId
@@ -54,6 +58,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
       fetchJob,
       partialUpdateJob,
       deleteJob,
+      fetchClient,
       navResponsive
     },
     dispatch
