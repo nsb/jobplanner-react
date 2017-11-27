@@ -8,6 +8,7 @@ import Article from "grommet/components/Article";
 import Anchor from "grommet/components/Anchor";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
+import Title from "grommet/components/Title";
 import Section from "grommet/components/Section";
 import Columns from "grommet/components/Columns";
 import MoreIcon from "grommet/components/icons/base/More";
@@ -177,14 +178,21 @@ class ClientDetail extends Component<Props, State> {
 
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertical: "none" }}>
-                  <Heading tag="h4" pad="medium" margin="medium">
-                    Jobs
-                    <Anchor
-                      path={`/${business.id}/jobs/add?client=${client.id}`}
+                  <Header>
+                    <Title>Jobs</Title>
+                    <Box
+                      flex={true}
+                      justify="end"
+                      direction="row"
+                      responsive={false}
                     >
-                      <AddIcon />
-                    </Anchor>
-                  </Heading>
+                      <Anchor
+                        icon={<AddIcon />}
+                        path={`/${business.id}/jobs/add?client=${client.id}`}
+                        a11yTitle="New job"
+                      />
+                    </Box>
+                  </Header>
                 </Box>
                 <List>
                   {jobs.map((job, index) => {
