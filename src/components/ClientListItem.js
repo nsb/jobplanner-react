@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import ListItem from "grommet/components/ListItem";
+import Anchor from "grommet/components/Anchor";
 import UserIcon from "grommet/components/icons/base/User";
 import type { Client } from "../actions/clients";
 
@@ -26,8 +27,10 @@ class ClientListItem extends Component<Props> {
         selected={false}
       >
         <span>
-          <UserIcon type="logo" size="xsmall" /> {client.first_name}{" "}
-          {client.last_name}
+          <Anchor
+            icon={<UserIcon />}
+            label={`${client.first_name} ${client.last_name}`}
+          />
         </span>
         <span>{client.phone || client.email}</span>
       </ListItem>
