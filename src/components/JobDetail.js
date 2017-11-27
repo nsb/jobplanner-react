@@ -109,8 +109,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
           <Heading tag="h4" margin="none">
             Property address
           </Heading>
-          {property.address1}
-          <br />
+          <div>{property.address1}</div>
           {property.address2}
         </Box>
       );
@@ -123,8 +122,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
           <Heading tag="h4" margin="none">
             Contact details
           </Heading>
-          {client.phone}
-          <br />
+          <div>{client.phone}</div>
+          {client.email}
         </Box>
       );
     }
