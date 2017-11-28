@@ -209,14 +209,14 @@ class ClientDetail extends Component<Props, State> {
                 <ListPlaceholder
                   filteredTotal={jobs.length}
                   unfilteredTotal={jobs.length}
-                  emptyMessage="no jobs."
+                  emptyMessage="No jobs."
                   addControl={
                     <Button
                       icon={<AddIcon />}
                       label="Add job"
                       primary={true}
                       a11yTitle={`Add job`}
-                      path={`/${business.id}/jobs/add`}
+                      path={`/${business.id}/jobs/add?client=${client.id}`}
                     />
                   }
                 />
