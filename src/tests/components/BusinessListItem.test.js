@@ -1,6 +1,6 @@
 import React from "react";
 import { configure, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "enzyme-adapter-react-15";
 import BusinessListItem from "../../components/businessListItem";
 
 configure({ adapter: new Adapter() });

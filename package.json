@@ -9,11 +9,11 @@
     "grommet-templates": "^0.2.0",
     "nielsbusch-grommet-css": "^1.9.0",
     "normalizr": "^3.2.3",
-    "react": "^16.1.1",
+    "react": "15.6.2",
     "react-big-calendar": "^0.17.0",
     "react-dnd": "^2.4.0",
     "react-dnd-html5-backend": "^2.4.1",
-    "react-dom": "^16.1.0",
+    "react-dom": "15.6.2",
     "react-intl-redux": "^0.7.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
@@ -46,11 +46,11 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-react-intl": "^2.3.1",
     "enzyme": "^3.1.1",
-    "enzyme-adapter-react-16": "^1.0.4",
+    "enzyme-adapter-react-15": "^1.0.5",
     "expect": "^21.1.0",
     "fetch-mock": "^5.12.2",
     "react-intl-translations-manager": "^5.0.0",
-    "react-test-renderer": "^16.1.0",
+    "react-test-renderer": "15.6.2",
     "redux-mock-store": "^1.3.0"
   }
 }
