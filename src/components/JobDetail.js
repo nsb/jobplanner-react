@@ -214,7 +214,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                           onClick={undefined}
                           selected={false}
                         >
-                          {line_item.name} {index}
+                          {line_item.name}
                         </ListItem>
                       ))}
                     </List>
