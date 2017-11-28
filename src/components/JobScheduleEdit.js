@@ -74,16 +74,18 @@ class JobScheduleEdit extends Component<Props, State> {
 
     if (schedule.freq === RRule.WEEKLY) {
       scheduleByWeekday = (
-        <Select
-          id="byweekday"
-          name="byweekday"
-          inline={true}
-          multiple={true}
-          value={byweekday}
-          options={rruleByWeekDay}
-          onChange={this.onByWeekDayChange}
-          onSearch={undefined}
-        />
+        <FormField label="Weekdays" htmlFor="freq">
+          <Select
+            id="byweekday"
+            name="byweekday"
+            inline={true}
+            multiple={true}
+            value={byweekday}
+            options={rruleByWeekDay}
+            onChange={this.onByWeekDayChange}
+            onSearch={undefined}
+          />
+        </FormField>
       );
     }
 
