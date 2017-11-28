@@ -16,6 +16,7 @@ import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
+import NumberInput from "grommet/components/NumberInput";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
@@ -122,6 +123,16 @@ const renderDateTime = ({
     </FormField>
   );
 };
+
+const renderNumberField = ({
+  input,
+  label,
+  meta: { touched, error, warning }
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <NumberInput {...input} />
+  </FormField>
+);
 
 type ScheduleProps = {
   value: string,
@@ -300,6 +311,17 @@ const renderLineItems = ({
           component={renderField}
           label="Description"
         />
+        <Field
+          name={`${lineItem}.quantity`}
+          component={renderNumberField}
+          label="Quantity"
+        />
+        <Field
+          name={`${lineItem}.unit_cost`}
+          component={renderNumberField}
+          label="Unit cost"
+        />
+
       </div>
     ))}
   </Section>
