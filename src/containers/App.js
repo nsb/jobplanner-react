@@ -5,6 +5,7 @@ import { withRouter, Switch, Route } from "react-router-dom";
 import AppGrommet from "grommet/components/App";
 import AppAuthenticated from "../containers/AppAuthenticated";
 import Login from "../components/Login";
+import Signup from "../components/Signup";
 import type { State } from "../types/State";
 
 import "./App.css";
@@ -19,6 +20,7 @@ class App extends Component<*> {
       <AppGrommet centered={false}>
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
           <Route component={AppAuthenticated} />
         </Switch>
       </AppGrommet>

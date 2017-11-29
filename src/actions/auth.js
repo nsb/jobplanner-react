@@ -1,6 +1,7 @@
 // @flow
 import fetch from "isomorphic-fetch";
 import authApi from "../api";
+import history from "../history";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { User } from "./users";
 
@@ -10,6 +11,11 @@ const API_ENDPOINT =
 const REQUEST_LOGIN: "REQUEST_LOGIN" = "REQUEST_LOGIN";
 const REQUEST_LOGIN_FAILURE: "REQUEST_LOGIN_FAILURE" = "REQUEST_LOGIN_FAILURE";
 const REQUEST_LOGIN_SUCCESS: "REQUEST_LOGIN_SUCCESS" = "REQUEST_LOGIN_SUCCESS";
+const REQUEST_SIGNUP: "REQUEST_SIGNUP" = "REQUEST_SIGNUP";
+const REQUEST_SIGNUP_FAILURE: "REQUEST_SIGNUP_FAILURE" =
+  "REQUEST_SIGNUP_FAILURE";
+const REQUEST_SIGNUP_SUCCESS: "REQUEST_SIGNUP_SUCCESS" =
+  "REQUEST_SIGNUP_SUCCESS";
 const LOGOUT: "LOGOUT" = "LOGOUT";
 const REQUEST_VERIFY: "REQUEST_VERIFY" = "REQUEST_VERIFY";
 const REQUEST_VERIFY_FAILURE: "REQUEST_VERIFY_FAILURE" =
@@ -45,6 +51,21 @@ type RequestLoginSuccessAction = {
   token: string
 };
 
+type RequestSignupAction = {
+  type: typeof REQUEST_SIGNUP,
+  user: { username: string }
+};
+
+type RequestSignupFailureAction = {
+  type: typeof REQUEST_SIGNUP_FAILURE,
+  error: string
+};
+
+type RequestSignupSuccessAction = {
+  type: typeof REQUEST_SIGNUP_SUCCESS,
+  payload: AuthResponse
+};
+
 type RequestVerifyAction = {
   type: typeof REQUEST_VERIFY,
   token: string
@@ -69,6 +90,9 @@ export type Action =
   | RequestLoginAction
   | RequestLoginFailureAction
   | RequestLoginSuccessAction
+  | RequestSignupAction
+  | RequestSignupFailureAction
+  | RequestSignupSuccessAction
   | RequestVerifyAction
   | RequestVerifyFacilureAction
   | RequestVerifySuccessAction
@@ -141,6 +165,56 @@ export const login = (credentials: Credentials): ThunkAction => {
         }
       })
       .catch((error: string) => dispatch(receiveLoginError(error)));
+  };
+};
+
+// Signup
+
+export const requestSignup = (user: {
+  username: string
+}): RequestSignupAction => {
+  return {
+    type: REQUEST_SIGNUP,
+    user
+  };
+};
+
+export const receiveSignupSuccess = (
+  payload: AuthResponse
+): RequestSignupSuccessAction => {
+  return {
+    type: REQUEST_SIGNUP_SUCCESS,
+    payload
+  };
+};
+
+export const receiveSignupError = (
+  error: string
+): RequestSignupFailureAction => {
+  return {
+    type: REQUEST_SIGNUP_FAILURE,
+    error: error
+  };
+};
+
+export const signup = (user: { username: string }): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(requestSignup(user));
+
+    return fetch(`${API_ENDPOINT}/users/signup/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+      .then(response => response.json())
+      .then((json: AuthResponse) => {
+        localStorage.setItem("token", json.token);
+        dispatch(receiveSignupSuccess(json));
+        history.push("/");
+      })
+      .catch((error: string) => dispatch(receiveSignupError(error)));
   };
 };
 
