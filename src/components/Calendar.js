@@ -7,8 +7,9 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import moment from "moment";
 import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
-import NavControl from "./NavControl";
 import Box from "grommet/components/Box";
+import NavControl from "./NavControl";
+import CalendarEvent from "./CalendarEvent";
 import type { Visit } from "../actions/visits";
 
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
@@ -68,6 +69,22 @@ class Calendar extends Component<Props, void> {
             onSelectSlot={onSelectSlot}
             onSelectEvent={onSelectEvent}
             onEventDrop={onEventDrop}
+            components={{
+              event: CalendarEvent
+            }}
+            eventPropGetter={(
+              event: Visit,
+              start: Date,
+              end: Date,
+              selected: boolean
+            ) => {
+              return {
+                className: event.completed
+                  ? "jobplanner__completed"
+                  : "jobplanner__incomplete",
+                style: event.completed ? { "background-color": "#ddd" } : {}
+              };
+            }}
           />
         </Box>
       </Box>
