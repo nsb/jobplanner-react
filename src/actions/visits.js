@@ -32,6 +32,11 @@ export const UPDATE_VISIT_SUCCESS: "UPDATE_VISIT_SUCCESS" =
 export const UPDATE_VISIT_FAILURE: "UPDATE_VISIT_FAILURE" =
   "UPDATE_VISIT_FAILURE";
 
+//Delete visit
+export const DELETE_VISIT: "DELETE_VISIT" = "DELETE_VISIT";
+export const DELETE_VISIT_SUCCESS: "DELETE_VISIT_SUCCESS" = "DELETE_VISIT_SUCCESS";
+export const DELETE_VISIT_FAILURE: "DELETE_VISIT_FAILURE" = "DELETE_VISIT_FAILURE";
+
 export type Visit = {
   id: number,
   business: number,
@@ -104,6 +109,22 @@ type UpdateVisitFailureAction = {
   error: string
 };
 
+type DeleteVisitAction = {
+  type: typeof DELETE_VISIT,
+  payload: Visit
+};
+
+type DeleteVisitSuccessAction = {
+  type: typeof DELETE_VISIT_SUCCESS,
+  payload: Visit
+};
+
+type DeleteVisitFailureAction = {
+  type: typeof DELETE_VISIT_FAILURE,
+  payload: Visit,
+  error: string
+};
+
 type ResetVisitsAction = {
   type: typeof RESET_VISITS
 };
@@ -118,6 +139,9 @@ export type Action =
   | UpdateVisitAction
   | UpdateVisitSuccessAction
   | UpdateVisitFailureAction
+  | DeleteVisitAction
+  | DeleteVisitSuccessAction
+  | DeleteVisitFailureAction
   | ResetVisitsAction;
 
 const parse = (visit): Visit => {
@@ -245,7 +269,7 @@ export const createVisit = (
 
 let nextTransactionID = 0;
 export const updateVisitRequest = (
-  payload: { id: number, begins: Date, ends: Date, anytime: boolean },
+  payload: Visit | { id: number },
   optimistic: boolean = false,
   transactionID: number = 0
 ): UpdateVisitAction => {
@@ -337,6 +361,75 @@ export const updateVisit = (
       })
       .catch((error: string) => {
         dispatch(updateVisitError(error, optimistic, transactionID));
+        addError({
+          text: "An error occurred"
+        });
+      });
+  };
+};
+
+export const partialUpdateVisit = (
+  visit: { id: number },
+  token: string
+): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(updateVisitRequest(visit));
+
+    return visitsApi
+      .update("visits", visit, token, true)
+      .then((responseVisit: Visit) => {
+        const coercedVisit = parse(responseVisit);
+        dispatch(updateVisitSuccess(coercedVisit));
+        return coercedVisit;
+      })
+      .catch((error: string) => {
+        dispatch(updateVisitError(error));
+        addError({
+          text: "An error occurred"
+        });
+      });
+  };
+};
+
+export const deleteVisitRequest = (payload: Visit): DeleteVisitAction => {
+  return {
+    type: DELETE_VISIT,
+    payload
+  };
+};
+
+export const deleteVisitSuccess = (payload: Visit): DeleteVisitSuccessAction => {
+  return {
+    type: DELETE_VISIT_SUCCESS,
+    payload
+  };
+};
+
+export const deleteVisitError = (
+  payload: Visit,
+  error: string
+): DeleteVisitFailureAction => {
+  return {
+    type: DELETE_VISIT_FAILURE,
+    error,
+    payload
+  };
+};
+
+export const deleteVisit = (visit: Visit, token: string): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(deleteVisitRequest(visit));
+
+    return visitsApi
+      .delete("visits", visit, token)
+      .then(() => {
+        dispatch(deleteVisitSuccess(visit));
+        addSuccess({
+          text: "Deleted"
+        });
+      })
+      .catch((error: string) => {
+        dispatch(deleteVisitError(visit, error));
         addError({
           text: "An error occurred"
         });
