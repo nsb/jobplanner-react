@@ -12,7 +12,7 @@ class CalendarEvent extends Component<Props> {
 
     return (
       <div>
-        {title} {event.completed ? "Completed" : "Not completed"}
+        {title}
       </div>
     );
   }
