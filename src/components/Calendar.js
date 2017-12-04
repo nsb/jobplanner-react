@@ -82,7 +82,14 @@ class Calendar extends Component<Props, void> {
                 className: event.completed
                   ? "jobplanner__completed"
                   : "jobplanner__incomplete",
-                style: event.completed ? { "background-color": "#ddd" } : {}
+                style: event.completed
+                  ? {
+                      "background-color": "#bbb",
+                      "text-decoration": "line-through"
+                    }
+                  : {
+                      "background-color": "#0a64a0"
+                    }
               };
             }}
           />
