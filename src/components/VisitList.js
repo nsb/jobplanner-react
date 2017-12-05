@@ -5,7 +5,7 @@ import { injectIntl, intlShape } from "react-intl";
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
-import VisitDetailContainer from "./VisitLayerContainer";
+import VisitLayerContainer from "./VisitLayerContainer";
 import VisitListItemContainer from "./VisitListItemContainer";
 import type { Visit } from "../actions/visits";
 
@@ -31,7 +31,7 @@ class VisitList extends Component<Props, State> {
     let visitLayer;
     if (this.state.selected) {
       visitLayer = (
-        <VisitDetailContainer
+        <VisitLayerContainer
           visit={this.state.selected}
           onClose={this.onClose}
         />

@@ -6,7 +6,6 @@ import { visitListSchema, visitSchema } from "../schemas";
 import visitsApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
-import history from "../history";
 import { BEGIN, COMMIT, REVERT } from "redux-optimistic-ui";
 
 //Create new visit
@@ -82,7 +81,7 @@ type CreateVisitAction = {
 
 type CreateVisitSuccessAction = {
   type: typeof CREATE_VISIT_SUCCESS,
-  payload: Visit
+  payload: { entities: { visits: VisitsMap }, result: number }
 };
 
 type CreateVisitFailureAction = {
@@ -252,7 +251,6 @@ export const createVisit = (
       .then((responseVisit: Visit) => {
         const coercedVisit = parse(responseVisit);
         dispatch(createVisitSuccess(coercedVisit));
-        history.push(`/${business.id}/visits/${coercedVisit.id}`);
         addSuccess({
           text: "Saved"
         });

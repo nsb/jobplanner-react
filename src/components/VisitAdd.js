@@ -1,72 +1,57 @@
 // @flow
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { denormalize } from "normalizr";
-import { visitSchemaDenormalize } from "../schemas";
-import { createVisit } from "../actions/visits";
+import Layer from "grommet/components/Layer";
 import VisitForm from "./VisitForm";
 import type { Business } from "../actions/businesses";
-import type { Visit } from "../actions/visits";
+import type { Job } from "../actions/jobs";
 import type { Employee } from "../actions/employees";
-import type { Dispatch } from "../types/Store";
-import type { State as ReduxState } from "../types/State";
-import { ensureState } from "redux-optimistic-ui";
 
 export type Props = {
-  dispatch: Dispatch,
   employees: Array<Employee>,
   token: string,
-  business: Business
+  business: Business,
+  job: Job,
+  onClose: Function,
+  createVisit: Function
 };
 
 class VisitAdd extends Component<Props> {
   render() {
-    const { employees } = this.props;
+    const { employees, onClose, job } = this.props;
 
     return (
-      <VisitForm
-        onSubmit={this.handleSubmit}
-        employees={employees}
-      />
+      <Layer align="right" closer={true} onClose={onClose}>
+        <VisitForm
+          initialValues={{
+            description: "",
+            begins: new Date(),
+            ends: new Date(),
+            anytime: false,
+            assigned: [],
+            line_items: [],
+            job: job.id
+          }}
+          onSubmit={this.handleSubmit}
+          employees={employees}
+        />;
+      </Layer>
     );
   }
 
-  handleSubmit = values => {
-    const { business, token, dispatch } = this.props;
-    dispatch(
-      createVisit(
-        business,
-        {
-          ...values,
-          assigned: values.assigned.map(v => v.value)
-        },
-        token || ""
-      )
+  handleSubmit = (values: Object) => {
+    const { business, job, token, createVisit } = this.props;
+    console.log("***************", values, "**************");
+    createVisit(
+      business,
+      {
+        ...values,
+        job: job.id,
+        assigned: values.assigned && values.assigned.map(v => v.value)
+      },
+      token || ""
     );
   };
 }
 
-const mapStateToProps = (
-  state: ReduxState,
-  ownProps: {
-    business: Business,
-  }
-): * => {
-  const { auth, employees, entities } = state;
-
-  return {
-    token: auth.token,
-    employees: employees.result
-      .map((Id: number) => {
-        return ensureState(entities).employees[Id];
-      })
-      .filter(employee => {
-        return employee.businesses.indexOf(ownProps.business) > -1
-          ? employee
-          : false;
-      }),
-  };
-};
-
-export default connect(mapStateToProps)(VisitAdd);
+export default VisitAdd;

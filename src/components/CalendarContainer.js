@@ -9,7 +9,7 @@ import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
 import type { Responsive } from "../actions/nav";
 import { fetchVisits, updateVisit } from "../actions/visits";
-import VisitDetailContainer from "./VisitLayerContainer";
+import VisitLayerContainer from "./VisitLayerContainer";
 import Calendar from "./Calendar";
 import CalendarList from "./CalendarList";
 
@@ -45,8 +45,9 @@ class CalendarContainer extends Component<Props, State> {
     let visitLayer;
     if (this.state.selected) {
       visitLayer = (
-        <VisitDetailContainer
+        <VisitLayerContainer
           visit={this.state.selected}
+          business={business}
           onClose={this.onClose}
         />
       );

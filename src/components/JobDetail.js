@@ -22,7 +22,7 @@ import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
-import VisitLayerContainer from "./VisitLayerContainer";
+import VisitAddContainer from "./VisitAddContainer";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Client } from "../actions/clients";
@@ -130,6 +130,17 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
           <div>{client.phone}</div>
           {client.email}
         </Box>
+      );
+    }
+
+    let visitAddLayer;
+    if (this.state.showAddVisit) {
+      visitAddLayer = (
+        <VisitAddContainer
+          business={business}
+          job={job}
+          onClose={this.onCloseAddVisit}
+        />
       );
     }
 
@@ -245,7 +256,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                       >
                         <Anchor
                           icon={<AddIcon />}
-                          onClick={() => console.log('hejsa')}
+                          onClick={() => this.setState({ showAddVisit: true })}
                           a11yTitle="New job"
                         />
                       </Box>
@@ -257,6 +268,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
             </Article>
           </div>
           {sidebar}
+          {visitAddLayer}
         </Split>
       );
     }
@@ -291,6 +303,10 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     this.setState({
       showSidebarWhenSingle: !this.state.showSidebarWhenSingle
     });
+  };
+
+  onCloseAddVisit = () => {
+    this.setState({ showAddVisit: false });
   };
 }
 
