@@ -41,7 +41,6 @@ class VisitAdd extends Component<Props> {
 
   handleSubmit = (values: Object) => {
     const { business, job, token, createVisit } = this.props;
-    console.log("***************", values, "**************");
     createVisit(
       business,
       {
