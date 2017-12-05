@@ -8,6 +8,7 @@ import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
+import type { Props } from "./VisitAdd";
 import { ensureState } from "redux-optimistic-ui";
 
 const mapStateToProps = (
@@ -17,7 +18,7 @@ const mapStateToProps = (
     job: Job,
     onClose: Function
   }
-): * => {
+): Props => {
   const { auth, employees, entities } = state;
 
   return {

@@ -40,7 +40,7 @@ class VisitAdd extends Component<Props> {
   }
 
   handleSubmit = (values: Object) => {
-    const { business, job, token, createVisit } = this.props;
+    const { business, job, token, createVisit, onClose } = this.props;
     createVisit(
       business,
       {
@@ -50,6 +50,7 @@ class VisitAdd extends Component<Props> {
       },
       token || ""
     );
+    onClose()
   };
 }
 
