@@ -8,7 +8,7 @@ type Props = {
 
 class CalendarEvent extends Component<Props> {
   render() {
-    const { event, title } = this.props;
+    const { title } = this.props;
 
     return (
       <div>
