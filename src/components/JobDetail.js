@@ -10,16 +10,19 @@ import Anchor from "grommet/components/Anchor";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
+import Title from "grommet/components/Title";
 import Columns from "grommet/components/Columns";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import ListItem from "grommet/components/ListItem";
 import Spinning from "grommet/components/icons/Spinning";
 import MoreIcon from "grommet/components/icons/base/More";
+import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
+import VisitLayerContainer from "./VisitLayerContainer";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Client } from "../actions/clients";
@@ -45,12 +48,14 @@ export type Props = {
 };
 
 type State = {
-  showSidebarWhenSingle: boolean
+  showSidebarWhenSingle: boolean,
+  showAddVisit: boolean
 };
 
 class JobDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
-    showSidebarWhenSingle: false
+    showSidebarWhenSingle: false,
+    showAddVisit: false
   };
 
   componentDidMount() {
@@ -230,7 +235,21 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                 </Section>
                 <Section full="horizontal">
                   <Box pad={{ horizontal: "medium", vertical: "none" }}>
-                    <Heading tag="h4">Visits</Heading>
+                    <Header>
+                      <Title>Visits</Title>
+                      <Box
+                        flex={true}
+                        justify="end"
+                        direction="row"
+                        responsive={false}
+                      >
+                        <Anchor
+                          icon={<AddIcon />}
+                          onClick={() => console.log('hejsa')}
+                          a11yTitle="New job"
+                        />
+                      </Box>
+                    </Header>
                   </Box>
                   <VisitAsyncTask job={job} />
                 </Section>

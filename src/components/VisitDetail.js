@@ -74,8 +74,8 @@ class VisitDetail extends Component<Props> {
                 <Anchor href="#" onClick={this.onDelete}>
                   Delete
                 </Anchor>
-                <Anchor href="#" onClick={this.onCompleted}>
-                  Mark complete
+                <Anchor href="#" onClick={this.toggleCompleted}>
+                  {visit.completed ? "Mark completed" : "Mark incomplete"}
                 </Anchor>
               </Menu>
             </Box>
@@ -111,7 +111,7 @@ class VisitDetail extends Component<Props> {
     );
   }
 
-  onCompleted = () => {
+  toggleCompleted = () => {
     const { visit, token, partialUpdateVisit } = this.props;
     partialUpdateVisit({ id: visit.id, completed: !visit.completed }, token);
   };
