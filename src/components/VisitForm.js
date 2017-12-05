@@ -29,19 +29,21 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Element<*> =>
+}): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>;
+  </FormField>
+);
 
 const renderCheckBox = ({
   input,
   label,
   meta: { touched, error, warning }
-}): Element<*> =>
+}): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <CheckBox {...input} checked={!!input.value} />
-  </FormField>;
+  </FormField>
+);
 
 const renderSelect = ({
   input,
@@ -82,7 +84,7 @@ const renderDateTime = ({
 const renderLineItems = ({
   fields,
   meta: { error, submitFailed }
-}): Element<*> =>
+}): Element<*> => (
   <Section>
     <div>
       <button type="button" onClick={() => fields.push({})}>
@@ -90,7 +92,7 @@ const renderLineItems = ({
       </button>
       {submitFailed && error && <span>{error}</span>}
     </div>
-    {fields.map((lineItem, index) =>
+    {fields.map((lineItem, index) => (
       <div key={index}>
         <button
           type="button"
@@ -112,8 +114,9 @@ const renderLineItems = ({
           label="Description"
         />
       </div>
-    )}
-  </Section>;
+    ))}
+  </Section>
+);
 
 type Props = {
   handleSubmit: Function,
@@ -145,24 +148,20 @@ class VisitForm extends Component<Props> {
 
     return (
       <Form onSubmit={handleSubmit}>
-
         <Header size="large" justify="between" pad="none">
           <Heading tag="h2" margin="none" strong={true}>
-            {initialValues ? "Edit visit" : "Add visit"}
+            {initialValues && initialValues.id ? "Edit visit" : "Add visit"}
           </Heading>
         </Header>
 
         <FormFields>
-
           <fieldset>
-
             <Field
               name="description"
               label="Description"
               component={renderField}
               type="text"
             />
-
           </fieldset>
 
           <fieldset>
@@ -210,7 +209,6 @@ class VisitForm extends Component<Props> {
               component={renderLineItems}
             />
           </fieldset>
-
         </FormFields>
 
         <Footer pad={{ vertical: "medium" }}>
