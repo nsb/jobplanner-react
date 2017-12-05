@@ -19,7 +19,11 @@ const getJob = (state: ReduxState, props: { job: Job }): Job => {
 export const getVisitsByJob: Function = createSelector(
   [getVisits, getJob],
   (visits: Array<Visit>, job: Job): Array<Visit> => {
-    return visits.filter(visit => visit.job === job.id);
+    return visits
+      .filter(visit => visit.job === job.id)
+      .sort((a, b) => {
+        return new Date(a.begins) - new Date(b.begins);
+      })
   }
 );
 
