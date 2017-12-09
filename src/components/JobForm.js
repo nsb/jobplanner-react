@@ -3,8 +3,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
+import onClickOutside from "react-onclickoutside";
 import moment from "moment";
-import Box from "grommet/components/Box";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
@@ -28,7 +28,6 @@ import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
-import type { LineItem } from "../actions/lineitems";
 import Notification from "grommet/components/Notification";
 
 const validate = (values: {
@@ -70,42 +69,28 @@ const validate = (values: {
   return errors;
 };
 
-class LineItemTextInput extends TextInput {
-  constructor(props) {
-    super(props);
+class JobPlannerTextInput extends TextInput {
+  handleClickOutside = evt => {
+    this._onRemoveDrop();
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
+    document.removeEventListener("click", this._onRemoveDrop);
   }
 
   _onFocus = event => {
     // const {  } = this.props;
-      this.setState({
-        focused: true,
-        activeSuggestionIndex: -1
-      });
+    this.setState({
+      // focused: true,
+      // activeSuggestionIndex: -1
+    });
 
     this._onInputChange(event);
-
-      // if (onFocus) {
-      //   onFocus(event);
-  // }
-    // console.log("**********************");
-    // const { onDOMChange } = this.props;
-    // this.setState({
-    //   focused: true
-    //   // activeSuggestionIndex: -1
-    // });
-    //
-    // this.setState({
-    //   value: "",
-    //   dropActive: true,
-    //   activeSuggestionIndex: -1,
-    //   suggestions: VALUES
-    // });
-
-    // if (onDOMChange) {
-    //   onDOMChange(event);
-    // }
   };
 }
+
+const LineItemTextInput = onClickOutside(JobPlannerTextInput);
 
 const renderField = ({
   input,
