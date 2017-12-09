@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
 import moment from "moment";
+import Box from "grommet/components/Box";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
@@ -17,6 +18,7 @@ import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import NumberInput from "grommet/components/NumberInput";
+import TextInput from "grommet/components/TextInput";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
@@ -26,6 +28,7 @@ import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
+import type { LineItem } from "../actions/lineitems";
 import Notification from "grommet/components/Notification";
 
 const validate = (values: {
@@ -67,6 +70,43 @@ const validate = (values: {
   return errors;
 };
 
+class LineItemTextInput extends TextInput {
+  constructor(props) {
+    super(props);
+  }
+
+  _onFocus = event => {
+    // const {  } = this.props;
+      this.setState({
+        focused: true,
+        activeSuggestionIndex: -1
+      });
+
+    this._onInputChange(event);
+
+      // if (onFocus) {
+      //   onFocus(event);
+  // }
+    // console.log("**********************");
+    // const { onDOMChange } = this.props;
+    // this.setState({
+    //   focused: true
+    //   // activeSuggestionIndex: -1
+    // });
+    //
+    // this.setState({
+    //   value: "",
+    //   dropActive: true,
+    //   activeSuggestionIndex: -1,
+    //   suggestions: VALUES
+    // });
+
+    // if (onDOMChange) {
+    //   onDOMChange(event);
+    // }
+  };
+}
+
 const renderField = ({
   input,
   label,
@@ -75,6 +115,26 @@ const renderField = ({
 }): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
+  </FormField>
+);
+
+const renderTextField = ({
+  input,
+  label,
+  onDomChange,
+  onSelect,
+  suggestions,
+  value,
+  meta: { touched, error, warning }
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <LineItemTextInput
+      {...input}
+      onDOMChange={onDomChange}
+      onSelect={onSelect}
+      suggestions={suggestions}
+      value={value}
+    />
   </FormField>
 );
 
@@ -279,53 +339,108 @@ type JobFormState = {
   visitsWillBeRegenerated: boolean
 };
 
-const renderLineItems = ({
-  fields,
-  meta: { error, submitFailed }
-}): Element<*> => (
-  <Section>
-    <div>
-      <button type="button" onClick={() => fields.push({})}>
-        Add Line item
-      </button>
-      {submitFailed && error && <span>{error}</span>}
-    </div>
-    {fields.map((lineItem, index) => (
-      <div key={index}>
-        <button
-          type="button"
-          title="Remove line item"
-          onClick={() => fields.remove(index)}
-        />
-        <h4>Line item #{index + 1}</h4>
-        <Field name={`${lineItem}.id`} type="hidden" component={renderField} />
-        <Field
-          name={`${lineItem}.name`}
-          type="text"
-          component={renderField}
-          label="Name"
-        />
-        <Field
-          name={`${lineItem}.description`}
-          type="text"
-          component={renderField}
-          label="Description"
-        />
-        <Field
-          name={`${lineItem}.quantity`}
-          component={renderNumberField}
-          label="Quantity"
-        />
-        <Field
-          name={`${lineItem}.unit_cost`}
-          component={renderNumberField}
-          label="Unit cost"
-        />
+type LineItemProps = {
+  fields: Object,
+  meta: { error: boolean, submitFailed: boolean }
+};
 
-      </div>
-    ))}
-  </Section>
-);
+type LineItemState = {
+  value: *,
+  suggestions: *
+};
+
+const VALUES = ["one", "two", "three", "four", "five", "six", "seven", "eight"];
+
+// suggestions={[
+//   {
+//     value: "first",
+//     sub: "alpha",
+//     label: (
+//       <Box direction="row" justify="between">
+//         {" "}
+//         <span> first </span>{" "}
+//         <span className="secondary"> alpha </span>
+//       </Box>
+//     )
+//   }
+// ]}
+
+class LineItems extends Component<LineItemProps, LineItemState> {
+  constructor() {
+    super();
+    this.state = { value: "", suggestions: VALUES };
+  }
+
+  _onDOMChange = event => {
+    if (event.target.value) {
+      const regexp = new RegExp("^" + event.target.value);
+      const suggestions = VALUES.filter(val => {
+        return regexp.test(val);
+      });
+      this.setState({ value: event.target.value, suggestions: suggestions });
+    } else {
+      this.setState({ value: "", suggestions: VALUES });
+    }
+  };
+
+  _onSelect = pseudoEvent => {
+    this.setState({ value: pseudoEvent.suggestion, suggestions: VALUES });
+  };
+
+  render() {
+    const { fields, meta: { error, submitFailed } } = this.props;
+    return (
+      <Section>
+        <div>
+          <button type="button" onClick={() => fields.push({})}>
+            Add Line item
+          </button>
+          {submitFailed && error && <span>{error}</span>}
+        </div>
+        {fields.map((lineItem, index) => (
+          <div key={index}>
+            <button
+              type="button"
+              title="Remove line item"
+              onClick={() => fields.remove(index)}
+            />
+            <h4>Line item #{index + 1}</h4>
+            <Field
+              name={`${lineItem}.id`}
+              type="hidden"
+              component={renderField}
+            />
+            <Field
+              name={`${lineItem}.name`}
+              component={renderTextField}
+              label="Name"
+              onDomChange={this._onDOMChange}
+              onSelect={this._onSelect}
+              value={this.state.value}
+              suggestions={this.state.suggestions}
+            />
+            <Field
+              name={`${lineItem}.description`}
+              type="text"
+              component={renderField}
+              label="Description"
+            />
+            <Field
+              name={`${lineItem}.quantity`}
+              component={renderNumberField}
+              label="Quantity"
+            />
+            <Field
+              name={`${lineItem}.unit_cost`}
+              component={renderNumberField}
+              label="Unit cost"
+            />
+          </div>
+        ))}
+      </Section>
+    );
+  }
+}
 
 class JobForm extends Component<JobFormProps, JobFormState> {
   static defaultProps = {
@@ -509,7 +624,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
             <FieldArray
               name="line_items"
               label="Line items"
-              component={renderLineItems}
+              component={LineItems}
             />
           </fieldset>
         </FormFields>
