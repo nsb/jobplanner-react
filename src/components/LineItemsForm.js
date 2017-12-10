@@ -4,6 +4,7 @@ import Section from "grommet/components/Section";
 import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
 import RenderTextField from "./LineItemTextInput";
+import type { Service } from "../actions/services";
 
 const renderField = ({
   input,
@@ -26,7 +27,8 @@ const renderNumberField = ({
   </FormField>
 );
 
-type LineItemProps = {
+export type LineItemProps = {
+  suggestions: Array<{ label: string, value: Service }>,
   fields: Object,
   meta: { error: boolean, submitFailed: boolean }
 };
@@ -35,8 +37,6 @@ type LineItemState = {
   value: *,
   suggestions: *
 };
-
-const VALUES = ["one", "two", "three", "four", "five", "six", "seven", "eight"];
 
 // suggestions={[
 //   {
@@ -52,26 +52,28 @@ const VALUES = ["one", "two", "three", "four", "five", "six", "seven", "eight"];
 //   }
 // ]}
 
-export default class LineItems extends Component<LineItemProps, LineItemState> {
+class LineItemsForm extends Component<LineItemProps, LineItemState> {
   constructor(props: LineItemProps) {
+    console.log("***********", props, "******************");
     super();
-    this.state = { value: "", suggestions: VALUES };
+    this.state = { value: "", suggestions: props.suggestions };
   }
 
-  _onDOMChange = event => {
+  onNameChange = event => {
     if (event.target.value) {
       const regexp = new RegExp("^" + event.target.value);
-      const suggestions = VALUES.filter(val => {
+      const suggestions = this.props.suggestions.filter(val => {
         return regexp.test(val);
       });
       this.setState({ value: event.target.value, suggestions: suggestions });
     } else {
-      this.setState({ value: "", suggestions: VALUES });
+      this.setState({ value: "", suggestions: this.props.suggestions });
     }
   };
 
-  _onSelect = pseudoEvent => {
-    this.setState({ value: pseudoEvent.suggestion, suggestions: VALUES });
+  onNameSelect = pseudoEvent => {
+    const { suggestions } = this.props;
+    this.setState({ value: pseudoEvent.suggestion, suggestions });
   };
 
   render() {
@@ -101,8 +103,8 @@ export default class LineItems extends Component<LineItemProps, LineItemState> {
               name={`${lineItem}.name`}
               component={RenderTextField}
               label="Name"
-              onDomChange={this._onDOMChange}
-              onSelect={this._onSelect}
+              onDomChange={this.onNameChange}
+              onSelect={this.onNameSelect}
               value={this.state.value}
               suggestions={this.state.suggestions}
             />
@@ -128,3 +130,5 @@ export default class LineItems extends Component<LineItemProps, LineItemState> {
     );
   }
 }
+
+export default LineItemsForm;

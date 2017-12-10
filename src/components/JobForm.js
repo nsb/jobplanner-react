@@ -18,7 +18,7 @@ import DateTime from "grommet/components/DateTime";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
-import LineItemsForm from "./LineItemsForm";
+import LineItemsFormContainer from "./LineItemsFormContainer";
 import { RRule, rrulestr } from "rrule";
 import clientsApi from "../api";
 import type { Client, ClientsResponse } from "../actions/clients";
@@ -450,7 +450,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
             <FieldArray
               name="line_items"
               label="Line items"
-              component={LineItemsForm}
+              component={LineItemsFormContainer}
             />
           </fieldset>
         </FormFields>
