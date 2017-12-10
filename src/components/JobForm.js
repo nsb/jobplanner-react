@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
-import onClickOutside from "react-onclickoutside";
 import moment from "moment";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
@@ -18,10 +17,10 @@ import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import NumberInput from "grommet/components/NumberInput";
-import TextInput from "grommet/components/TextInput";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
+import LineItemTextInput from "./LineItemTextInput";
 import { RRule, rrulestr } from "rrule";
 import clientsApi from "../api";
 import type { Client, ClientsResponse } from "../actions/clients";
@@ -69,29 +68,6 @@ const validate = (values: {
   return errors;
 };
 
-class JobPlannerTextInput extends TextInput {
-  handleClickOutside = evt => {
-    this._onRemoveDrop();
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    super.componentDidUpdate(prevProps, prevState);
-    document.removeEventListener("click", this._onRemoveDrop);
-  }
-
-  _onFocus = event => {
-    // const {  } = this.props;
-    this.setState({
-      // focused: true,
-      // activeSuggestionIndex: -1
-    });
-
-    this._onInputChange(event);
-  };
-}
-
-const LineItemTextInput = onClickOutside(JobPlannerTextInput);
-
 const renderField = ({
   input,
   label,
@@ -103,7 +79,7 @@ const renderField = ({
   </FormField>
 );
 
-const renderTextField = ({
+const RenderTextField = ({
   input,
   label,
   onDomChange,
@@ -397,7 +373,7 @@ class LineItems extends Component<LineItemProps, LineItemState> {
             />
             <Field
               name={`${lineItem}.name`}
-              component={renderTextField}
+              component={RenderTextField}
               label="Name"
               onDomChange={this._onDOMChange}
               onSelect={this._onSelect}
