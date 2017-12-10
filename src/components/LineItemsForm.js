@@ -54,7 +54,6 @@ type LineItemState = {
 
 class LineItemsForm extends Component<LineItemProps, LineItemState> {
   constructor(props: LineItemProps) {
-    console.log("***********", props, "******************");
     super();
     this.state = { value: "", suggestions: props.suggestions };
   }
