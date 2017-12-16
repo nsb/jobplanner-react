@@ -58,8 +58,8 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
   };
 
   onNameSelect = ({ target, suggestion }, index) => {
-    const { fields, change } = this.props;
-    const { label, value } = suggestion;
+    const { change } = this.props;
+    const { value } = suggestion;
     change("job", `line_items[${index}].name`, value.name);
     change("job", `line_items[${index}].description`, value.description);
     change("job", `line_items[${index}].quantity`, value.quantity);
