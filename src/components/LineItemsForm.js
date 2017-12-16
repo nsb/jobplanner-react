@@ -33,24 +33,13 @@ export type LineItemProps = {
   meta: { error: boolean, submitFailed: boolean }
 };
 
-type LineItemState = {
-  value: *,
-  suggestions: *
-};
+type Suggestion = { label: string, value: Service };
 
-// suggestions={[
-//   {
-//     value: "first",
-//     sub: "alpha",
-//     label: (
-//       <Box direction="row" justify="between">
-//         {" "}
-//         <span> first </span>{" "}
-//         <span className="secondary"> alpha </span>
-//       </Box>
-//     )
-//   }
-// ]}
+type LineItemState = {
+  value: string,
+  suggestions: Array<Suggestion>,
+  change: Function
+};
 
 class LineItemsForm extends Component<LineItemProps, LineItemState> {
   constructor(props: LineItemProps) {
@@ -59,24 +48,30 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
   }
 
   onNameChange = event => {
-    if (event.target.value) {
-      const regexp = new RegExp("^" + event.target.value);
-      const suggestions = this.props.suggestions.filter(val => {
-        return regexp.test(val);
-      });
-      this.setState({ value: event.target.value, suggestions: suggestions });
-    } else {
-      this.setState({ value: "", suggestions: this.props.suggestions });
-    }
+    const { change } = this.props;
+    const regexp = new RegExp("^" + event.target.value.toLowerCase());
+    const suggestions = this.props.suggestions.filter(suggestion => {
+      return regexp.test(suggestion.label.toLowerCase());
+    });
+    this.setState({ suggestions: suggestions });
+    change("job", "line_items[0].name", event.target.value);
+
   };
 
-  onNameSelect = pseudoEvent => {
-    const { suggestions } = this.props;
-    this.setState({ value: pseudoEvent.suggestion, suggestions });
+  onNameSelect = ({ target, suggestion }) => {
+    const { fields, change } = this.props;
+    const { label, value } = suggestion;
+    change("job", "line_items[0].name", value.name);
+    change("job", "line_items[0].description", value.description);
+    change("job", "line_items[0].quantity", value.quantity);
+    change("job", "line_items[0].unit_cost", value.unit_cost);
   };
 
   render() {
     const { fields, meta: { error, submitFailed } } = this.props;
+
+    fields.map((lineItem, index) => console.log(lineItem, index));
+
     return (
       <Section>
         <div>
@@ -104,7 +99,7 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
               label="Name"
               onDomChange={this.onNameChange}
               onSelect={this.onNameSelect}
-              value={this.state.value}
+              // value={this.state.value}
               suggestions={this.state.suggestions}
             />
             <Field
