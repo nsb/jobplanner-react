@@ -47,30 +47,27 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
     this.state = { value: "", suggestions: props.suggestions };
   }
 
-  onNameChange = event => {
+  onNameChange = (event, index) => {
     const { change } = this.props;
     const regexp = new RegExp("^" + event.target.value.toLowerCase());
     const suggestions = this.props.suggestions.filter(suggestion => {
       return regexp.test(suggestion.label.toLowerCase());
     });
     this.setState({ suggestions: suggestions });
-    change("job", "line_items[0].name", event.target.value);
-
+    change("job", `line_items[${index}].name`, event.target.value);
   };
 
-  onNameSelect = ({ target, suggestion }) => {
+  onNameSelect = ({ target, suggestion }, index) => {
     const { fields, change } = this.props;
     const { label, value } = suggestion;
-    change("job", "line_items[0].name", value.name);
-    change("job", "line_items[0].description", value.description);
-    change("job", "line_items[0].quantity", value.quantity);
-    change("job", "line_items[0].unit_cost", value.unit_cost);
+    change("job", `line_items[${index}].name`, value.name);
+    change("job", `line_items[${index}].description`, value.description);
+    change("job", `line_items[${index}].quantity`, value.quantity);
+    change("job", `line_items[${index}].unit_cost`, value.unit_cost);
   };
 
   render() {
     const { fields, meta: { error, submitFailed } } = this.props;
-
-    fields.map((lineItem, index) => console.log(lineItem, index));
 
     return (
       <Section>
@@ -97,9 +94,8 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
               name={`${lineItem}.name`}
               component={RenderTextField}
               label="Name"
-              onDomChange={this.onNameChange}
-              onSelect={this.onNameSelect}
-              // value={this.state.value}
+              onDomChange={e => this.onNameChange(e, index)}
+              onSelect={e => this.onNameSelect(e, index)}
               suggestions={this.state.suggestions}
             />
             <Field
