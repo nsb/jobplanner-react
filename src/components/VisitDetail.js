@@ -75,7 +75,7 @@ class VisitDetail extends Component<Props> {
                   Delete
                 </Anchor>
                 <Anchor href="#" onClick={this.toggleCompleted}>
-                  {visit.completed ? "Mark completed" : "Mark incomplete"}
+                  {visit.completed ? "Mark incomplete" : "Mark completed"}
                 </Anchor>
               </Menu>
             </Box>
