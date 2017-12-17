@@ -553,13 +553,13 @@ class JobForm extends Component<JobFormProps, JobFormState> {
     interval: number,
     byweekday: string
   }) => {
-    const { dispatch, change } = this.props;
+    const { dispatch, change, initialValues } = this.props;
     dispatch(
       change("recurrences", `RRULE:${new RRule({ ...schedule }).toString()}`)
     );
     this.setState({
       scheduleLayer: false,
-      visitsWillBeRegenerated: true,
+      visitsWillBeRegenerated: !!initialValues.id,
       schedule
     });
   };
