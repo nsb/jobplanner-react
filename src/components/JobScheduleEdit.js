@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import Box from "grommet/components/Box";
 import Select from "grommet/components/Select";
 import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
@@ -74,16 +75,20 @@ class JobScheduleEdit extends Component<Props, State> {
 
     if (schedule.freq === RRule.WEEKLY) {
       scheduleByWeekday = (
-        <Select
-          id="byweekday"
-          name="byweekday"
-          inline={true}
-          multiple={true}
-          value={byweekday}
-          options={rruleByWeekDay}
-          onChange={this.onByWeekDayChange}
-          onSearch={undefined}
-        />
+        <FormField label="Weekdays" htmlFor="freq">
+          <Box>
+            <Select
+              id="byweekday"
+              name="byweekday"
+              inline={true}
+              multiple={true}
+              value={byweekday}
+              options={rruleByWeekDay}
+              onChange={this.onByWeekDayChange}
+              onSearch={undefined}
+            />
+          </Box>
+        </FormField>
       );
     }
 
