@@ -61,8 +61,8 @@ jobs:
       - run:
           name: Deploy static files
           command: |
-            gsutil defacl ch -u AllUsers:R gs://jobplanner.nielsbusch.dk
-            gsutil rsync -R build/ gs://jobplanner.nielsbusch.dk
+            gsutil defacl ch -u AllUsers:R gs://admin.myjobplanner.com
+            gsutil rsync -R build/ gs://admin.myjobplanner.com
 
       - run:
           name: discarding all changes
