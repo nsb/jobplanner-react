@@ -40,6 +40,10 @@ class VisitAsyncTask extends Component<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.taskState === "SUCCESS" ||
