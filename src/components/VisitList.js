@@ -10,7 +10,7 @@ import VisitListItemContainer from "./VisitListItemContainer";
 import type { Visit } from "../actions/visits";
 
 type Props = {
-  visits?: Array<Visit>,
+  visits: Array<Visit>,
   isFetching?: boolean,
   onMore: () => void,
   intl: intlShape
