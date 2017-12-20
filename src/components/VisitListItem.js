@@ -30,7 +30,6 @@ class VisitListItem extends Component<Props> {
         selected={false}
       >
         <span>
-          <CheckBox label="" />
           <Timestamp
             fields={visit.anytime ? "date" : ["date", "time"]}
             value={visit.begins}
