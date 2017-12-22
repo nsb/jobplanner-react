@@ -2,7 +2,6 @@
 
 import React, { Component } from "react";
 import ListItem from "grommet/components/ListItem";
-import CheckBox from "grommet/components/CheckBox";
 import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
