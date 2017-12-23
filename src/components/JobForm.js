@@ -18,7 +18,7 @@ import DateTime from "grommet/components/DateTime";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
-import LineItemsFormContainer from "./LineItemsFormContainer";
+import LineItemsFormContainer from "./JobLineItemsFormContainer";
 import { RRule, rrulestr } from "rrule";
 import clientsApi from "../api";
 import type { Client, ClientsResponse } from "../actions/clients";

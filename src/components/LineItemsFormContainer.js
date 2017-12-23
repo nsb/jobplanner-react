@@ -8,10 +8,14 @@ import type { State as ReduxState } from "../types/State";
 import LineItemsForm from "./LineItemsForm";
 import type { LineItemProps as Props } from "./LineItemsForm";
 
-const mapStateToProps = (state: ReduxState, ownProps: {}): Props => {
+const mapStateToProps = (
+  state: ReduxState,
+  ownProps: { formName: string }
+): Props => {
   const { entities, services } = state;
 
   return {
+    formName: ownProps.formName,
     suggestions: services.result.map((Id: number) => {
       let service = ensureState(entities).services[Id];
       return { label: service.name, value: service };

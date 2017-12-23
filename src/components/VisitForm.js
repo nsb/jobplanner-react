@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
-import Section from "grommet/components/Section";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
@@ -15,6 +14,7 @@ import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
+import LineItemsFormContainer from "./VisitLineItemsFormContainer";
 import type { Client } from "../actions/clients";
 import type { Employee } from "../actions/employees";
 import type { Element } from "react";
@@ -80,43 +80,6 @@ const renderDateTime = ({
     </FormField>
   );
 };
-
-const renderLineItems = ({
-  fields,
-  meta: { error, submitFailed }
-}): Element<*> => (
-  <Section>
-    <div>
-      <button type="button" onClick={() => fields.push({})}>
-        Add Line item
-      </button>
-      {submitFailed && error && <span>{error}</span>}
-    </div>
-    {fields.map((lineItem, index) => (
-      <div key={index}>
-        <button
-          type="button"
-          title="Remove line item"
-          onClick={() => fields.remove(index)}
-        />
-        <h4>Line item #{index + 1}</h4>
-        <Field name={`${lineItem}.id`} type="hidden" component={renderField} />
-        <Field
-          name={`${lineItem}.name`}
-          type="text"
-          component={renderField}
-          label="Name"
-        />
-        <Field
-          name={`${lineItem}.description`}
-          type="text"
-          component={renderField}
-          label="Description"
-        />
-      </div>
-    ))}
-  </Section>
-);
 
 type Props = {
   handleSubmit: Function,
@@ -206,7 +169,7 @@ class VisitForm extends Component<Props> {
             <FieldArray
               name="line_items"
               label="Line items"
-              component={renderLineItems}
+              component={LineItemsFormContainer}
             />
           </fieldset>
         </FormFields>

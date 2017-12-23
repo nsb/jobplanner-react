@@ -28,6 +28,7 @@ const renderNumberField = ({
 );
 
 export type LineItemProps = {
+  formName: string,
   suggestions: Array<{ label: string, value: Service }>,
   fields: Object,
   meta: { error: boolean, submitFailed: boolean }
@@ -48,22 +49,22 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
   }
 
   onNameChange = (event, index) => {
-    const { change } = this.props;
+    const { formName, change } = this.props;
     const regexp = new RegExp("^" + event.target.value.toLowerCase());
     const suggestions = this.props.suggestions.filter(suggestion => {
       return regexp.test(suggestion.label.toLowerCase());
     });
     this.setState({ suggestions: suggestions });
-    change("job", `line_items[${index}].name`, event.target.value);
+    change(formName, `line_items[${index}].name`, event.target.value);
   };
 
   onNameSelect = ({ target, suggestion }, index) => {
-    const { change } = this.props;
+    const { formName, change } = this.props;
     const { value } = suggestion;
-    change("job", `line_items[${index}].name`, value.name);
-    change("job", `line_items[${index}].description`, value.description);
-    change("job", `line_items[${index}].quantity`, value.quantity);
-    change("job", `line_items[${index}].unit_cost`, value.unit_cost);
+    change(formName, `line_items[${index}].name`, value.name);
+    change(formName, `line_items[${index}].description`, value.description);
+    change(formName, `line_items[${index}].quantity`, value.quantity);
+    change(formName, `line_items[${index}].unit_cost`, value.unit_cost);
   };
 
   render() {
