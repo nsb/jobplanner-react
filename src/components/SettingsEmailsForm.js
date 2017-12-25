@@ -60,7 +60,7 @@ export const EmailsForm = ({
             type="text"
           />
           <Field
-            name="upcoming_visit_reminder_email_message"
+            name="upcoming_visit_reminder_email_body"
             label="Reminder message"
             component={renderField}
             type="text"
