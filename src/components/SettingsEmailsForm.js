@@ -30,6 +30,18 @@ const renderField = ({
   </FormField>
 );
 
+const renderTextArea = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <textarea rows="5" {...input} type={type} />
+  </FormField>
+);
+
+
 type Props = {
   handleSubmit: Function,
   valid: boolean,
@@ -62,8 +74,9 @@ export const EmailsForm = ({
           <Field
             name="upcoming_visit_reminder_email_body"
             label="Reminder message"
-            component={renderField}
+            component={renderTextArea}
             type="text"
+            rows="5"
           />
         </fieldset>
       </FormFields>
