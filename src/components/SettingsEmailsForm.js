@@ -41,7 +41,6 @@ const renderTextArea = ({
   </FormField>
 );
 
-
 type Props = {
   handleSubmit: Function,
   valid: boolean,
@@ -53,7 +52,7 @@ export const EmailsForm = ({
   handleSubmit,
   valid,
   dirty,
-  submitting,
+  submitting
 }: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
@@ -65,6 +64,7 @@ export const EmailsForm = ({
 
       <FormFields>
         <fieldset>
+          <legend>Reminder e-mail</legend>
           <Field
             name="upcoming_visit_reminder_email_subject"
             label="Reminder subject"
@@ -86,7 +86,7 @@ export const EmailsForm = ({
         <Button
           type="submit"
           primary={true}
-          label="Update settings"
+          label="Save"
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>
