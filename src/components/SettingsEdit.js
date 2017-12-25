@@ -10,9 +10,11 @@ import NavControl from "./NavControl";
 import BusinessSection from "./SettingsBusinessSection";
 import ServicesSection from "./SettingsServicesSection";
 import EmployeesSection from "./SettingsEmployeesSection";
+import EmailsSection from "./SettingsEmailsSection";
 import BusinessEdit from "./SettingsBusinessEdit";
 import ServicesEdit from "./SettingsServicesEdit";
 import EmployeesEdit from "./SettingsEmployeesEdit";
+import EmailsEdit from "./SettingsEmailsEdit";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
@@ -22,6 +24,7 @@ const LAYERS: {} = {
   businessEdit: BusinessEdit,
   servicesEdit: ServicesEdit,
   employeesEdit: EmployeesEdit,
+  emailsEdit: EmailsEdit
 };
 
 type Props = {
@@ -58,6 +61,7 @@ class SettingsEdit extends Component<Props, State> {
           <EmployeesSection
             onOpen={this.onLayerOpen.bind(this, "employeesEdit")}
           />
+          <EmailsSection onOpen={this.onLayerOpen.bind(this, "emailsEdit")} />
         </List>
         {layer}
       </Box>

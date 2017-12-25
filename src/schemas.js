@@ -7,9 +7,15 @@ export const employeeListSchema = new schema.Array(employeeSchema);
 export const serviceSchema = new schema.Entity("services");
 export const serviceListSchema = new schema.Array(serviceSchema);
 
+export const reminderScheduleSchema = new schema.Entity("reminderSchedules");
+export const reminderScheduleListSchema = new schema.Array(
+  reminderScheduleSchema
+);
+
 export const businessSchema = new schema.Entity("businesses", {
   services: [serviceSchema],
-  employees: [employeeSchema]
+  employees: [employeeSchema],
+  reminder_schedules: [reminderScheduleSchema]
 });
 export const businessListSchema = new schema.Array(businessSchema);
 

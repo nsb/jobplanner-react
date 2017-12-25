@@ -83,7 +83,7 @@ type CreateBusinessFailureAction = {
 
 type UpdateBusinessAction = {
   type: typeof UPDATE_BUSINESS,
-  payload: Business
+  payload: Business | { id: number }
 };
 
 type UpdateBusinessSuccessAction = {
@@ -93,7 +93,6 @@ type UpdateBusinessSuccessAction = {
 
 type UpdateBusinessFailureAction = {
   type: typeof UPDATE_BUSINESS_FAILURE,
-  payload: Business,
   error: string
 };
 
@@ -107,6 +106,10 @@ export type Action =
   | UpdateBusinessAction
   | UpdateBusinessSuccessAction
   | UpdateBusinessFailureAction;
+
+const parse = (business): Business => {
+  return business;
+};
 
 export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   return {
@@ -205,7 +208,7 @@ export const createBusiness = (data: Business, token: string): ThunkAction => {
 };
 
 export const updateBusinessRequest = (
-  payload: Business
+  payload: Business | { id: number }
 ): UpdateBusinessAction => {
   return {
     type: UPDATE_BUSINESS,
@@ -224,13 +227,11 @@ export const updateBusinessSuccess = (
 };
 
 export const updateBusinessError = (
-  payload: Business,
   error: string
 ): UpdateBusinessFailureAction => {
   return {
     type: UPDATE_BUSINESS_FAILURE,
-    error,
-    payload
+    error
   };
 };
 
@@ -251,7 +252,33 @@ export const updateBusiness = (
         return responseBusiness;
       })
       .catch((error: string) => {
-        dispatch(updateBusinessError(business, error));
+        dispatch(updateBusinessError(error));
+        addError({
+          text: "An error occurred"
+        });
+      });
+  };
+};
+
+export const partialUpdateBusiness = (
+  business: { id: number },
+  token: string
+): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(updateBusinessRequest(business));
+
+    return businessesApi
+      .update("businesses", business, token, true)
+      .then((responseBusiness: Business) => {
+        const coercedBusiness = parse(responseBusiness);
+        dispatch(updateBusinessSuccess(coercedBusiness));
+        addSuccess({
+          text: "Saved"
+        });
+        return coercedBusiness;
+      })
+      .catch((error: string) => {
+        dispatch(updateBusinessError(error));
         addError({
           text: "An error occurred"
         });
