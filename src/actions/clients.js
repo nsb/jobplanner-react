@@ -51,7 +51,8 @@ export type Client = {
   email: string,
   phone: string,
   notes: string,
-  properties: Array<Property>
+  properties: Array<Property>,
+  upcoming_visit_reminder_email_enabled: boolean
 };
 
 export type ClientsMap = { [id: number]: Client };

@@ -8,6 +8,7 @@ import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 import Form from "grommet/components/Form";
+import CheckBox from "grommet/components/CheckBox";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
@@ -31,12 +32,26 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Element<*> =>
+}): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>;
+  </FormField>
+);
 
-const renderProperties = ({ fields, meta: { error, submitFailed } }): Element<*> =>
+const renderCheckBox = ({
+  input,
+  label,
+  meta: { touched, error, warning }
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <CheckBox {...input} checked={!!input.value} />
+  </FormField>
+);
+
+const renderProperties = ({
+  fields,
+  meta: { error, submitFailed }
+}): Element<*> => (
   <Section>
     <div>
       <button type="button" onClick={() => fields.push({})}>
@@ -44,7 +59,7 @@ const renderProperties = ({ fields, meta: { error, submitFailed } }): Element<*>
       </button>
       {submitFailed && error && <span>{error}</span>}
     </div>
-    {fields.map((property, index) =>
+    {fields.map((property, index) => (
       <div key={index}>
         <button
           type="button"
@@ -78,8 +93,9 @@ const renderProperties = ({ fields, meta: { error, submitFailed } }): Element<*>
           label="Zip Code"
         />
       </div>
-    )}
-  </Section>;
+    ))}
+  </Section>
+);
 
 type Props = {
   handleSubmit: Function,
@@ -101,7 +117,6 @@ export const ClientForm = (props: Props) => {
   } = props;
   return (
     <Form onSubmit={handleSubmit}>
-
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
           {initialValues ? "Edit client" : "Add Client"}
@@ -110,9 +125,7 @@ export const ClientForm = (props: Props) => {
       </Header>
 
       <FormFields>
-
         <fieldset>
-
           <Heading tag="h3">Client details</Heading>
           <Field
             name="first_name"
@@ -126,7 +139,6 @@ export const ClientForm = (props: Props) => {
             component={renderField}
             type="text"
           />
-
         </fieldset>
 
         <fieldset>
@@ -145,12 +157,21 @@ export const ClientForm = (props: Props) => {
           />
         </fieldset>
 
+        <fieldset>
+          <Heading tag="h3">Automated notifications</Heading>
+          <Field
+            name="upcoming_visit_reminder_email_enabled"
+            label="Visit reminders"
+            component={renderCheckBox}
+            parse={(value: boolean | string) => !!value}
+          />
+        </fieldset>
+
         <FieldArray
           name="properties"
           label="Properties"
           component={renderProperties}
         />
-
       </FormFields>
 
       <Footer pad={{ vertical: "medium" }}>
