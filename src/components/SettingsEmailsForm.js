@@ -6,6 +6,7 @@ import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 import Form from "grommet/components/Form";
+import CheckBox from "grommet/components/CheckBox";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
@@ -38,6 +39,16 @@ const renderTextArea = ({
 }): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <textarea rows="5" {...input} type={type} />
+  </FormField>
+);
+
+const renderCheckBox = ({
+  input,
+  label,
+  meta: { touched, error, warning }
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <CheckBox {...input} checked={!!input.value} />
   </FormField>
 );
 
@@ -77,6 +88,12 @@ export const EmailsForm = ({
             component={renderTextArea}
             type="text"
             rows="5"
+          />
+          <Field
+            name="visit_reminders_enabled"
+            label="Enabled"
+            component={renderCheckBox}
+            parse={(value: boolean | string) => !!value}
           />
         </fieldset>
       </FormFields>
