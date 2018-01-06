@@ -18,6 +18,7 @@ import LineItemsFormContainer from "./VisitLineItemsFormContainer";
 import type { Client } from "../actions/clients";
 import type { Employee } from "../actions/employees";
 import type { Element } from "react";
+import type { Dispatch } from "../types/Store";
 
 const validate = (values: Client) => {
   const errors = {};
@@ -87,8 +88,12 @@ type Props = {
   dirty: boolean,
   submitting: boolean,
   initialValues: Object,
+  begins: Date,
+  ends: Date,
   anytime: boolean,
-  employees: Array<Employee>
+  employees: Array<Employee>,
+  change: Function,
+  dispatch: Dispatch
 };
 
 class VisitForm extends Component<Props> {
@@ -136,6 +141,7 @@ class VisitForm extends Component<Props> {
               dateFormat={dateFormat}
               format={(value, name) => moment(value).toDate()}
               normalize={(value: string) => moment(value, dateFormat).toDate()}
+              onChange={this.onBeginsChanged}
             />
             <Field
               name="ends"
@@ -186,6 +192,13 @@ class VisitForm extends Component<Props> {
       </Form>
     );
   }
+
+  onBeginsChanged = (e, newValue, prevValue) => {
+    const { ends, change, dispatch } = this.props;
+    if (new Date(newValue) > new Date(ends)) {
+      dispatch(change("ends", newValue));
+    }
+  };
 }
 
 let SelectingFormValuesVisitForm = reduxForm({
@@ -195,8 +208,12 @@ let SelectingFormValuesVisitForm = reduxForm({
 
 const selector = formValueSelector("visit");
 SelectingFormValuesVisitForm = connect((state): * => {
+  const begins: Date = selector(state, "begins");
+  const ends: Date = selector(state, "ends");
   const anytime: boolean = selector(state, "anytime");
   return {
+    begins,
+    ends,
     anytime
   };
 })(SelectingFormValuesVisitForm);
