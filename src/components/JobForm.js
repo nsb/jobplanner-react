@@ -27,6 +27,19 @@ import type { Element } from "react";
 import type { Employee } from "../actions/employees";
 import Notification from "grommet/components/Notification";
 
+export const invoicingReminderMap = {
+  never: "As needed - we won't prompt you",
+  visit: "After each visit",
+  closed: "When the job is closed",
+  monthly: "Monthly on the last day of the month"
+};
+
+export const invoicingReminderOptions = Object.entries(
+  invoicingReminderMap
+).map(([key, value]) => {
+  return { label: value, value: key };
+});
+
 const validate = (values: {
   client: Object,
   anytime: boolean,
@@ -81,6 +94,7 @@ const renderSelect = ({
   input,
   label,
   options,
+  multiple,
   meta: { touched, error, warning }
 }): Element<*> => {
   return (
@@ -88,7 +102,7 @@ const renderSelect = ({
       {...input}
       placeHolder="None"
       inline={false}
-      multiple={true}
+      multiple={multiple}
       value={input.value}
       options={options}
       onChange={input.onChange}
@@ -442,6 +456,19 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               options={employees.map(employee => {
                 return { value: employee.id, label: employee.username };
               })}
+              multiple={true}
+              normalize={selected => selected.value}
+            />
+          </fieldset>
+
+          <fieldset>
+            <Heading tag="h3">Invoicing</Heading>
+            <Field
+              name="invoice_reminder"
+              label="When do you want to invoice?"
+              component={renderSelect}
+              options={invoicingReminderOptions}
+              multiple={false}
               normalize={selected => selected.value}
             />
           </fieldset>

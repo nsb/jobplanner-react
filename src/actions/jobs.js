@@ -50,7 +50,8 @@ export type Job = {
   ends: Date,
   anytime: boolean,
   closed: boolean,
-  schedule_visits_task: ?number
+  schedule_visits_task: ?number,
+  invoice_reminder: string
 };
 
 export type JobsMap = { [id: number]: Job };

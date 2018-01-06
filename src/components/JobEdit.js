@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { jobSchemaDenormalize } from "../schemas";
 import Article from "grommet/components/Article";
-import JobForm from "./JobForm";
+import JobForm, { invoicingReminderMap } from "./JobForm";
 import { updateJob } from "../actions/jobs";
 import type { State as ReduxState } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
@@ -32,7 +32,6 @@ class JobEdit extends Component<Props> {
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
-
         <JobForm
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
@@ -45,10 +44,13 @@ class JobEdit extends Component<Props> {
             },
             assigned: assigned.map(employee => {
               return { value: employee.id, label: employee.username };
-            })
+            }),
+            invoice_reminder: {
+              value: job.invoice_reminder,
+              label: invoicingReminderMap[job.invoice_reminder]
+            }
           }}
         />
-
       </Article>
     );
   }
@@ -64,7 +66,8 @@ class JobEdit extends Component<Props> {
           ...values,
           business: business.id,
           client: clientId,
-          assigned: values.assigned.map(v => v.value)
+          assigned: values.assigned.map(v => v.value),
+          invoice_reminder: values.invoice_reminder.value
         },
         token || ""
       )

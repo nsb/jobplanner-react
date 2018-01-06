@@ -3,7 +3,7 @@ import "url-search-params-polyfill";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Article from "grommet/components/Article";
-import JobForm from "./JobForm";
+import JobForm, { invoicingReminderMap } from "./JobForm";
 import { createJob } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
@@ -43,7 +43,11 @@ class JobsAdd extends Component<Props, State> {
           initialValues={{
             begins: new Date(),
             anytime: true,
-            client: client
+            client: client,
+            invoice_reminder: {
+              value: "monthly",
+              label: invoicingReminderMap["monthly"]
+            }
           }}
           token={token}
         />
@@ -60,7 +64,8 @@ class JobsAdd extends Component<Props, State> {
       {
         ...values,
         client: clientId,
-        assigned: values.assigned && values.assigned.map(v => v.value)
+        assigned: values.assigned && values.assigned.map(v => v.value),
+        invoice_reminder: values.invoice_reminder.value
       },
       token
     );
