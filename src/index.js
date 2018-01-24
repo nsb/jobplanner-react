@@ -3,7 +3,7 @@ import "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
-import Raven from 'raven-js';
+import Raven from "raven-js";
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
@@ -41,8 +41,11 @@ if (languageWithoutRegionCode === "da") {
   messages = localeEnData;
 }
 
-if (process.env.NODE_ENV === "production") {
-  Raven.config(process.env.REACT_APP_SENTRY_PUBLIC_DSN).install();
+if (process.env.REACT_APP_SENTRY_PUBLIC_DSN) {
+  Raven.config(process.env.REACT_APP_SENTRY_PUBLIC_DSN, {
+    release: process.env.COMMIT_REF,
+    environment: process.env.NODE_ENV,
+  }).install();
 }
 
 // Setup service worker
