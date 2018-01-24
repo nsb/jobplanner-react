@@ -1,5 +1,6 @@
 // @flow
 import fetch from "isomorphic-fetch";
+import Raven from "raven-js";
 import authApi from "../api";
 import history from "../history";
 import type { Dispatch, ThunkAction } from "../types/Store";
@@ -159,6 +160,10 @@ export const login = (credentials: Credentials): ThunkAction => {
         if (json.token) {
           localStorage.setItem("token", json.token);
           dispatch(receiveLogin(json));
+          Raven.setUserContext({
+            email: json.user.email,
+            id: json.user.id
+          });
           // dispatch(push('/'));
         } else {
           dispatch(receiveLoginError("error"));
@@ -256,6 +261,10 @@ export const verify = (token: string): ThunkAction => {
       .create("api-token-verify", { token })
       .then((response: { token: string, user: User }) => {
         dispatch(receiveVerify(response));
+        Raven.setUserContext({
+          email: response.user.email,
+          id: response.user.id
+        })
       })
       .catch(error => {
         dispatch(receiveVerifyError(error));
@@ -265,6 +274,7 @@ export const verify = (token: string): ThunkAction => {
 
 export const logout = (): LogoutAction => {
   localStorage.removeItem("token");
+  Raven.setUserContext();
   return {
     type: LOGOUT
   };
