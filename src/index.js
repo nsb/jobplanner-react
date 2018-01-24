@@ -3,6 +3,7 @@ import "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
+import Raven from 'raven-js';
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
@@ -11,7 +12,6 @@ import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { updateIntl, Provider } from "react-intl-redux";
 import { addLocaleData } from "react-intl";
 import { configureFlashMessages } from "redux-flash-messages";
-import StackdriverErrorReporter from "./stackdriver";
 import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
@@ -22,7 +22,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "nielsbusch-grommet-css";
 import "./index.css";
-
 import localeEnData from "./locales/en.json";
 import localeDaData from "./locales/da.json";
 addLocaleData([...en, ...da]);
@@ -42,19 +41,8 @@ if (languageWithoutRegionCode === "da") {
   messages = localeEnData;
 }
 
-// Set error reporting
-const errorHandler = new StackdriverErrorReporter();
-
 if (process.env.NODE_ENV === "production") {
-  errorHandler.start({
-    key: "AIzaSyBGHOWXlPKZaQpvOv06CQRMtQYn7Bfzg9Y",
-    projectId: "jobplanner-184011"
-    // service: '<my-service>',              // (optional)
-    // version: '<my-service-version>',      // (optional)
-    // reportUncaughtExceptions: false    // (optional) Set to false to stop reporting unhandled exceptions.
-    // disabled: true                     // (optional) Set to true to not report errors when calling report(), this can be used when developping locally.
-    // context: {user: 'user1'}           // (optional) You can set the user later using setUser()
-  });
+  Raven.config(process.env.REACT_APP_SENTRY_PUBLIC_DSN).install();
 }
 
 // Setup service worker
