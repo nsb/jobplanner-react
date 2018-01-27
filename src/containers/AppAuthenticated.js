@@ -6,8 +6,10 @@ import { Switch, Redirect, Route } from "react-router-dom";
 import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
 import Toast from "grommet/components/Toast";
+import store from "../store";
 import logo from "../logo.svg";
 import { navToggle, navResponsive } from "../actions/nav";
+import { refresh } from "../actions/auth";
 import { verifyAuthAndFetchBusinesses } from "../actions";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
@@ -17,6 +19,7 @@ import Businesses from "../components/Businesses";
 import BusinessAdd from "../components/BusinessAdd";
 
 class AppAuthenticated extends Component {
+  intervalId: number = -1;
   props: {
     isAuthenticated: boolean,
     isFetching: boolean,
@@ -28,6 +31,17 @@ class AppAuthenticated extends Component {
   componentWillMount() {
     const { token, dispatch } = this.props;
     dispatch(verifyAuthAndFetchBusinesses(token));
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(() => {
+      let state = store.getState()
+      store.dispatch(refresh(state.auth.token));
+    }, 1000000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   renderToast = message => {

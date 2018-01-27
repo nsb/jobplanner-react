@@ -74,6 +74,18 @@ const authReducer = (state: State = initialState, action: Action): State => {
         busy: false
       });
 
+    case "REQUEST_REFRESH_SUCCESS":
+      return Object.assign({}, state, {
+        token: action.token,
+        isAuthenticated: true
+      });
+
+    case "REQUEST_REFRESH_FAILURE":
+      return Object.assign({}, state, {
+        token: null,
+        isAuthenticated: false
+      });
+
     case "LOGOUT":
       return Object.assign({}, state, {
         token: null

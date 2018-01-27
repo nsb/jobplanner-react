@@ -23,6 +23,11 @@ const REQUEST_VERIFY_FAILURE: "REQUEST_VERIFY_FAILURE" =
   "REQUEST_VERIFY_FAILURE";
 const REQUEST_VERIFY_SUCCESS: "REQUEST_VERIFY_SUCCESS" =
   "REQUEST_VERIFY_SUCCESS";
+const REQUEST_REFRESH: "REQUEST_REFRESH" = "REQUEST_REFRESH";
+const REQUEST_REFRESH_FAILURE: "REQUEST_REFRESH_FAILURE" =
+  "REQUEST_REFRESH_FAILURE";
+const REQUEST_REFRESH_SUCCESS: "REQUEST_REFRESH_SUCCESS" =
+  "REQUEST_REFRESH_SUCCESS";
 
 export type Credentials = {
   username: string,
@@ -83,6 +88,21 @@ type RequestVerifySuccessAction = {
   user: User
 };
 
+type RequestRefreshAction = {
+  type: typeof REQUEST_REFRESH,
+  token: string
+};
+
+type RequestRefreshFacilureAction = {
+  type: typeof REQUEST_REFRESH_FAILURE,
+  error: string
+};
+
+type RequestRefreshSuccessAction = {
+  type: typeof REQUEST_REFRESH_SUCCESS,
+  token: string
+};
+
 type LogoutAction = {
   type: typeof LOGOUT
 };
@@ -97,6 +117,9 @@ export type Action =
   | RequestVerifyAction
   | RequestVerifyFacilureAction
   | RequestVerifySuccessAction
+  | RequestRefreshAction
+  | RequestRefreshFacilureAction
+  | RequestRefreshSuccessAction
   | LogoutAction;
 
 export const requestLogin = (
@@ -264,13 +287,59 @@ export const verify = (token: string): ThunkAction => {
         Raven.setUserContext({
           email: response.user.email,
           id: response.user.id
-        })
+        });
       })
       .catch(error => {
         dispatch(receiveVerifyError(error));
       });
   };
 };
+
+// Refresh
+
+export const requestRefresh = (token: string): RequestRefreshAction => {
+  return {
+    type: REQUEST_REFRESH,
+    token
+  };
+};
+
+export const receiveRefresh = (json: {
+  token: string
+}): RequestRefreshSuccessAction => {
+  return {
+    type: REQUEST_REFRESH_SUCCESS,
+    token: json.token,
+    receivedAt: Date.now()
+  };
+};
+
+export const receiveRefreshError = (
+  error: string
+): RequestRefreshFacilureAction => {
+  return {
+    type: REQUEST_REFRESH_FAILURE,
+    error: error
+  };
+};
+
+export const refresh = (token: string): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(requestRefresh(token));
+
+    return authApi
+      .create("api-token-refresh", { token })
+      .then((response: { token: string }) => {
+        localStorage.setItem("token", token);
+        dispatch(receiveRefresh(response));
+      })
+      .catch(error => {
+        dispatch(receiveRefreshError(error));
+      });
+  };
+};
+
+// Logout
 
 export const logout = (): LogoutAction => {
   localStorage.removeItem("token");
