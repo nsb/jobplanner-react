@@ -20,7 +20,7 @@ type Props = {
 
 class Signup extends Component<Props> {
   onSubmit = (user: { username: string }) => {
-    this.props.dispatch(signup(user));
+    this.props.dispatch(signup({ businesses: [], ...user }));
   };
 
   render() {
