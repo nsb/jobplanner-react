@@ -56,9 +56,9 @@ class VisitAsyncTask extends Component<Props, State> {
 
   render() {
     const { job } = this.props;
-    if (!this.state.taskState) {
+    if (!this.state.taskState || this.state.taskState === "PENDING") {
       return <div>Fetching</div>;
-    } else if (this.state.taskState === "PENDING") {
+    } else if (this.state.taskState === "STARTED") {
       return <div>Generating visits</div>;
     } else {
       return <VisitListContainer job={job} />;
