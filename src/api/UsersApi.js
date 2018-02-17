@@ -10,7 +10,7 @@ class UsersApi extends Api {
     const request = new Request(`${API_ENDPOINT}/users/me/`, {
       method: "GET",
       headers: new Headers({
-        Authorization: `Bearer ${token}`,
+        Authorization: `Jwt ${token}`,
         "Content-Type": "application/json"
       })
     });
