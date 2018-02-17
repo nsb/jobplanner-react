@@ -3,6 +3,7 @@ import "url-search-params-polyfill";
 
 const API_ENDPOINT =
   process.env.REACT_APP_API_ENDPOINT || "http://localhost:8000";
+const API_VERSION = process.env.REACT_APP_API_VERSION || 'v1';
 
 class Api {
   static getAll(
@@ -16,7 +17,7 @@ class Api {
       searchParams.append(key, param);
     });
 
-    const url: string = `${API_ENDPOINT}/${resource}/?${searchParams.toString()}`;
+    const url: string = `${API_ENDPOINT}/${API_VERSION}/${resource}/?${searchParams.toString()}`;
     const options = {
       method: "GET",
       headers: new Headers({
@@ -34,7 +35,7 @@ class Api {
   }
 
   static getOne(resource: string, id: number, token: string): Promise<*> {
-    const url: string = `${API_ENDPOINT}/${resource}/${id}/`;
+    const url: string = `${API_ENDPOINT}/${API_VERSION}/${resource}/${id}/`;
     const request = new Request(url, {
       method: "GET",
       headers: new Headers({
@@ -61,7 +62,7 @@ class Api {
     token: string,
     patch: boolean = false
   ) {
-    const request = new Request(`${API_ENDPOINT}/${resource}/${item.id}/`, {
+    const request = new Request(`${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}/`, {
       method: patch ? "PATCH" : "PUT",
       headers: new Headers({
         Authorization: `Jwt ${token}`,
@@ -83,7 +84,7 @@ class Api {
   }
 
   static create(resource: string, item: {}, token?: string) {
-    const request = new Request(`${API_ENDPOINT}/${resource}/`, {
+    const request = new Request(`${API_ENDPOINT}/${API_VERSION}/${resource}/`, {
       method: "POST",
       headers: new Headers({
         Authorization: `Jwt ${token || ""}`,
@@ -105,7 +106,7 @@ class Api {
   }
 
   static delete(resource: string, item: { id: number }, token: string) {
-    const request = new Request(`${API_ENDPOINT}/${resource}/${item.id}`, {
+    const request = new Request(`${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}`, {
       method: "DELETE",
       headers: new Headers({
         Authorization: `Jwt ${token}`,

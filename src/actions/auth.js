@@ -8,6 +8,7 @@ import type { User } from "./users";
 
 const API_ENDPOINT =
   process.env.REACT_APP_API_ENDPOINT || "http://localhost:8000";
+const API_VERSION = process.env.REACT_APP_API_VERSION || 'v1';
 
 const REQUEST_LOGIN: "REQUEST_LOGIN" = "REQUEST_LOGIN";
 const REQUEST_LOGIN_FAILURE: "REQUEST_LOGIN_FAILURE" = "REQUEST_LOGIN_FAILURE";
@@ -229,7 +230,7 @@ export const signup = (user: { username: string }): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(requestSignup(user));
 
-    return fetch(`${API_ENDPOINT}/users/signup/`, {
+    return fetch(`${API_ENDPOINT}/${API_VERSION}/users/signup/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -280,8 +281,14 @@ export const verify = (token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(requestVerify(token));
 
-    return authApi
-      .create("api-token-verify", { token })
+    return fetch(`${API_ENDPOINT}/api-token-verify/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({token})
+    })
+      .then(response => response.json())
       .then((response: { token: string, user: User }) => {
         dispatch(receiveVerify(response));
         Raven.setUserContext({
