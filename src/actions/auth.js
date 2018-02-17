@@ -8,7 +8,7 @@ import type { User } from "./users";
 
 const API_ENDPOINT =
   process.env.REACT_APP_API_ENDPOINT || "http://localhost:8000";
-const API_VERSION = process.env.REACT_APP_API_VERSION || 'v1';
+const API_VERSION = process.env.REACT_APP_API_VERSION || "v1";
 
 const REQUEST_LOGIN: "REQUEST_LOGIN" = "REQUEST_LOGIN";
 const REQUEST_LOGIN_FAILURE: "REQUEST_LOGIN_FAILURE" = "REQUEST_LOGIN_FAILURE";
@@ -286,7 +286,7 @@ export const verify = (token: string): ThunkAction => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({token})
+      body: JSON.stringify({ token })
     })
       .then(response => response.json())
       .then((response: { token: string, user: User }) => {
@@ -334,8 +334,14 @@ export const refresh = (token: string): ThunkAction => {
   return (dispatch: Dispatch) => {
     dispatch(requestRefresh(token));
 
-    return authApi
-      .create("api-token-refresh", { token })
+    return fetch(`${API_ENDPOINT}/api-token-refresh/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ token })
+    })
+      .then(response => response.json())
       .then((response: { token: string }) => {
         localStorage.setItem("token", token);
         dispatch(receiveRefresh(response));
