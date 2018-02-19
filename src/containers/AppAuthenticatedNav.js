@@ -3,15 +3,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Switch, Route } from "react-router-dom";
+import Loadable from "react-loadable";
 import Split from "grommet/components/Split";
 import NavSidebar from "../components/NavSidebar";
-import CalendarContainer from "../components/CalendarContainer";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
 import ClientEdit from "../components/ClientEdit";
-import Jobs from "../components/Jobs";
-import Settings from "../components/Settings";
 import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
 import type { Dispatch } from "../types/Store";
@@ -25,6 +23,23 @@ type Props = {
   dispatch: Dispatch,
   match: { url: string }
 };
+
+const Loading = () => <div>Loading...</div>;
+
+const Jobs = Loadable({
+  loader: () => import("../components/Jobs"),
+  loading: Loading,
+});
+
+const CalendarContainer = Loadable({
+  loader: () => import("../components/CalendarContainer"),
+  loading: Loading,
+});
+
+const Settings = Loadable({
+  loader: () => import("../components/Settings"),
+  loading: Loading,
+});
 
 class AppAuthenticatedNav extends Component<Props> {
   render() {

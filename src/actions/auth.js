@@ -1,7 +1,6 @@
 // @flow
 import fetch from "isomorphic-fetch";
 import Raven from "raven-js";
-import authApi from "../api";
 import history from "../history";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { User } from "./users";
