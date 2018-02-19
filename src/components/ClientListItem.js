@@ -27,10 +27,7 @@ class ClientListItem extends Component<Props> {
         selected={false}
       >
         <span>
-          <Anchor
-            icon={<UserIcon />}
-            label={`${client.first_name} ${client.last_name}`}
-          />
+          {`${client.first_name} ${client.last_name}`}
         </span>
         <span>{client.phone || client.email}</span>
       </ListItem>
