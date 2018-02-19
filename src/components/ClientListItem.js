@@ -2,8 +2,6 @@
 
 import React, { Component } from "react";
 import ListItem from "grommet/components/ListItem";
-import Anchor from "grommet/components/Anchor";
-import UserIcon from "grommet/components/icons/base/User";
 import type { Client } from "../actions/clients";
 
 type Props = {
