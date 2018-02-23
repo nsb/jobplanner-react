@@ -185,7 +185,7 @@ export const login = (credentials: Credentials): ThunkAction => {
           dispatch(receiveLogin(json));
           Raven.setUserContext({
             email: json.user.email,
-            id: json.user.id
+            id: json.user.id.toString(10)
           });
           // dispatch(push('/'));
         } else {
