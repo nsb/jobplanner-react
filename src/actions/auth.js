@@ -292,7 +292,7 @@ export const verify = (token: string): ThunkAction => {
         dispatch(receiveVerify(response));
         Raven.setUserContext({
           email: response.user.email,
-          id: response.user.id
+          id: response.user.id.toString(10)
         });
       })
       .catch(error => {
