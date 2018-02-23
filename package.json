@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "flow-bin": "^0.59.0",
+    "flow-bin": "^0.66.0",
     "grommet": "1.10.0",
     "grommet-addons": "^0.6.0",
     "grommet-templates": "^0.2.0",
