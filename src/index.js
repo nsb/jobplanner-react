@@ -38,8 +38,8 @@ if (languageWithoutRegionCode === "da") {
 
 if (process.env.REACT_APP_SENTRY_PUBLIC_DSN) {
   Raven.config(process.env.REACT_APP_SENTRY_PUBLIC_DSN, {
-    release: process.env.COMMIT_REF,
-    environment: process.env.NODE_ENV,
+    release: process.env.COMMIT_REF || 'unknown',
+    environment: process.env.NODE_ENV || 'unknown',
   }).install();
 }
 
