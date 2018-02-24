@@ -2,6 +2,7 @@
 import "url-search-params-polyfill";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { RRule, rrulestr } from "rrule";
 import Article from "grommet/components/Article";
 import JobForm, { invoicingReminderMap } from "./JobForm";
 import { createJob } from "../actions/jobs";
@@ -9,6 +10,7 @@ import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
+import type { Schedule } from "../types/Schedule";
 import type { Client } from "../actions/clients";
 import { ensureState } from "redux-optimistic-ui";
 
@@ -33,6 +35,12 @@ class JobsAdd extends Component<Props, State> {
 
   render() {
     const { token, employees, client } = this.props;
+    const schedule: Schedule = {
+      freq: RRule.WEEKLY,
+      interval: 1,
+      byweekday: RRule.MO
+    };
+    const initialRecurrences = `RRULE:${new RRule({ ...schedule }).toString()}`;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -41,6 +49,7 @@ class JobsAdd extends Component<Props, State> {
           onClose={this.onClose}
           employees={employees}
           initialValues={{
+            recurrences: initialRecurrences,
             begins: new Date(),
             anytime: true,
             client: client,

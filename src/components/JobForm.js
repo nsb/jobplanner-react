@@ -23,6 +23,7 @@ import { RRule, rrulestr } from "rrule";
 import clientsApi from "../api";
 import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
+import type { Schedule } from "../types/Schedule";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
 import Notification from "grommet/components/Notification";
@@ -274,11 +275,7 @@ type JobFormState = {
   clientsSearchText: string,
   clients: Array<Client>,
   scheduleLayer: boolean,
-  schedule: {
-    freq: number,
-    interval: number,
-    byweekday: string
-  },
+  schedule: Schedule,
   visitsWillBeRegenerated: boolean
 };
 
@@ -575,11 +572,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
     this.setState({ scheduleLayer: false });
   };
 
-  onScheduleSubmit = (schedule: {
-    freq: number,
-    interval: number,
-    byweekday: string
-  }) => {
+  onScheduleSubmit = (schedule: Schedule) => {
     const { dispatch, change, initialValues } = this.props;
     dispatch(
       change("recurrences", `RRULE:${new RRule({ ...schedule }).toString()}`)
