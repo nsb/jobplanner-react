@@ -265,7 +265,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                         </Box>
                       </Header>
                     </Box>
-                    <VisitAsyncTask job={job} />
+                    <VisitAsyncTask job={job} business={business} />
                   </Section>
                 </Box>
               </Article>

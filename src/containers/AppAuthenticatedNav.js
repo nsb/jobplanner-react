@@ -28,17 +28,22 @@ const Loading = () => <div>Loading...</div>;
 
 const Jobs = Loadable({
   loader: () => import("../components/Jobs"),
-  loading: Loading,
+  loading: Loading
 });
 
 const CalendarContainer = Loadable({
   loader: () => import("../components/CalendarContainer"),
-  loading: Loading,
+  loading: Loading
+});
+
+const CalendarListContainer = Loadable({
+  loader: () => import("../components/CalendarListContainer"),
+  loading: Loading
 });
 
 const Settings = Loadable({
   loader: () => import("../components/Settings"),
-  loading: Loading,
+  loading: Loading
 });
 
 class AppAuthenticatedNav extends Component<Props> {
@@ -57,7 +62,11 @@ class AppAuthenticatedNav extends Component<Props> {
           <Route
             exact
             path="/:businessId/calendar"
-            component={CalendarContainer}
+            component={
+              responsive === "multiple"
+                ? CalendarContainer
+                : CalendarListContainer
+            }
           />
           <Route exact path="/:businessId/clients/add" component={ClientAdd} />
           <Route

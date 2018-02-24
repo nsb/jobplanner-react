@@ -7,18 +7,15 @@ import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
-import type { Responsive } from "../actions/nav";
 import { fetchVisits, updateVisit } from "../actions/visits";
 import VisitLayerContainer from "./VisitLayerContainer";
 import Calendar from "./Calendar";
-import CalendarList from "./CalendarList";
 
 type Props = {
   business: Business,
   visits: Array<Visit>,
   token: string,
   dispatch: Dispatch,
-  responsive: Responsive
 };
 
 type CalendarView = "day" | "week" | "month" | "agenda";
@@ -34,13 +31,17 @@ class CalendarContainer extends Component<Props, State> {
 
   componentDidMount() {
     this.loadVisits(
-      moment(this.state.date).startOf(this.state.view).toDate(),
-      moment(this.state.date).add(1, "years").toDate()
+      moment(this.state.date)
+        .startOf(this.state.view)
+        .toDate(),
+      moment(this.state.date)
+        .add(1, "years")
+        .toDate()
     );
   }
 
   render() {
-    const { business, visits, responsive } = this.props;
+    const { business, visits } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
@@ -53,24 +54,24 @@ class CalendarContainer extends Component<Props, State> {
       );
     }
 
-    const calendar = responsive === "multiple"
-      ? <Calendar
-          visits={visits}
-          defaultView={this.state.view}
-          defaultDate={this.state.date}
-          onNavigate={(date: Date) => {
-            this.setState({ date }, this.loadVisits);
-          }}
-          onView={(view: CalendarView) => {
-            this.setState({ view }, this.loadVisits);
-          }}
-          onSelectSlot={(e: Event) => {
-            console.log(e, "onSelectSlot");
-          }}
-          onSelectEvent={this.onClick}
-          onEventDrop={this.onEventDrop}
-        />
-      : <CalendarList visits={visits} business={business} />;
+    const calendar = (
+      <Calendar
+        visits={visits}
+        defaultView={this.state.view}
+        defaultDate={this.state.date}
+        onNavigate={(date: Date) => {
+          this.setState({ date }, this.loadVisits);
+        }}
+        onView={(view: CalendarView) => {
+          this.setState({ view }, this.loadVisits);
+        }}
+        onSelectSlot={(e: Event) => {
+          console.log(e, "onSelectSlot");
+        }}
+        onSelectEvent={this.onClick}
+        onEventDrop={this.onEventDrop}
+      />
+    );
 
     return (
       <div>
@@ -130,12 +131,14 @@ class CalendarContainer extends Component<Props, State> {
         fetchVisits(token, {
           business: business.id,
           ordering: "begins",
-          begins__gte: ((begins && moment(begins)) ||
-            moment(this.state.date).startOf(this.state.view))
-            .format("YYYY-MM-DDT00:00"),
-          ends__lte: ((ends && moment(ends)) ||
-            moment(this.state.date).endOf(this.state.view))
-            .format("YYYY-MM-DDT00:00"),
+          begins__gte: (
+            (begins && moment(begins)) ||
+            moment(this.state.date).startOf(this.state.view)
+          ).format("YYYY-MM-DDT00:00"),
+          ends__lte: (
+            (ends && moment(ends)) ||
+            moment(this.state.date).endOf(this.state.view)
+          ).format("YYYY-MM-DDT00:00"),
           limit: 100,
           offset: 0
         })

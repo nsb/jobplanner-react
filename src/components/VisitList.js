@@ -11,7 +11,7 @@ import type { Visit } from "../actions/visits";
 
 type Props = {
   visits: Array<Visit>,
-  isFetching?: boolean,
+  isFetching: boolean,
   onMore: () => void,
   intl: intlShape
 };
@@ -26,7 +26,7 @@ class VisitList extends Component<Props, State> {
   };
 
   render() {
-    const { visits = [], isFetching = true, onMore, intl } = this.props;
+    const { visits, isFetching, onMore, intl } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
