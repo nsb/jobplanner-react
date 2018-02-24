@@ -2,7 +2,7 @@
 import "url-search-params-polyfill";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { RRule, rrulestr } from "rrule";
+import { RRule } from "rrule";
 import Article from "grommet/components/Article";
 import JobForm, { invoicingReminderMap } from "./JobForm";
 import { createJob } from "../actions/jobs";
