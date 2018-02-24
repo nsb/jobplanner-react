@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 import VisitListContainer from "../components/VisitListContainer";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
+import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { AsyncTask, AsyncTaskState } from "../actions/asynctasks";
 import { ensureState } from "redux-optimistic-ui";
 import asyncTasksApi from "../api";
 
 type Props = {
+  business: Business,
   job: Job,
   task: ?AsyncTask,
   token: ?string,
@@ -55,13 +57,13 @@ class VisitAsyncTask extends Component<Props, State> {
   }
 
   render() {
-    const { job } = this.props;
+    const { business, job } = this.props;
     if (!this.state.taskState || this.state.taskState === "PENDING") {
       return <div>Fetching</div>;
     } else if (this.state.taskState === "STARTED") {
       return <div>Generating visits</div>;
     } else {
-      return <VisitListContainer job={job} />;
+      return <VisitListContainer job={job} business={business} />;
     }
   }
 
@@ -82,6 +84,7 @@ const mapStateToProps = (
 
   return {
     task: ensureState(entities).asyncTasks[ownProps.job.schedule_visits_task],
+    business: ensureState(entities).businesses[ownProps.job.business],
     job: ownProps.job,
     isFetching: asyncTasks.isFetching,
     token: auth.token
