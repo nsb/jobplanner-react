@@ -82,8 +82,12 @@ class JobsAdd extends Component<Props, State> {
   };
 
   onClose = () => {
-    const { business, push } = this.props;
-    push(`/${business.id}/jobs`);
+    const { business, client, push } = this.props;
+    if (client) {
+      push(`/${business.id}/clients/${client.value}`);
+    } else {
+      push(`/${business.id}/jobs`);
+    }
   };
 }
 
