@@ -22,7 +22,7 @@ type State = {
 };
 
 class VisitAsyncTask extends Component<Props, State> {
-  intervalId: number = -1;
+  intervalId: IntervalID;
   state = {
     taskState: null
   };
