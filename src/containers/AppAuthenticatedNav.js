@@ -4,8 +4,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import Loadable from "react-loadable";
+import Article from "grommet/components/Article";
+import Section from "grommet/components/Section";
 import Split from "grommet/components/Split";
-import Spinning from 'grommet/components/icons/Spinning';
+import Spinning from "grommet/components/icons/Spinning";
 import NavSidebar from "../components/NavSidebar";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
@@ -25,7 +27,13 @@ type Props = {
   match: { url: string }
 };
 
-const Loading = () => <Spinning />;
+const Loading = () => (
+  <Article scrollStep={true} controls={true}>
+    <Section full={true} pad="large" justify="center" align="center">
+      <Spinning />
+    </Section>
+  </Article>
+);
 
 const Jobs = Loadable({
   loader: () => import("../components/Jobs"),
