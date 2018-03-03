@@ -61,7 +61,7 @@ class AppAuthenticated extends Component {
   render() {
     const { isAuthenticated, isFetching, messages } = this.props;
 
-    if (false) {
+    if (!isFetching) {
       let toasts = (
         <div>
           {messages.map(message => this.renderToast(message))}
