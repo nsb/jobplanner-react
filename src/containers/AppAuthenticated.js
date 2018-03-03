@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Switch, Redirect, Route } from "react-router-dom";
 import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
+import Spinning from "grommet/components/icons/Spinning";
 import Toast from "grommet/components/Toast";
 import store from "../store";
 import logo from "../logo.svg";
@@ -60,7 +61,7 @@ class AppAuthenticated extends Component {
   render() {
     const { isAuthenticated, isFetching, messages } = this.props;
 
-    if (!isFetching) {
+    if (false) {
       let toasts = (
         <div>
           {messages.map(message => this.renderToast(message))}
@@ -94,7 +95,7 @@ class AppAuthenticated extends Component {
             justify="center"
             align="center"
           >
-            <img src={logo} className="App-logo" alt="logo" />
+            <Spinning size="xlarge"/>
           </Section>
         </Article>
       );

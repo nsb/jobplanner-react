@@ -30,7 +30,7 @@ type Props = {
 const Loading = () => (
   <Article scrollStep={true} controls={true}>
     <Section full={true} pad="large" justify="center" align="center">
-      <Spinning />
+      <Spinning size="xlarge"/>
     </Section>
   </Article>
 );
