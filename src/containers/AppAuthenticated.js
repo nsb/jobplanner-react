@@ -95,7 +95,7 @@ class AppAuthenticated extends Component {
             justify="center"
             align="center"
           >
-            <Spinning size="xlarge"/>
+            <Spinning size="large"/>
           </Section>
         </Article>
       );
