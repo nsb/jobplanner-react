@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import Loadable from "react-loadable";
 import Split from "grommet/components/Split";
+import Spinning from 'grommet/components/icons/Spinning';
 import NavSidebar from "../components/NavSidebar";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
@@ -24,7 +25,7 @@ type Props = {
   match: { url: string }
 };
 
-const Loading = () => <div>Loading...</div>;
+const Loading = () => <Spinning />;
 
 const Jobs = Loadable({
   loader: () => import("../components/Jobs"),
