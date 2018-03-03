@@ -19,6 +19,7 @@ import Spinning from "grommet/components/icons/Spinning";
 import MoreIcon from "grommet/components/icons/base/More";
 import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
+import Status from "grommet/components/icons/Status";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
@@ -188,6 +189,10 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                   />
 
                   <Heading tag="h3" margin="none">
+                    <Status
+                      value={job.closed ? "disabled" : "ok"}
+                      a11yTitle={job.closed ? "Closed" : "Open"}
+                    />{" "}
                     <strong>Job #{job.id}</strong>
                   </Heading>
                 </Box>
