@@ -64,7 +64,7 @@ class VisitAsyncTask extends Component<Props, State> {
     if (!this.state.taskState || this.state.taskState === "PENDING") {
       return (
         <Article scrollStep={true} controls={true}>
-          <Section full={true} pad="large" justify="center" align="center">
+          <Section full={false} pad="large" justify="center" align="center">
             <Spinning size="large" />
           </Section>
         </Article>
@@ -72,7 +72,7 @@ class VisitAsyncTask extends Component<Props, State> {
     } else if (this.state.taskState === "STARTED") {
       return (
         <Article scrollStep={true} controls={true}>
-          <Section full={true} pad="large" justify="center" align="center">
+          <Section full={false} pad="large" justify="center" align="center">
             Generating visits...
           </Section>
         </Article>
