@@ -1,6 +1,9 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Article from "grommet/components/Article";
+import Section from "grommet/components/Section";
+import Spinning from "grommet/components/icons/Spinning";
 import VisitListContainer from "../components/VisitListContainer";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -59,9 +62,21 @@ class VisitAsyncTask extends Component<Props, State> {
   render() {
     const { business, job } = this.props;
     if (!this.state.taskState || this.state.taskState === "PENDING") {
-      return <div>Fetching</div>;
+      return (
+        <Article scrollStep={true} controls={true}>
+          <Section full={true} pad="large" justify="center" align="center">
+            <Spinning size="large" />
+          </Section>
+        </Article>
+      );
     } else if (this.state.taskState === "STARTED") {
-      return <div>Generating visits</div>;
+      return (
+        <Article scrollStep={true} controls={true}>
+          <Section full={true} pad="large" justify="center" align="center">
+            Generating visits...
+          </Section>
+        </Article>
+      );
     } else {
       return <VisitListContainer job={job} business={business} />;
     }
