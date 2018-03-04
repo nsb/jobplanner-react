@@ -69,7 +69,7 @@ class VisitAsyncTask extends Component<Props, State> {
 
   fetchAsyncTask = (id, token) => {
     if (id) {
-      return asyncTasksApi.getOne("asynctasks", id, token);
+      return asyncTasksApi.getOne("tasks", id, token);
     } else return Promise.reject();
   };
 }
