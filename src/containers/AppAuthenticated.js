@@ -8,7 +8,6 @@ import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
 import Toast from "grommet/components/Toast";
 import store from "../store";
-import logo from "../logo.svg";
 import { navToggle, navResponsive } from "../actions/nav";
 import { refresh } from "../actions/auth";
 import { verifyAuthAndFetchBusinesses } from "../actions";
