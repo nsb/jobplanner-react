@@ -51,7 +51,7 @@ export const FieldForm = ({
       <FormFields>
 
         <fieldset>
-          <Field name="name" label="Label" component={renderField} type="text" />
+          <Field name="label" label="Label" component={renderField} type="text" />
         </fieldset>
 
       </FormFields>

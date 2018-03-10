@@ -47,7 +47,7 @@ class FieldList extends Component<Props, State> {
         <Accordion onActive={this.onActive} active={this.state.activePanel}>
           {fields.map((field, index: number) => {
             return (
-              <AccordionPanel heading={field.name} key={field.id}>
+              <AccordionPanel heading={field.label} key={field.id}>
                 <Paragraph>
                   <FieldForm
                     form={`fieldform-${field.id}`}
