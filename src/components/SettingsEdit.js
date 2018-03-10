@@ -9,10 +9,12 @@ import List from "grommet/components/List";
 import NavControl from "./NavControl";
 import BusinessSection from "./SettingsBusinessSection";
 import ServicesSection from "./SettingsServicesSection";
+import FieldsSection from "./SettingsFieldsSection";
 import EmployeesSection from "./SettingsEmployeesSection";
 import EmailsSection from "./SettingsEmailsSection";
 import BusinessEdit from "./SettingsBusinessEdit";
 import ServicesEdit from "./SettingsServicesEdit";
+import FieldsEdit from "./SettingsFieldsEdit";
 import EmployeesEdit from "./SettingsEmployeesEdit";
 import EmailsEdit from "./SettingsEmailsEdit";
 import type { Dispatch } from "../types/Store";
@@ -24,6 +26,7 @@ const LAYERS: {} = {
   businessEdit: BusinessEdit,
   servicesEdit: ServicesEdit,
   employeesEdit: EmployeesEdit,
+  fieldsEdit: FieldsEdit,
   emailsEdit: EmailsEdit
 };
 
@@ -57,6 +60,9 @@ class SettingsEdit extends Component<Props, State> {
           />
           <ServicesSection
             onOpen={this.onLayerOpen.bind(this, "servicesEdit")}
+          />
+          <FieldsSection
+            onOpen={this.onLayerOpen.bind(this, "fieldsEdit")}
           />
           <EmployeesSection
             onOpen={this.onLayerOpen.bind(this, "employeesEdit")}

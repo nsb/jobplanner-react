@@ -9,6 +9,7 @@ import auth from "./auth";
 import nav from "./nav";
 import businesses from "./businesses";
 import services from "./services";
+import fields from "./fields";
 import employees from "./employees";
 import clients from "./clients";
 import properties from "./properties";
@@ -28,6 +29,7 @@ const reducers = {
   nav,
   businesses,
   services,
+  fields,
   employees,
   clients,
   properties,

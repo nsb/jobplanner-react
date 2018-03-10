@@ -15,6 +15,10 @@ import type {
   ServicesMap
 } from "../actions/services";
 import type {
+  Action as FieldsAction,
+  FieldsMap
+} from "../actions/fields";
+import type {
   Action as EmployeesAction,
   EmployeesMap
 } from "../actions/employees";
@@ -30,6 +34,7 @@ type PropertiesState = PropertiesMap;
 type JobsState = JobsMap;
 type VisitsState = VisitsMap;
 type ServicesState = ServicesMap;
+type FieldsState = FieldsMap;
 type EmployeesState = EmployeesMap;
 type LineItemsState = LineItemsMap;
 type AsyncTaskState = AsyncTasksMap;
@@ -41,6 +46,7 @@ export type State = {
   jobs: JobsState,
   visits: VisitsState,
   services: ServicesState,
+  fields: FieldsState,
   employees: EmployeesState,
   lineItems: LineItemsState,
   asyncTasks: AsyncTaskState
@@ -53,6 +59,7 @@ type Action =
   | JobsAction
   | VisitsAction
   | ServicesAction
+  | FieldsAction
   | EmployeesAction
   | AsyncTasksAction;
 
@@ -65,6 +72,7 @@ const entities: (State, Action) => State = (
     jobs: {},
     visits: {},
     services: {},
+    fields: {},
     employees: {},
     lineItems: {},
     asyncTasks: {}
