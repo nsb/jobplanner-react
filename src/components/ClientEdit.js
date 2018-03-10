@@ -9,6 +9,7 @@ import ClientForm from "./ClientForm";
 import { updateClient } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
+import type { Field } from "../actions/fields";
 import type { State } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { PropertiesMap } from "../actions/properties";
@@ -18,6 +19,7 @@ type Props = {
   token?: string,
   business: Business,
   client: Client,
+  fields: Array<Field>,  
   properties: PropertiesMap,
   push: string => void,
   dispatch: Dispatch
@@ -25,17 +27,16 @@ type Props = {
 
 class ClientEdit extends Component<Props> {
   render() {
-    const { client } = this.props;
+    const { client, fields } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
-
         <ClientForm
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
+          fields={fields}
           initialValues={client}
         />
-
       </Article>
     );
   }
@@ -67,7 +68,7 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { auth, entities } = state;
+  const { auth, fields, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
 
@@ -79,6 +80,13 @@ const mapStateToProps = (
       clientSchema,
       ensureState(entities)
     ),
+    fields: fields.result
+      .map((Id: number) => {
+        return ensureState(entities).fields[Id];
+      })
+      .filter(field => {
+        return field.business === businessId;
+      }),
     properties: ensureState(entities).properties,
     push: ownProps.history.push,
     dispatch: ownProps.dispatch

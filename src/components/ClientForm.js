@@ -14,6 +14,7 @@ import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
 import type { Client } from "../actions/clients";
+import type { Field as CustomField } from "../actions/fields";
 import type { Element } from "react";
 
 const validate = (values: Client) => {
@@ -103,6 +104,7 @@ type Props = {
   dirty: boolean,
   submitting: boolean,
   onClose: Function,
+  fields: Array<CustomField>,
   initialValues: Object
 };
 
@@ -113,6 +115,7 @@ export const ClientForm = (props: Props) => {
     dirty,
     submitting,
     onClose,
+    fields,
     initialValues
   } = props;
   return (
@@ -172,6 +175,18 @@ export const ClientForm = (props: Props) => {
           label="Properties"
           component={renderProperties}
         />
+
+        <fieldset>
+          <Heading tag="h3">Additional client details</Heading>
+          {fields.map((field, index) => (
+            <Field
+              name={field.name}
+              label={field.label}
+              component={renderField}
+              type={field.type}
+            />
+          ))}
+        </fieldset>
       </FormFields>
 
       <Footer pad={{ vertical: "medium" }}>
