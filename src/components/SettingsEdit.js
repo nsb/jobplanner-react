@@ -9,7 +9,6 @@ import List from "grommet/components/List";
 import NavControl from "./NavControl";
 import BusinessSection from "./SettingsBusinessSection";
 import ServicesSection from "./SettingsServicesSection";
-import FieldsSection from "./SettingsFieldsSection";
 import EmployeesSection from "./SettingsEmployeesSection";
 import EmailsSection from "./SettingsEmailsSection";
 import BusinessEdit from "./SettingsBusinessEdit";
@@ -60,9 +59,6 @@ class SettingsEdit extends Component<Props, State> {
           />
           <ServicesSection
             onOpen={this.onLayerOpen.bind(this, "servicesEdit")}
-          />
-          <FieldsSection
-            onOpen={this.onLayerOpen.bind(this, "fieldsEdit")}
           />
           <EmployeesSection
             onOpen={this.onLayerOpen.bind(this, "employeesEdit")}
