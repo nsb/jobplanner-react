@@ -55,6 +55,15 @@ class NavSidebar extends Component<Props> {
           />
           <Anchor key="jobs" path={`/${business.id}/jobs`} label="Jobs" />
           <Anchor
+            key="reports"
+            path={`/${business.id}/reports`}
+            label={intl.formatMessage({
+              id: 'reports.title',
+              defaultMessage: 'Reports',
+            })}
+          />
+
+          <Anchor
             key="settings"
             path={`/${business.id}/settings`}
             label={intl.formatMessage({

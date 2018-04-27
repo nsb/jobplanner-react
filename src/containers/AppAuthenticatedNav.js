@@ -50,6 +50,11 @@ const CalendarListContainer = Loadable({
   loading: Loading
 });
 
+const Reports = Loadable({
+  loader: () => import("../components/Reports"),
+  loading: Loading
+});
+
 const Settings = Loadable({
   loader: () => import("../components/Settings"),
   loading: Loading
@@ -94,6 +99,7 @@ class AppAuthenticatedNav extends Component<Props> {
             component={ClientListContainer}
           />
           <Route path="/:businessId/jobs" component={Jobs} />
+          <Route path="/:businessId/reports" component={Reports} />
           <Route path="/:businessId/settings" component={Settings} />
           <Route component={ClientListContainer} />
         </Switch>
