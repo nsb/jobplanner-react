@@ -64,7 +64,7 @@ const ClientList = ({
       />
 
     </Header>
-    <List onMore={isFetching ? onMore : undefined}>
+    <List onMore={isFetching ? undefined : onMore}>
       {clients.map((client: Client, index: number) => {
         return (
           <ClientListItem
