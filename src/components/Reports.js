@@ -2,15 +2,14 @@
 
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import SettingsEdit from "./SettingsEdit";
+import VisitsReportContainer from "./VisitsReportContainer";
 
 class Reports extends Component<*> {
   render() {
     return (
-      <div>Hejsa</div>
-      // <Switch>
-      //   <Route component={SettingsEdit} />
-      // </Switch>
+      <Switch>
+        <Route component={VisitsReportContainer} />
+      </Switch>
     );
   }
 }
