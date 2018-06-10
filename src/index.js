@@ -27,8 +27,13 @@ const language =
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
 let messages: Object;
 
-// configure moment locale
-moment.locale(language);
+// configure moment locale, with Monday as 1st day of week
+moment.locale(language, {
+  week: {
+    dow: 1,
+    doy: 1,
+  },
+});
 
 if (languageWithoutRegionCode === "da") {
   messages = localeDaData;
