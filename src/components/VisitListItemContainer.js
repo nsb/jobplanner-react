@@ -20,7 +20,7 @@ const mapStateToProps = (
     visit: ownProps.visit,
     assigned: ownProps.visit.assigned.map(Id => {
       return ensureState(entities).employees[Id];
-    }),
+    }).filter(employee => employee),
     onClick: ownProps.onClick,
     index: ownProps.index
   };
