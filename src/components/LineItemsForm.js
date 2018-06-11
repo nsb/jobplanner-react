@@ -63,7 +63,7 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
     const { value } = suggestion;
     change(formName, `line_items[${index}].name`, value.name);
     change(formName, `line_items[${index}].description`, value.description);
-    change(formName, `line_items[${index}].quantity`, value.quantity);
+    change(formName, `line_items[${index}].quantity`, value.quantity || 1);
     change(formName, `line_items[${index}].unit_cost`, value.unit_cost);
   };
 
