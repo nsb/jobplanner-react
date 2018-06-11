@@ -10,7 +10,7 @@ export type Props = {
   visit: Visit,
   assigned: Array<Employee>,
   index: number,
-  onClick: (Visit) => void
+  onClick: Visit => void
 };
 
 class VisitListItem extends Component<Props> {
