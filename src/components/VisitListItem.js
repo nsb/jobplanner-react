@@ -35,10 +35,10 @@ class VisitListItem extends Component<Props> {
           />
         </span>
         <span>
-          {visit.assigned.length
+          {assigned.length
             ? assigned
                 .map(
-                  (a: Visit) =>
+                  (a: Employee) =>
                     a.first_name || a.last_name
                       ? `${a.first_name} ${a.last_name}`
                       : a.username
