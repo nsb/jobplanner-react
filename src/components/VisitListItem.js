@@ -9,13 +9,16 @@ import type { Employee } from "../actions/employees";
 export type Props = {
   visit: Visit,
   assigned: Array<Employee>,
+  job?: job,
   index: number,
   onClick: Visit => void
 };
 
 class VisitListItem extends Component<Props> {
   render() {
-    const { visit, assigned, index, onClick } = this.props;
+    const { visit, assigned, index, onClick, job } = this.props;
+
+    let clientName = job ? undefined : (<span>{visit.client_name}</span>);
 
     return (
       <ListItem
@@ -28,6 +31,7 @@ class VisitListItem extends Component<Props> {
         onClick={onClick}
         selected={false}
       >
+        {clientName}
         <span>
           <Timestamp
             fields={visit.anytime ? "date" : ["date", "time"]}

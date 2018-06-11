@@ -39,11 +39,12 @@ class VisitListContainer extends Component<Props, State> {
   }
 
   render() {
-    const { visits, isFetching, totalCount } = this.props;
+    const { visits, isFetching, totalCount, job } = this.props;
     return (
       <VisitList
         visits={visits}
         isFetching={isFetching}
+        job={job}
         onMore={this.state.offset < totalCount ? this.onMore : null}
       />
     );

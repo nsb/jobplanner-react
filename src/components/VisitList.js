@@ -8,9 +8,11 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import VisitLayerContainer from "./VisitLayerContainer";
 import VisitListItemContainer from "./VisitListItemContainer";
 import type { Visit } from "../actions/visits";
+import type { Job } from "../actions/jobs";
 
 type Props = {
   visits: Array<Visit>,
+  job?: Job,
   isFetching: boolean,
   onMore: () => void,
   intl: intlShape
@@ -26,7 +28,7 @@ class VisitList extends Component<Props, State> {
   };
 
   render() {
-    const { visits, isFetching, onMore, intl } = this.props;
+    const { visits, isFetching, job, onMore, intl } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
@@ -46,6 +48,7 @@ class VisitList extends Component<Props, State> {
               <VisitListItemContainer
                 key={visit.id}
                 visit={visit}
+                job={job}
                 index={index}
                 onClick={e => this.onClick(visit)}
               />
