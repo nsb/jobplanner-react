@@ -31,7 +31,7 @@ class VisitListContainer extends Component<Props, State> {
   intervalId: number = -1;
   state = {
     offset: 0,
-    limit: 10
+    limit: 20
   };
 
   componentDidMount() {
@@ -55,8 +55,8 @@ class VisitListContainer extends Component<Props, State> {
       const data = {
         business: business.id,
         ordering: "begins",
-        begins__gt: moment().format("YYYY-MM-DDT00:00"),
-        limit: 10,
+        begins__gte: moment().toISOString(),
+        limit: 20,
         offset: this.state.offset
       };
       dispatch(fetchVisits(token, job ? { ...data, job: job.id } : data));
