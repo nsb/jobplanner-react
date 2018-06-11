@@ -35,8 +35,15 @@ class VisitListItem extends Component<Props> {
           />
         </span>
         <span>
-          {visit.assigned
-            ? assigned.map(a => a.username).join(", ")
+          {visit.assigned.length
+            ? assigned
+                .map(
+                  (a: Visit) =>
+                    a.first_name || a.last_name
+                      ? `${a.first_name} ${a.last_name}`
+                      : a.username
+                )
+                .join(", ")
             : "Not assigned yet"}
         </span>
       </ListItem>
