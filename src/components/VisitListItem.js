@@ -5,11 +5,12 @@ import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
+import type { Job } from "../actions/jobs";
 
 export type Props = {
   visit: Visit,
   assigned: Array<Employee>,
-  job?: job,
+  job?: Job,
   index: number,
   onClick: Visit => void
 };

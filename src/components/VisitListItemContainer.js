@@ -4,7 +4,7 @@ import VisitListItem from "./VisitListItem";
 import type { Props } from "./VisitListItem";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
-import type { Job } from "../actions/jobs';"
+import type { Job } from "../actions/jobs";
 import { ensureState } from "redux-optimistic-ui";
 
 const mapStateToProps = (
