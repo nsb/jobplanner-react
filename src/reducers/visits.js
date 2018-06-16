@@ -23,6 +23,15 @@ const isFetching = (state: boolean = true, action: Action): boolean => {
     case "UPDATE_VISIT_FAILURE":
       return false;
 
+    case "DELETE_VISIT":
+      return true;
+
+    case "DELETE_VISIT_SUCCESS":
+      return false;
+
+    case "DELETE_VISIT_FAILURE":
+      return false;
+
     default:
       return state;
   }
@@ -66,6 +75,11 @@ const result = (state: Array<number> = [], action: Action): Array<number> => {
       } else {
         return state;
       }
+
+    case "DELETE_VISIT_SUCCESS":
+      const newState = [...state];
+      newState.splice(state.indexOf(action.payload.id), 1);
+      return newState;
 
     case "RESET_VISITS":
       return [];

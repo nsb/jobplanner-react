@@ -3,7 +3,7 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import VisitDetail from "./VisitDetail";
-import { partialUpdateVisit, deleteVisit } from "../actions/visits";
+import { partialUpdateVisit } from "../actions/visits";
 import type { Visit } from "../actions/visits";
 import type { Props } from "./VisitDetail";
 import type { State as ReduxState } from "../types/State";
@@ -14,6 +14,7 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     onEdit: Function,
+    onDelete: Function,
     visit: Visit
   }
 ): Props => {
@@ -32,15 +33,14 @@ const mapStateToProps = (
     }),
     onEdit: ownProps.onEdit,
     partialUpdateVisit: partialUpdateVisit,
-    deleteVisit: deleteVisit
+    onDelete: ownProps.onDelete
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      partialUpdateVisit,
-      deleteVisit
+      partialUpdateVisit
     },
     dispatch
   );
