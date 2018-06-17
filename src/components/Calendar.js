@@ -10,6 +10,7 @@ import Title from "grommet/components/Title";
 import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
 import CalendarEvent from "./CalendarEvent";
+import CalendarEventAgenda from "./CalendarEventAgenda";
 import type { Visit } from "../actions/visits";
 
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
@@ -70,7 +71,10 @@ class Calendar extends Component<Props, void> {
             onSelectEvent={onSelectEvent}
             onEventDrop={onEventDrop}
             components={{
-              event: CalendarEvent
+              event: CalendarEvent,
+              agenda: {
+                event: CalendarEventAgenda
+              }
             }}
             eventPropGetter={(
               event: Visit,
