@@ -20,6 +20,7 @@ class VisitListItem extends Component<Props> {
     const { visit, assigned, index, onClick, job } = this.props;
 
     let clientName = job ? undefined : (<span>{visit.client_name}</span>);
+    let details = job ? undefined : (<span>{visit.details}</span>);
 
     return (
       <ListItem
@@ -39,6 +40,7 @@ class VisitListItem extends Component<Props> {
             value={visit.begins}
           />
         </span>
+        {details}
         <span>
           {assigned.length
             ? assigned
