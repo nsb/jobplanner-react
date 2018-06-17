@@ -29,7 +29,7 @@ class VisitLayer extends Component<Props, State> {
         case "delete":
           return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} />;
         case "edit":
-          return <VisitEdit visit={visit} />;
+          return <VisitEdit visit={visit} toggleEdit={this.toggleEdit} />;
         default:
           return (
             <VisitDetailContainer
