@@ -47,7 +47,8 @@ export type Visit = {
   ends: Date,
   client_name: string,
   client_phone: string,
-  assigned: Array<number>
+  assigned: Array<number>,
+  details: string
 };
 
 type VisitsResponse = {

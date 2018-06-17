@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Layer from "grommet/components/Layer";
 import VisitDetailContainer from "./VisitDetailContainer";
 import VisitEdit from "./VisitEdit";
+import VisitRemove from "./VisitRemove";
 import type { Visit } from "../actions/visits";
 
 export type Props = {
@@ -12,22 +13,33 @@ export type Props = {
 };
 
 type State = {
-  edit: boolean
+  view: ?string
 };
 
 class VisitLayer extends Component<Props, State> {
   state = {
-    edit: false
+    view: undefined
   };
 
   render() {
     const { visit, onClose } = this.props;
 
-    const visitView = this.state.edit ? (
-      <VisitEdit visit={visit} toggleEdit={this.toggleEdit} />
-    ) : (
-      <VisitDetailContainer visit={visit} onEdit={this.toggleEdit} />
-    );
+    const visitView = (view => {
+      switch (view) {
+        case "delete":
+          return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} />;
+        case "edit":
+          return <VisitEdit visit={visit} toggleEdit={this.toggleEdit} />;
+        default:
+          return (
+            <VisitDetailContainer
+              visit={visit}
+              onEdit={this.toggleEdit}
+              onDelete={this.toggleDelete}
+            />
+          );
+      }
+    })(this.state.view);
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
@@ -37,8 +49,16 @@ class VisitLayer extends Component<Props, State> {
   }
 
   toggleEdit = () => {
-    this.setState({ edit: !this.state.edit });
+    this.setState({ view: this.state.view ? undefined : "edit" });
   };
+
+  toggleDelete = () => {
+    this.setState({ view: this.state.view ? undefined : "delete" });
+  };
+
+  onRemoveClose = () => {
+    this.setState({ view: undefined })
+  }
 }
 
 export default VisitLayer;

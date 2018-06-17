@@ -5,17 +5,22 @@ import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
+import type { Job } from "../actions/jobs";
 
 export type Props = {
   visit: Visit,
   assigned: Array<Employee>,
+  job?: Job,
   index: number,
-  onClick: (Visit) => void
+  onClick: Visit => void
 };
 
 class VisitListItem extends Component<Props> {
   render() {
-    const { visit, assigned, index, onClick } = this.props;
+    const { visit, assigned, index, onClick, job } = this.props;
+
+    let clientName = job ? undefined : (<span>{visit.client_name}</span>);
+    let details = job ? undefined : (<span>{visit.details}</span>);
 
     return (
       <ListItem
@@ -28,15 +33,24 @@ class VisitListItem extends Component<Props> {
         onClick={onClick}
         selected={false}
       >
+        {clientName}
         <span>
           <Timestamp
             fields={visit.anytime ? "date" : ["date", "time"]}
             value={visit.begins}
           />
         </span>
+        {details}
         <span>
-          {visit.assigned
-            ? assigned.map(a => a.username).join(", ")
+          {assigned.length
+            ? assigned
+                .map(
+                  (a: Employee) =>
+                    a.first_name || a.last_name
+                      ? `${a.first_name} ${a.last_name}`
+                      : a.username
+                )
+                .join(", ")
             : "Not assigned yet"}
         </span>
       </ListItem>

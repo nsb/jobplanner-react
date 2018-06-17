@@ -76,7 +76,7 @@ const mapStateToProps = (
       }),
     assigned: ownProps.visit.assigned.map((Id: number) => {
       return ensureState(entities).employees[Id];
-    }),
+    }).filter(employee => employee),
     visit: denormalize(
       ensureState(entities).visits[ownProps.visit.id],
       visitSchemaDenormalize,

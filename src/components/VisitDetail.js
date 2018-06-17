@@ -23,12 +23,13 @@ export type Props = {
   lineItems: Array<LineItem>,
   onEdit: Function,
   partialUpdateVisit: Function,
-  deleteVisit: Function
+  onDelete: Function
 };
 
 class VisitDetail extends Component<Props> {
   render() {
-    const { visit, property, assigned, lineItems, onEdit } = this.props;
+    const { visit, property, assigned, lineItems, onEdit, onDelete } = this.props;
+
     return (
       <Box>
         <Header size="large" justify="between" pad="none">
@@ -71,7 +72,7 @@ class VisitDetail extends Component<Props> {
                 <Anchor href="#" onClick={onEdit}>
                   Edit
                 </Anchor>
-                <Anchor href="#" onClick={this.onDelete}>
+                <Anchor href="#" onClick={onDelete}>
                   Delete
                 </Anchor>
                 <Anchor href="#" onClick={this.toggleCompleted}>
@@ -115,8 +116,6 @@ class VisitDetail extends Component<Props> {
     const { visit, token, partialUpdateVisit } = this.props;
     partialUpdateVisit({ id: visit.id, completed: !visit.completed }, token);
   };
-
-  onDelete = () => {};
 }
 
 export default VisitDetail;

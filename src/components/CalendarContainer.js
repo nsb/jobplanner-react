@@ -134,11 +134,11 @@ class CalendarContainer extends Component<Props, State> {
           begins__gte: (
             (begins && moment(begins)) ||
             moment(this.state.date).startOf(this.state.view)
-          ).format("YYYY-MM-DDT00:00"),
+          ).toISOString(),
           ends__lte: (
             (ends && moment(ends)) ||
             moment(this.state.date).endOf(this.state.view)
-          ).format("YYYY-MM-DDT00:00"),
+          ).toISOString(),
           limit: 100,
           offset: 0
         })

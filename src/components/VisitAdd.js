@@ -34,7 +34,7 @@ class VisitAdd extends Component<Props> {
           }}
           onSubmit={this.handleSubmit}
           employees={employees}
-        />;
+        />
       </Layer>
     );
   }

@@ -125,8 +125,8 @@ class VisitForm extends Component<Props> {
         <FormFields>
           <fieldset>
             <Field
-              name="description"
-              label="Description"
+              name="details"
+              label="Details"
               component={renderField}
               type="text"
             />
