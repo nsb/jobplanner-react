@@ -17,7 +17,7 @@ import type { Visit } from "../actions/visits";
 
 type Props = {
   business: Business,
-  visits?: Array<Visit>,
+  visits: Array<Visit>,
   isFetching?: boolean,
   searchText?: string,
   onSearch: (SyntheticInputEvent<*>) => void,
@@ -25,7 +25,11 @@ type Props = {
   intl: intlShape
 };
 
-class VisitsReport extends Component<*> {
+type State = {
+  filterActive: boolean
+};
+
+class VisitsReport extends Component<Props, State> {
   render() {
     const {
       searchText,
@@ -63,9 +67,7 @@ class VisitsReport extends Component<*> {
         </Header>
         <List onMore={isFetching ? onMore : undefined}>
           {visits.map((visit: Visit, index: number) => {
-            return (
-              <div key={visit.id}>{visit.client_name}</div>
-            );
+            return <div key={visit.id}>{visit.client_name}</div>;
           })}
         </List>
         <ListPlaceholder
@@ -88,6 +90,10 @@ class VisitsReport extends Component<*> {
       </Box>
     );
   }
+
+  _onToggleFilter = () => {
+    this.setState({ filterActive: !this.state.filterActive });
+  };
 }
 
 export default injectIntl(VisitsReport);
