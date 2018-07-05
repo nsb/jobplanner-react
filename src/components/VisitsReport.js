@@ -6,12 +6,11 @@ import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
 import Search from "grommet/components/Search";
-import Anchor from "grommet/components/Anchor";
-import Button from "grommet/components/Button";
-import AddIcon from "grommet/components/icons/base/Add";
+import FilterControl from "grommet-addons/components/FilterControl";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import NavControl from "./NavControl";
+import VisitsReportFilter from "./VisitsReportFilter";
 import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
 
@@ -30,25 +29,33 @@ type State = {
 };
 
 class VisitsReport extends Component<Props, State> {
+  state: State = { filterActive: false };
+
   render() {
     const {
       searchText,
       onSearch,
-      business,
       onMore,
       isFetching,
       intl,
       visits
     } = this.props;
+    const { filterActive } = this.state;
+
+    let filterLayer;
+    if (filterActive) {
+      filterLayer = <VisitsReportFilter onClose={this._onToggleFilter} />;
+    }
+
     return (
       <Box>
         <Header size="large" pad={{ horizontal: "medium" }}>
           <Title responsive={false}>
             <NavControl />
             <FormattedMessage
-              id="clients.title"
-              description="Clients title"
-              defaultMessage="Clients"
+              id="visitsreport.title"
+              description="Visits Report title"
+              defaultMessage="Visits Report"
             />
           </Title>
           <Search
@@ -59,11 +66,7 @@ class VisitsReport extends Component<Props, State> {
             value={searchText}
             onDOMChange={onSearch}
           />
-          <Anchor
-            icon={<AddIcon />}
-            path={`/${business.id}/clients/add`}
-            a11yTitle={`Add business`}
-          />
+          <FilterControl onClick={this._onToggleFilter} />
         </Header>
         <List onMore={isFetching ? onMore : undefined}>
           {visits.map((visit: Visit, index: number) => {
@@ -77,16 +80,8 @@ class VisitsReport extends Component<Props, State> {
             id: "visits.emptyMessage",
             defaultMessage: "No visits found."
           })}
-          addControl={
-            <Button
-              icon={<AddIcon />}
-              label="Add visit"
-              primary={true}
-              a11yTitle={`Add visit`}
-              path={`/${business.id}/visits/add`}
-            />
-          }
         />
+        {filterLayer}
       </Box>
     );
   }
