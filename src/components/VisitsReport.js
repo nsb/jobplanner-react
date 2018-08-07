@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import moment from "moment";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
@@ -11,6 +12,7 @@ import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import NavControl from "./NavControl";
 import VisitsReportFilter from "./VisitsReportFilter";
+import type { FilterValues } from "./VisitsReportFilter";
 import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
@@ -27,11 +29,21 @@ type Props = {
 };
 
 type State = {
-  filterActive: boolean
+  filterActive: boolean,
+  filterValues: FilterValues
 };
 
 class VisitsReport extends Component<Props, State> {
-  state: State = { filterActive: true };
+  state: State = {
+    filterActive: true,
+    filterValues: {
+      begins: moment().subtract(1, "months"),
+      ends: new Date(),
+      complete: true,
+      incomplete: false,
+      assigned: []
+    }
+  };
 
   render() {
     const {
@@ -47,9 +59,14 @@ class VisitsReport extends Component<Props, State> {
 
     let filterLayer;
     if (filterActive) {
-      filterLayer = <VisitsReportFilter
-                      onClose={this._onToggleFilter}
-                      employees={employees} />;
+      filterLayer = (
+        <VisitsReportFilter
+          onClose={this._onToggleFilter}
+          employees={employees}
+          onSubmit={this.onFilterSubmit}
+          filterValues={this.state.filterValues}
+        />
+      );
     }
 
     return (
@@ -93,6 +110,11 @@ class VisitsReport extends Component<Props, State> {
 
   _onToggleFilter = () => {
     this.setState({ filterActive: !this.state.filterActive });
+  };
+
+  onFilterSubmit = filterValues => {
+    this.setState({ filterActive: false, filterValues });
+    console.log(filterValues);
   };
 }
 
