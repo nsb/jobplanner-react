@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import moment from "moment";
 import Layer from "grommet/components/Layer";
 import Sidebar from "grommet/components/Sidebar";
 import Header from "grommet/components/Header";
@@ -40,11 +41,11 @@ class VisitsReportFilter extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    this.dateFormat = "M/D/YYYY";
     this.state = this.props.filterValues;
   }
 
   render() {
-    const dateFormat = "M/D/YYYY";
     const { employees } = this.props;
 
     return (
@@ -79,8 +80,8 @@ class VisitsReportFilter extends Component<Props, State> {
                   <DateTime
                     id="begins"
                     name="begins"
-                    format={dateFormat}
-                    onChange={undefined}
+                    format={this.dateFormat}
+                    onChange={this.onBeginsChange}
                     value={this.state.begins}
                   />
                 </FormField>
@@ -88,8 +89,8 @@ class VisitsReportFilter extends Component<Props, State> {
                   <DateTime
                     id="ends"
                     name="ends"
-                    format={dateFormat}
-                    onChange={undefined}
+                    format={this.dateFormat}
+                    onChange={this.onEndsChange}
                     value={this.state.ends}
                   />
                 </FormField>
@@ -130,6 +131,14 @@ class VisitsReportFilter extends Component<Props, State> {
   onEmployeesChange = ({ target, option, value }) => {
     this.setState({ assigned: value });
   };
+
+  onBeginsChange = (date) => {
+    this.setState({begins: moment(date, this.dateFormat).toDate()})
+  }
+
+  onEndsChange = (date) => {
+    this.setState({ends: moment(date, this.dateFormat).toDate()})
+  }
 
   _onSubmit = (event) => {
     event.preventDefault()
