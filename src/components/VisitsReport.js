@@ -13,6 +13,7 @@ import NavControl from "./NavControl";
 import VisitsReportFilter from "./VisitsReportFilter";
 import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
+import type { Employee } from "../actions/employees";
 
 type Props = {
   business: Business,
@@ -21,7 +22,8 @@ type Props = {
   searchText?: string,
   onSearch: (SyntheticInputEvent<*>) => void,
   onMore: () => void,
-  intl: intlShape
+  intl: intlShape,
+  employees: Array<Employee>
 };
 
 type State = {
@@ -29,7 +31,7 @@ type State = {
 };
 
 class VisitsReport extends Component<Props, State> {
-  state: State = { filterActive: false };
+  state: State = { filterActive: true };
 
   render() {
     const {
@@ -38,13 +40,16 @@ class VisitsReport extends Component<Props, State> {
       onMore,
       isFetching,
       intl,
-      visits
+      visits,
+      employees
     } = this.props;
     const { filterActive } = this.state;
 
     let filterLayer;
     if (filterActive) {
-      filterLayer = <VisitsReportFilter onClose={this._onToggleFilter} />;
+      filterLayer = <VisitsReportFilter
+                      onClose={this._onToggleFilter}
+                      employees={employees} />;
     }
 
     return (

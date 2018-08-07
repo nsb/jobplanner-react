@@ -7,6 +7,7 @@ import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
 import type { Business } from "../actions/businesses";
+import type { Employee } from "../actions/employees";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
@@ -15,7 +16,8 @@ type Props = {
   token: ?string,
   isFetching: boolean,
   dispatch: Dispatch,
-  totalCount: number
+  totalCount: number,
+  employees: Array<Employee>
 };
 
 type State = {
@@ -45,7 +47,7 @@ class VisitsReportContainer extends Component<Props, State> {
   }
 
   render() {
-    const { business, visits, isFetching, totalCount } = this.props;
+    const { business, visits, isFetching, totalCount, employees } = this.props;
 
     return (
       <VisitsReport
@@ -55,6 +57,7 @@ class VisitsReportContainer extends Component<Props, State> {
         onMore={this.state.offset < totalCount ? this.onMore : null}
         onSearch={this.onSearch}
         searchText={this.state.searchText}
+        employees={employees}
       />
     );
   }
@@ -88,7 +91,7 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { visits, entities, auth } = state;
+  const { visits, entities, employees, auth } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
@@ -99,7 +102,14 @@ const mapStateToProps = (
     isFetching: visits.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch,
-    totalCount: visits.count
+    totalCount: visits.count,
+    employees: employees.result
+      .map((Id: number) => {
+        return ensureState(entities).employees[Id];
+      })
+      .filter(employee => {
+        return employee.businesses.indexOf(businessId) > -1 ? employee : false;
+      }),
   };
 };
 
