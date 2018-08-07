@@ -95,14 +95,21 @@ class VisitsReportFilter extends Component<Props, State> {
                   />
                 </FormField>
                 <FormField label="Status">
-                  <CheckBox label="Complete" checked={this.state.complete} />
                   <CheckBox
+                    name="complete"
+                    label="Complete"
+                    checked={this.state.complete}
+                    onChange={this.onCompleteChange} />
+                  <CheckBox
+                    name="incomplete"
                     label="Incomplete"
                     checked={this.state.incomplete}
+                    onChange={this.onIncompleteChange}
                   />
                 </FormField>
                 <FormField label="Assigned to">
                   <Select
+                    name="assigned"
                     placeHolder="All"
                     options={employees.map(employee => {
                       return { value: employee.id, label: employee.username };
@@ -133,17 +140,25 @@ class VisitsReportFilter extends Component<Props, State> {
   };
 
   onBeginsChange = (date) => {
-    this.setState({begins: moment(date, this.dateFormat).toDate()})
+    this.setState({begins: moment(date, this.dateFormat).toDate()});
   }
 
   onEndsChange = (date) => {
-    this.setState({ends: moment(date, this.dateFormat).toDate()})
+    this.setState({ends: moment(date, this.dateFormat).toDate()});
+  }
+
+  onCompleteChange = ({target, handler}) => {
+    this.setState({complete: target.checked})
+  }
+
+  onIncompleteChange = ({target, handler}) => {
+    this.setState({incomplete: target.checked})
   }
 
   _onSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const { onSubmit } = this.props;
-    onSubmit(this.state)
+    onSubmit(this.state);
   }
 }
 
