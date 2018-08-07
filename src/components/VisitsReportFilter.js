@@ -41,7 +41,7 @@ class VisitsReportFilter extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.dateFormat = "M/D/YYYY";
+    this.dateFormat = moment().creationData().locale.longDateFormat('L');
     this.state = this.props.filterValues;
   }
 
