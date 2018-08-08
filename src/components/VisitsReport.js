@@ -31,7 +31,8 @@ type State = {
   count: number,
   visits: Array<Visit>,
   filterActive: boolean,
-  filterValues: FilterValues
+  filterValues: FilterValues,
+  isFetching: boolean
 };
 
 class VisitsReport extends Component<Props, State> {
@@ -47,7 +48,8 @@ class VisitsReport extends Component<Props, State> {
       complete: true,
       incomplete: false,
       assigned: []
-    }
+    },
+    isFetching: false
   };
 
   componentDidMount(prevProps: Props) {
@@ -84,17 +86,19 @@ class VisitsReport extends Component<Props, State> {
           <FilterControl onClick={this._onToggleFilter} />
         </Header>
         <List
-          onMore={
-            this.state.offset < this.state.count ? this.onMore : null
-          }
+          onMore={this.state.offset < this.state.count ? this.onMore : null}
         >
           {this.state.visits.map((visit: Visit, index: number) => {
             return <div key={visit.id}>{visit.client_name}</div>;
           })}
         </List>
         <ListPlaceholder
-          filteredTotal={false ? null : this.state.visits.length}
-          unfilteredTotal={false ? null : this.state.visits.length}
+          filteredTotal={
+            this.state.isFetching ? null : this.state.visits.length
+          }
+          unfilteredTotal={
+            this.state.isFetching ? null : this.state.visits.length
+          }
           emptyMessage={intl.formatMessage({
             id: "visits.emptyMessage",
             defaultMessage: "No visits found."
@@ -108,21 +112,24 @@ class VisitsReport extends Component<Props, State> {
   onMore = () => {
     const { token } = this.props;
     if (token) {
-      visitsApi
-        .getAll("visits", token, {
-          limit: this.state.limit,
-          offset: this.state.offset
-        })
-        .then((responseVisits: VisitsResponse) => {
-          this.setState({
-            visits:  union(this.state.visits, responseVisits.results),
-            count: responseVisits.count,
-            offset: this.state.offset + this.state.limit
+      this.setState({ isFetching: true }, () => {
+        visitsApi
+          .getAll("visits", token, {
+            limit: this.state.limit,
+            offset: this.state.offset
+          })
+          .then((responseVisits: VisitsResponse) => {
+            this.setState({
+              visits: union(this.state.visits, responseVisits.results),
+              count: responseVisits.count,
+              offset: this.state.offset + this.state.limit,
+              isFetching: false
+            });
+          })
+          .catch((error: string) => {
+            throw error;
           });
-        })
-        .catch((error: string) => {
-          throw error;
-        });
+      });
     }
   };
 
@@ -131,8 +138,7 @@ class VisitsReport extends Component<Props, State> {
   };
 
   onFilterSubmit = filterValues => {
-    this.setState({ filterActive: false, filterValues });
-    console.log(filterValues);
+    this.setState({ filterActive: false, filterValues, offset: 0, count: 0 }, this.onMore);
   };
 }
 
