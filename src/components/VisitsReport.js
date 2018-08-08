@@ -138,7 +138,10 @@ class VisitsReport extends Component<Props, State> {
   };
 
   onFilterSubmit = filterValues => {
-    this.setState({ filterActive: false, filterValues, offset: 0, count: 0 }, this.onMore);
+    this.setState(
+      { filterActive: false, filterValues, offset: 0, count: 0 },
+      this.onMore
+    );
   };
 }
 
