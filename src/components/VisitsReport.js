@@ -7,7 +7,6 @@ import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
-import Search from "grommet/components/Search";
 import FilterControl from "grommet-addons/components/FilterControl";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
@@ -21,9 +20,6 @@ import type { Employee } from "../actions/employees";
 
 type Props = {
   business: Business,
-  isFetching?: boolean,
-  searchText?: string,
-  onSearch: (SyntheticInputEvent<*>) => void,
   intl: intlShape,
   employees: Array<Employee>,
   token: ?string
@@ -59,7 +55,7 @@ class VisitsReport extends Component<Props, State> {
   }
 
   render() {
-    const { searchText, onSearch, isFetching, intl, employees } = this.props;
+    const { intl, employees } = this.props;
     const { filterActive } = this.state;
 
     let filterLayer;
@@ -85,14 +81,6 @@ class VisitsReport extends Component<Props, State> {
               defaultMessage="Visits Report"
             />
           </Title>
-          <Search
-            inline={true}
-            fill={true}
-            size="medium"
-            placeHolder="Search"
-            value={searchText}
-            onDOMChange={onSearch}
-          />
           <FilterControl onClick={this._onToggleFilter} />
         </Header>
         <List
@@ -105,8 +93,8 @@ class VisitsReport extends Component<Props, State> {
           })}
         </List>
         <ListPlaceholder
-          filteredTotal={isFetching ? null : this.state.visits.length}
-          unfilteredTotal={isFetching ? null : this.state.visits.length}
+          filteredTotal={false ? null : this.state.visits.length}
+          unfilteredTotal={false ? null : this.state.visits.length}
           emptyMessage={intl.formatMessage({
             id: "visits.emptyMessage",
             defaultMessage: "No visits found."
