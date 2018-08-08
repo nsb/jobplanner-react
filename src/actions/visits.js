@@ -51,7 +51,7 @@ export type Visit = {
   details: string
 };
 
-type VisitsResponse = {
+export type VisitsResponse = {
   results: Array<Visit>,
   count: number,
   next: ?string,

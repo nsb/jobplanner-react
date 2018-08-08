@@ -52,7 +52,7 @@ class VisitsReport extends Component<Props, State> {
     isFetching: false
   };
 
-  componentDidMount(prevProps: Props) {
+  componentDidMount() {
     this.onMore();
   }
 
@@ -115,8 +115,8 @@ class VisitsReport extends Component<Props, State> {
       this.setState({ isFetching: true }, () => {
         visitsApi
           .getAll("visits", token, {
-            limit: this.state.limit,
-            offset: this.state.offset
+            limit: this.state.limit.toString(10),
+            offset: this.state.offset.toString(10)
           })
           .then((responseVisits: VisitsResponse) => {
             this.setState({

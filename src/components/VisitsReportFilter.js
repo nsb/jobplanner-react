@@ -17,12 +17,12 @@ import CheckBox from "grommet/components/CheckBox";
 import Footer from "grommet/components/Footer";
 import type { Employee } from "../actions/employees";
 
-type FilterValues = {
+export type FilterValues = {
   begins: Date,
   ends: Date,
   complete: boolean,
   incomplete: boolean,
-  assigned: Array<Number>
+  assigned: Array<number>
 };
 
 type Props = {
@@ -32,16 +32,19 @@ type Props = {
   filterValues: FilterValues
 };
 
-type State = FilterValues
+type State = FilterValues;
 
 class VisitsReportFilter extends Component<Props, State> {
+  dateFormat: string;
   static defaultProps = {
     employees: []
   };
 
   constructor(props: Props) {
     super(props);
-    this.dateFormat = moment().creationData().locale.longDateFormat('L');
+    this.dateFormat = moment()
+      .creationData()
+      .locale.longDateFormat("L");
     this.state = this.props.filterValues;
   }
 
@@ -72,9 +75,7 @@ class VisitsReportFilter extends Component<Props, State> {
                 onClick={this.props.onClose}
               />
             </Header>
-            <Form
-              pad="medium"
-              onSubmit={this._onSubmit}>
+            <Form pad="medium" onSubmit={this._onSubmit}>
               <FormFields>
                 <FormField label="From date">
                   <DateTime
@@ -99,7 +100,8 @@ class VisitsReportFilter extends Component<Props, State> {
                     name="complete"
                     label="Complete"
                     checked={this.state.complete}
-                    onChange={this.onCompleteChange} />
+                    onChange={this.onCompleteChange}
+                  />
                   <CheckBox
                     name="incomplete"
                     label="Incomplete"
@@ -122,11 +124,7 @@ class VisitsReportFilter extends Component<Props, State> {
                 </FormField>
               </FormFields>
               <Footer pad={{ vertical: "medium" }}>
-                <Button
-                  label="Apply"
-                  type="submit"
-                  primary={true}
-                />
+                <Button label="Apply" type="submit" primary={true} />
               </Footer>
             </Form>
           </div>
@@ -135,31 +133,31 @@ class VisitsReportFilter extends Component<Props, State> {
     );
   }
 
-  onEmployeesChange = ({ target, option, value }) => {
+  onEmployeesChange = ({ value }: { value: Array<number> }) => {
     this.setState({ assigned: value });
   };
 
-  onBeginsChange = (date) => {
-    this.setState({begins: moment(date, this.dateFormat).toDate()});
-  }
+  onBeginsChange = (date: Date) => {
+    this.setState({ begins: moment(date, this.dateFormat).toDate() });
+  };
 
-  onEndsChange = (date) => {
-    this.setState({ends: moment(date, this.dateFormat).toDate()});
-  }
+  onEndsChange = (date: Date) => {
+    this.setState({ ends: moment(date, this.dateFormat).toDate() });
+  };
 
-  onCompleteChange = ({target, handler}) => {
-    this.setState({complete: target.checked})
-  }
+  onCompleteChange = ({ target }: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({ complete: target.checked });
+  };
 
-  onIncompleteChange = ({target, handler}) => {
-    this.setState({incomplete: target.checked})
-  }
+  onIncompleteChange = ({ target }: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({ incomplete: target.checked });
+  };
 
-  _onSubmit = (event) => {
+  _onSubmit = (event: SyntheticInputEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { onSubmit } = this.props;
     onSubmit(this.state);
-  }
+  };
 }
 
 export default VisitsReportFilter;
