@@ -5,37 +5,24 @@ import { fetchVisits } from "../actions/visits";
 import VisitsReport from "./VisitsReport";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
-import type { Visit } from "../actions/visits";
 import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
   business: Business,
-  visits: Array<Visit>,
   token: ?string,
-  isFetching: boolean,
-  dispatch: Dispatch,
-  totalCount: number,
   employees: Array<Employee>
 };
 
 type State = {
   searchText: string,
-  offset: number,
-  limit: number
 };
 
 class VisitsReportContainer extends Component<Props, State> {
   state: State = {
-    searchText: "",
-    offset: 0,
-    limit: 30
+    searchText: ""
   };
-
-  componentDidMount() {
-    this.onMore();
-  }
 
   componentDidUpdate(prevProps, prevState) {
     const { dispatch } = this.props;
@@ -47,17 +34,15 @@ class VisitsReportContainer extends Component<Props, State> {
   }
 
   render() {
-    const { business, visits, isFetching, totalCount, employees } = this.props;
+    const { business, employees, token } = this.props;
 
     return (
       <VisitsReport
         business={business}
-        visits={visits}
-        isFetching={isFetching}
-        onMore={this.state.offset < totalCount ? this.onMore : null}
         onSearch={this.onSearch}
         searchText={this.state.searchText}
         employees={employees}
+        token={token}
       />
     );
   }
@@ -91,18 +76,12 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { visits, entities, employees, auth } = state;
+  const { entities, employees, auth } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     business: ensureState(entities).businesses[businessId],
-    visits: ensureState(visits).result.map((Id: number) => {
-      return ensureState(entities).visits[Id];
-    }),
-    isFetching: visits.isFetching,
     token: auth.token,
-    dispatch: ownProps.dispatch,
-    totalCount: visits.count,
     employees: employees.result
       .map((Id: number) => {
         return ensureState(entities).employees[Id];

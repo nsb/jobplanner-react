@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import moment from "moment";
+import { union } from "lodash/array";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
@@ -10,31 +11,39 @@ import Search from "grommet/components/Search";
 import FilterControl from "grommet-addons/components/FilterControl";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import visitsApi from "../api";
 import NavControl from "./NavControl";
 import VisitsReportFilter from "./VisitsReportFilter";
 import type { FilterValues } from "./VisitsReportFilter";
 import type { Business } from "../actions/businesses";
-import type { Visit } from "../actions/visits";
+import type { Visit, VisitsResponse } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 
 type Props = {
   business: Business,
-  visits: Array<Visit>,
   isFetching?: boolean,
   searchText?: string,
   onSearch: (SyntheticInputEvent<*>) => void,
-  onMore: () => void,
   intl: intlShape,
-  employees: Array<Employee>
+  employees: Array<Employee>,
+  token: ?string
 };
 
 type State = {
+  offset: number,
+  limit: number,
+  count: number,
+  visits: Array<Visit>,
   filterActive: boolean,
   filterValues: FilterValues
 };
 
 class VisitsReport extends Component<Props, State> {
   state: State = {
+    offset: 0,
+    limit: 30,
+    count: 0,
+    visits: [],
     filterActive: true,
     filterValues: {
       begins: moment().subtract(1, "months"),
@@ -45,16 +54,12 @@ class VisitsReport extends Component<Props, State> {
     }
   };
 
+  componentDidMount(prevProps: Props) {
+    this.onMore();
+  }
+
   render() {
-    const {
-      searchText,
-      onSearch,
-      onMore,
-      isFetching,
-      intl,
-      visits,
-      employees
-    } = this.props;
+    const { searchText, onSearch, isFetching, intl, employees } = this.props;
     const { filterActive } = this.state;
 
     let filterLayer;
@@ -90,14 +95,18 @@ class VisitsReport extends Component<Props, State> {
           />
           <FilterControl onClick={this._onToggleFilter} />
         </Header>
-        <List onMore={isFetching ? onMore : undefined}>
-          {visits.map((visit: Visit, index: number) => {
+        <List
+          onMore={
+            this.state.offset < this.state.count ? this.onMore : null
+          }
+        >
+          {this.state.visits.map((visit: Visit, index: number) => {
             return <div key={visit.id}>{visit.client_name}</div>;
           })}
         </List>
         <ListPlaceholder
-          filteredTotal={isFetching ? null : visits.length}
-          unfilteredTotal={isFetching ? null : visits.length}
+          filteredTotal={isFetching ? null : this.state.visits.length}
+          unfilteredTotal={isFetching ? null : this.state.visits.length}
           emptyMessage={intl.formatMessage({
             id: "visits.emptyMessage",
             defaultMessage: "No visits found."
@@ -107,6 +116,27 @@ class VisitsReport extends Component<Props, State> {
       </Box>
     );
   }
+
+  onMore = () => {
+    const { token } = this.props;
+    if (token) {
+      visitsApi
+        .getAll("visits", token, {
+          limit: this.state.limit,
+          offset: this.state.offset
+        })
+        .then((responseVisits: VisitsResponse) => {
+          this.setState({
+            visits:  union(this.state.visits, responseVisits.results),
+            count: responseVisits.count,
+            offset: this.state.offset + this.state.limit
+          });
+        })
+        .catch((error: string) => {
+          throw error;
+        });
+    }
+  };
 
   _onToggleFilter = () => {
     this.setState({ filterActive: !this.state.filterActive });
