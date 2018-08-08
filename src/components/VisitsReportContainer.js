@@ -1,7 +1,5 @@
 // @flow
-import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchVisits } from "../actions/visits";
 import VisitsReport from "./VisitsReport";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -14,59 +12,6 @@ type Props = {
   token: ?string,
   employees: Array<Employee>
 };
-
-type State = {
-  searchText: string,
-};
-
-class VisitsReportContainer extends Component<Props, State> {
-  state: State = {
-    searchText: ""
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    const { dispatch } = this.props;
-
-    if (prevState.searchText !== this.state.searchText) {
-      dispatch({ type: "RESET_VISITS" });
-      this.onMore();
-    }
-  }
-
-  render() {
-    const { business, employees, token } = this.props;
-
-    return (
-      <VisitsReport
-        business={business}
-        onSearch={this.onSearch}
-        searchText={this.state.searchText}
-        employees={employees}
-        token={token}
-      />
-    );
-  }
-
-  onMore = () => {
-    const { business, token, dispatch } = this.props;
-    if (token) {
-      dispatch(
-        fetchVisits(token, {
-          business: business.id,
-          ordering: "date",
-          limit: this.state.limit,
-          offset: this.state.offset,
-          search: this.state.searchText
-        })
-      );
-      this.setState({ offset: this.state.offset + this.state.limit });
-    }
-  };
-
-  onSearch = ({ target }: SyntheticInputEvent<*>) => {
-    this.setState({ searchText: target.value, offset: 0 });
-  };
-}
 
 const mapStateToProps = (
   state: ReduxState,
@@ -88,8 +33,8 @@ const mapStateToProps = (
       })
       .filter(employee => {
         return employee.businesses.indexOf(businessId) > -1 ? employee : false;
-      }),
+      })
   };
 };
 
-export default connect(mapStateToProps)(VisitsReportContainer);
+export default connect(mapStateToProps)(VisitsReport);
