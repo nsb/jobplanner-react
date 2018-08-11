@@ -22,7 +22,7 @@ export type FilterValues = {
   ends: Date,
   complete: boolean,
   incomplete: boolean,
-  assigned: ?number
+  assigned: ?{ value: number, label: string }
 };
 
 type Props = {
@@ -138,6 +138,7 @@ class VisitsReportFilter extends Component<Props, State> {
   }: {
     value: { value: number, label: string }
   }) => {
+    console.log(value);
     this.setState({ assigned: value });
   };
 

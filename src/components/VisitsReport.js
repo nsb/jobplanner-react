@@ -113,7 +113,14 @@ class VisitsReport extends Component<Props, State> {
     const { business, token } = this.props;
     const { limit, offset, filterValues } = this.state;
     if (token) {
-      let filters = {
+      let filters: {
+        limit: number,
+        offset: number,
+        begins__gte: Date,
+        ends__lte: Date,
+        assigned?: number,
+        completed?: boolean
+      } = {
         limit: limit,
         offset: offset,
         begins__gte: filterValues.begins,
