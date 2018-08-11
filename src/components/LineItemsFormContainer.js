@@ -7,6 +7,7 @@ import { change } from "redux-form";
 import type { State as ReduxState } from "../types/State";
 import LineItemsForm from "./LineItemsForm";
 import type { LineItemProps as Props } from "./LineItemsForm";
+import type { Dispatch } from "../types/Store";
 
 const mapStateToProps = (
   state: ReduxState,
