@@ -56,7 +56,7 @@ class VisitListContainer extends Component<Props, State> {
       const data = {
         business: business.id,
         ordering: "begins",
-        begins__gte: moment().toISOString(),
+        begins__gte: new Date(),
         limit: 20,
         offset: this.state.offset
       };

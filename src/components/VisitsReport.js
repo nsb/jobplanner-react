@@ -110,14 +110,19 @@ class VisitsReport extends Component<Props, State> {
   }
 
   onMore = () => {
-    const { token } = this.props;
+    const { business, token } = this.props;
+    const { limit, offset, filterValues } = this.state;
     if (token) {
+      const filters = {
+        limit: limit.toString(10),
+        offset: offset.toString(10),
+        begins__gte: filterValues.begins,
+        ends__lte: filterValues.ends,
+        completed: filterValues.complete
+      };
       this.setState({ isFetching: true }, () => {
         visitsApi
-          .getAll("visits", token, {
-            limit: this.state.limit.toString(10),
-            offset: this.state.offset.toString(10)
-          })
+          .getAll("visits", token, { ...filters, business: business.id })
           .then((responseVisits: VisitsResponse) => {
             this.setState({
               visits: union(this.state.visits, responseVisits.results),
@@ -139,7 +144,7 @@ class VisitsReport extends Component<Props, State> {
 
   onFilterSubmit = filterValues => {
     this.setState(
-      { filterActive: false, filterValues, offset: 0, count: 0 },
+      { filterActive: false, filterValues, offset: 0, count: 0, visits: [] },
       this.onMore
     );
   };

@@ -15,7 +15,7 @@ type Props = {
   business: Business,
   visits: Array<Visit>,
   token: string,
-  dispatch: Dispatch,
+  dispatch: Dispatch
 };
 
 type CalendarView = "day" | "week" | "month" | "agenda";
@@ -131,14 +131,16 @@ class CalendarContainer extends Component<Props, State> {
         fetchVisits(token, {
           business: business.id,
           ordering: "begins",
-          begins__gte: (
-            (begins && moment(begins)) ||
-            moment(this.state.date).startOf(this.state.view)
-          ).toISOString(),
-          ends__lte: (
-            (ends && moment(ends)) ||
-            moment(this.state.date).endOf(this.state.view)
-          ).toISOString(),
+          begins__gte:
+            begins ||
+            moment(this.state.date)
+              .startOf(this.state.view)
+              .toDate(),
+          ends__lte:
+            ends ||
+            moment(this.state.date)
+              .endOf(this.state.view)
+              .toDate(),
           limit: 100,
           offset: 0
         })

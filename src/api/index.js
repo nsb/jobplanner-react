@@ -3,18 +3,21 @@ import "url-search-params-polyfill";
 
 const API_ENDPOINT =
   process.env.REACT_APP_API_ENDPOINT || "http://localhost:8000";
-const API_VERSION = process.env.REACT_APP_API_VERSION || 'v1';
+const API_VERSION = process.env.REACT_APP_API_VERSION || "v1";
 
 class Api {
   static getAll(
     resource: string,
     token: string,
-    queryParams: { [key: string]: string } = {}
+    queryParams: { [key: string]: string | Date | boolean | number } = {}
   ): Promise<*> {
     let searchParams: URLSearchParams = new URLSearchParams();
     Object.keys(queryParams).forEach(function(key) {
       let param = queryParams[key];
-      searchParams.append(key, param);
+      searchParams.append(
+        key,
+        param instanceof Date ? param.toISOString() : param.toString()
+      );
     });
 
     const url: string = `${API_ENDPOINT}/${API_VERSION}/${resource}/?${searchParams.toString()}`;
@@ -62,14 +65,17 @@ class Api {
     token: string,
     patch: boolean = false
   ) {
-    const request = new Request(`${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}/`, {
-      method: patch ? "PATCH" : "PUT",
-      headers: new Headers({
-        Authorization: `Jwt ${token}`,
-        "Content-Type": "application/json"
-      }),
-      body: JSON.stringify(item)
-    });
+    const request = new Request(
+      `${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}/`,
+      {
+        method: patch ? "PATCH" : "PUT",
+        headers: new Headers({
+          Authorization: `Jwt ${token}`,
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify(item)
+      }
+    );
 
     return fetch(request)
       .then(response => {
@@ -106,13 +112,16 @@ class Api {
   }
 
   static delete(resource: string, item: { id: number }, token: string) {
-    const request = new Request(`${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}`, {
-      method: "DELETE",
-      headers: new Headers({
-        Authorization: `Jwt ${token}`,
-        "Content-Type": "application/json"
-      })
-    });
+    const request = new Request(
+      `${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}`,
+      {
+        method: "DELETE",
+        headers: new Headers({
+          Authorization: `Jwt ${token}`,
+          "Content-Type": "application/json"
+        })
+      }
+    );
 
     return fetch(request)
       .then(response => {
