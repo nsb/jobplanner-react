@@ -16,10 +16,10 @@ import type { PropertiesMap } from "../actions/properties";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token?: string,
+  token: ?string,
   business: Business,
   client: Client,
-  fields: Array<Field>,  
+  fields: Array<Field>,
   properties: PropertiesMap,
   push: string => void,
   dispatch: Dispatch

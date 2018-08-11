@@ -14,7 +14,7 @@ import Calendar from "./Calendar";
 type Props = {
   business: Business,
   visits: Array<Visit>,
-  token: string,
+  token: ?string,
   dispatch: Dispatch
 };
 
@@ -109,7 +109,7 @@ class CalendarContainer extends Component<Props, State> {
     dispatch(
       updateVisit(
         { id: event.id, begins: start, ends: end, anytime: anytime },
-        token,
+        token || "",
         true,
         true
       )

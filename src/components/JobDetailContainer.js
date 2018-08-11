@@ -34,7 +34,6 @@ const mapStateToProps = (
     token: auth.token,
     business: ensureState(entities).businesses[businessId],
     isFetching: jobs.isFetching || clients.isFetching,
-    saved: jobs.saved,
     push: ownProps.history.push,
     responsive: nav.responsive,
     client: job && ensureState(entities).clients[job.client],

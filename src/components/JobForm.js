@@ -28,14 +28,14 @@ import type { Element } from "react";
 import type { Employee } from "../actions/employees";
 import Notification from "grommet/components/Notification";
 
-export const invoicingReminderMap = {
+export const invoicingReminderMap: { [key: string]: string } = {
   never: "As needed - we won't prompt you",
   visit: "After each visit",
   closed: "When the job is closed",
   monthly: "Monthly on the last day of the month"
 };
 
-export const invoicingReminderOptions = Object.entries(
+export const invoicingReminderOptions: Array<Object> = Object.entries(
   invoicingReminderMap
 ).map(([key, value]) => {
   return { label: value, value: key };
@@ -594,12 +594,14 @@ let SelectingFormValuesJobForm = reduxForm({
 
 // Decorate with connect to read form values
 const selector = formValueSelector("job"); // <-- same as form name
-SelectingFormValuesJobForm = connect((state): * => {
-  // can select values individually
-  const anytime: boolean = selector(state, "anytime");
-  return {
-    anytime
-  };
-})(SelectingFormValuesJobForm);
+SelectingFormValuesJobForm = connect(
+  (state): * => {
+    // can select values individually
+    const anytime: boolean = selector(state, "anytime");
+    return {
+      anytime
+    };
+  }
+)(SelectingFormValuesJobForm);
 
 export default SelectingFormValuesJobForm;

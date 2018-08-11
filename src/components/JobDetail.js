@@ -37,7 +37,7 @@ export type Props = {
   lineItems: Array<Object>,
   jobId: number,
   property: ?Property,
-  token: string,
+  token: ?string,
   isFetching: boolean,
   push: string => void,
   responsive: Responsive,

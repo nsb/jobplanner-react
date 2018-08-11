@@ -16,7 +16,7 @@ import type { Employee } from "../actions/employees";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token?: string,
+  token: ?string,
   business: Business,
   clients: ClientsState,
   job: Job,
