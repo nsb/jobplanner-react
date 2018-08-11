@@ -12,7 +12,7 @@ import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token: string,
+  token: ?string,
   business: Business,
   fields: Array<Field>,
   dispatch: Dispatch,
@@ -35,15 +35,17 @@ class ClientAdd extends Component<Props> {
 
   handleSubmit = (values: Client): void => {
     const { token, business, dispatch } = this.props;
-    let action = createClient(
-      business,
-      {
-        ...values,
-        business: business.id
-      },
-      token
-    );
-    dispatch(action);
+    if(token) {
+      let action = createClient(
+        business,
+        {
+          ...values,
+          business: business.id
+        },
+        token
+      );
+      dispatch(action);
+    }
   };
 
   onClose = (e: SyntheticInputEvent<*>) => {

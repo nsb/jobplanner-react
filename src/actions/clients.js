@@ -85,7 +85,7 @@ type FetchClientAction = {
 
 type FetchClientSuccessAction = {
   type: typeof FETCH_CLIENT_SUCCESS,
-  payload: Client
+  payload: { entities: { clients: ClientsMap }, result: number }
 };
 
 type FetchClientFailureAction = {

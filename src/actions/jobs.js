@@ -48,6 +48,8 @@ export type Job = {
   line_items: [Object],
   begins: Date,
   ends: Date,
+  start_time: Date,
+  finish_time: Date,
   anytime: boolean,
   closed: boolean,
   schedule_visits_task: ?number,
@@ -120,7 +122,7 @@ type UpdateJobAction = {
 
 type UpdateJobSuccessAction = {
   type: typeof UPDATE_JOB_SUCCESS,
-  payload: Job
+  payload: { entities: Job, result: number }
 };
 
 type UpdateJobFailureAction = {

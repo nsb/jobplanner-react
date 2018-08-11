@@ -44,6 +44,8 @@ export const invoicingReminderOptions = Object.entries(
 const validate = (values: {
   client: Object,
   anytime: boolean,
+  begins: Date,
+  ends: Date,
   start_time: Date,
   finish_time: Date,
   description: string

@@ -79,7 +79,7 @@ type FetchFieldAction = {
 
 type FetchFieldSuccessAction = {
   type: typeof FETCH_FIELD_SUCCESS,
-  payload: Field
+  payload: { entities: { fields: FieldsMap }, result: number }
 };
 
 type FetchFieldFailureAction = {
@@ -110,7 +110,7 @@ type UpdateFieldAction = {
 
 type UpdateFieldSuccessAction = {
   type: typeof UPDATE_FIELD_SUCCESS,
-  payload: Field
+  payload: { entities: { fields: FieldsMap }, result: number }
 };
 
 type UpdateFieldFailureAction = {

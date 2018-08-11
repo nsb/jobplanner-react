@@ -48,7 +48,8 @@ export type Visit = {
   client_name: string,
   client_phone: string,
   assigned: Array<number>,
-  details: string
+  details: string,
+  anytime: boolean
 };
 
 export type VisitsResponse = {
@@ -101,7 +102,7 @@ type UpdateVisitAction = {
 
 type UpdateVisitSuccessAction = {
   type: typeof UPDATE_VISIT_SUCCESS,
-  payload: Visit
+  payload: { entities: Visit, result: number }
 };
 
 type UpdateVisitFailureAction = {

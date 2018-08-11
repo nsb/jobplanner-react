@@ -78,7 +78,7 @@ type FetchServiceAction = {
 
 type FetchServiceSuccessAction = {
   type: typeof FETCH_SERVICE_SUCCESS,
-  payload: Service
+  payload: { entities: { services: ServicesMap }, result: number }
 };
 
 type FetchServiceFailureAction = {
@@ -109,7 +109,7 @@ type UpdateServiceAction = {
 
 type UpdateServiceSuccessAction = {
   type: typeof UPDATE_SERVICE_SUCCESS,
-  payload: Service
+  payload: { entities: { services: ServicesMap }, result: number }
 };
 
 type UpdateServiceFailureAction = {

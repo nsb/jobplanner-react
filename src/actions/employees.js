@@ -77,7 +77,7 @@ type FetchEmployeeAction = {
 
 type FetchEmployeeSuccessAction = {
   type: typeof FETCH_EMPLOYEE_SUCCESS,
-  payload: Employee
+  payload: { entities: { employees: EmployeesMap }, result: number }
 };
 
 type FetchEmployeeFailureAction = {
@@ -108,7 +108,7 @@ type UpdateEmployeeAction = {
 
 type UpdateEmployeeSuccessAction = {
   type: typeof UPDATE_EMPLOYEE_SUCCESS,
-  payload: Employee
+  payload: { entities: { employees: EmployeesMap }, result: number }
 };
 
 type UpdateEmployeeFailureAction = {
