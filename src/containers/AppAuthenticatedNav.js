@@ -17,7 +17,7 @@ import ClientEdit from "../components/ClientEdit";
 import { logout } from "../actions/auth";
 import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { User } from "../actions/users";
 import { ensureState } from "redux-optimistic-ui";
@@ -29,7 +29,7 @@ type Props = {
   dispatch: Dispatch,
   match: { url: string },
   user: User,
-  logout: Function
+  logout: () => ThunkAction
 };
 
 const Loading = () => (
@@ -67,7 +67,7 @@ const Settings = Loadable({
 
 class AppAuthenticatedNav extends Component<Props> {
   render() {
-    const { navActive, responsive, user } = this.props;
+    const { navActive, responsive, user, logout } = this.props;
     const priority = navActive && "single" === responsive ? "left" : "right";
 
     const { business } = this.props;
@@ -128,7 +128,10 @@ class AppAuthenticatedNav extends Component<Props> {
 
 const mapStateToProps = (
   { nav, entities, users }: State,
-  ownProps: { match: { params: { businessId: number }, url: string } }
+  ownProps: {
+    match: { params: { businessId: number }, url: string },
+    logout: () => ThunkAction
+  }
 ) => {
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
@@ -137,7 +140,8 @@ const mapStateToProps = (
     responsive: nav.responsive,
     business: ensureState(entities).businesses[businessId],
     match: ownProps.match,
-    user: users.me
+    user: users.me,
+    logout: ownProps.logout
   };
 };
 
@@ -146,5 +150,5 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(AppAuthenticatedNav);
