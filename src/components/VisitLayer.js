@@ -8,6 +8,7 @@ import VisitRemove from "./VisitRemove";
 import type { Visit } from "../actions/visits";
 
 export type Props = {
+  token: ?string,
   visit: Visit,
   onClose: Function
 };
@@ -22,12 +23,12 @@ class VisitLayer extends Component<Props, State> {
   };
 
   render() {
-    const { visit, onClose } = this.props;
+    const { visit, onClose, token } = this.props;
 
     const visitView = (view => {
       switch (view) {
         case "delete":
-          return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} />;
+          return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} token={token} />;
         case "edit":
           return <VisitEdit visit={visit} toggleEdit={this.toggleEdit} />;
         default:

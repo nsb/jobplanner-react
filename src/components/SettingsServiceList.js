@@ -21,7 +21,7 @@ type Props = {
   business: Business,
   services: Array<Service>,
   dispatch: Dispatch,
-  token: string
+  token: ?string
 };
 
 type State = {
@@ -77,13 +77,15 @@ class ServiceList extends Component<Props, State> {
 
   onSubmit = (service: Service) => {
     const { business, dispatch, token } = this.props;
-    if (service.id) {
-      dispatch(updateService(service, token));
-    } else {
-      dispatch(
-        createService(merge({}, { business: business.id }, service), token)
-      );
-      this.onActive();
+    if(token) {
+      if (service.id) {
+        dispatch(updateService(service, token));
+      } else {
+        dispatch(
+          createService(merge({}, { business: business.id }, service), token)
+        );
+        this.onActive();
+      }
     }
   };
 }

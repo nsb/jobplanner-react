@@ -21,7 +21,7 @@ type Props = {
   business: Business,
   fields: Array<Field>,
   dispatch: Dispatch,
-  token: string
+  token: ?string
 };
 
 type State = {
@@ -77,13 +77,15 @@ class FieldList extends Component<Props, State> {
 
   onSubmit = (field: Field) => {
     const { business, dispatch, token } = this.props;
-    if (field.id) {
-      dispatch(updateField(field, token));
-    } else {
-      dispatch(
-        createField(merge({}, { business: business.id }, field), token)
-      );
-      this.onActive();
+    if (token) {
+      if (field.id) {
+        dispatch(updateField(field, token));
+      } else {
+        dispatch(
+          createField(merge({}, { business: business.id }, field), token)
+        );
+        this.onActive();
+      }
     }
   };
 }

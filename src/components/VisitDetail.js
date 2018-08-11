@@ -17,7 +17,7 @@ import type { LineItem } from "../actions/lineitems";
 
 export type Props = {
   visit: Visit,
-  token: string,
+  token: ?string,
   property: Property,
   assigned: Array<Object>,
   lineItems: Array<LineItem>,
@@ -114,7 +114,9 @@ class VisitDetail extends Component<Props> {
 
   toggleCompleted = () => {
     const { visit, token, partialUpdateVisit } = this.props;
-    partialUpdateVisit({ id: visit.id, completed: !visit.completed }, token);
+    if(token) {
+      partialUpdateVisit({ id: visit.id, completed: !visit.completed }, token);
+    }
   };
 }
 

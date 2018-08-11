@@ -1,38 +1,41 @@
 // @flow
 
-import React, {Component} from 'react';
-import {injectIntl, intlShape} from 'react-intl';
-import Sidebar from 'grommet/components/Sidebar';
-import Header from 'grommet/components/Header';
-import Title from 'grommet/components/Title';
-import Menu from 'grommet/components/Menu';
-import Anchor from 'grommet/components/Anchor';
-import Button from 'grommet/components/Button';
-import Footer from 'grommet/components/Footer';
-import CloseIcon from 'grommet/components/icons/base/Close';
-import logo from '../logo.svg';
-import SessionMenu from './SessionMenu';
-import type {Business} from '../actions/businesses'
+import React, { Component } from "react";
+import { injectIntl, intlShape } from "react-intl";
+import Sidebar from "grommet/components/Sidebar";
+import Header from "grommet/components/Header";
+import Title from "grommet/components/Title";
+import Menu from "grommet/components/Menu";
+import Anchor from "grommet/components/Anchor";
+import Button from "grommet/components/Button";
+import Footer from "grommet/components/Footer";
+import CloseIcon from "grommet/components/icons/base/Close";
+import logo from "../logo.svg";
+import SessionMenu from "./SessionMenu";
+import type { Business } from "../actions/businesses";
+import type { User } from "../actions/users";
 
 type Props = {
   toggleNav: () => void,
   business: Business,
   intl: intlShape,
+  user: User,
+  logout: Function
 };
 
 class NavSidebar extends Component<Props> {
   render() {
-    const {business, intl} = this.props;
+    const { business, intl, user, logout } = this.props;
 
     return (
       <Sidebar colorIndex="neutral-1" fixed={true}>
-        <Header size="large" justify="between" pad={{horizontal: 'medium'}}>
+        <Header size="large" justify="between" pad={{ horizontal: "medium" }}>
           <Title a11yTitle="Close Menu">
             <img
               src={logo}
               className="App-logo"
               alt="logo"
-              style={{height: '40px'}}
+              style={{ height: "40px" }}
             />
             <span>{business.name}</span>
           </Title>
@@ -44,13 +47,17 @@ class NavSidebar extends Component<Props> {
           />
         </Header>
         <Menu fill={true} primary={true}>
-          <Anchor key="calendar" path={`/${business.id}/calendar`} label="Calendar" />
+          <Anchor
+            key="calendar"
+            path={`/${business.id}/calendar`}
+            label="Calendar"
+          />
           <Anchor
             key="clients"
             path={`/${business.id}/clients`}
             label={intl.formatMessage({
-              id: 'clients.title',
-              defaultMessage: 'Clients',
+              id: "clients.title",
+              defaultMessage: "Clients"
             })}
           />
           <Anchor key="jobs" path={`/${business.id}/jobs`} label="Jobs" />
@@ -58,8 +65,8 @@ class NavSidebar extends Component<Props> {
             key="reports"
             path={`/${business.id}/reports`}
             label={intl.formatMessage({
-              id: 'reports.title',
-              defaultMessage: 'Reports',
+              id: "reports.title",
+              defaultMessage: "Reports"
             })}
           />
 
@@ -67,15 +74,17 @@ class NavSidebar extends Component<Props> {
             key="settings"
             path={`/${business.id}/settings`}
             label={intl.formatMessage({
-              id: 'settings.title',
-              defaultMessage: 'Settings',
+              id: "settings.title",
+              defaultMessage: "Settings"
             })}
           />
         </Menu>
-        <Footer pad={{horizontal: 'medium', vertical: 'small'}}>
+        <Footer pad={{ horizontal: "medium", vertical: "small" }}>
           <SessionMenu
-            dropAlign={{bottom: 'bottom'}}
+            user={user}
+            dropAlign={{ bottom: "bottom" }}
             colorIndex="neutral-1-a"
+            logout={logout}
           />
         </Footer>
       </Sidebar>

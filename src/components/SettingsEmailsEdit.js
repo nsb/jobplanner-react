@@ -12,7 +12,6 @@ type Props = {
   dispatch: Dispatch,
   business: Business,
   onClose: Function,
-  token: string
 };
 
 class EmailsEdit extends Component<Props> {
@@ -27,14 +26,13 @@ class EmailsEdit extends Component<Props> {
 }
 
 const mapStateToProps = (
-  { auth }: ReduxState,
+  state: ReduxState,
   ownProps: {
     dispatch: Dispatch,
     business: Business,
     onClose: Function
   }
 ): Props => ({
-  token: auth.token,
   business: ownProps.business,
   onClose: ownProps.onClose,
   dispatch: ownProps.dispatch

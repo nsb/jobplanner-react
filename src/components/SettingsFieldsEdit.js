@@ -12,7 +12,6 @@ type Props = {
   business: Business,
   onClose: Function,
   dispatch: Dispatch,
-  token: string
 };
 
 class FieldsEdit extends Component<Props> {
@@ -34,7 +33,6 @@ const mapStateToProps = (
     onClose: Function
   }
 ): Props => ({
-  token: auth.token,
   business: ownProps.business,
   dispatch: ownProps.dispatch,
   onClose: ownProps.onClose

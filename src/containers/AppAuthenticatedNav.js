@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import Loadable from "react-loadable";
@@ -13,10 +14,12 @@ import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
 import ClientEdit from "../components/ClientEdit";
+import { logout } from "../actions/auth";
 import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
+import type { User } from "../actions/users";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
@@ -24,13 +27,15 @@ type Props = {
   responsive: string,
   business: Business,
   dispatch: Dispatch,
-  match: { url: string }
+  match: { url: string },
+  user: User,
+  logout: Function
 };
 
 const Loading = () => (
   <Article scrollStep={true} controls={true}>
     <Section full={true} pad="large" justify="center" align="center">
-      <Spinning size="large"/>
+      <Spinning size="large" />
     </Section>
   </Article>
 );
@@ -62,7 +67,7 @@ const Settings = Loadable({
 
 class AppAuthenticatedNav extends Component<Props> {
   render() {
-    const { navActive, responsive } = this.props;
+    const { navActive, responsive, user } = this.props;
     const priority = navActive && "single" === responsive ? "left" : "right";
 
     const { business } = this.props;
@@ -70,7 +75,12 @@ class AppAuthenticatedNav extends Component<Props> {
     return (
       <Split priority={priority} flex="right" onResponsive={this.onResponsive}>
         {this.props.navActive ? (
-          <NavSidebar toggleNav={this.toggleNav} business={business} />
+          <NavSidebar
+            toggleNav={this.toggleNav}
+            business={business}
+            user={user}
+            logout={logout}
+          />
         ) : null}
         <Switch>
           <Route
@@ -117,20 +127,24 @@ class AppAuthenticatedNav extends Component<Props> {
 }
 
 const mapStateToProps = (
-  state: State,
+  { nav, entities, users }: State,
   ownProps: { match: { params: { businessId: number }, url: string } }
 ) => {
-  const { nav, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
     navActive: nav.active,
     responsive: nav.responsive,
     business: ensureState(entities).businesses[businessId],
-    match: ownProps.match
+    match: ownProps.match,
+    user: users.me
   };
 };
 
-export default connect(mapStateToProps, (dispatch: Dispatch) => ({
-  dispatch: dispatch
-}))(AppAuthenticatedNav);
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ logout }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AppAuthenticatedNav);

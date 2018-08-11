@@ -6,17 +6,15 @@ import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import UserIcon from "grommet/components/icons/base/User";
-import { logout } from "../actions/auth";
 import history from "../history";
 import type { User } from "../actions/users";
-import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
 
 type Props = {
   user: User,
   dropAlign: Object,
   colorIndex: string,
-  dispatch: Dispatch
+  logout: Function
 };
 
 class SessionMenu extends Component<Props> {
@@ -40,19 +38,11 @@ class SessionMenu extends Component<Props> {
     );
   }
 
-  onLogout = e => {
-    this.props.dispatch(logout());
+  onLogout = (e: Event) => {
+    this.props.logout();
     history.push("/login");
     e.preventDefault();
   };
 }
 
-const mapStateToProps = (state: State): * => {
-  const { users } = state;
-
-  return {
-    user: users.me
-  };
-};
-
-export default connect(mapStateToProps)(SessionMenu);
+export default SessionMenu;

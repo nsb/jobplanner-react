@@ -12,7 +12,9 @@ const mapStateToProps = (
     onClose: Function
   }
 ): Props => {
+  const { auth } = state;
   return {
+    token: auth.token,
     visit: ownProps.visit,
     onClose: ownProps.onClose
   };

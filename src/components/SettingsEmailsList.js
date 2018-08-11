@@ -13,7 +13,7 @@ type Props = {
   business: Business,
   onClose: Function,
   dispatch: Dispatch,
-  token: string
+  token: ?string
 };
 
 class EmailsEdit extends Component<Props> {

@@ -14,15 +14,17 @@ type Props = {
   onClose: Function,
   onRemove: Function,
   dispatch: Dispatch,
-  token: string
+  token: ?string
 };
 
 class VisitRemove extends Component<Props> {
 
   _onRemove = () => {
     const { visit, token } = this.props;
-    this.props.dispatch(deleteVisit(visit, token));
-    this.props.onRemove();
+    if(token) {
+      this.props.dispatch(deleteVisit(visit, token));
+      this.props.onRemove();
+    }
   }
 
   render() {

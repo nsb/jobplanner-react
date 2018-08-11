@@ -8,7 +8,8 @@ import type { Node, Element } from 'react';
 
 type Props = {
   children?: Node,
-  control: Element<*>
+  control: Element<*>,
+  first: boolean
 }
 
 export default (props: Props) => {

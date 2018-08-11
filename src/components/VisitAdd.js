@@ -9,7 +9,7 @@ import type { Employee } from "../actions/employees";
 
 export type Props = {
   employees: Array<Employee>,
-  token: string,
+  token: ?string,
   business: Business,
   job: Job,
   onClose: Function,
@@ -41,16 +41,18 @@ class VisitAdd extends Component<Props> {
 
   handleSubmit = (values: Object) => {
     const { business, job, token, createVisit, onClose } = this.props;
-    createVisit(
-      business,
-      {
-        ...values,
-        job: job.id,
-        assigned: values.assigned && values.assigned.map(v => v.value)
-      },
-      token || ""
-    );
-    onClose()
+    if(token) {
+      createVisit(
+        business,
+        {
+          ...values,
+          job: job.id,
+          assigned: values.assigned && values.assigned.map(v => v.value)
+        },
+        token || ""
+      );
+      onClose()
+    }
   };
 }
 
