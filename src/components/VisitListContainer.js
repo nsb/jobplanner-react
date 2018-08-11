@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
 import { fetchVisits } from "../actions/visits";
 import VisitList from "./VisitList";
 import { getVisitsByJob, getVisits } from "../selectors/visitSelectors";
