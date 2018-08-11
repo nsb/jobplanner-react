@@ -47,7 +47,7 @@ class VisitsReport extends Component<Props, State> {
       ends: new Date(),
       complete: true,
       incomplete: false,
-      assigned: []
+      assigned: undefined
     },
     isFetching: false
   };
@@ -113,13 +113,19 @@ class VisitsReport extends Component<Props, State> {
     const { business, token } = this.props;
     const { limit, offset, filterValues } = this.state;
     if (token) {
-      const filters = {
-        limit: limit.toString(10),
-        offset: offset.toString(10),
+      let filters = {
+        limit: limit,
+        offset: offset,
         begins__gte: filterValues.begins,
-        ends__lte: filterValues.ends,
-        completed: filterValues.complete
+        ends__lte: filterValues.ends
       };
+      if (filterValues.complete !== filterValues.incomplete) {
+        filters.completed = filterValues.complete && !filterValues.incomplete;
+      }
+      if (filterValues.assigned) {
+        filters.assigned = filterValues.assigned.value;
+      }
+
       this.setState({ isFetching: true }, () => {
         visitsApi
           .getAll("visits", token, { ...filters, business: business.id })

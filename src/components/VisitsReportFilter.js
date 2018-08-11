@@ -22,7 +22,7 @@ export type FilterValues = {
   ends: Date,
   complete: boolean,
   incomplete: boolean,
-  assigned: Array<number>
+  assigned: ?number
 };
 
 type Props = {
@@ -117,7 +117,7 @@ class VisitsReportFilter extends Component<Props, State> {
                       return { value: employee.id, label: employee.username };
                     })}
                     inline={false}
-                    multiple={true}
+                    multiple={false}
                     value={this.state.assigned}
                     onChange={this.onEmployeesChange}
                   />
@@ -133,7 +133,11 @@ class VisitsReportFilter extends Component<Props, State> {
     );
   }
 
-  onEmployeesChange = ({ value }: { value: Array<number> }) => {
+  onEmployeesChange = ({
+    value
+  }: {
+    value: { value: number, label: string }
+  }) => {
     this.setState({ assigned: value });
   };
 
