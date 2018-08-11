@@ -41,7 +41,7 @@ class VisitsReport extends Component<Props, State> {
     limit: 30,
     count: 0,
     visits: [],
-    filterActive: true,
+    filterActive: false,
     filterValues: {
       begins: moment().subtract(1, "months"),
       ends: new Date(),
