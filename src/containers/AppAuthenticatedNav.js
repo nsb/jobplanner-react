@@ -29,7 +29,9 @@ type Props = {
   dispatch: Dispatch,
   match: { url: string },
   user: User,
-  logout: () => ThunkAction
+  logout: () => ThunkAction,
+  navResponsive: ("multiple") => ThunkAction,
+  navToggle: () => ThunkAction
 };
 
 const Loading = () => (
@@ -67,16 +69,21 @@ const Settings = Loadable({
 
 class AppAuthenticatedNav extends Component<Props> {
   render() {
-    const { navActive, responsive, user, logout } = this.props;
+    const {
+      navActive,
+      responsive,
+      user,
+      logout,
+      navToggle,
+      business
+    } = this.props;
     const priority = navActive && "single" === responsive ? "left" : "right";
-
-    const { business } = this.props;
 
     return (
       <Split priority={priority} flex="right" onResponsive={this.onResponsive}>
         {this.props.navActive ? (
           <NavSidebar
-            toggleNav={this.toggleNav}
+            toggleNav={navToggle}
             business={business}
             user={user}
             logout={logout}
@@ -118,11 +125,7 @@ class AppAuthenticatedNav extends Component<Props> {
   }
 
   onResponsive = (responsive: "multiple") => {
-    this.props.dispatch(navResponsive(responsive));
-  };
-
-  toggleNav = () => {
-    this.props.dispatch(navToggle());
+    this.props.navResponsive(responsive);
   };
 }
 
@@ -130,7 +133,9 @@ const mapStateToProps = (
   { nav, entities, users }: State,
   ownProps: {
     match: { params: { businessId: number }, url: string },
-    logout: () => ThunkAction
+    logout: () => ThunkAction,
+    navResponsive: ("multiple") => ThunkAction,
+    navToggle: () => ThunkAction
   }
 ) => {
   const businessId = parseInt(ownProps.match.params.businessId, 10);
@@ -141,12 +146,14 @@ const mapStateToProps = (
     business: ensureState(entities).businesses[businessId],
     match: ownProps.match,
     user: users.me,
-    logout: ownProps.logout
+    logout: ownProps.logout,
+    navResponsive: ownProps.navResponsive,
+    navToggle: ownProps.navToggle
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ logout }, dispatch);
+  bindActionCreators({ logout, navResponsive, navToggle }, dispatch);
 
 export default connect(
   mapStateToProps,
