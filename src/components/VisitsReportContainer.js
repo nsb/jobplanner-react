@@ -14,14 +14,13 @@ type Props = {
 };
 
 const mapStateToProps = (
-  state: ReduxState,
+  { entities, employees, auth }: ReduxState,
   ownProps: {
     match: { params: { businessId: number } },
     history: { push: Function },
     dispatch: Dispatch
   }
 ): Props => {
-  const { entities, employees, auth } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
