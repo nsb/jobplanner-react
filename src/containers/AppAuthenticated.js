@@ -8,7 +8,6 @@ import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
 import Toast from "grommet/components/Toast";
 import store from "../store";
-import { navToggle, navResponsive } from "../actions/nav";
 import { refresh } from "../actions/auth";
 import { verifyAuthAndFetchBusinesses } from "../actions";
 import type { Dispatch } from "../types/Store";
@@ -100,14 +99,6 @@ class AppAuthenticated extends Component {
       );
     }
   }
-
-  onResponsive = (responsive: "multiple") => {
-    this.props.dispatch(navResponsive(responsive));
-  };
-
-  toggleNav = () => {
-    this.props.dispatch(navToggle());
-  };
 }
 
 const mapStateToProps = (state: State) => {

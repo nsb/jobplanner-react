@@ -18,6 +18,7 @@ import Spinning from "grommet/components/icons/Spinning";
 import ClientActions from "../components/ClientActions";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import NavControl from "./NavControl";
 import JobListItem from "./JobListItem";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
@@ -36,8 +37,7 @@ export type Props = {
   push: string => void,
   responsive: Responsive,
   fetchClient: Function,
-  fetchJobs: Function,
-  navResponsive: Function
+  fetchJobs: Function
 };
 
 type State = {
@@ -62,7 +62,7 @@ class ClientDetail extends Component<Props, State> {
       fetchClient(token, clientId);
     }
     if (!jobs.length && token) {
-      fetchJobs(token, { client: clientId, ordering: "closed", });
+      fetchJobs(token, { client: clientId, ordering: "closed" });
     }
   }
 
@@ -115,7 +115,6 @@ class ClientDetail extends Component<Props, State> {
           flex="left"
           separator={true}
           priority={this.state.showSidebarWhenSingle ? "right" : "left"}
-          onResponsive={this.onResponsive}
         >
           <div>
             <Header
@@ -130,6 +129,7 @@ class ClientDetail extends Component<Props, State> {
                 pad={{ between: "small" }}
                 responsive={false}
               >
+                <NavControl />
                 <Anchor
                   icon={<LinkPreviousIcon />}
                   path={`/${business.id}/clients`}
@@ -165,7 +165,10 @@ class ClientDetail extends Component<Props, State> {
                 <Columns>
                   {properties.map((property: Property, index: number) => {
                     return (
-                      <Box margin={{ horizontal: "none", vertical: "small" }} key={index}>
+                      <Box
+                        margin={{ horizontal: "none", vertical: "small" }}
+                        key={index}
+                      >
                         <div>{property.address1}</div>
                         <div>{property.address2}</div>
                         <div>{property.zip_code}</div>
@@ -228,10 +231,6 @@ class ClientDetail extends Component<Props, State> {
       );
     }
   }
-
-  onResponsive = (responsive: Responsive) => {
-    this.props.navResponsive(responsive);
-  };
 
   onClose = () => {
     const { business, client, push } = this.props;

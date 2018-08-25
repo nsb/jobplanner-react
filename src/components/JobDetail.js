@@ -21,6 +21,7 @@ import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Status from "grommet/components/icons/Status";
 import { rrulestr } from "rrule";
+import NavControl from './NavControl';
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import VisitAddContainer from "./VisitAddContainer";
@@ -40,12 +41,11 @@ export type Props = {
   token: ?string,
   isFetching: boolean,
   push: string => void,
-  responsive: Responsive,
   fetchJob: Function,
   partialUpdateJob: Function,
   deleteJob: Function,
   fetchClient: Function,
-  navResponsive: Function
+  responsive: Responsive
 };
 
 type State = {
@@ -167,7 +167,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
             flex="left"
             separator={true}
             priority={this.state.showSidebarWhenSingle ? "right" : "left"}
-            onResponsive={this.onResponsive}
           >
             <div>
               <Header
@@ -182,6 +181,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                   pad={{ between: "small" }}
                   responsive={false}
                 >
+                  <NavControl />
                   <Anchor
                     icon={<LinkPreviousIcon />}
                     path={`/${business.id}/clients/${job.client}`}
@@ -235,6 +235,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                             responsive={false}
                             onClick={undefined}
                             selected={false}
+                            key={line_item.id}
                           >
                             {line_item.name}
                           </ListItem>
@@ -282,10 +283,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       );
     }
   }
-
-  onResponsive = (responsive: Responsive) => {
-    this.props.navResponsive(responsive);
-  };
 
   onClose = () => {
     const { business, push } = this.props;

@@ -20,6 +20,7 @@ import type { State } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { User } from "../actions/users";
+import type { Responsive } from "../actions/nav";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
@@ -30,7 +31,7 @@ type Props = {
   match: { url: string },
   user: User,
   logout: () => ThunkAction,
-  navResponsive: ("multiple") => ThunkAction,
+  navResponsive: (Responsive) => ThunkAction,
   navToggle: () => ThunkAction
 };
 
@@ -124,7 +125,7 @@ class AppAuthenticatedNav extends Component<Props> {
     );
   }
 
-  onResponsive = (responsive: "multiple") => {
+  onResponsive = (responsive: Responsive) => {
     this.props.navResponsive(responsive);
   };
 }
