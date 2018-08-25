@@ -4,7 +4,6 @@ import React from 'react';
 import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
-import Title from 'grommet/components/Title';
 import Search from 'grommet/components/Search';
 import Anchor from 'grommet/components/Anchor';
 import Button from 'grommet/components/Button';
@@ -28,6 +27,14 @@ type Props = {
   intl: intlShape,
 };
 
+const title = (
+  <FormattedMessage
+    id="clients.title"
+    description="Clients title"
+    defaultMessage="Clients"
+  />
+)
+
 const ClientList = ({
   business,
   clients = [],
@@ -41,14 +48,7 @@ const ClientList = ({
 }: Props) => (
   <Box>
     <Header size="large" pad={{horizontal: 'medium'}}>
-      <Title responsive={false}>
-        <NavControl />
-        <FormattedMessage
-          id="clients.title"
-          description="Clients title"
-          defaultMessage="Clients"
-        />
-      </Title>
+      <NavControl title={title} />
       <Search
         inline={true}
         fill={true}
