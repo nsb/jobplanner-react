@@ -165,7 +165,7 @@ class ClientDetail extends Component<Props, State> {
                 <Columns>
                   {properties.map((property: Property, index: number) => {
                     return (
-                      <Box margin={{ horizontal: "none", vertical: "small" }}>
+                      <Box margin={{ horizontal: "none", vertical: "small" }} key={index}>
                         <div>{property.address1}</div>
                         <div>{property.address2}</div>
                         <div>{property.zip_code}</div>
