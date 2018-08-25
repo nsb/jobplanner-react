@@ -13,6 +13,7 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import visitsApi from "../api";
 import NavControl from "./NavControl";
 import VisitsReportFilter from "./VisitsReportFilter";
+import VisitsReportListItem from "./VisitsReportListItem";
 import type { FilterValues } from "./VisitsReportFilter";
 import type { Business } from "../actions/businesses";
 import type { Visit, VisitsResponse } from "../actions/visits";
@@ -58,7 +59,7 @@ class VisitsReport extends Component<Props, State> {
 
   render() {
     const { intl, employees } = this.props;
-    const { filterActive } = this.state;
+    const { filterActive, filterValues } = this.state;
 
     let filterLayer;
     if (filterActive) {
@@ -67,7 +68,7 @@ class VisitsReport extends Component<Props, State> {
           onClose={this._onToggleFilter}
           employees={employees}
           onSubmit={this.onFilterSubmit}
-          filterValues={this.state.filterValues}
+          filterValues={filterValues}
         />
       );
     }
@@ -89,7 +90,16 @@ class VisitsReport extends Component<Props, State> {
           onMore={this.state.offset < this.state.count ? this.onMore : null}
         >
           {this.state.visits.map((visit: Visit, index: number) => {
-            return <div key={visit.id}>{visit.client_name}</div>;
+            return (
+              <VisitsReportListItem
+                visit={visit}
+                key={index}
+                index={index}
+                assigned={employees.filter(employee =>
+                  visit.assigned.includes(employee.id)
+                )}
+              />
+            );
           })}
         </List>
         <ListPlaceholder
