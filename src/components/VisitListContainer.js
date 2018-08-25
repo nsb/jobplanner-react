@@ -3,7 +3,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchVisits } from "../actions/visits";
 import VisitList from "./VisitList";
-import { getVisitsByJob, getVisits } from "../selectors/visitSelectors";
+import {
+  getVisitsByJobGrouped,
+  getVisitsGrouped
+} from "../selectors/visitSelectors";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
@@ -12,7 +15,7 @@ import type { Business } from "../actions/businesses";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  visits: Array<Visit>,
+  visitsGrouped: { [key: Date]: Array<Visit> },
   job?: Job,
   business: Business,
   token: ?string,
@@ -38,10 +41,10 @@ class VisitListContainer extends Component<Props, State> {
   }
 
   render() {
-    const { visits, isFetching, totalCount, job } = this.props;
+    const { visitsGrouped, isFetching, totalCount, job } = this.props;
     return (
       <VisitList
-        visits={visits}
+        visits={visitsGrouped}
         isFetching={isFetching}
         job={job}
         onMore={this.state.offset < totalCount ? this.onMore : null}
@@ -77,7 +80,9 @@ const mapStateToProps = (
   return {
     business: ownProps.business,
     job: ownProps.job,
-    visits: ownProps.job ? getVisitsByJob(state, ownProps) : getVisits(state),
+    visitsGrouped: ownProps.job
+      ? getVisitsByJobGrouped(state, ownProps)
+      : getVisitsGrouped(state),
     totalCount: ensureState(visits).count,
     isFetching: ensureState(visits).isFetching,
     token: auth.token
