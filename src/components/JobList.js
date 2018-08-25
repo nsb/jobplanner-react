@@ -2,9 +2,9 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
-import Title from "grommet/components/Title";
 import Search from "grommet/components/Search";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
@@ -21,13 +21,22 @@ import type { Job } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
 
+const title = (
+  <FormattedMessage
+    id="jobs.title"
+    description="Jobs title"
+    defaultMessage="Jobs"
+  />
+)
+
 type Props = {
   business: Business,
   dispatch: Dispatch,
   jobs: Array<Job>,
   token: string,
   isFetching: boolean,
-  push: Function
+  push: Function,
+  intl: intlShape
 };
 
 type State = {
@@ -70,10 +79,7 @@ class JobList extends Component<Props, State> {
     return (
       <Box>
         <Header size="large" pad={{ horizontal: "medium" }}>
-          <Title responsive={false}>
-            <NavControl />
-            <span>Jobs</span>
-          </Title>
+          <NavControl title={title} />
           <Search
             inline={true}
             fill={true}
@@ -147,4 +153,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(JobList);
+export default connect(mapStateToProps)(injectIntl(JobList));

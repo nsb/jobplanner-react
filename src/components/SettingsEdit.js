@@ -2,10 +2,10 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import Box from "grommet/components/Box";
-import Header from "grommet/components/Header";
-import Title from "grommet/components/Title";
 import List from "grommet/components/List";
+import Header from "grommet/components/Header";
 import NavControl from "./NavControl";
 import BusinessSection from "./SettingsBusinessSection";
 import ServicesSection from "./SettingsServicesSection";
@@ -29,8 +29,17 @@ const LAYERS: {} = {
   emailsEdit: EmailsEdit
 };
 
+const title = (
+  <FormattedMessage
+    id="settings.title"
+    description="Settings title"
+    defaultMessage="Settings"
+  />
+)
+
 type Props = {
-  business: Business
+  business: Business,
+  intl: intlShape
 };
 
 type State = {
@@ -48,10 +57,7 @@ class SettingsEdit extends Component<Props, State> {
     return (
       <Box flex={true}>
         <Header size="large" pad={{ horizontal: "medium" }}>
-          <Title responsive={false}>
-            <NavControl />
-            <span>Settings</span>
-          </Title>
+          <NavControl title={title} />
         </Header>
         <List>
           <BusinessSection
@@ -121,4 +127,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(SettingsEdit);
+export default connect(mapStateToProps)(injectIntl(SettingsEdit));

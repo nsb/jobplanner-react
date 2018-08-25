@@ -15,6 +15,14 @@ import ClientListItem from './ClientListItem';
 import type {Business} from '../actions/businesses';
 import type {Client} from '../actions/clients';
 
+const title = (
+  <FormattedMessage
+    id="clients.title"
+    description="Clients title"
+    defaultMessage="Clients"
+  />
+)
+
 type Props = {
   business: Business,
   clients?: Array<Client>,
@@ -26,14 +34,6 @@ type Props = {
   addClient: SyntheticInputEvent<*> => void,
   intl: intlShape,
 };
-
-const title = (
-  <FormattedMessage
-    id="clients.title"
-    description="Clients title"
-    defaultMessage="Clients"
-  />
-)
 
 const ClientList = ({
   business,

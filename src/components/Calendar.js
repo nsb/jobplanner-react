@@ -1,12 +1,11 @@
 // @flow
 import React, { Component } from "react";
+import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import HTML5Backend from "react-dnd-html5-backend";
 import { DragDropContext } from "react-dnd";
 import BigCalendar from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import moment from "moment";
-import Header from "grommet/components/Header";
-import Title from "grommet/components/Title";
 import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
 import CalendarEvent from "./CalendarEvent";
@@ -16,6 +15,14 @@ import type { Visit } from "../actions/visits";
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
+const title = (
+  <FormattedMessage
+    id="calendar.title"
+    description="Calendar title"
+    defaultMessage="Calendar"
+  />
+)
+
 type Props = {
   visits: Array<Visit>,
   defaultView: "day" | "week" | "month" | "agenda",
@@ -24,7 +31,8 @@ type Props = {
   onView: Function,
   onSelectSlot: Function,
   onSelectEvent: Function,
-  onEventDrop: Function
+  onEventDrop: Function,
+  intl: intlShape
 };
 
 class Calendar extends Component<Props> {
@@ -44,12 +52,7 @@ class Calendar extends Component<Props> {
 
     return (
       <Box>
-        <Header size="large" pad={{ horizontal: "medium" }}>
-          <Title responsive={false}>
-            <NavControl />
-            <span>Calendar</span>
-          </Title>
-        </Header>
+        <NavControl title={title} />
         <Box full={true} pad="medium">
           <DragAndDropCalendar
             selectable={true}
@@ -103,4 +106,4 @@ class Calendar extends Component<Props> {
   }
 }
 
-export default DragDropContext(HTML5Backend)(Calendar);
+export default DragDropContext(HTML5Backend)(injectIntl(Calendar));
