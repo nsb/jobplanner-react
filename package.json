@@ -30,7 +30,7 @@
     "redux-queue-offline": "^0.4.2",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
-    "rrule": "^2.3.4",
+    "rrule": "^2.4.1",
     "url-search-params-polyfill": "^4.0.1"
   },
   "scripts": {
