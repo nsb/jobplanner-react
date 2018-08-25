@@ -22,7 +22,7 @@ class JobListItem extends Component<Props> {
         justify="between"
         separator={index === 0 ? "horizontal" : "bottom"}
         pad={{ horizontal: "medium", vertical: "small", between: "medium" }}
-        responsive={false}
+        responsive={true}
         onClick={onClick}
         selected={false}
       >
