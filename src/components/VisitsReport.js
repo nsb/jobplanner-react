@@ -10,6 +10,7 @@ import Title from "grommet/components/Title";
 import FilterControl from "grommet-addons/components/FilterControl";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import Timestamp from "grommet/components/Timestamp";
 import visitsApi from "../api";
 import NavControl from "./NavControl";
 import VisitsReportFilter from "./VisitsReportFilter";
@@ -59,7 +60,7 @@ class VisitsReport extends Component<Props, State> {
 
   render() {
     const { intl, employees } = this.props;
-    const { filterActive, filterValues } = this.state;
+    const { filterActive, filterValues, visits, count } = this.state;
 
     let filterLayer;
     if (filterActive) {
@@ -86,6 +87,16 @@ class VisitsReport extends Component<Props, State> {
           </Title>
           <FilterControl onClick={this._onToggleFilter} />
         </Header>
+        <Box>
+          <Timestamp fields={["date", "year"]} value={filterValues.begins} />
+          <Timestamp fields={["date", "year"]} value={filterValues.ends} />
+          {filterValues.complete && "Completed"}
+          {filterValues.incomplete && "Incomplete"}
+          {filterValues.assigned && filterValues.assigned.label}
+        </Box>
+        <Box>
+          Showing {visits.length} of {count} visits.
+        </Box>
         <List
           onMore={this.state.offset < this.state.count ? this.onMore : null}
         >
