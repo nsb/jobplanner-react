@@ -123,7 +123,8 @@ const mapStateToProps = (
     isFetching: businesses.isFetching,
     token: auth.token,
     dispatch: ownProps.dispatch,
-    push: ownProps.history.push
+    push: ownProps.history.push,
+    intl: intlShape
   };
 };
 
