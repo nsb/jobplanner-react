@@ -19,6 +19,7 @@ import jobs from "./jobs";
 import visits from "./visits";
 import asyncTasks from "./asynctasks";
 import entities from "./entities";
+import invoices from "./invoices";
 
 const reducers = {
   // router: routerReducer,
@@ -38,7 +39,8 @@ const reducers = {
   jobs,
   asyncTasks,
   flashMessage,
-  entities: optimistic(entities)
+  entities: optimistic(entities),
+  invoices
 };
 
 export type Reducers = typeof reducers;

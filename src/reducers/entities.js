@@ -14,10 +14,7 @@ import type {
   Action as ServicesAction,
   ServicesMap
 } from "../actions/services";
-import type {
-  Action as FieldsAction,
-  FieldsMap
-} from "../actions/fields";
+import type { Action as FieldsAction, FieldsMap } from "../actions/fields";
 import type {
   Action as EmployeesAction,
   EmployeesMap
@@ -27,6 +24,10 @@ import type {
   Action as AsyncTasksAction,
   AsyncTasksMap
 } from "../actions/asynctasks";
+import type {
+  Action as InvoicesAction,
+  InvoicesMap
+} from "../actions/invoices";
 
 type BusinessState = BusinessesMap;
 type ClientsState = ClientsMap;
@@ -38,6 +39,7 @@ type FieldsState = FieldsMap;
 type EmployeesState = EmployeesMap;
 type LineItemsState = LineItemsMap;
 type AsyncTaskState = AsyncTasksMap;
+type InvoicesState = InvoicesMap;
 
 export type State = {
   businesses: BusinessState,
@@ -49,7 +51,8 @@ export type State = {
   fields: FieldsState,
   employees: EmployeesState,
   lineItems: LineItemsState,
-  asyncTasks: AsyncTaskState
+  asyncTasks: AsyncTaskState,
+  invoices: InvoicesState
 };
 
 type Action =
@@ -61,7 +64,8 @@ type Action =
   | ServicesAction
   | FieldsAction
   | EmployeesAction
-  | AsyncTasksAction;
+  | AsyncTasksAction
+  | InvoicesAction;
 
 // Updates an entity cache in response to any action with entities.
 const entities: (State, Action) => State = (
@@ -75,7 +79,8 @@ const entities: (State, Action) => State = (
     fields: {},
     employees: {},
     lineItems: {},
-    asyncTasks: {}
+    asyncTasks: {},
+    invoices: {}
   },
   action: Action
 ): State => {

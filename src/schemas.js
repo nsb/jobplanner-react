@@ -1,6 +1,9 @@
 // @flow
 import { schema } from "normalizr";
 
+export const invoiceSchema = new schema.Entity("invoices");
+export const invoiceListSchema = new schema.Array(invoiceSchema);
+
 export const employeeSchema = new schema.Entity("employees");
 export const employeeListSchema = new schema.Array(employeeSchema);
 
