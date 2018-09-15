@@ -44,7 +44,9 @@ export type Invoice = {
   job: number,
   property: number,
   description: string,
-  client: Client
+  client: Client,
+  total_ex_vat: ?number,
+  total_inc_vat: ?number
 };
 
 export type InvoicesMap = { [id: number]: Invoice };

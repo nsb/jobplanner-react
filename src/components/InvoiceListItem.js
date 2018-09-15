@@ -33,6 +33,9 @@ class InvoiceListItem extends Component<Props> {
         <span>
           <Timestamp fields={["date", "year"]} value={invoice.date} />
         </span>
+        <span>
+          {invoice.total_inc_vat}
+        </span>
       </ListItem>
     );
   }
