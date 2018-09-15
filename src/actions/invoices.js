@@ -4,6 +4,7 @@ import { addSuccess, addError } from "redux-flash-messages";
 import { invoiceListSchema, invoiceSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Visit } from "./visits";
+import type { Client } from "./clients";
 import invoicesApi from "../api";
 import history from "../history";
 
@@ -38,7 +39,12 @@ export const DELETE_INVOICE_FAILURE: "DELETE_INVOICE_FAILURE" =
 export type Invoice = {
   id: number,
   business: number,
-  visits: Array<Visit>
+  visits: Array<Visit>,
+  date: Date,
+  job: number,
+  property: number,
+  description: string,
+  client: Client
 };
 
 export type InvoicesMap = { [id: number]: Invoice };

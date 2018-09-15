@@ -1,9 +1,6 @@
 // @flow
 import { schema } from "normalizr";
 
-export const invoiceSchema = new schema.Entity("invoices");
-export const invoiceListSchema = new schema.Array(invoiceSchema);
-
 export const employeeSchema = new schema.Entity("employees");
 export const employeeListSchema = new schema.Array(employeeSchema);
 
@@ -60,3 +57,8 @@ export const visitSchemaDenormalize = new schema.Entity("visits", {
 
 export const asyncTaskSchema = new schema.Entity("asyncTasks", {});
 export const asyncTaskListSchema = new schema.Array(asyncTaskSchema);
+
+export const invoiceSchema = new schema.Entity("invoices", {
+  client: clientSchema
+});
+export const invoiceListSchema = new schema.Array(invoiceSchema);
