@@ -49,7 +49,8 @@ export type Visit = {
   client_phone: string,
   assigned: Array<number>,
   details: string,
-  anytime: boolean
+  anytime: boolean,
+  total_cost: number
 };
 
 export type VisitsResponse = {

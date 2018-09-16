@@ -8,6 +8,7 @@ import Section from "grommet/components/Section";
 import Columns from "grommet/components/Columns";
 import Timestamp from "grommet/components/Timestamp";
 import Spinning from "grommet/components/icons/Spinning";
+import InvoiceDetailVisitList from "./InvoiceDetailVisitListContainer";
 import type { ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Invoice } from "../actions/invoices";
@@ -61,6 +62,7 @@ class InvoiceDetail extends Component<Props> {
                   <Timestamp fields={["date", "year"]} value={invoice.date} />
                 </Box>
               </Columns>
+              <InvoiceDetailVisitList invoice={invoice} />
             </Section>
             <Section full="horizontal" pad="medium">
               <Box pad={{ horizontal: "medium", vertical: "medium" }}>
