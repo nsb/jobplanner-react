@@ -1,44 +1,41 @@
 // @flow
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { intlShape } from "react-intl";
 import { ensureState } from "redux-optimistic-ui";
-import { fetchInvoices } from "../actions/invoices";
-import InvoiceList from "./InvoiceList";
+import { fetchInvoice } from "../actions/invoices";
+import InvoiceDetail from "./InvoiceDetail";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
-import type { Props } from "./InvoiceList";
+import type { Props } from "./InvoiceDetail";
 
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    match: { params: { businessId: number } },
+    match: { params: { businessId: number, invoiceId: number } },
     history: { push: Function },
     dispatch: Dispatch,
-    fetchInvoices: (string, ?Object) => ThunkAction
+    fetchInvoice: (string, number) => ThunkAction
   }
 ): Props => {
   const { invoices, entities, auth } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
+  const invoiceId = parseInt(ownProps.match.params.invoiceId, 10);
+  const invoice = ensureState(entities).invoices[invoiceId];
 
   return {
     business: ensureState(entities).businesses[businessId],
-    invoices: invoices.result.map((Id: number) => {
-      return ensureState(entities).invoices[Id];
-    }),
+    invoice: invoice,
+    invoiceId: invoiceId,
+    fetchInvoice: ownProps.fetchInvoice,
     isFetching: invoices.isFetching,
-    token: auth.token,
-    totalCount: invoices.count,
-    fetchInvoices: ownProps.fetchInvoices,
-    intl: intlShape,
-    push: ownProps.history.push
+    token: auth.token
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      fetchInvoices
+      fetchInvoice
     },
     dispatch
   );
@@ -46,4 +43,4 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(InvoiceList);
+)(InvoiceDetail);

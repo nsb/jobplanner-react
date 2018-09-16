@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import InvoiceList from "../components/InvoiceListContainer";
-import InvoiceDetail from "../components/InvoiceDetail";
+import InvoiceDetail from "../components/InvoiceDetailContainer";
 
 class Invoices extends Component<*> {
   render() {

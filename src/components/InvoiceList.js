@@ -19,7 +19,8 @@ export type Props = {
   isFetching: boolean,
   totalCount: number,
   fetchInvoices: (string, ?Object) => ThunkAction,
-  intl: intlShape
+  intl: intlShape,
+  push: Function
 };
 
 type State = {
@@ -62,7 +63,7 @@ class InvoiceList extends Component<Props, State> {
                 key={invoice.id}
                 invoice={invoice}
                 index={index}
-                onClick={() => {}}
+                onClick={e => this.onClick(e, invoice)}
               />
             );
           })}
@@ -93,6 +94,12 @@ class InvoiceList extends Component<Props, State> {
       this.setState({ offset: this.state.offset + this.state.limit });
     }
   };
+
+  onClick = (e: SyntheticInputEvent<*>, invoice: Invoice) => {
+    const { push, business } = this.props;
+    push(`/${business.id}/invoices/${invoice.id}`);
+  };
+
 }
 
 export default injectIntl(InvoiceList);
