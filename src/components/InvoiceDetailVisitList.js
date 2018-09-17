@@ -1,11 +1,8 @@
 // @flow
 
 import React, { Component } from "react";
-import Box from "grommet/components/Box";
 import Article from "grommet/components/Article";
-import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
-import Columns from "grommet/components/Columns";
 import Timestamp from "grommet/components/Timestamp";
 import Spinning from "grommet/components/icons/Spinning";
 import List from "grommet/components/List";
