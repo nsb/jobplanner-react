@@ -8,6 +8,7 @@ import Spinning from "grommet/components/icons/Spinning";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import InvoiceDetailLineItemList from "./InvoiceDetailLineItemListContainer.js"
 import type { ThunkAction } from "../types/Store";
 import type { Invoice } from "../actions/invoices";
 import type { Visit } from "../actions/visits";
@@ -53,8 +54,13 @@ class InvoiceDetailVisitList extends Component<Props> {
             {visits.map((visit, index) => {
               return (
                 <ListItem key={visit.id} index={index}>
-                  <span><Timestamp fields={["date", "year"]} value={visit.begins} /></span>
+                  <span>
+                    <Timestamp fields={["date", "year"]} value={visit.begins} />
+                  </span>
                   <span>{visit.total_cost}</span>
+                  <div>
+                    <InvoiceDetailLineItemList lineItems={visit.line_items} />
+                  </div>
                 </ListItem>
               );
             })}
