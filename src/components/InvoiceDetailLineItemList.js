@@ -19,7 +19,7 @@ class InvoiceDetailLineItemList extends Component<Props> {
         <List onMore={undefined}>
           {lineItems.map((lineItem, index) => {
             return (
-              <ListItem key={lineItem.id} index={index}>
+              <ListItem key={lineItem.id}>
                 <span>{lineItem.name}</span>
               </ListItem>
             );

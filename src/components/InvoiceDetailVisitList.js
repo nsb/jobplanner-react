@@ -53,7 +53,7 @@ class InvoiceDetailVisitList extends Component<Props> {
           <List onMore={undefined}>
             {visits.map((visit, index) => {
               return (
-                <ListItem key={visit.id} index={index}>
+                <ListItem key={visit.id}>
                   <span>
                     <Timestamp fields={["date", "year"]} value={visit.begins} />
                   </span>
