@@ -8,7 +8,9 @@ import Section from "grommet/components/Section";
 import Columns from "grommet/components/Columns";
 import Timestamp from "grommet/components/Timestamp";
 import Spinning from "grommet/components/icons/Spinning";
+import Button from "grommet/components/Button";
 import InvoiceDetailVisitList from "./InvoiceDetailVisitListContainer";
+import MoneyIcon from "grommet/components/icons/base/Money";
 import type { ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Invoice } from "../actions/invoices";
@@ -19,7 +21,8 @@ export type Props = {
   invoiceId: number,
   isFetching: boolean,
   token: ?string,
-  fetchInvoice: (string, number) => ThunkAction
+  fetchInvoice: (string, number) => ThunkAction,
+  partialUpdateInvoice: ({ id: number }, string) => ThunkAction
 };
 
 class InvoiceDetail extends Component<Props> {
@@ -31,7 +34,29 @@ class InvoiceDetail extends Component<Props> {
   }
 
   render() {
-    const { invoice, isFetching } = this.props;
+    const { invoice, isFetching, partialUpdateInvoice, token } = this.props;
+
+    let markPaidButton;
+    if (invoice) {
+      markPaidButton = (
+        <Button
+          icon={<MoneyIcon />}
+          label={invoice.paid ? "Mark not paid" : "Mark as paid"}
+          onClick={() =>
+            partialUpdateInvoice(
+              { id: invoice.id, paid: !invoice.paid },
+              token || ""
+            )
+          }
+          href="#"
+          primary={false}
+          secondary={true}
+          accent={false}
+          critical={false}
+          plain={false}
+        />
+      );
+    }
 
     if (isFetching || !invoice) {
       return (
@@ -70,6 +95,7 @@ class InvoiceDetail extends Component<Props> {
               </Box>
               <Box>subtotal {invoice.total_ex_vat}</Box>
               <Box>Total {invoice.total_inc_vat}</Box>
+              <Box>{markPaidButton}</Box>
             </Section>
           </Box>
         </Article>

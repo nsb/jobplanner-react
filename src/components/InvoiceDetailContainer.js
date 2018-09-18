@@ -2,7 +2,7 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ensureState } from "redux-optimistic-ui";
-import { fetchInvoice } from "../actions/invoices";
+import { fetchInvoice, partialUpdateInvoice } from "../actions/invoices";
 import InvoiceDetail from "./InvoiceDetail";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -14,7 +14,8 @@ const mapStateToProps = (
     match: { params: { businessId: number, invoiceId: number } },
     history: { push: Function },
     dispatch: Dispatch,
-    fetchInvoice: (string, number) => ThunkAction
+    fetchInvoice: (string, number) => ThunkAction,
+    partialUpdateInvoice: ({ id: number }, string) => ThunkAction
   }
 ): Props => {
   const { invoices, entities, auth } = state;
@@ -27,6 +28,7 @@ const mapStateToProps = (
     invoice: invoice,
     invoiceId: invoiceId,
     fetchInvoice: ownProps.fetchInvoice,
+    partialUpdateInvoice: ownProps.partialUpdateInvoice,
     isFetching: invoices.isFetching,
     token: auth.token
   };
@@ -35,7 +37,8 @@ const mapStateToProps = (
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      fetchInvoice
+      fetchInvoice,
+      partialUpdateInvoice
     },
     dispatch
   );

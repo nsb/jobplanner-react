@@ -46,7 +46,8 @@ export type Invoice = {
   description: string,
   client: Client,
   total_ex_vat: number,
-  total_inc_vat: number
+  total_inc_vat: number,
+  paid: boolean
 };
 
 export type InvoicesMap = { [id: number]: Invoice };
@@ -89,7 +90,7 @@ type FetchInvoiceFailureAction = {
 
 type UpdateInvoiceAction = {
   type: typeof UPDATE_INVOICE,
-  payload: Invoice
+  payload: Invoice | { id: number }
 };
 
 type UpdateInvoiceSuccessAction = {
@@ -99,7 +100,7 @@ type UpdateInvoiceSuccessAction = {
 
 type UpdateInvoiceFailureAction = {
   type: typeof UPDATE_INVOICE_FAILURE,
-  payload: Invoice,
+  payload: Invoice | { id: number },
   error: string
 };
 
@@ -136,7 +137,7 @@ export type Action =
   | DeleteInvoiceAction
   | DeleteInvoiceSuccessAction
   | DeleteInvoiceFailureAction
-  | ResetInvoicesAction
+  | ResetInvoicesAction;
 
 export const fetchInvoicesRequest = (): FetchInvoicesAction => {
   return {
@@ -203,7 +204,9 @@ export const fetchInvoiceSuccess = (
   };
 };
 
-export const fetchInvoiceFailure = (error: string): FetchInvoiceFailureAction => {
+export const fetchInvoiceFailure = (
+  error: string
+): FetchInvoiceFailureAction => {
   return {
     type: FETCH_INVOICE_FAILURE,
     error: error
@@ -229,7 +232,9 @@ export const fetchInvoice = (token: string, id: number): ThunkAction => {
   };
 };
 
-export const updateInvoiceRequest = (payload: Invoice): UpdateInvoiceAction => {
+export const updateInvoiceRequest = (
+  payload: Invoice | { id: number }
+): UpdateInvoiceAction => {
   return {
     type: UPDATE_INVOICE,
     payload
@@ -247,7 +252,7 @@ export const updateInvoiceSuccess = (
 };
 
 export const updateInvoiceError = (
-  payload: Invoice,
+  payload: Invoice | { id: number },
   error: string
 ): UpdateInvoiceFailureAction => {
   return {
@@ -270,6 +275,32 @@ export const updateInvoice = (invoice: Invoice, token: string): ThunkAction => {
           text: "Saved"
         });
         return responseInvoice;
+      })
+      .catch((error: string) => {
+        dispatch(updateInvoiceError(invoice, error));
+        addError({
+          text: "An error occurred"
+        });
+      });
+  };
+};
+
+export const partialUpdateInvoice = (
+  invoice: { id: number },
+  token: string
+): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(updateInvoiceRequest(invoice));
+
+    return invoicesApi
+      .update("invoices", invoice, token, true)
+      .then((responseInvoice: Invoice) => {
+        const coercedInvoice = responseInvoice;
+        dispatch(updateInvoiceSuccess(coercedInvoice));
+        addSuccess({
+          text: "Saved"
+        });
+        return coercedInvoice;
       })
       .catch((error: string) => {
         dispatch(updateInvoiceError(invoice, error));
