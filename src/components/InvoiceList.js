@@ -86,7 +86,7 @@ class InvoiceList extends Component<Props, State> {
     if (token) {
       fetchInvoices(token, {
         business: business.id,
-        ordering: "date",
+        ordering: "paid,date",
         limit: this.state.limit,
         offset: this.state.offset,
         search: this.state.searchText
