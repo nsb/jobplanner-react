@@ -282,12 +282,21 @@ type JobFormState = {
 };
 
 class JobForm extends Component<JobFormProps, JobFormState> {
+  dateFormat: string;
+  timeFormat: string;
   static defaultProps = {
     employees: []
   };
 
   constructor(props: JobFormProps) {
     super(props);
+
+    this.dateFormat = moment()
+      .creationData()
+      .locale.longDateFormat("L");
+    this.timeFormat = moment()
+      .creationData()
+      .locale.longDateFormat("LT");
 
     let recurrences = props.initialValues
       ? props.initialValues.recurrences
@@ -321,9 +330,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       employees
     } = this.props;
 
-    const dateFormat = "M/D/YYYY";
-    const timeFormat = "h:mm a";
-
     let start_time;
     if (!anytime) {
       start_time = (
@@ -331,8 +337,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           name="start_time"
           label="Start time"
           component={renderDateTime}
-          dateFormat={timeFormat}
-          // normalize={(value: string) => moment(value, timeFormat)}
+          dateFormat={this.timeFormat}
+          // normalize={(value: string) => moment(value, this.timeFormat)}
           onChange={e => this.setState({ visitsWillBeRegenerated: true })}
         />
       );
@@ -345,8 +351,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           name="finish_time"
           label="Finish time"
           component={renderDateTime}
-          dateFormat={timeFormat}
-          // normalize={(value: string) => moment(value, timeFormat)}
+          dateFormat={this.timeFormat}
+          // normalize={(value: string) => moment(value, this.timeFormat)}
           onChange={e => this.setState({ visitsWillBeRegenerated: true })}
         />
       );
@@ -419,16 +425,16 @@ class JobForm extends Component<JobFormProps, JobFormState> {
               name="begins"
               label="Begins"
               component={renderDateTime}
-              dateFormat={dateFormat}
-              normalize={(value: string) => moment(value, dateFormat).toDate()}
+              dateFormat={this.dateFormat}
+              normalize={(value: string) => moment(value, this.dateFormat).toDate()}
               onChange={this.onChangeSchedule}
             />
             <Field
               name="ends"
               label="Ends"
               component={renderDateTime}
-              dateFormat={dateFormat}
-              normalize={(value: string) => moment(value, dateFormat).toDate()}
+              dateFormat={this.dateFormat}
+              normalize={(value: string) => moment(value, this.dateFormat).toDate()}
               onChange={this.onChangeSchedule}
             />
             {start_time}

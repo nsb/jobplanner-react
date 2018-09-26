@@ -3,6 +3,7 @@ import "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
+import "moment/locale/da";
 import Raven from "raven-js";
 import { Router } from "react-router-dom";
 import { updateIntl, Provider } from "react-intl-redux";

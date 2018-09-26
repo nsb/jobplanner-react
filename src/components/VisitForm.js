@@ -97,9 +97,20 @@ type Props = {
 };
 
 class VisitForm extends Component<Props> {
+  dateFormat: string;
   static defaultProps = {
     employees: []
   };
+
+  constructor(props: JobFormProps) {
+    super(props);
+
+    const { anytime } = props;
+
+    this.dateFormat = moment()
+      .creationData()
+      .locale.longDateFormat(anytime ? "L" : "LLL");
+  }
 
   render() {
     const {
@@ -108,11 +119,8 @@ class VisitForm extends Component<Props> {
       dirty,
       submitting,
       initialValues,
-      anytime,
       employees
     } = this.props;
-
-    const dateFormat = anytime ? "M/D/YYYY" : "M/D/YYYY h:mm a";
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -138,18 +146,22 @@ class VisitForm extends Component<Props> {
               name="begins"
               label="Begins"
               component={renderDateTime}
-              dateFormat={dateFormat}
+              dateFormat={this.dateFormat}
               format={(value, name) => moment(value).toDate()}
-              normalize={(value: string) => moment(value, dateFormat).toDate()}
+              normalize={(value: string) =>
+                moment(value, this.dateFormat).toDate()
+              }
               onChange={this.onBeginsChanged}
             />
             <Field
               name="ends"
               label="Ends"
               component={renderDateTime}
-              dateFormat={dateFormat}
+              dateFormat={this.dateFormat}
               format={(value, name) => moment(value).toDate()}
-              normalize={(value: string) => moment(value, dateFormat).toDate()}
+              normalize={(value: string) =>
+                moment(value, this.dateFormat).toDate()
+              }
             />
             <Field
               name="anytime"
@@ -207,15 +219,17 @@ let SelectingFormValuesVisitForm = reduxForm({
 })(VisitForm);
 
 const selector = formValueSelector("visit");
-SelectingFormValuesVisitForm = connect((state): * => {
-  const begins: Date = selector(state, "begins");
-  const ends: Date = selector(state, "ends");
-  const anytime: boolean = selector(state, "anytime");
-  return {
-    begins,
-    ends,
-    anytime
-  };
-})(SelectingFormValuesVisitForm);
+SelectingFormValuesVisitForm = connect(
+  (state): * => {
+    const begins: Date = selector(state, "begins");
+    const ends: Date = selector(state, "ends");
+    const anytime: boolean = selector(state, "anytime");
+    return {
+      begins,
+      ends,
+      anytime
+    };
+  }
+)(SelectingFormValuesVisitForm);
 
 export default SelectingFormValuesVisitForm;
