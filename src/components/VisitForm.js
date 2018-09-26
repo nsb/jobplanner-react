@@ -102,16 +102,6 @@ class VisitForm extends Component<Props> {
     employees: []
   };
 
-  constructor(props: JobFormProps) {
-    super(props);
-
-    const { anytime } = props;
-
-    this.dateFormat = moment()
-      .creationData()
-      .locale.longDateFormat(anytime ? "L" : "LLL");
-  }
-
   render() {
     const {
       handleSubmit,
@@ -119,8 +109,13 @@ class VisitForm extends Component<Props> {
       dirty,
       submitting,
       initialValues,
+      anytime,
       employees
     } = this.props;
+
+    const dateFormat = moment()
+      .creationData()
+      .locale.longDateFormat(anytime ? "L" : "LLL");
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -146,10 +141,10 @@ class VisitForm extends Component<Props> {
               name="begins"
               label="Begins"
               component={renderDateTime}
-              dateFormat={this.dateFormat}
+              dateFormat={dateFormat}
               format={(value, name) => moment(value).toDate()}
               normalize={(value: string) =>
-                moment(value, this.dateFormat).toDate()
+                moment(value, dateFormat).toDate()
               }
               onChange={this.onBeginsChanged}
             />
@@ -157,10 +152,10 @@ class VisitForm extends Component<Props> {
               name="ends"
               label="Ends"
               component={renderDateTime}
-              dateFormat={this.dateFormat}
+              dateFormat={dateFormat}
               format={(value, name) => moment(value).toDate()}
               normalize={(value: string) =>
-                moment(value, this.dateFormat).toDate()
+                moment(value, dateFormat).toDate()
               }
             />
             <Field
