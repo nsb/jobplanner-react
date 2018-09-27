@@ -312,7 +312,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       schedule: {
         freq: rrule.options.freq,
         interval: rrule.options.interval,
-        byweekday: rrule.options.byweekday
+        byweekday: rrule.options.byweekday,
+        bymonthday: rrule.options.bymonthday
       },
       visitsWillBeRegenerated: false
     };

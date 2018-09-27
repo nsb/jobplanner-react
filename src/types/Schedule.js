@@ -3,6 +3,6 @@
 export type Schedule = {
   freq: number,
   interval: number,
-  byweekday?: { weekday: number },
+  byweekday?: Array<number>,
   bymonthday?: Array<number>
 };

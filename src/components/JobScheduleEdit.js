@@ -8,6 +8,15 @@ import NumberInput from "grommet/components/NumberInput";
 import LayerForm from "grommet-templates/components/LayerForm";
 import { RRule } from "rrule";
 import { xor } from "lodash";
+import type { Schedule } from "../types/Schedule";
+
+const byMonthWeekDays = [
+  [1, 2, 3, 4, 5, 6, 7],
+  [8, 9, 10, 11, 12, 13, 14],
+  [15, 16, 17, 18, 19, 20, 21],
+  [22, 23, 24, 25, 26, 27, 28],
+  [29, 30, -1]
+];
 
 const rruleFrequency = [
   { label: "Daily", value: RRule.DAILY },
@@ -26,20 +35,43 @@ const rruleByWeekDay = [
   { label: "Sunday", value: RRule.SU.weekday }
 ];
 
+// [1, 2, 3, 4, 5, 6, 7][8, 9, 10, 11, 12, 13, 14][15, 16, 17, 18, 19, 20, 21][22, 23, 24, 25, 26, 27, 28][29, 30, -1]
+const rruleByMonthDay = [
+  { label: "First", value: 1 },
+  { label: "Second", value: 2 },
+  { label: "Third", value: 3 },
+  { label: "Fourth", value: 4 },
+  { label: "Last", value: 5 }
+];
+
 type Props = {
   onClose: Function,
   onSubmit: Function,
-  schedule: Object
+  schedule: Schedule
 };
 
 type State = {
-  schedule: Object
+  schedule: Schedule,
+  byMonthDaySplashed: Array<number>
 };
 
 class JobScheduleEdit extends Component<Props, State> {
   state = {
-    schedule: Object.assign({}, this.props.schedule)
+    schedule: Object.assign({}, this.props.schedule),
+    byMonthDaySplashed: []
   };
+
+  constructor(props: Props) {
+    super(props);
+
+    byMonthWeekDays.forEach((days, index) => {
+      if (days.every(val => props.schedule.bymonthday.includes(val))) {
+        this.state.byMonthDaySplashed.push(index + 1);
+      }
+    });
+  }
+
+  // componentDidUpdate(prevProps) {}
 
   render() {
     const { onClose } = this.props;
@@ -48,7 +80,10 @@ class JobScheduleEdit extends Component<Props, State> {
       return freq.value === this.state.schedule.freq;
     });
 
-    const { byweekday } = this.state.schedule;
+    const {
+      schedule: { byweekday },
+      byMonthDaySplashed
+    } = this.state;
 
     let schedule = this.state.schedule;
     let scheduleInterval;
@@ -75,7 +110,7 @@ class JobScheduleEdit extends Component<Props, State> {
 
     if (schedule.freq === RRule.WEEKLY) {
       scheduleByWeekday = (
-        <FormField label="Weekdays" htmlFor="freq">
+        <FormField label="Weekdays" htmlFor="byweekday">
           <Box>
             <Select
               id="byweekday"
@@ -93,7 +128,46 @@ class JobScheduleEdit extends Component<Props, State> {
     }
 
     if (schedule.freq === RRule.MONTHLY) {
-      scheduleComponent = <div>monthly</div>;
+      let scheduleByMonthDay = (
+        <FormField label="Week" htmlFor="bymonthday">
+          <Box>
+            <Select
+              id="bymonthday"
+              name="bymonthday"
+              inline={true}
+              multiple={true}
+              value={byMonthDaySplashed}
+              options={rruleByMonthDay}
+              onChange={this.onByMonthDayChange}
+              onSearch={undefined}
+            />
+          </Box>
+        </FormField>
+      );
+
+      let scheduleByWeekDay = (
+        <FormField label="on day" htmlFor="byweekday">
+          <Box>
+            <Select
+              id="byweekday"
+              name="byweekday"
+              inline={true}
+              multiple={true}
+              value={byweekday}
+              options={rruleByWeekDay}
+              onChange={this.onByWeekDayChange}
+              onSearch={undefined}
+            />
+          </Box>
+        </FormField>
+      );
+
+      scheduleComponent = (
+        <div>
+          {scheduleByMonthDay}
+          {scheduleByWeekDay}
+        </div>
+      );
     }
 
     return (
@@ -137,6 +211,19 @@ class JobScheduleEdit extends Component<Props, State> {
       byweekday: xor(this.state.schedule.byweekday, [event.option.value])
     });
     this.setState(schedule);
+  };
+
+  onByMonthDayChange = (event: Object) => {
+    let byMonthDaySplashed = xor(this.state.byMonthDaySplashed, [
+      event.option.value
+    ]);
+    let bymonthday = [].concat(
+      ...byMonthWeekDays.filter((val, index) => {
+        return byMonthDaySplashed.includes(index + 1);
+      })
+    );
+    let schedule = Object.assign(this.state.schedule, { bymonthday });
+    this.setState({ byMonthDaySplashed, schedule });
   };
 
   onIntervalChange = (e: SyntheticEvent<>) => {
