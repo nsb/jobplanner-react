@@ -108,7 +108,7 @@ class JobScheduleEdit extends Component<Props, State> {
     if (schedule.freq === RRule.WEEKLY) {
       scheduleByWeekday = (
         <FormField label="Weekdays" htmlFor="byweekday">
-          <Box>
+          <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="byweekday"
               name="byweekday"
@@ -127,7 +127,7 @@ class JobScheduleEdit extends Component<Props, State> {
     if (schedule.freq === RRule.MONTHLY) {
       let scheduleByMonthDay = (
         <FormField label="Week" htmlFor="bymonthday">
-          <Box>
+          <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="bymonthday"
               name="bymonthday"
@@ -144,7 +144,7 @@ class JobScheduleEdit extends Component<Props, State> {
 
       let scheduleByWeekDay = (
         <FormField label="on day" htmlFor="byweekday">
-          <Box>
+          <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="byweekday"
               name="byweekday"
