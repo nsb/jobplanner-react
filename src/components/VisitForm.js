@@ -59,7 +59,7 @@ const renderSelect = ({
       htmlFor={input.name}
       error={touched ? error : null}
     >
-      <Box>
+      <Box margin={{ vertical: "none", horizontal: "medium" }}>
         <Select
           {...input}
           placeHolder="None"
@@ -180,6 +180,12 @@ class VisitForm extends Component<Props> {
                 return { value: employee.id, label: employee.username };
               })}
               normalize={selected => selected.value}
+            />
+            <Field
+              name="completed"
+              label="Completed"
+              component={renderCheckBox}
+              parse={(value: boolean | string) => !!value}
             />
           </fieldset>
 
