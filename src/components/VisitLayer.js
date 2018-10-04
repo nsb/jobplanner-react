@@ -30,13 +30,14 @@ class VisitLayer extends Component<Props, State> {
         case "delete":
           return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} token={token} />;
         case "edit":
-          return <VisitEdit visit={visit} toggleEdit={this.toggleEdit} />;
+          return <VisitEdit visit={visit} onClose={onClose} toggleEdit={this.toggleEdit} />;
         default:
           return (
             <VisitDetailContainer
               visit={visit}
               onEdit={this.toggleEdit}
               onDelete={this.toggleDelete}
+              onClose={onClose}
             />
           );
       }

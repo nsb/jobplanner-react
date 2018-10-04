@@ -23,7 +23,8 @@ export type Props = {
   lineItems: Array<LineItem>,
   onEdit: Function,
   partialUpdateVisit: Function,
-  onDelete: Function
+  onDelete: Function,
+  onClose: Function
 };
 
 class VisitDetail extends Component<Props> {
@@ -113,9 +114,10 @@ class VisitDetail extends Component<Props> {
   }
 
   toggleCompleted = () => {
-    const { visit, token, partialUpdateVisit } = this.props;
+    const { visit, token, partialUpdateVisit, onClose } = this.props;
     if(token) {
       partialUpdateVisit({ id: visit.id, completed: !visit.completed }, token);
+      onClose();
     }
   };
 }

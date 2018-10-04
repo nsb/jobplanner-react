@@ -18,7 +18,8 @@ export type Props = {
   employees: Array<Employee>,
   assigned: Array<Employee>,
   token: string,
-  toggleEdit: Function
+  toggleEdit: Function,
+  onClose: Function
 };
 
 class VisitEdit extends Component<Props> {
@@ -40,7 +41,7 @@ class VisitEdit extends Component<Props> {
   }
 
   handleSubmit = values => {
-    const { token, dispatch, toggleEdit } = this.props;
+    const { token, dispatch, onClose } = this.props;
     dispatch(
       updateVisit(
         {
@@ -50,7 +51,7 @@ class VisitEdit extends Component<Props> {
         token || ""
       )
     );
-    toggleEdit()
+    onClose()
   };
 }
 

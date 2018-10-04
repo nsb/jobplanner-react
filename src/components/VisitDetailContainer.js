@@ -15,6 +15,7 @@ const mapStateToProps = (
   ownProps: {
     onEdit: Function,
     onDelete: Function,
+    onClose: Function,
     visit: Visit
   }
 ): Props => {
@@ -33,7 +34,8 @@ const mapStateToProps = (
     }),
     onEdit: ownProps.onEdit,
     partialUpdateVisit: partialUpdateVisit,
-    onDelete: ownProps.onDelete
+    onDelete: ownProps.onDelete,
+    onClose: ownProps.onClose
   };
 };
 
