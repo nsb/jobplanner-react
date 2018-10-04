@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
+import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
@@ -53,15 +54,23 @@ const renderSelect = ({
   meta: { touched, error, warning }
 }): Element<*> => {
   return (
-    <Select
-      {...input}
-      placeHolder="None"
-      inline={false}
-      multiple={true}
-      value={input.value}
-      options={options}
-      onChange={input.onChange}
-    />
+    <FormField
+      label={label}
+      htmlFor={input.name}
+      error={touched ? error : null}
+    >
+      <Box>
+        <Select
+          {...input}
+          placeHolder="None"
+          inline={true}
+          multiple={true}
+          value={input.value}
+          options={options}
+          onChange={input.onChange}
+        />
+      </Box>
+    </FormField>
   );
 };
 
@@ -143,9 +152,7 @@ class VisitForm extends Component<Props> {
               component={renderDateTime}
               dateFormat={dateFormat}
               format={(value, name) => moment(value).toDate()}
-              normalize={(value: string) =>
-                moment(value, dateFormat).toDate()
-              }
+              normalize={(value: string) => moment(value, dateFormat).toDate()}
               onChange={this.onBeginsChanged}
             />
             <Field
@@ -154,9 +161,7 @@ class VisitForm extends Component<Props> {
               component={renderDateTime}
               dateFormat={dateFormat}
               format={(value, name) => moment(value).toDate()}
-              normalize={(value: string) =>
-                moment(value, dateFormat).toDate()
-              }
+              normalize={(value: string) => moment(value, dateFormat).toDate()}
             />
             <Field
               name="anytime"
@@ -169,7 +174,7 @@ class VisitForm extends Component<Props> {
           <fieldset>
             <Field
               name="assigned"
-              label="Assigned team members"
+              label="Team"
               component={renderSelect}
               options={employees.map(employee => {
                 return { value: employee.id, label: employee.username };
