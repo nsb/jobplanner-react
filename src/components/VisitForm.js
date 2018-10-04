@@ -63,7 +63,7 @@ const renderSelect = ({
         <Select
           {...input}
           placeHolder="None"
-          inline={true}
+          inline={options.length > 20 ? false : true}
           multiple={true}
           value={input.value}
           options={options}
