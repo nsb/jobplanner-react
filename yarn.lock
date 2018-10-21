@@ -3343,7 +3343,7 @@ grommet-templates@^0.2.0:
   dependencies:
     grommet "^0.6.2"
 
-grommet@1.11.0, grommet@^1.5.0, grommet@^1.9.0:
+grommet@1.11.0, grommet@^1.11.0, grommet@^1.5.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/grommet/-/grommet-1.11.0.tgz#ebc8878d24a3546e214ae6b10487265610db8b6b"
   dependencies:
@@ -5396,11 +5396,11 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
-nielsbusch-grommet-css@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/nielsbusch-grommet-css/-/nielsbusch-grommet-css-1.9.0.tgz#5762d949e05100de07a34187639fe27194f54b2d"
+nielsbusch-grommet-css@^1.11.0-hpe:
+  version "1.11.0-hpe"
+  resolved "https://registry.yarnpkg.com/nielsbusch-grommet-css/-/nielsbusch-grommet-css-1.11.0-hpe.tgz#3c181847d715de254113efd7baf5a33ab3cb02e2"
   dependencies:
-    grommet "^1.9.0"
+    grommet "^1.11.0"
 
 no-case@^2.2.0:
   version "2.3.2"
