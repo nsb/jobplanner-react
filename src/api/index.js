@@ -113,7 +113,7 @@ class Api {
 
   static delete(resource: string, item: { id: number }, token: string) {
     const request = new Request(
-      `${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}`,
+      `${API_ENDPOINT}/${API_VERSION}/${resource}/${item.id}/`,
       {
         method: "DELETE",
         headers: new Headers({
