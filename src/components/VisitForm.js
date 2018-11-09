@@ -184,7 +184,7 @@ class VisitForm extends Component<Props> {
               label="Team"
               component={renderSelect}
               options={employees.map(employee => {
-                return { value: employee.id, label: employee.username };
+                return { value: employee.id, label: `${employee.first_name} ${employee.last_name}` || employee.username };
               })}
               normalize={selected => selected.value}
             />
