@@ -109,7 +109,7 @@ class VisitDetail extends Component<Props> {
             </Box>
             <Box colorIndex="light-2" pad={{ horizontal: "medium", vertical: "small" }}>
               <Heading tag="h4" strong={true}>
-                <Box direction="row">Job #{visit.job}</Box>
+                    path={`/${visit.business}/jobs/${visit.job}`}>
               </Heading>
               {job && job.description}
             </Box>
