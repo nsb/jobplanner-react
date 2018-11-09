@@ -26,9 +26,10 @@ type Props = {
 class NavSidebar extends Component<Props> {
   render() {
     const { business, intl, user, logout } = this.props;
+    const colorIndex = "brand";
 
     return (
-      <Sidebar colorIndex="neutral-1" fixed={true}>
+      <Sidebar colorIndex={colorIndex} fixed={true}>
         <Header size="large" justify="between" pad={{ horizontal: "medium" }}>
           <Title a11yTitle="Close Menu">
             <img
@@ -83,7 +84,7 @@ class NavSidebar extends Component<Props> {
           <SessionMenu
             user={user}
             dropAlign={{ bottom: "bottom" }}
-            colorIndex="neutral-1-a"
+            colorIndex={colorIndex}
             logout={logout}
           />
         </Footer>
