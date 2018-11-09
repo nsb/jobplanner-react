@@ -15,6 +15,18 @@ type Props = {
 class JobListItem extends Component<Props> {
   render() {
     const { job, index, onClick } = this.props;
+
+    let jobDescription;
+    if (job.description) {
+      if (job.description.length > 17) {
+        jobDescription = `Job #${job.id} - ${job.description.substr(0, 17)}…`
+      } else {
+        jobDescription = `Job #${job.id} - ${job.description}`
+      }
+    } else {
+      jobDescription = `Job #${job.id}`;
+    }
+
     return (
       <ListItem
         direction="row"
@@ -31,7 +43,7 @@ class JobListItem extends Component<Props> {
             value={job.closed ? "disabled" : "ok"}
             a11yTitle={job.closed ? "Closed" : "Open"}
           />{" "}
-          Job #{job.id}
+          {jobDescription}
         </span>
         <span>
           <Timestamp value={job.begins} fields="date" /> -{" "}
