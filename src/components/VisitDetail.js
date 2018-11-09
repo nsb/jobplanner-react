@@ -33,18 +33,22 @@ class VisitDetail extends Component<Props> {
 
     return (
       <Box>
-        <Header size="large" justify="between" pad="none">
-          <Heading tag="h2" margin="none" strong={true}>
+        <Header justify="between" pad="none">
+          <Heading tag="h4" margin="none" strong={true}>
             Visit
           </Heading>
         </Header>
 
-        <Section pad="small">
+        <Section pad="medium">
           <Columns masonry={false} maxCount={2}>
             <Box>
-              <Heading tag="h4" margin="none">
+              <Heading tag="h2" strong={true}>
                 {visit.client_name}
               </Heading>
+            </Box>
+            <Box>
+              {visit.client_name}
+              <br />
               {property.address1}
               <br />
               {property.address2}
