@@ -15,7 +15,7 @@ import type { Client } from "../actions/clients";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token: string,
+  token: ?string,
   business: Business,
   clients: Array<Client>,
   dispatch: Dispatch,
@@ -68,17 +68,19 @@ class JobsAdd extends Component<Props, State> {
     const { client: { value: clientId } } = values;
     const { token, business } = this.props;
 
-    let action = createJob(
-      business,
-      {
-        ...values,
-        client: clientId,
-        assigned: values.assigned && values.assigned.map(v => v.value),
-        invoice_reminder: values.invoice_reminder.value
-      },
-      token
-    );
-    this.props.dispatch(action);
+    if(token) {
+      let action = createJob(
+        business,
+        {
+          ...values,
+          client: clientId,
+          assigned: values.assigned && values.assigned.map(v => v.value),
+          invoice_reminder: values.invoice_reminder.value
+        },
+        token
+      );
+      this.props.dispatch(action);
+    }
   };
 
   onClose = () => {
@@ -123,7 +125,7 @@ const mapStateToProps = (
       }),
     client: client
       ? { value: client.id, label: `${client.first_name} ${client.last_name}` }
-      : null
+      : undefined
   };
 };
 
