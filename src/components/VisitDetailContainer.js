@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import VisitDetail from "./VisitDetail";
 import { partialUpdateVisit } from "../actions/visits";
 import type { Visit } from "../actions/visits";
+import type { Job } from "../actions/jobs";
 import type { Props } from "./VisitDetail";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
@@ -16,7 +17,8 @@ const mapStateToProps = (
     onEdit: Function,
     onDelete: Function,
     onClose: Function,
-    visit: Visit
+    visit: Visit,
+    job: ?Job
   }
 ): Props => {
   const { auth, entities, visits } = state;
@@ -25,6 +27,7 @@ const mapStateToProps = (
     token: auth.token,
     isFetching: visits.isFetching,
     visit: ownProps.visit,
+    job: ownProps.job,
     property: ensureState(entities).properties[ownProps.visit.property],
     assigned: ownProps.visit.assigned.map((Id: number) => {
       return ensureState(entities).employees[Id];

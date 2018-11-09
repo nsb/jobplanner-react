@@ -128,11 +128,18 @@ class VisitForm extends Component<Props> {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Header size="large" justify="between" pad="none">
-          <Heading tag="h2" margin="none" strong={true}>
+
+        <Header justify="between" pad="none">
+          <Heading tag="h4" margin="none" strong={true}>
             {initialValues && initialValues.id ? "Edit visit" : "Add visit"}
           </Heading>
         </Header>
+
+        <Box pad={{ horizontal: "none", vertical: "none" }}>
+          <Heading tag="h2" strong={true}>
+            {initialValues && initialValues.client_name}
+          </Heading>
+        </Box>
 
         <FormFields>
           <fieldset>

@@ -13,11 +13,13 @@ import ScheduleIcon from "grommet/components/icons/base/Schedule";
 import ActionsIcon from "grommet/components/icons/base/Actions";
 import DirectionsIcon from "grommet/components/icons/base/Directions";
 import type { Visit } from "../actions/visits";
+import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
 import type { LineItem } from "../actions/lineitems";
 
 export type Props = {
   visit: Visit,
+  job: ?Job,
   token: ?string,
   property: Property,
   assigned: Array<Object>,
@@ -30,7 +32,7 @@ export type Props = {
 
 class VisitDetail extends Component<Props> {
   render() {
-    const { visit, property, assigned, lineItems, onEdit, onDelete } = this.props;
+    const { visit, job, property, assigned, lineItems, onEdit, onDelete } = this.props;
 
     let schedule;
     schedule = (
@@ -105,13 +107,13 @@ class VisitDetail extends Component<Props> {
                 </Anchor>
               </Menu>
             </Box>
-            <Box colorIndex="light-2" pad={{ horizontal: "small", vertical: "small" }}>
+            <Box colorIndex="light-2" pad={{ horizontal: "medium", vertical: "small" }}>
               <Heading tag="h4" strong={true}>
-                <Box direction="row">Job</Box>
+                <Box direction="row">Job #{visit.job}</Box>
               </Heading>
-              Job #{visit.job}
+              {job && job.description}
             </Box>
-            <Box colorIndex="light-2" pad={{ horizontal: "small", vertical: "small" }}>
+            <Box colorIndex="light-2" pad={{ horizontal: "medium", vertical: "small" }}>
               <Heading tag="h4" strong={true}>
                 <Box direction="row">Team</Box>
               </Heading>

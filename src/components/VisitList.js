@@ -36,6 +36,7 @@ class VisitList extends Component<Props, State> {
     if (this.state.selected) {
       visitLayer = (
         <VisitLayerContainer
+          job={job}
           visit={this.state.selected}
           onClose={this.onClose}
         />

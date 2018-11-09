@@ -6,10 +6,12 @@ import VisitDetailContainer from "./VisitDetailContainer";
 import VisitEdit from "./VisitEdit";
 import VisitRemove from "./VisitRemove";
 import type { Visit } from "../actions/visits";
+import type { Job } from "../actions/jobs";
 
 export type Props = {
   token: ?string,
   visit: Visit,
+  job: ?Job,
   onClose: Function
 };
 
@@ -23,7 +25,7 @@ class VisitLayer extends Component<Props, State> {
   };
 
   render() {
-    const { visit, onClose, token } = this.props;
+    const { visit, job, onClose, token } = this.props;
 
     const visitView = (view => {
       switch (view) {
@@ -35,6 +37,7 @@ class VisitLayer extends Component<Props, State> {
           return (
             <VisitDetailContainer
               visit={visit}
+              job={job}
               onEdit={this.toggleEdit}
               onDelete={this.toggleDelete}
               onClose={onClose}
