@@ -108,12 +108,21 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       />
     );
 
+    let jobDescription;
+    if (job && job.description) {
+      jobDescription = (
+        <Box pad={{ horizontal: "none", vertical: "small" }}>
+          {job.description}
+        </Box>
+      );
+    }
+
     let propertyAddress;
     if (property) {
       propertyAddress = (
         <Box pad={{ horizontal: "none", vertical: "small" }}>
           <Heading tag="h4" margin="none">
-            Property address
+            Address
           </Heading>
           <div>{property.address1}</div>
           {property.address2}
@@ -126,7 +135,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       clientDetails = (
         <Box pad={{ horizontal: "none", vertical: "small" }}>
           <Heading tag="h4" margin="none">
-            Contact details
+            Contact
           </Heading>
           <div>{client.phone}</div>
           {client.email}
@@ -188,7 +197,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                     a11yTitle="Return"
                   />
 
-                  <Heading tag="h3" margin="none">
+                  <Heading tag="h4" margin="none">
                     <Status
                       value={job.closed ? "disabled" : "ok"}
                       a11yTitle={job.closed ? "Closed" : "Open"}
@@ -201,13 +210,16 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
               <Article pad="none" align="start" primary={true}>
                 <Box full="horizontal">
                   <Section pad="medium" full="horizontal">
-                    {`${job.client_firstname} ${job.client_lastname}`}
-                    <Columns masonry={false} maxCount={2}>
+                    <Heading tag="h3" margin="none">
+                      <strong>{`${job.client_firstname} ${job.client_lastname}`}</strong>
+                    </Heading>
+                    {jobDescription} 
+                    <Columns masonry={false} maxCount={2}>                      
                       {propertyAddress}
                       {clientDetails}
                       <Box pad={{ horizontal: "none", vertical: "small" }}>
                         <Heading tag="h4" margin="none">
-                          Job details
+                          Details
                         </Heading>
                         {`Job #${job.id}`}
                         <br />
