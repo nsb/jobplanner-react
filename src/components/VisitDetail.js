@@ -109,7 +109,12 @@ class VisitDetail extends Component<Props> {
             </Box>
             <Box colorIndex="light-2" pad={{ horizontal: "medium", vertical: "small" }}>
               <Heading tag="h4" strong={true}>
+                <Box direction="row">
+                  <Anchor
                     path={`/${visit.business}/jobs/${visit.job}`}>
+                    Job #{visit.job}
+                  </Anchor>
+                </Box>
               </Heading>
               {job && job.description}
             </Box>
@@ -117,7 +122,7 @@ class VisitDetail extends Component<Props> {
               <Heading tag="h4" strong={true}>
                 <Box direction="row">Team</Box>
               </Heading>
-              {assigned ? (
+              {assigned.length ? (
                 assigned.map(employee => {
                   return <div>{employee.username}</div>;
                 })
