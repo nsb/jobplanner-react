@@ -8,6 +8,7 @@ import Split from "grommet/components/Split";
 import Sidebar from "grommet/components/Sidebar";
 import Footer from "grommet/components/Footer";
 import logo from "../logo.svg";
+import Auth from "../auth/Auth";
 import { login } from "../actions/auth";
 import type { Credentials } from "../actions/auth";
 import type { Dispatch } from "../types/Store";
@@ -16,10 +17,22 @@ import type { State } from "../types/State";
 type Props = {
   loginBusy: boolean,
   isAuthenticated: boolean,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  auth: typeof Auth
 };
 
 class Login extends Component<Props> {
+  auth: typeof Auth
+
+  constructor(props: Props) {
+    super();
+    const { isAuthenticated, auth } = props;
+
+    if(!isAuthenticated) {
+      auth.login()
+    }
+  }
+
   onSubmit = (credentials: Credentials) => {
     this.props.dispatch(login(credentials));
   };
@@ -42,6 +55,7 @@ class Login extends Component<Props> {
             onSubmit={this.props.loginBusy ? undefined : this.onSubmit}
             usernameType="text"
           />
+          
           <Footer
             direction="row"
             size="small"
@@ -57,14 +71,15 @@ class Login extends Component<Props> {
 
 const mapStateToProps = (
   state: State,
-  { dispatch }: { dispatch: Dispatch }
+  ownProps: { dispatch: Dispatch, auth: typeof Auth }
 ): Props => {
   const { auth } = state;
 
   return {
     loginBusy: auth.busy,
     isAuthenticated: auth.isAuthenticated,
-    dispatch: dispatch
+    dispatch: ownProps.dispatch,
+    auth: ownProps.auth
   };
 };
 

@@ -35,10 +35,21 @@ export type Credentials = {
   rememberMe: boolean
 };
 
+export type SocialAuthCode = {
+  provider: string,
+  code: string
+}
+
 type AuthResponse = {
   token: string,
   user: User
 };
+
+type SocialAuthResponse = {
+  username: string,
+  email: string,
+  token: string
+}
 
 type RequestLoginAction = {
   type: typeof REQUEST_LOGIN,
@@ -193,6 +204,58 @@ export const login = (credentials: Credentials): ThunkAction => {
         }
       })
       .catch((error: string) => dispatch(receiveLoginError(error)));
+  };
+};
+
+// login social
+
+export const receiveLoginSocial = (json: SocialAuthResponse): RequestLoginSuccessAction => {
+  return {
+    type: REQUEST_LOGIN_SUCCESS,
+    token: json.token,
+    receivedAt: Date.now()
+  };
+};
+
+export const receiveLoginSocialError = (error: string): RequestLoginFailureAction => {
+  return {
+    type: REQUEST_LOGIN_FAILURE,
+    error: "Oops"
+  };
+};
+
+export const loginSocial = (socialAuthCode: SocialAuthCode): ThunkAction => {
+  const { provider, code } = socialAuthCode;
+
+  return (dispatch: Dispatch) => {
+
+    // dispatch(requestLogin(username, password, rememberMe));
+
+    return fetch(`${API_ENDPOINT}/login/social/jwt_user/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        provider,
+        code
+      })
+    })
+      .then(response => response.json())
+      .then((json: SocialAuthResponse) => {
+        if (json.token) {
+          localStorage.setItem("token", json.token);
+          dispatch(receiveLoginSocial(json));
+          Raven.setUserContext({
+            email: json.email,
+            // id: json.user.id.toString(10)
+          });
+          // dispatch(push('/'));
+        } else {
+          dispatch(receiveLoginSocialError("error"));
+        }
+      })
+      .catch((error: string) => dispatch(receiveLoginSocialError(error)));
   };
 };
 

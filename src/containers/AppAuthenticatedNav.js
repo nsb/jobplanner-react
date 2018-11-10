@@ -5,10 +5,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import Loadable from "react-loadable";
-import Article from "grommet/components/Article";
-import Section from "grommet/components/Section";
 import Split from "grommet/components/Split";
-import Spinning from "grommet/components/icons/Spinning";
+import Loading from "../components/Loading";
 import NavSidebar from "../components/NavSidebar";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
@@ -34,14 +32,6 @@ type Props = {
   navResponsive: (Responsive) => ThunkAction,
   navToggle: () => ThunkAction
 };
-
-const Loading = () => (
-  <Article scrollStep={true} controls={true}>
-    <Section full={true} pad="large" justify="center" align="center">
-      <Spinning size="large" />
-    </Section>
-  </Article>
-);
 
 const Jobs = Loadable({
   loader: () => import("../components/Jobs"),
