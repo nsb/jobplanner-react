@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Field } from "redux-form";
 import Section from "grommet/components/Section";
+import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
+import Button from "grommet/components/Button";
+import CloseIcon from "grommet/components/icons/base/Close";
 import RenderTextField from "./LineItemTextInput";
 import type { Service } from "../actions/services";
 
@@ -72,51 +75,54 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
 
     return (
       <Section>
-        <div>
+          {fields.map((lineItem, index) => (
+            <Box margin={{bottom: "medium"}}>
+              <div key={index}>
+                Line item #{index + 1}
+                <Button icon={<CloseIcon />}
+                  onClick={() => fields.remove(index)}
+                  href='#'
+                  primary={false}
+                  accent={false}
+                  plain={true} />
+                <Field
+                  name={`${lineItem}.id`}
+                  type="hidden"
+                  component={renderField}
+                />
+                <Field
+                  name={`${lineItem}.name`}
+                  component={RenderTextField}
+                  label="Name"
+                  onDomChange={e => this.onNameChange(e, index)}
+                  onSelect={e => this.onNameSelect(e, index)}
+                  suggestions={this.state.suggestions}
+                />
+                <Field
+                  name={`${lineItem}.description`}
+                  type="text"
+                  component={renderField}
+                  label="Description"
+                />
+                <Field
+                  name={`${lineItem}.quantity`}
+                  component={renderNumberField}
+                  label="Quantity"
+                />
+                <Field
+                  name={`${lineItem}.unit_cost`}
+                  component={renderNumberField}
+                  label="Unit cost"
+                />
+              </div>
+            </Box>
+          ))}
+        <Box>
           <button type="button" onClick={() => fields.push({})}>
             Add Line item
           </button>
           {submitFailed && error && <span>{error}</span>}
-        </div>
-        {fields.map((lineItem, index) => (
-          <div key={index}>
-            <button
-              type="button"
-              title="Remove line item"
-              onClick={() => fields.remove(index)}
-            />
-            <h4>Line item #{index + 1}</h4>
-            <Field
-              name={`${lineItem}.id`}
-              type="hidden"
-              component={renderField}
-            />
-            <Field
-              name={`${lineItem}.name`}
-              component={RenderTextField}
-              label="Name"
-              onDomChange={e => this.onNameChange(e, index)}
-              onSelect={e => this.onNameSelect(e, index)}
-              suggestions={this.state.suggestions}
-            />
-            <Field
-              name={`${lineItem}.description`}
-              type="text"
-              component={renderField}
-              label="Description"
-            />
-            <Field
-              name={`${lineItem}.quantity`}
-              component={renderNumberField}
-              label="Quantity"
-            />
-            <Field
-              name={`${lineItem}.unit_cost`}
-              component={renderNumberField}
-              label="Unit cost"
-            />
-          </div>
-        ))}
+        </Box>
       </Section>
     );
   }
