@@ -122,7 +122,7 @@ export const ClientForm = (props: Props) => {
     <Form onSubmit={handleSubmit}>
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
-          {initialValues ? "Edit client" : "Add Client"}
+          {initialValues && initialValues.id ? "Edit client" : "Add Client"}
         </Heading>
         <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
       </Header>
