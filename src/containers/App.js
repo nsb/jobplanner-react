@@ -23,10 +23,10 @@ class App extends Component<*> {
     super();
 
     this.googleAuth = new Auth({
-      domain: 'https://accounts.google.com/o/oauth2/v2/auth',
-      clientID: '476296280704-5rfktkjslcfgj72726baam4bedutneem.apps.googleusercontent.com',
+      domain: process.env.REACT_APP_GOOGLE_AUTH_DOMAIN || 'https://accounts.google.com/o/oauth2/v2/auth',
+      clientID: process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID || '476296280704-5rfktkjslcfgj72726baam4bedutneem.apps.googleusercontent.com',
       scope: 'email',
-      redirectUri: 'http://localhost:3000/callback'
+      redirectUri: process.env.REACT_APP_AUTH_CALLBACK || 'http://localhost:3000/callback'
     });
   }
 
