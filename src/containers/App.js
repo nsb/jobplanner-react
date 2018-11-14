@@ -3,9 +3,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, Switch, Route } from "react-router-dom";
 import AppGrommet from "grommet/components/App";
+import Auth from "../auth/Auth";
 import AppAuthenticated from "../containers/AppAuthenticated";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
+import GoogleCallback from "../auth/GoogleCallback";
 import type { State } from "../types/State";
 
 import "./App.css";
@@ -15,12 +17,26 @@ type Props = {
 }
 
 class App extends Component<*> {
+  googleAuth: typeof Auth
+
+  constructor (props: Props) {
+    super();
+
+    this.googleAuth = new Auth({
+      domain: process.env.REACT_APP_GOOGLE_AUTH_DOMAIN || 'https://accounts.google.com/o/oauth2/v2/auth',
+      clientID: process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID || '476296280704-5rfktkjslcfgj72726baam4bedutneem.apps.googleusercontent.com',
+      scope: 'email',
+      redirectUri: process.env.REACT_APP_AUTH_CALLBACK || 'http://localhost:3000/callback'
+    });
+  }
+
   render() {
     return (
       <AppGrommet centered={false}>
         <Switch>
-          <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
+          <Route exact path="/login" render={(props) => <Login googleAuth={this.googleAuth} {...props} /> } />
+          <Route exact path="/callback" component={GoogleCallback} />
           <Route component={AppAuthenticated} />
         </Switch>
       </AppGrommet>
