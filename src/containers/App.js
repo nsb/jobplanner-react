@@ -35,7 +35,7 @@ class App extends Component<*> {
       <AppGrommet centered={false}>
         <Switch>
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/login" render={(props) => <Login auth={this.googleAuth} {...props} /> } />
+          <Route exact path="/login" render={(props) => <Login googleAuth={this.googleAuth} {...props} /> } />
           <Route exact path="/callback" component={GoogleCallback} />
           <Route component={AppAuthenticated} />
         </Switch>
