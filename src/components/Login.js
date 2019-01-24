@@ -64,7 +64,7 @@ class Login extends Component<Props> {
               size="small"
               pad={{ horizontal: "medium", vertical: "small", between: "small" }}
             >
-              <span className="secondary">© 2018 jobPlanner</span>
+              <span className="secondary">© 2019 myJobPlanner</span>
             </Footer>
           </Sidebar>
         </Split>
