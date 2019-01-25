@@ -244,12 +244,14 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                               vertical: "small",
                               between: "medium"
                             }}
-                            responsive={false}
+                            responsive={true}
                             onClick={undefined}
                             selected={false}
                             key={line_item.id}
                           >
-                            {line_item.name}
+                            <span>{line_item.name}</span>
+                            <span>{line_item.quantity}</span>
+                            <span>{line_item.unit_cost}</span>
                           </ListItem>
                         ))}
                       </List>
