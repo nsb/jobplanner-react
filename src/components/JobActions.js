@@ -12,7 +12,12 @@ import TaskIcon from "grommet/components/icons/base/Task";
 import RevertIcon from "grommet/components/icons/base/Revert";
 import EditIcon from "grommet/components/icons/base/Edit";
 import TrashIcon from "grommet/components/icons/base/Trash";
+import JobClose from "./JobClose";
 import type { Job } from "../actions/jobs";
+
+const LAYERS = {
+  close: JobClose
+};
 
 type Props = {
   job: Job,
@@ -22,7 +27,26 @@ type Props = {
   onRemove: Function
 };
 
-class JobActions extends Component<Props> {
+type State = {
+  layerName: ?string
+};
+
+class JobActions extends Component<Props, State> {
+  state = {
+    layerName: undefined
+  }
+
+  _onLayerOpen = (layerName: string) => {
+    this.setState({ layerName });
+  };
+
+  _onLayerClose = () => {
+    this.setState({ layerName: undefined });
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  };
+
   render() {
     const { onClose, onEdit, onToggleCloseJob, onRemove, job } = this.props;
 
@@ -36,6 +60,12 @@ class JobActions extends Component<Props> {
           a11yTitle={`Close job name`}
         />
       );
+    }
+
+    let layer;
+    if (this.state.layerName) {
+      let Component = LAYERS[this.state.layerName];
+      layer = <Component job={job} onClose={this._onLayerClose} />;
     }
 
     let editButton;
@@ -66,7 +96,7 @@ class JobActions extends Component<Props> {
           plain={true}
           icon={<TaskIcon />}
           label="Close job"
-          onClick={onToggleCloseJob}
+          onClick={() => this._onLayerOpen("close")}
           a11yTitle={`Close Job`}
         />;
 
@@ -101,6 +131,7 @@ class JobActions extends Component<Props> {
             {removeButton}
           </Menu>
         </Box>
+        {layer}
       </Sidebar>
     );
   }
