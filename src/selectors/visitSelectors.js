@@ -41,9 +41,9 @@ export const getVisitsByJob: Function = createSelector(
   [getVisits, getJob],
   (visits: Array<Visit>, job: Job): Array<Visit> => {
     return visits
-      .filter(visit => visit.job === job.id && !visit.completed)
+      .filter(visit => visit.job === job.id && (job.closed ? visit.completed : !visit.completed))
       .sort((a, b) => {
-        return new Date(a.begins) - new Date(b.begins);
+        return job.closed ? b.begins - a.begins : a.begins - b.begins;
       });
   }
 );

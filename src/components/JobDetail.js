@@ -75,7 +75,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       fetchClient(token, job.client);
     }
 
-    if (!prevProps.job.closed && job.closed) {
+    if (prevProps.job.closed !== job.closed) {
+      // if job status has changed we should reload visits
       resetVisits();
     }
   }

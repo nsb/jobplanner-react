@@ -20,7 +20,7 @@ class VisitListItem extends Component<Props> {
     const { visit, assigned, index, onClick, job } = this.props;
 
     let clientName = job ? undefined : (<span>{visit.client_name}</span>);
-    let details = (<span>{visit.details}</span>);
+    let details = visit.completed ? (<span>Completed</span>) : (<span>{visit.details}</span>);
 
     return (
       <ListItem
