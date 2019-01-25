@@ -45,6 +45,7 @@ export type Props = {
   partialUpdateJob: Function,
   deleteJob: Function,
   fetchClient: Function,
+  resetVisits: Function,
   responsive: Responsive
 };
 
@@ -69,9 +70,13 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { job, client, token, fetchClient } = this.props;
+    const { job, client, token, fetchClient, resetVisits } = this.props;
     if (!prevProps.job && job && !client && token) {
       fetchClient(token, job.client);
+    }
+
+    if (!prevProps.job.closed && job.closed) {
+      resetVisits();
     }
   }
 

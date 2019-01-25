@@ -20,7 +20,8 @@ const mapStateToProps = (
     fetchJob: (string, number) => ThunkAction,
     partialUpdateJob: (number, string) => ThunkAction,
     deleteJob: (Job, string) => ThunkAction,
-    fetchClient: (string, number) => ThunkAction
+    fetchClient: (string, number) => ThunkAction,
+    resetVisits: () => ThunkAction
   }
 ): Props => {
   const { auth, entities, jobs, clients, nav } = state;
@@ -43,14 +44,16 @@ const mapStateToProps = (
     deleteJob: ownProps.deleteJob,
     fetchClient: ownProps.fetchClient,
     responsive: nav.responsive,
+    resetVisits: ownProps.resetVisits,
     job,
-    jobId
+    jobId,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
+      resetVisits: () => dispatch({ type: "RESET_VISITS" }),
       fetchJob,
       partialUpdateJob,
       deleteJob,
