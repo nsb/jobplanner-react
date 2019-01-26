@@ -274,6 +274,15 @@ const renderClient = ({
     />
   );
 
+const rruleToSchedule = (rrule): Schedule => {
+  return {
+    freq: rrule.options.freq,
+    interval: rrule.options.interval,
+    byweekday: rrule.options.byweekday,
+    bymonthday: rrule.options.bymonthday
+  }
+}
+
 type JobFormProps = {
   handleSubmit?: Function,
   valid: boolean,
@@ -331,12 +340,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       clientsSearchText: "",
       clients: [],
       scheduleLayer: false,
-      schedule: {
-        freq: rrule.options.freq,
-        interval: rrule.options.interval,
-        byweekday: rrule.options.byweekday,
-        bymonthday: rrule.options.bymonthday
-      },
+      schedule: rruleToSchedule(rrule),
       visitsWillBeRegenerated: false
     };
   }
@@ -511,7 +515,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
     )
 
     const schedule = initialValues.id ? initialValues.recurrences ? recurringSchedule : oneoffSchedule : (
-      <Tabs>
+      <Tabs onActive={(tabIndex: number) => { tabIndex ? this.onRecurringTab() : this.onOneoffTab() }}>
         <Tab title='One-Off job'>
           {oneoffSchedule}
         </Tab>
@@ -676,6 +680,32 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       schedule
     });
   };
+
+  onRecurringTab = () => {
+    const { dispatch, change } = this.props;
+
+    const rrule = new RRule({
+      freq: RRule.WEEKLY,
+      interval: 1,
+      byweekday: RRule.MO
+    });
+    this.onScheduleSubmit(rruleToSchedule(rrule))
+    dispatch(change("invoice_reminder", {
+      value: "monthly",
+      label: invoicingReminderMap["monthly"]
+    }))
+  }
+
+  onOneoffTab = () => {
+    const { dispatch, change } = this.props;
+
+    dispatch(change("recurrences", ''));
+    dispatch(change("invoice_reminder", {
+      value: "closed",
+      label: oneoffInvoicingReminderMap["closed"]
+    }))
+  }
+
 }
 
 let SelectingFormValuesJobForm = reduxForm({
