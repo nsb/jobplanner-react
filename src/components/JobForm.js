@@ -15,6 +15,8 @@ import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
+import Tabs from 'grommet/components/Tabs';
+import Tab from 'grommet/components/Tab';
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
@@ -40,6 +42,18 @@ export const invoicingReminderOptions: Array<Object> = Object.entries(
 ).map(([key, value]) => {
   return { label: value, value: key };
 });
+
+export const oneoffInvoicingReminderMap: { [key: string]: string } = {
+  never: "As needed - we won't prompt you",
+  closed: "When the job is closed"
+};
+
+export const oneoffInvoicingReminderOptions: Array<Object> = Object.entries(
+  oneoffInvoicingReminderMap
+).map(([key, value]) => {
+  return { label: value, value: key };
+});
+
 
 const validate = (values: {
   client: Object,
@@ -88,10 +102,10 @@ const renderField = ({
   type,
   meta: { touched, error, warning }
 }): Element<*> => (
-  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <input {...input} type={type} />
-  </FormField>
-);
+    <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+      <input {...input} type={type} />
+    </FormField>
+  );
 
 const renderSelect = ({
   input,
@@ -118,10 +132,10 @@ const renderCheckBox = ({
   label,
   meta: { touched, error, warning }
 }): Element<*> => (
-  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <CheckBox {...input} checked={!!input.value} />
-  </FormField>
-);
+    <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+      <CheckBox {...input} checked={!!input.value} />
+    </FormField>
+  );
 
 const renderDateTime = ({
   input,
@@ -148,7 +162,11 @@ type ScheduleProps = {
 class ScheduleInput extends Component<ScheduleProps> {
   render() {
     const { value, onClick } = this.props;
-    let rule = value ? rrulestr(value) : new RRule({ freq: RRule.WEEKLY });
+    let rule = value ? rrulestr(value) : new RRule({
+      freq: RRule.WEEKLY,
+      interval: 1,
+      byweekday: RRule.MO
+    });
     return (
       <div>
         <Anchor
@@ -208,24 +226,24 @@ class ClientInput extends Component<ClientInputProps> {
           {value.label}
         </Anchor>
       ) : (
-        <div>
-          <Heading tag="h3">Client</Heading>
-          {value.label}
-        </div>
-      )
+          <div>
+            <Heading tag="h3">Client</Heading>
+            {value.label}
+          </div>
+        )
     ) : (
-      <FormField label={label}>
-        <Select
-          placeHolder="None"
-          onSearch={onClientSearch}
-          inline={true}
-          multiple={false}
-          options={clients}
-          value="first"
-          onChange={onSelectClient}
-        />
-      </FormField>
-    );
+        <FormField label={label}>
+          <Select
+            placeHolder="None"
+            onSearch={onClientSearch}
+            inline={true}
+            multiple={false}
+            options={clients}
+            value="first"
+            onChange={onSelectClient}
+          />
+        </FormField>
+      );
   }
 }
 
@@ -246,15 +264,15 @@ const renderClient = ({
   clients: Array<Client>,
   meta: { touched: boolean, error: string, warning: string }
 }): Element<*> => (
-  <ClientInput
-    {...input}
-    label={label}
-    onClick={onClick}
-    onClientSearch={onClientSearch}
-    onSelectClient={onSelectClient}
-    clients={clients}
-  />
-);
+    <ClientInput
+      {...input}
+      label={label}
+      onClick={onClick}
+      onClientSearch={onClientSearch}
+      onSelectClient={onSelectClient}
+      clients={clients}
+    />
+  );
 
 type JobFormProps = {
   handleSubmit?: Function,
@@ -303,7 +321,11 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       : null;
     let rrule = recurrences
       ? rrulestr(recurrences)
-      : new RRule({ freq: RRule.WEEKLY });
+      : new RRule({
+          freq: RRule.WEEKLY,
+          interval: 1,
+          byweekday: RRule.MO
+        });
 
     this.state = {
       clientsSearchText: "",
@@ -394,14 +416,119 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       );
     }
 
+    const recurringSchedule = (
+      <div>
+        <fieldset>
+          <Heading tag="h3">Schedule</Heading>
+          <Field
+            name="begins"
+            label="Begins"
+            component={renderDateTime}
+            dateFormat={this.dateFormat}
+            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            onChange={this.onChangeSchedule}
+          />
+          <Field
+            name="ends"
+            label="Ends"
+            component={renderDateTime}
+            dateFormat={this.dateFormat}
+            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            onChange={this.onChangeSchedule}
+          />
+          {start_time}
+          {finish_time}
+          <Field
+            name="anytime"
+            label="Anytime"
+            component={renderCheckBox}
+            parse={(value: boolean | string) => !!value}
+            onChange={this.onChangeSchedule}
+          />
+        </fieldset>
+
+        {this.renderSchedules()}
+
+        {scheduleNotification}
+
+        <fieldset>
+          <Heading tag="h3">Invoicing</Heading>
+          <Field
+            name="invoice_reminder"
+            label="When do you want to invoice?"
+            component={renderSelect}
+            options={invoicingReminderOptions}
+            multiple={false}
+            normalize={selected => selected.value}
+          />
+        </fieldset>
+      </div>
+    )
+
+    const oneoffSchedule = (
+      <div>
+        <fieldset>
+          <Heading tag="h3">Schedule</Heading>
+          <Field
+            name="begins"
+            label="Begins"
+            component={renderDateTime}
+            dateFormat={this.dateFormat}
+            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            onChange={this.onChangeSchedule}
+          />
+          <Field
+            name="ends"
+            label="Ends"
+            component={renderDateTime}
+            dateFormat={this.dateFormat}
+            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            onChange={this.onChangeSchedule}
+          />
+          {start_time}
+          {finish_time}
+          <Field
+            name="anytime"
+            label="Anytime"
+            component={renderCheckBox}
+            parse={(value: boolean | string) => !!value}
+            onChange={this.onChangeSchedule}
+          />
+        </fieldset>
+
+        <fieldset>
+          <Heading tag="h3">Invoicing</Heading>
+          <Field
+            name="invoice_reminder"
+            label="When do you want to invoice?"
+            component={renderSelect}
+            options={oneoffInvoicingReminderOptions}
+            multiple={false}
+            normalize={selected => selected.value}
+          />
+        </fieldset>
+      </div>
+    )
+
+    const schedule = initialValues.id ? initialValues.recurrences ? recurringSchedule : oneoffSchedule : (
+      <Tabs>
+        <Tab title='One-Off job'>
+          {oneoffSchedule}
+        </Tab>
+        <Tab title='Recurring job'>
+          {recurringSchedule}
+        </Tab>
+      </Tabs>
+    )
+
     return (
       <Form onSubmit={handleSubmit}>
         <Header size="large" justify="between" pad="none">
           <Heading tag="h3" margin="none" strong={true}>
             {initialValues.id
               ? `Job for ${initialValues.client_firstname} ${
-                  initialValues.client_lastname
-                }`
+              initialValues.client_lastname
+              }`
               : "Add Job"}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
@@ -420,38 +547,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
             />
           </fieldset>
 
-          <fieldset>
-            <Heading tag="h3">Schedule</Heading>
-            <Field
-              name="begins"
-              label="Begins"
-              component={renderDateTime}
-              dateFormat={this.dateFormat}
-              normalize={(value: string) => moment(value, this.dateFormat).toDate()}
-              onChange={this.onChangeSchedule}
-            />
-            <Field
-              name="ends"
-              label="Ends"
-              component={renderDateTime}
-              dateFormat={this.dateFormat}
-              normalize={(value: string) => moment(value, this.dateFormat).toDate()}
-              onChange={this.onChangeSchedule}
-            />
-            {start_time}
-            {finish_time}
-            <Field
-              name="anytime"
-              label="Anytime"
-              component={renderCheckBox}
-              parse={(value: boolean | string) => !!value}
-              onChange={this.onChangeSchedule}
-            />
-          </fieldset>
-
-          {this.renderSchedules()}
-
-          {scheduleNotification}
+          {schedule}
 
           <fieldset>
             <Heading tag="h3">Team</Heading>
@@ -463,18 +559,6 @@ class JobForm extends Component<JobFormProps, JobFormState> {
                 return { value: employee.id, label: employee.username };
               })}
               multiple={true}
-              normalize={selected => selected.value}
-            />
-          </fieldset>
-
-          <fieldset>
-            <Heading tag="h3">Invoicing</Heading>
-            <Field
-              name="invoice_reminder"
-              label="When do you want to invoice?"
-              component={renderSelect}
-              options={invoicingReminderOptions}
-              multiple={false}
               normalize={selected => selected.value}
             />
           </fieldset>

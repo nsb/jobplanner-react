@@ -229,7 +229,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                         </Heading>
                         {`Job #${job.id}`}
                         <br />
-                        {rrulestr(job.recurrences).toText()}
+                        {job.recurrences ? rrulestr(job.recurrences).toText() : "One-Off job"}
                       </Box>
                     </Columns>
                   </Section>
