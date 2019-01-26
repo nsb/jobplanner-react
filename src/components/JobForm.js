@@ -77,14 +77,6 @@ const validate = (values: {
     }
   }
 
-  if (!values.ends) {
-    errors.ends = "Required";
-  } else {
-    if (!moment(values.ends).isValid()) {
-      errors.ends = "Invalid";
-    }
-  }
-
   if (!values.anytime) {
     if (!values.start_time) {
       errors.start_time = "Required";
