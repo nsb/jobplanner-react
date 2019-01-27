@@ -27,6 +27,16 @@ class JobListItem extends Component<Props> {
       jobDescription = `Job #${job.id}`;
     }
 
+    let dates;
+    if (job.ends) {
+      dates = (<span>
+        <Timestamp value={job.begins} fields="date" /> -{" "}
+        <Timestamp value={job.ends} fields="date" />
+      </span>)
+    } else {
+      dates = <Timestamp value={job.begins} fields="date" />
+    }
+
     return (
       <ListItem
         direction="row"
@@ -45,10 +55,7 @@ class JobListItem extends Component<Props> {
           />{" "}
           {jobDescription}
         </span>
-        <span>
-          <Timestamp value={job.begins} fields="date" /> -{" "}
-          <Timestamp value={job.ends} fields="date" />
-        </span>
+        {dates}
       </ListItem>
     );
   }
