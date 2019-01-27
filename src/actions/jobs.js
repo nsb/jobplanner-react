@@ -47,7 +47,7 @@ export type Job = {
   description: string,
   line_items: [Object],
   begins: Date,
-  ends: Date,
+  ends: ?Date,
   start_time: Date,
   finish_time: Date,
   anytime: boolean,
