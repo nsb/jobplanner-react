@@ -25,6 +25,7 @@ import NavControl from './NavControl';
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import VisitAddContainer from "./VisitAddContainer";
+import JobClose from "./JobClose";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Client } from "../actions/clients";
@@ -51,13 +52,15 @@ export type Props = {
 
 type State = {
   showSidebarWhenSingle: boolean,
-  showAddVisit: boolean
+  showAddVisit: boolean,
+  showJobClose: boolean
 };
 
 class JobDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
     showSidebarWhenSingle: false,
-    showAddVisit: false
+    showAddVisit: false,
+    showJobClose: false
   };
 
   componentDidMount() {
@@ -79,6 +82,11 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       // if job status has changed we should reload visits
       resetVisits();
     }
+
+    if (prevProps.job.incomplete_visit_count && !job.incomplete_visit_count) {
+      // if job has no incomplete visits ask to close job
+      this.setState({showJobClose: true})
+    }
   }
 
   render() {
@@ -90,6 +98,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       property,
       responsive,
       isFetching,
+      token,
       intl
     } = this.props;
 
@@ -158,6 +167,17 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
           onClose={this.onCloseAddVisit}
         />
       );
+    }
+
+    let jobCloseLayer;
+    if (this.state.showJobClose) {
+      jobCloseLayer = (
+        <JobClose
+          job={job}
+          onClose={() => {this.setState({showJobClose: false})}}
+          token={token}
+        />
+      )
     }
 
     if (isFetching) {
@@ -299,6 +319,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
             {sidebar}
           </Split>
           {visitAddLayer}
+          {jobCloseLayer}
         </div>
       );
     }

@@ -25,7 +25,7 @@ export type Props = {
   assigned: Array<Object>,
   lineItems: Array<LineItem>,
   onEdit: Function,
-  partialUpdateVisit: Function,
+  partialUpdateVisitAndLoadJob: Function,
   onDelete: Function,
   onClose: Function
 };
@@ -145,9 +145,9 @@ class VisitDetail extends Component<Props> {
   }
 
   toggleCompleted = () => {
-    const { visit, token, partialUpdateVisit, onClose } = this.props;
+    const { visit, token, partialUpdateVisitAndLoadJob, onClose } = this.props;
     if (token) {
-      partialUpdateVisit({ id: visit.id, completed: !visit.completed }, token);
+      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, token);
       onClose();
     }
   };

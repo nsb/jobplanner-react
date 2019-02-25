@@ -3,7 +3,7 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import VisitDetail from "./VisitDetail";
-import { partialUpdateVisit } from "../actions/visits";
+import { partialUpdateVisitAndLoadJob } from "../actions/index";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Props } from "./VisitDetail";
@@ -18,7 +18,8 @@ const mapStateToProps = (
     onDelete: Function,
     onClose: Function,
     visit: Visit,
-    job: ?Job
+    job: ?Job,
+    partialUpdateVisitAndLoadJob: Function
   }
 ): Props => {
   const { auth, entities, visits } = state;
@@ -36,7 +37,7 @@ const mapStateToProps = (
       return ensureState(entities).lineItems[Id]
     }),
     onEdit: ownProps.onEdit,
-    partialUpdateVisit: partialUpdateVisit,
+    partialUpdateVisitAndLoadJob: ownProps.partialUpdateVisitAndLoadJob,
     onDelete: ownProps.onDelete,
     onClose: ownProps.onClose
   };
@@ -45,7 +46,7 @@ const mapStateToProps = (
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      partialUpdateVisit
+      partialUpdateVisitAndLoadJob
     },
     dispatch
   );

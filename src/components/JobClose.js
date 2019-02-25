@@ -26,6 +26,25 @@ class JobClose extends Component<Props> {
 
   render() {
     const { job, onClose } = this.props;
+
+    let formContent = job.incomplete_visit_count ?
+      <fieldset>
+        <Paragraph>
+          Are you sure you want to close job <strong>#{`${job.id}`}</strong> for <strong>{`${job.client_firstname} ${job.client_lastname}`}</strong>?
+        </Paragraph>
+        <Paragraph>
+          This will remove all incomplete visits.
+        </Paragraph>
+      </fieldset> :
+      <fieldset>
+        <Paragraph>
+        Job <strong>#{`${job.id}`}</strong> for <strong>{`${job.client_firstname} ${job.client_lastname}`}</strong> has no upcoming visits.
+        </Paragraph>
+        <Paragraph>
+          Do you want close this job?
+        </Paragraph>
+      </fieldset>
+
     return (
       <LayerForm
         title="Close job"
@@ -34,15 +53,7 @@ class JobClose extends Component<Props> {
         onClose={onClose}
         onSubmit={this._onClose}
       >
-        <fieldset>
-          <Paragraph>
-            Are you sure you want to
-            close job <strong>#{`${job.id}`}</strong> for <strong>{`${job.client_firstname} ${job.client_lastname}`}</strong>?
-          </Paragraph>
-          <Paragraph>
-            This will remove all incomplete visits.
-          </Paragraph>
-        </fieldset>
+        {formContent}
       </LayerForm>
     );
   }

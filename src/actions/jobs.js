@@ -53,7 +53,9 @@ export type Job = {
   anytime: boolean,
   closed: boolean,
   schedule_visits_task: ?number,
-  invoice_reminder: string
+  invoice_reminder: string,
+  incomplete_visit_count: number,
+  completed_visit_count: number
 };
 
 export type JobsMap = { [id: number]: Job };

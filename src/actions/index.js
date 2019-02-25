@@ -2,7 +2,9 @@
 import { verify } from "./auth";
 import { me } from "./users";
 import { fetchBusinesses } from "./businesses";
-import type { Dispatch } from "../types/Store";
+import { fetchJob } from "./jobs";
+import { partialUpdateVisit } from "./visits";
+import type { Dispatch, GetState, ThunkAction } from "../types/Store";
 
 export const verifyAuthAndFetchBusinesses = (
   token: string
@@ -13,5 +15,16 @@ export const verifyAuthAndFetchBusinesses = (
       dispatch(me(token)),
       dispatch(fetchBusinesses(token))
     ]);
+  };
+};
+
+export const partialUpdateVisitAndLoadJob = (
+  visit: { id: number, job: number },
+  token: string
+): ThunkAction => {
+  return (dispatch: Dispatch, getState: GetState) => {
+    dispatch(partialUpdateVisit(visit, token)).then(() => {
+      dispatch(fetchJob(token, visit.job));
+    });
   };
 };
