@@ -147,8 +147,7 @@ class VisitDetail extends Component<Props> {
   toggleCompleted = () => {
     const { visit, token, partialUpdateVisitAndLoadJob, onClose } = this.props;
     if (token) {
-      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, token);
-      onClose();
+      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, token).then(onClose);
     }
   };
 }

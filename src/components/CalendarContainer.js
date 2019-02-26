@@ -10,11 +10,13 @@ import type { Visit } from "../actions/visits";
 import { fetchVisits, updateVisit } from "../actions/visits";
 import VisitLayerContainer from "./VisitLayerContainer";
 import Calendar from "./Calendar";
+import JobClose from "./JobClose";
 
 type Props = {
   business: Business,
   visits: Array<Visit>,
   token: ?string,
+  getJobById: Function,
   dispatch: Dispatch
 };
 
@@ -23,11 +25,12 @@ type CalendarView = "day" | "week" | "month" | "agenda";
 type State = {
   view: CalendarView,
   date: Date,
-  selected?: Visit
+  selected: ?Visit,
+  showJobClose: number
 };
 
 class CalendarContainer extends Component<Props, State> {
-  state: State = { view: "week", date: new Date() };
+  state: State = { view: "week", date: new Date(), selected: undefined, showJobClose: 0 };
 
   componentDidMount() {
     this.loadVisits(
@@ -40,8 +43,21 @@ class CalendarContainer extends Component<Props, State> {
     );
   }
 
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const { getJobById } = this.props;
+
+    if (prevState.selected && !this.state.selected) {
+      let job = getJobById(prevState.selected.job);
+
+      if (job && job.incomplete_visit_count === 0) {
+        // ask to close job if it has no upcoming visits
+        this.setState({showJobClose: job.id})
+      }
+    }
+  }
+
   render() {
-    const { business, visits } = this.props;
+    const { business, visits, token, getJobById } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
@@ -52,6 +68,17 @@ class CalendarContainer extends Component<Props, State> {
           onClose={this.onClose}
         />
       );
+    }
+
+    let jobCloseLayer;
+    if (this.state.showJobClose) {
+      jobCloseLayer = (
+        <JobClose
+          job={getJobById(this.state.showJobClose)}
+          onClose={() => {this.setState({showJobClose: 0})}}
+          token={token}
+        />
+      )
     }
 
     const calendar = (
@@ -77,6 +104,7 @@ class CalendarContainer extends Component<Props, State> {
       <div>
         {calendar}
         {visitLayer}
+        {jobCloseLayer}
       </div>
     );
   }
@@ -167,7 +195,8 @@ const mapStateToProps = (
     }),
     token: auth.token,
     dispatch: ownProps.dispatch,
-    responsive: nav.responsive
+    responsive: nav.responsive,
+    getJobById: (id) => ensureState(entities).jobs[id]
   };
 };
 

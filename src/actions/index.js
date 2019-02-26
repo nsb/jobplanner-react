@@ -26,8 +26,8 @@ export const createVisitAndLoadJob = (
   token: string
 ): ThunkAction => {
   return (dispatch: Dispatch, getState: GetState) => {
-    dispatch(createVisit(business, visit, token)).then(() => {
-      dispatch(fetchJob(token, visit.job));
+    return dispatch(createVisit(business, visit, token)).then(() => {
+      return dispatch(fetchJob(token, visit.job));
     });
   };
 }
@@ -39,8 +39,8 @@ export const updateVisitAndLoadJob = (
   patch: boolean = false
 ): ThunkAction => {
   return (dispatch: Dispatch, getState: GetState) => {
-    dispatch(updateVisit(visit, token, optimistic, patch)).then(() => {
-      dispatch(fetchJob(token, visit.job));
+    return dispatch(updateVisit(visit, token, optimistic, patch)).then(() => {
+      return dispatch(fetchJob(token, visit.job));
     });
   };
 };
@@ -50,8 +50,8 @@ export const partialUpdateVisitAndLoadJob = (
   token: string
 ): ThunkAction => {
   return (dispatch: Dispatch, getState: GetState) => {
-    dispatch(partialUpdateVisit(visit, token)).then(() => {
-      dispatch(fetchJob(token, visit.job));
+    return dispatch(partialUpdateVisit(visit, token)).then(() => {
+      return dispatch(fetchJob(token, visit.job));
     });
   };
 };

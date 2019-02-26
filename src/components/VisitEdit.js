@@ -50,8 +50,7 @@ class VisitEdit extends Component<Props> {
         },
         token || ""
       )
-    );
-    onClose()
+    ).then(onClose);
   };
 }
 
