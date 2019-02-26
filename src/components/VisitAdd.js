@@ -13,7 +13,7 @@ export type Props = {
   business: Business,
   job: Job,
   onClose: Function,
-  createVisit: Function
+  createVisitAndLoadJob: Function
 };
 
 class VisitAdd extends Component<Props> {
@@ -40,9 +40,9 @@ class VisitAdd extends Component<Props> {
   }
 
   handleSubmit = (values: Object) => {
-    const { business, job, token, createVisit, onClose } = this.props;
+    const { business, job, token, createVisitAndLoadJob, onClose } = this.props;
     if(token) {
-      createVisit(
+      createVisitAndLoadJob(
         business,
         {
           ...values,

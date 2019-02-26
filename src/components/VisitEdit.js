@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { visitSchemaDenormalize } from "../schemas";
-import { updateVisit } from "../actions/visits";
+import { updateVisitAndLoadJob } from "../actions/index";
 import VisitForm from "./VisitForm";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
@@ -43,7 +43,7 @@ class VisitEdit extends Component<Props> {
   handleSubmit = values => {
     const { token, dispatch, onClose } = this.props;
     dispatch(
-      updateVisit(
+      updateVisitAndLoadJob(
         {
           ...values,
           assigned: values.assigned.map(v => v.value)

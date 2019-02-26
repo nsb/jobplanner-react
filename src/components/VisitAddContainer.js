@@ -2,7 +2,7 @@
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { createVisit } from "../actions/visits";
+import { createVisitAndLoadJob } from "../actions/index";
 import VisitAdd from "./VisitAdd";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
@@ -35,11 +35,11 @@ const mapStateToProps = (
     business: ownProps.business,
     job: ownProps.job,
     onClose: ownProps.onClose,
-    createVisit: createVisit
+    createVisitAndLoadJob: createVisitAndLoadJob
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ createVisit }, dispatch);
+  bindActionCreators({ createVisitAndLoadJob }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(VisitAdd);
