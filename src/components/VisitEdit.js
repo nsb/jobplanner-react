@@ -42,7 +42,7 @@ class VisitEdit extends Component<Props> {
 
   handleSubmit = values => {
     const { token, dispatch, onClose } = this.props;
-    dispatch(
+    return dispatch(
       updateVisitAndLoadJob(
         {
           ...values,
