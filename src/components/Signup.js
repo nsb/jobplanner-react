@@ -35,9 +35,9 @@ class Signup extends Component<Props> {
 
     return (
       <Split flex="left">
-        <div>
+        <Box align="start" pad="medium">
           <img src={logo} className="App-logo" alt="logo" />
-        </div>
+        </Box>
         <Sidebar justify="between" align="center" pad="medium" size="large">
           <span />
           <Box size="large">

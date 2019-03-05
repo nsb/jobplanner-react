@@ -38,9 +38,9 @@ class Login extends Component<Props> {
       <Redirect to="/" />
     ) : (
         <Split flex="left">
-          <div>
+          <Box align="start" pad="medium">
             <img src={logo} className="App-logo" alt="logo" />
-          </div>
+          </Box>
           <Sidebar justify="between" align="center" pad="medium" size="large">
             <span />
             <Box size="large">
