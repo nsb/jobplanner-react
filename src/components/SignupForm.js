@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
@@ -55,7 +56,8 @@ export const SignupForm = ({
         </fieldset>
       </FormFields>
 
-      <Footer pad={{ vertical: "medium" }}>
+      <Footer size="small" direction="column" align="start"
+      pad={{ vertical: 'none', between: 'medium' }}>
         <span />
         <Button
           type="submit"
@@ -63,6 +65,7 @@ export const SignupForm = ({
           label="Register"
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
+        <div>Already have an account? <Anchor label="Log in here" path="/login" /></div>
       </Footer>
     </Form>
   );
