@@ -5,8 +5,13 @@ import Form from "grommet/components/Form";
 import FormField from "grommet/components/FormField";
 import Footer from "grommet/components/Footer";
 import Button from "grommet/components/Button";
+import Anchor from "grommet/components/Anchor";
+import Box from "grommet/components/Box";
 import type { Credentials } from "../actions/auth";
 import type { Element } from "react";
+
+const API_ENDPOINT =
+  process.env.REACT_APP_API_ENDPOINT || "http://localhost:8000";
 
 const validate = (values: Credentials): Object => {
   const errors = {};
@@ -52,6 +57,9 @@ let LoginForm = ({ handleSubmit, valid, dirty, submitting }: Props) => (
         component={renderField}
         type="password"
       />
+      <Box pad="none">
+        <Anchor label='Forgot password?' href={`${API_ENDPOINT}/password_reset/`} />
+      </Box>
     </fieldset>
     <Footer size="small" direction="column"
       align="start"
@@ -61,6 +69,7 @@ let LoginForm = ({ handleSubmit, valid, dirty, submitting }: Props) => (
         type="submit"
         label="Login"
         onClick={valid && dirty && !submitting ? () => true : undefined} />
+      <div>Don't have an account? <Anchor label='Sign up here' path="/signup" /></div>
     </Footer>
   </Form>
 );
