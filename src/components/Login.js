@@ -41,9 +41,9 @@ class Login extends Component<Props> {
           <div>
             <img src={logo} className="App-logo" alt="logo" />
           </div>
-          <Sidebar justify="between" align="center" pad="none" size="large">
+          <Sidebar justify="between" align="center" pad="medium" size="large">
             <span />
-            <Box>
+            <Box size="large">
               <Box pad="medium">
                 <Button icon={<PlatformGoogleIcon />}
                   primary={true}
