@@ -10,7 +10,7 @@ import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Footer from "grommet/components/Footer";
 import CloseIcon from "grommet/components/icons/base/Close";
-import logo from "../logo.svg";
+import logo from "../logo-white.svg";
 import SessionMenu from "./SessionMenu";
 import type { Business } from "../actions/businesses";
 import type { User } from "../actions/users";
