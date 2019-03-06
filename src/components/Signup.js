@@ -53,7 +53,7 @@ class Signup extends Component<Props> {
             <Box>
               <SignupForm
                 align="start"
-                title="jobPlanner"
+                title="myJobPlanner"
                 onSubmit={this.props.signupBusy ? undefined : this.onSubmit}
               />
             </Box>
@@ -63,7 +63,7 @@ class Signup extends Component<Props> {
             size="small"
             pad={{ horizontal: "medium", vertical: "small", between: "small" }}
           >
-            <span className="secondary">© 2019 jobPlanner</span>
+            <span className="secondary">© 2019 myJobPlanner</span>
           </Footer>
         </Sidebar>
       </Split>
