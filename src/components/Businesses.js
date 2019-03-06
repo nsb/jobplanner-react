@@ -50,9 +50,13 @@ class Businesses extends Component<Props, State> {
       <Anchor icon={<AddIcon />} path="/add" a11yTitle={`Add business`} />
     );
 
-    return businesses.length === 1
-      ? <Redirect to={`/${businesses[0].id}`} />
-      : <Box>
+    switch (businesses.length) {
+      case 0:
+        return (<Redirect to="/add" />)
+      case 1:
+        return (<Redirect to={`/${businesses[0].id}`} />)
+      default:
+        return (<Box>
           <Header size="large" pad={{ horizontal: "medium" }}>
             <Title responsive={false}>
               <NavControl />
@@ -95,7 +99,8 @@ class Businesses extends Component<Props, State> {
               />
             }
           />
-        </Box>;
+        </Box>);
+    }
   }
 
   onClick = (e, business) => {
