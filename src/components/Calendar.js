@@ -91,11 +91,11 @@ class Calendar extends Component<Props> {
                   : "jobplanner__incomplete",
                 style: event.completed
                   ? {
-                      "background-color": "#2AD2C9",
+                      "background-color": "#bbb",
                       "text-decoration": "line-through"
                     }
                   : {
-                      "background-color": "#01a982"
+                      "background-color": "#0096D6"
                     }
               };
             }}
