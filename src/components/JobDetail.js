@@ -21,7 +21,6 @@ import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Status from "grommet/components/icons/Status";
 import { rrulestr } from "rrule";
-import NavControl from './NavControl';
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import VisitAddContainer from "./VisitAddContainer";
@@ -216,7 +215,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                   pad={{ between: "small" }}
                   responsive={false}
                 >
-                  <NavControl />
                   <Anchor
                     icon={<LinkPreviousIcon />}
                     path={`/${business.id}/clients/${job.client}`}

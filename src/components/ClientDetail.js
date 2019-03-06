@@ -18,7 +18,6 @@ import Spinning from "grommet/components/icons/Spinning";
 import ClientActions from "../components/ClientActions";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
-import NavControl from "./NavControl";
 import JobListItem from "./JobListItem";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
@@ -129,7 +128,6 @@ class ClientDetail extends Component<Props, State> {
                 pad={{ between: "small" }}
                 responsive={false}
               >
-                <NavControl />
                 <Anchor
                   icon={<LinkPreviousIcon />}
                   path={`/${business.id}/clients`}
