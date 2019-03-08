@@ -52,7 +52,9 @@ export type Client = {
   phone: string,
   notes: string,
   properties: Array<Property>,
-  upcoming_visit_reminder_email_enabled: boolean
+  upcoming_visit_reminder_email_enabled: boolean,
+  is_business: boolean,
+  business_name: ?string
 };
 
 export type ClientsMap = { [id: number]: Client };

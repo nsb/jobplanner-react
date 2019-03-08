@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
+import Box from "grommet/components/Box";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
@@ -19,11 +20,14 @@ import type { Element } from "react";
 
 const validate = (values: Client) => {
   const errors = {};
-  if (!values.first_name) {
+  if (!values.is_business && !values.first_name) {
     errors.first_name = "Required";
   }
-  if (!values.last_name) {
+  if (!values.is_business && !values.last_name) {
     errors.last_name = "Required";
+  }
+  if (values.is_business && !values.business_name) {
+    errors.business_name = "Required"
   }
   return errors;
 };
@@ -44,9 +48,9 @@ const renderCheckBox = ({
   label,
   meta: { touched, error, warning }
 }): Element<*> => (
-  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <CheckBox {...input} checked={!!input.value} />
-  </FormField>
+  // <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <CheckBox {...input} label={label} checked={!!input.value} />
+  // </FormField>
 );
 
 const renderProperties = ({
@@ -115,7 +119,7 @@ export const ClientForm = (props: Props) => {
     dirty,
     submitting,
     onClose,
-    fields,
+    // fields,
     initialValues
   } = props;
   return (
@@ -130,33 +134,47 @@ export const ClientForm = (props: Props) => {
       <FormFields>
         <fieldset>
           <Heading tag="h3">Client details</Heading>
+          <Box direction="row">
+            <Field
+              name="first_name"
+              label="First name"
+              component={renderField}
+              type="text"
+            />
+            <Field
+              name="last_name"
+              label="Last Name"
+              component={renderField}
+              type="text"
+            />
+          </Box>
           <Field
-            name="first_name"
-            label="First name"
+            name="business_name"
+            label="Company name"
             component={renderField}
             type="text"
           />
           <Field
-            name="last_name"
-            label="Last Name"
-            component={renderField}
-            type="text"
+            name="is_business"
+            label="Use company name as the primary name"
+            component={renderCheckBox}
+            parse={(value: boolean | string) => !!value}
           />
         </fieldset>
 
         <fieldset>
           <Heading tag="h3">Contact details</Heading>
           <Field
-            name="email"
-            label="E-mail"
-            component={renderField}
-            type="email"
-          />
-          <Field
             name="phone"
             label="Phone"
             component={renderField}
             type="text"
+          />
+          <Field
+            name="email"
+            label="E-mail"
+            component={renderField}
+            type="email"
           />
         </fieldset>
 
@@ -176,7 +194,7 @@ export const ClientForm = (props: Props) => {
           component={renderProperties}
         />
 
-        <fieldset>
+        {/* <fieldset>
           <Heading tag="h3">Additional client details</Heading>
           {fields.map((field, index) => (
             <Field
@@ -186,7 +204,7 @@ export const ClientForm = (props: Props) => {
               type={field.type}
             />
           ))}
-        </fieldset>
+        </fieldset> */}
       </FormFields>
 
       <Footer pad={{ vertical: "medium" }}>

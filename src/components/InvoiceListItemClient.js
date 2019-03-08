@@ -9,7 +9,7 @@ export type Props = {
 const InvoiceListItemClient = ({
   client
 }: Props): Element<*> => (
-  <div>{client.first_name} {client.last_name}</div>
-);
+    <div>{client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</div>
+  );
 
 export default InvoiceListItemClient;

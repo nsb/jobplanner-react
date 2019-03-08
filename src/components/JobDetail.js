@@ -235,7 +235,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                 <Box full="horizontal">
                   <Section pad="medium" full="horizontal">
                     <Heading tag="h3" margin="none">
-                      <strong>{`${job.client_firstname} ${job.client_lastname}`}</strong>
+                      <strong>{client && client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</strong>
                     </Heading>
                     {jobDescription} 
                     <Columns masonry={false} maxCount={2}>                      

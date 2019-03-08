@@ -25,7 +25,7 @@ class ClientListItem extends Component<Props> {
         selected={false}
       >
         <span>
-          {`${client.first_name} ${client.last_name}`}
+          {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
         </span>
         <span>{client.phone || client.email}</span>
       </ListItem>

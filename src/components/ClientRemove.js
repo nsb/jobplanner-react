@@ -7,7 +7,7 @@ import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
 import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
-import type {State} from '../types/State';
+import type { State } from '../types/State';
 
 type Props = {
   client: Client,
@@ -37,7 +37,7 @@ class ClientRemove extends Component<Props> {
         <fieldset>
           <Paragraph>
             Are you sure you want to
-            remove <strong>{client.first_name}</strong>?
+            remove <strong>{client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</strong>?
           </Paragraph>
         </fieldset>
       </LayerForm>
@@ -46,7 +46,7 @@ class ClientRemove extends Component<Props> {
 }
 
 const mapStateToProps = (
-  {auth}: State,
+  { auth }: State,
 ): * => ({
   token: auth.token
 });

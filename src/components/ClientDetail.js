@@ -134,7 +134,7 @@ class ClientDetail extends Component<Props, State> {
                   a11yTitle="Return"
                 />
                 <Heading tag="h3" margin="none">
-                  <strong>{`${client.first_name} ${client.last_name}`}</strong>
+                  <strong>{client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</strong>
                 </Heading>
               </Box>
               {sidebarControl}

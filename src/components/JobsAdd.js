@@ -60,7 +60,7 @@ class JobsAdd extends Component<Props, State> {
     const { client: { value: clientId } } = values;
     const { token, business } = this.props;
 
-    if(token) {
+    if (token) {
       let action = createJob(
         business,
         {
@@ -116,7 +116,7 @@ const mapStateToProps = (
         return employee.businesses.indexOf(businessId) > -1 ? employee : false;
       }),
     client: client
-      ? { value: client.id, label: `${client.first_name} ${client.last_name}` }
+      ? { value: client.id, label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}` }
       : undefined
   };
 };
