@@ -38,69 +38,75 @@ const renderField = ({
   type,
   meta: { touched, error, warning }
 }): Element<*> => (
-  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <input {...input} type={type} />
-  </FormField>
-);
+    <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+      <input {...input} type={type} />
+    </FormField>
+  );
 
 const renderCheckBox = ({
   input,
   label,
   meta: { touched, error, warning }
 }): Element<*> => (
-  // <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    // <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <CheckBox {...input} label={label} checked={!!input.value} />
-  // </FormField>
-);
+    // </FormField>
+  );
 
 const renderProperties = ({
   fields,
   meta: { error, submitFailed }
 }): Element<*> => (
-  <Section>
-    <div>
-      <button type="button" onClick={() => fields.push({})}>
-        Add Property
-      </button>
-      {submitFailed && error && <span>{error}</span>}
-    </div>
-    {fields.map((property, index) => (
-      <div key={index}>
-        <button
-          type="button"
-          title="Remove Property"
-          onClick={() => fields.remove(index)}
-        />
-        <h4>Propterty #{index + 1}</h4>
-        <Field name={`${property}.id`} type="hidden" component={renderField} />
-        <Field
-          name={`${property}.address1`}
-          type="text"
-          component={renderField}
-          label="Address 1"
-        />
-        <Field
-          name={`${property}.address2`}
-          type="text"
-          component={renderField}
-          label="Address 2"
-        />
-        <Field
-          name={`${property}.city`}
-          type="text"
-          component={renderField}
-          label="City"
-        />
-        <Field
-          name={`${property}.zip_code`}
-          type="text"
-          component={renderField}
-          label="Zip Code"
-        />
-      </div>
-    ))}
-  </Section>
-);
+    <Section>
+      {fields.map((property, index) => (
+        <Box margin={{ bottom: "medium" }}>
+          <div key={index}>
+            Property #{index + 1}
+            <Button icon={<CloseIcon />}
+              onClick={() => fields.remove(index)}
+              href='#'
+              primary={false}
+              accent={false}
+              plain={true} />
+            <Field
+              name={`${property}.id`}
+              type="hidden"
+              component={renderField} />
+            <Field
+              name={`${property}.address1`}
+              type="text"
+              component={renderField}
+              label="Address 1"
+            />
+            <Field
+              name={`${property}.address2`}
+              type="text"
+              component={renderField}
+              label="Address 2"
+            />
+            <Field
+              name={`${property}.city`}
+              type="text"
+              component={renderField}
+              label="City"
+            />
+            <Field
+              name={`${property}.zip_code`}
+              type="text"
+              component={renderField}
+              label="Zip Code"
+            />
+          </div>
+        </Box>
+      ))}
+      <Box>
+        <button type="button" onClick={() => fields.push({})}>
+          Add Property
+        </button>
+        {submitFailed && error && <span>{error}</span>}
+      </Box>
+    </Section>
+  );
 
 type Props = {
   handleSubmit: Function,
