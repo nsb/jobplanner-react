@@ -45,16 +45,18 @@ class VisitDetail extends Component<Props> {
       />)
 
     let directions;
-    let directionsParams = new URLSearchParams({
-      q: `${property.address1}, ${property.city}, ${property.zip_code}, ${property.country}`
-    });
-    directions = (
-      <Anchor icon={<DirectionsIcon />}
-        href={`https://maps.google.com/?${directionsParams.toString()}`}
-        target='_blank'
-        primary={true} >
-        Directions
-      </Anchor >)
+    if(property) {
+      let directionsParams = new URLSearchParams({
+        q: `${property.address1}, ${property.city}, ${property.zip_code}, ${property.country}`
+      });
+      directions = (
+        <Anchor icon={<DirectionsIcon />}
+          href={`https://maps.google.com/?${directionsParams.toString()}`}
+          target='_blank'
+          primary={true} >
+          Directions
+        </Anchor >)
+    }
 
     return (
       <Box>
@@ -68,7 +70,7 @@ class VisitDetail extends Component<Props> {
           <Columns masonry={false} maxCount={2}>
             <Box pad={{ horizontal: "none", vertical: "none" }}>
               <Heading tag="h2" strong={true}>
-                {visit.client_name}
+                {visit.title || visit.client_name}
               </Heading>
             </Box>
             <Box pad={{ horizontal: "none", vertical: "small" }}>
@@ -79,11 +81,11 @@ class VisitDetail extends Component<Props> {
             <Box pad={{ horizontal: "none", vertical: "small" }}>
               {visit.client_name}
               <br />
-              {property.address1}
+              {property && property.address1}
               <br />
-              {property.address2}
+              {property && property.address2}
               <br />
-              {property.zip_code} {property.city}
+              {property && property.zip_code} {property && property.city}
             </Box>
             <Box pad={{ horizontal: "none", vertical: "small" }}>
               {visit.details}

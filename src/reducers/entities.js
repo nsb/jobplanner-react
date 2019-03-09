@@ -1,4 +1,4 @@
-import { merge, assign } from "lodash/object";
+import { merge } from "lodash/object";
 import type {
   Action as BusinessesAction,
   BusinessesMap
@@ -84,33 +84,8 @@ const entities: (State, Action) => State = (
   },
   action: Action
 ): State => {
-  // when updating, merging does not work. Instead we assign the updated entity
-  if (action.type && action.type.match(/^UPDATE_[A-Z]+_SUCCESS/)) {
-    let newState: State = { ...state };
-    if (action.payload && action.payload.entities) {
-      for (var entity of Object.keys(action.payload.entities)) {
-        for (var id: number of Object.keys(action.payload.entities[entity])) {
-          try {
-            newState[entity][id] = assign(
-              {},
-              action.payload.entities[entity][id]
-            );
-          } catch (e) {
-            if (e instanceof TypeError) {
-              newState[entity] = assign(
-                {}[id],
-                action.payload.entities[entity][id]
-              );
-            }
-          }
-        }
-      }
-      return newState;
-    }
-  } else {
-    if (action.payload && action.payload.entities) {
-      return merge({}, state, action.payload.entities);
-    }
+  if (action.payload && action.payload.entities) {
+    return merge({}, state, action.payload.entities);
   }
 
   return state;

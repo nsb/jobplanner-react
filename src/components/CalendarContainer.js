@@ -57,14 +57,13 @@ class CalendarContainer extends Component<Props, State> {
   }
 
   render() {
-    const { business, visits, token, getJobById } = this.props;
+    const { visits, token, getJobById } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
       visitLayer = (
         <VisitLayerContainer
           visit={this.state.selected}
-          business={business}
           onClose={this.onClose}
         />
       );

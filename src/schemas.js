@@ -47,7 +47,8 @@ export const jobListSchema = new schema.Array(jobSchema);
 export const visitSchema = new schema.Entity("visits", {
   line_items: [lineItem],
   assigned: [employeeSchema],
-  property: property
+  property: property,
+  client: clientSchema
 });
 export const visitListSchema = new schema.Array(visitSchema);
 

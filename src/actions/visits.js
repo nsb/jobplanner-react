@@ -40,7 +40,8 @@ export type Visit = {
   id: number,
   business: number,
   job: number,
-  property: number,
+  property: Object,
+  client: Object,
   line_items: [Object],
   completed: boolean,
   begins: Date,
@@ -48,6 +49,7 @@ export type Visit = {
   client_name: string,
   client_phone: string,
   assigned: Array<number>,
+  title: string,
   details: string,
   anytime: boolean,
   total_cost: number
