@@ -44,6 +44,7 @@ export type Job = {
   client_lastname: string,
   business: number,
   recurrences: string,
+  title: string,
   description: string,
   line_items: [Object],
   begins: Date,

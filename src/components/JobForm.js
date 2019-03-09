@@ -146,6 +146,17 @@ const renderDateTime = ({
   );
 };
 
+const renderTextArea = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <textarea rows="5" {...input} type={type} />
+  </FormField>
+);
+
 type ScheduleProps = {
   value: string,
   onClick: Function
@@ -536,10 +547,17 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           <fieldset>
             <Heading tag="h3">Details</Heading>
             <Field
-              name="description"
-              label="Description"
+              name="title"
+              label="Title"
               component={renderField}
               type="text"
+            />
+            <Field
+              name="description"
+              label="Instructions"
+              component={renderTextArea}
+              type="text"
+              rows="3"
             />
           </fieldset>
 
