@@ -95,7 +95,7 @@ class ClientDetail extends Component<Props, State> {
     );
 
     let billingAddress;
-    if (!client.address_use_property) {
+    if (!isFetching && !client.address_use_property) {
       billingAddress = (
         <Section pad="medium" full="horizontal">
           <Heading tag="h4" margin="none">
@@ -105,7 +105,8 @@ class ClientDetail extends Component<Props, State> {
             <Box margin={{ horizontal: "none", vertical: "small" }}>
               <div>{client.address1}</div>
               <div>{client.address2}</div>
-              <div>{client.zip_code}</div>
+              <div>{client.zip_code} {client.city}</div>
+
               <div>{client.country}</div>
             </Box>
           </Columns>
