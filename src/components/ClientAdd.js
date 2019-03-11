@@ -28,7 +28,7 @@ class ClientAdd extends Component<Props> {
           onSubmit={this.handleSubmit}
           fields={fields}
           onClose={this.onClose}
-          initialValues={{upcoming_visit_reminder_email_enabled: true}}
+          initialValues={{ upcoming_visit_reminder_email_enabled: true, address_use_property: true }}
         />
       </Article>
     );
@@ -36,7 +36,7 @@ class ClientAdd extends Component<Props> {
 
   handleSubmit = (values: Client): void => {
     const { token, business, dispatch } = this.props;
-    if(token) {
+    if (token) {
       let action = createClient(
         business,
         {
