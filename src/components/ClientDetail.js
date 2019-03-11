@@ -94,6 +94,25 @@ class ClientDetail extends Component<Props, State> {
       />
     );
 
+    let billingAddress;
+    if (!client.address_use_property) {
+      billingAddress = (
+        <Section pad="medium" full="horizontal">
+          <Heading tag="h4" margin="none">
+            Address
+          </Heading>
+          <Columns>
+            <Box margin={{ horizontal: "none", vertical: "small" }}>
+              <div>{client.address1}</div>
+              <div>{client.address2}</div>
+              <div>{client.zip_code}</div>
+              <div>{client.country}</div>
+            </Box>
+          </Columns>
+        </Section>
+      )
+    }
+
     if (isFetching) {
       return (
         <Article scrollStep={true} controls={true}>
@@ -155,7 +174,7 @@ class ClientDetail extends Component<Props, State> {
                   </Box>
                 </Columns>
               </Section>
-
+              {billingAddress}
               <Section pad="medium" full="horizontal">
                 <Heading tag="h4" margin="none">
                   Properties

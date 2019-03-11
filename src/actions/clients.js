@@ -48,13 +48,19 @@ export type Client = {
   business: number,
   first_name: string,
   last_name: string,
+  address1: string,
+  address2: string,
+  city: string,
+  zip_code: string,
+  country: string,
   email: string,
   phone: string,
   notes: string,
   properties: Array<Property>,
   upcoming_visit_reminder_email_enabled: boolean,
   is_business: boolean,
-  business_name: ?string
+  business_name: ?string,
+  address_use_property: boolean
 };
 
 export type ClientsMap = { [id: number]: Client };

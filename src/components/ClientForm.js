@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { Component } from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import Box from "grommet/components/Box";
 import Section from "grommet/components/Section";
@@ -28,6 +28,9 @@ const validate = (values: Client) => {
   }
   if (values.is_business && !values.business_name) {
     errors.business_name = "Required"
+  }
+  if (!values.address_use_property && !values.address1) {
+    errors.address1 = "Required"
   }
   return errors;
 };
@@ -118,112 +121,170 @@ type Props = {
   initialValues: Object
 };
 
-export const ClientForm = (props: Props) => {
-  const {
-    handleSubmit,
-    valid,
-    dirty,
-    submitting,
-    onClose,
-    // fields,
-    initialValues
-  } = props;
-  return (
-    <Form onSubmit={handleSubmit}>
-      <Header size="large" justify="between" pad="none">
-        <Heading tag="h2" margin="none" strong={true}>
-          {initialValues && initialValues.id ? "Edit client" : "Add Client"}
-        </Heading>
-        <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
-      </Header>
+type State = {
+  address_use_property: boolean
+}
 
-      <FormFields>
+class ClientForm extends Component<Props, State> {
+
+  constructor({ initialValues }: Props) {
+    super();
+    this.state = { address_use_property: initialValues.address_use_property };
+  }
+
+  render() {
+    const {
+      handleSubmit,
+      valid,
+      dirty,
+      submitting,
+      onClose,
+      // fields,
+      initialValues
+    } = this.props;
+
+    let billingAddress;
+    if (!this.state.address_use_property) {
+      billingAddress = (
         <fieldset>
-          <Heading tag="h3">Client details</Heading>
-          <Box direction="row">
+          <Heading tag="h3">Billing address</Heading>
+          <Field
+            name="address1"
+            type="text"
+            component={renderField}
+            label="Address 1"
+          />
+          <Field
+            name="address2"
+            type="text"
+            component={renderField}
+            label="Address 2"
+          />
+          <Field
+            name="city"
+            type="text"
+            component={renderField}
+            label="City"
+          />
+          <Field
+            name="zip_code"
+            type="text"
+            component={renderField}
+            label="Zip Code"
+          />
+        </fieldset>
+      )
+    }
+
+    return (
+      <Form onSubmit={handleSubmit}>
+        <Header size="large" justify="between" pad="none">
+          <Heading tag="h2" margin="none" strong={true}>
+            {initialValues && initialValues.id ? "Edit client" : "Add Client"}
+          </Heading>
+          <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
+        </Header>
+
+        <FormFields>
+          <fieldset>
+            <Heading tag="h3">Client details</Heading>
+            <Box direction="row">
+              <Field
+                name="first_name"
+                label="First name"
+                component={renderField}
+                type="text"
+              />
+              <Field
+                name="last_name"
+                label="Last Name"
+                component={renderField}
+                type="text"
+              />
+            </Box>
             <Field
-              name="first_name"
-              label="First name"
+              name="business_name"
+              label="Company name"
               component={renderField}
               type="text"
             />
             <Field
-              name="last_name"
-              label="Last Name"
+              name="is_business"
+              label="Use company name as the primary name"
+              component={renderCheckBox}
+              parse={(value: boolean | string) => !!value}
+            />
+          </fieldset>
+
+          <fieldset>
+            <Heading tag="h3">Contact details</Heading>
+            <Field
+              name="phone"
+              label="Phone"
               component={renderField}
               type="text"
             />
-          </Box>
-          <Field
-            name="business_name"
-            label="Company name"
-            component={renderField}
-            type="text"
-          />
-          <Field
-            name="is_business"
-            label="Use company name as the primary name"
-            component={renderCheckBox}
-            parse={(value: boolean | string) => !!value}
-          />
-        </fieldset>
-
-        <fieldset>
-          <Heading tag="h3">Contact details</Heading>
-          <Field
-            name="phone"
-            label="Phone"
-            component={renderField}
-            type="text"
-          />
-          <Field
-            name="email"
-            label="E-mail"
-            component={renderField}
-            type="email"
-          />
-        </fieldset>
-
-        <fieldset>
-          <Heading tag="h3">Automated notifications</Heading>
-          <Field
-            name="upcoming_visit_reminder_email_enabled"
-            label="Visit reminders"
-            component={renderCheckBox}
-            parse={(value: boolean | string) => !!value}
-          />
-        </fieldset>
-
-        <FieldArray
-          name="properties"
-          label="Properties"
-          component={renderProperties}
-        />
-
-        {/* <fieldset>
-          <Heading tag="h3">Additional client details</Heading>
-          {fields.map((field, index) => (
             <Field
-              name={field.name}
-              label={field.label}
+              name="email"
+              label="E-mail"
               component={renderField}
-              type={field.type}
+              type="email"
             />
-          ))}
-        </fieldset> */}
-      </FormFields>
+          </fieldset>
 
-      <Footer pad={{ vertical: "medium" }}>
-        <span />
-        <Button
-          type="submit"
-          primary={true}
-          label={initialValues ? "Save" : "Add"}
-          onClick={valid && dirty && !submitting ? () => true : undefined}
-        />
-      </Footer>
-    </Form>
-  );
+          <fieldset>
+            <Heading tag="h3">Automated notifications</Heading>
+            <Field
+              name="upcoming_visit_reminder_email_enabled"
+              label="Visit reminders"
+              component={renderCheckBox}
+              parse={(value: boolean | string) => !!value}
+            />
+          </fieldset>
+
+          <fieldset>
+            <Heading tag="h3">Property details</Heading>
+            <FieldArray
+              name="properties"
+              label="Properties"
+              component={renderProperties}
+            />
+            <Field
+              name="address_use_property"
+              label="Billing address is the same as property address"
+              component={renderCheckBox}
+              parse={(value: boolean | string) => !!value}
+              onChange={(event, value) => { this.setState({ address_use_property: value }) }}
+            />
+          </fieldset>
+
+          {billingAddress}
+
+          {/* <fieldset>
+            <Heading tag="h3">Additional client details</Heading>
+            {fields.map((field, index) => (
+              <Field
+                name={field.name}
+                label={field.label}
+                component={renderField}
+                type={field.type}
+              />
+            ))}
+          </fieldset> */}
+        </FormFields>
+
+        <Footer pad={{ vertical: "medium" }}>
+          <span />
+          <Button
+            type="submit"
+            primary={true}
+            label={initialValues ? "Save" : "Add"}
+            onClick={valid && dirty && !submitting ? () => true : undefined}
+          />
+        </Footer>
+      </Form>
+    );
+  }
 };
 
 export default reduxForm({

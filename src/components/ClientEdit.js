@@ -46,7 +46,7 @@ class ClientEdit extends Component<Props> {
     dispatch(
       updateClient(
         {
-          client,
+          ...client,
           ...values
         },
         token || ""
