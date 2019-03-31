@@ -12,7 +12,7 @@ import CalendarEvent from "./CalendarEvent";
 import CalendarEventAgenda from "./CalendarEventAgenda";
 import type { Visit } from "../actions/visits";
 
-BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
+const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
 const title = (
@@ -55,6 +55,7 @@ class Calendar extends Component<Props> {
         <NavControl title={title} />
         <Box full={true} pad="medium">
           <DragAndDropCalendar
+            localizer={localizer}
             selectable={true}
             popup={true}
             defaultView={defaultView}
