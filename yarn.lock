@@ -5422,10 +5422,10 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
-nielsbusch-grommet-css@1.11.0-hpinc2:
-  version "1.11.0-hpinc2"
-  resolved "https://registry.yarnpkg.com/nielsbusch-grommet-css/-/nielsbusch-grommet-css-1.11.0-hpinc2.tgz#120a3789b00fa5f0b1fe674122c0dd4ba6bd36fe"
-  integrity sha512-Kx8/7CHseFtQQPf4qbBTWLB+pZqFEgI5lo2eb50N+esNdQj0Hq59ajfoDqu3GgFCA3vufpANckTatNH0ajOFzA==
+nielsbusch-grommet-css@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/nielsbusch-grommet-css/-/nielsbusch-grommet-css-1.11.0.tgz#d6c058741cbbdf807e4ea54eff41537da9e2b25c"
+  integrity sha512-8U9dNBd+c5c9e8jbh9Aw0MNKjqjTbnIXBRBqLaXBZV6agB1ikhshC3uNgD5QR+ONiHIguk6fHZBxaQn0pPOrrg==
   dependencies:
     grommet "^1.11.0"
 

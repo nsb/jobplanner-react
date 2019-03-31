@@ -96,7 +96,7 @@ class Calendar extends Component<Props> {
                       "text-decoration": "line-through"
                     }
                   : {
-                      "background-color": "#0096D6"
+                      "background-color": "#0A64A0"
                     }
               };
             }}

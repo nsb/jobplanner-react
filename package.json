@@ -7,7 +7,7 @@
     "grommet-addons": "^0.6.0",
     "grommet-templates": "^0.2.0",
     "moment": "^2.22.2",
-    "nielsbusch-grommet-css": "1.11.0-hpinc2",
+    "nielsbusch-grommet-css": "1.11.0",
     "normalizr": "^3.2.3",
     "raven-js": "^3.26.4",
     "react": "^16.8",

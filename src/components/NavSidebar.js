@@ -26,7 +26,7 @@ type Props = {
 class NavSidebar extends Component<Props> {
   render() {
     const { business, intl, user, logout } = this.props;
-    const colorIndex = "brand";
+    const colorIndex = "neutral-1";
 
     return (
       <Sidebar colorIndex={colorIndex} fixed={true}>
