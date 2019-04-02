@@ -66,7 +66,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     const { job, client, jobId, token, fetchJob, fetchClient } = this.props;
     if (!job && token) {
       fetchJob(token, jobId);
-    } else if (job && !client && token) {
+    }
+    if (job && !client && token) {
       fetchClient(token, job.client);
     }
   }
@@ -77,12 +78,12 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       fetchClient(token, job.client);
     }
 
-    if (prevProps.job.closed !== job.closed) {
+    if (prevProps.job && prevProps.job.closed !== job.closed) {
       // if job status has changed we should reload visits
       resetVisits();
     }
 
-    if (prevProps.job.incomplete_visit_count && !job.incomplete_visit_count) {
+    if (prevProps.job && prevProps.job.incomplete_visit_count && !job.incomplete_visit_count) {
       // if job has no incomplete visits ask to close job
       this.setState({showJobClose: true})
     }
@@ -235,7 +236,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                 <Box full="horizontal">
                   <Section pad="medium" full="horizontal">
                     <Heading tag="h3" margin="none">
-                      <strong>{client && client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</strong>
+                      <strong>{client && client && client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</strong>
                     </Heading>
                     {jobDescription} 
                     <Columns masonry={false} maxCount={2}>                      
