@@ -47,7 +47,7 @@ class JobListItem extends Component<Props> {
           alignSelf="start"
           margin={{vertical: "small"}}
           pad="none"
-          colorIndex="accent-2"
+          colorIndex="warning"
         >
           <Heading
             tag="h6"
