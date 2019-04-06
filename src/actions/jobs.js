@@ -56,7 +56,9 @@ export type Job = {
   schedule_visits_task: ?number,
   invoice_reminder: string,
   incomplete_visit_count: number,
-  completed_visit_count: number
+  completed_visit_count: number,
+  requires_invoicing: boolean,
+  has_late_visit: boolean
 };
 
 export type JobsMap = { [id: number]: Job };

@@ -1,6 +1,8 @@
 // @flow
 
 import React, { Component } from "react";
+import Box from "grommet/components/Box";
+import Heading from "grommet/components/Heading";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
 import Status from "grommet/components/icons/Status";
@@ -37,10 +39,32 @@ class JobListItem extends Component<Props> {
       dates = <Timestamp value={job.begins} fields="date" />
     }
 
+    let has_late_visit;
+    if (job.has_late_visit) {
+      has_late_visit = (
+        <Box
+          alignContent="start"
+          alignSelf="start"
+          margin={{vertical: "small"}}
+          pad="small"
+          colorIndex="accent-2"
+        >
+          <Heading
+            tag="h6"
+            uppercase={true}
+            truncate={true}
+            margin="none"
+          >
+            HAS A LATE VISIT
+          </Heading>
+        </Box>
+      )
+    }
+
     return (
       <ListItem
         direction="row"
-        align="center"
+        align="start"
         justify="between"
         separator={index === 0 ? "horizontal" : "bottom"}
         pad={{ horizontal: "medium", vertical: "small", between: "medium" }}
@@ -49,11 +73,16 @@ class JobListItem extends Component<Props> {
         selected={false}
       >
         <span>
-          <Status
-            value={job.closed ? "disabled" : "ok"}
-            a11yTitle={job.closed ? "Closed" : "Open"}
-          />{" "}
-          {jobDescription}
+          <Box>
+            <div>
+              <Status
+                value={job.closed ? "disabled" : "ok"}
+                a11yTitle={job.closed ? "Closed" : "Open"}
+              />{" "}
+              {jobDescription}
+            </div>
+            {has_late_visit}
+          </Box>
         </span>
         {dates}
       </ListItem>
