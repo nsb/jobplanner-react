@@ -63,7 +63,6 @@ class VisitListContainer extends Component<Props, State> {
       } : {
           business: business.id,
           ordering: "begins",
-          begins__gte: new Date(),
           completed: false,
           limit: 20,
           offset: this.state.offset

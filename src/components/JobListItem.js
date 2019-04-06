@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
 import Status from "grommet/components/icons/Status";
-import { HasLateVisitTag } from "./tags";
+import Tag from "./tags";
 import type { Job } from "../actions/jobs";
 
 type Props = {
@@ -42,7 +42,7 @@ class JobListItem extends Component<Props> {
     let has_late_visit;
     if (job.has_late_visit) {
       has_late_visit = (
-        <HasLateVisitTag />
+        <Tag text="Has a late visit" color="accent-1" />
       )
     }
 

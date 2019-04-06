@@ -2,13 +2,18 @@ import React from "react";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 
-export const HasLateVisitTag = () =>
+type Props = {
+    text: String,
+    color: String
+}
+
+export const Tag = ({ text, color = "warning" }: Props) =>
     <Box
         alignContent="start"
         alignSelf="start"
         margin={{ vertical: "small" }}
         pad={{ horizontal: "small" }}
-        colorIndex="warning"
+        colorIndex={color}
     >
         <Heading
             tag="h6"
@@ -16,6 +21,8 @@ export const HasLateVisitTag = () =>
             truncate={true}
             margin="none"
         >
-            HAS A LATE VISIT
-      </Heading>
+            {text}
+        </Heading>
     </Box>
+
+export default Tag

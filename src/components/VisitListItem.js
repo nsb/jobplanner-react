@@ -2,9 +2,9 @@
 
 import React, { Component } from "react";
 import Box from "grommet/components/Box";
-import Heading from "grommet/components/Heading";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
+import Tag from "./tags";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 import type { Job } from "../actions/jobs";
@@ -27,22 +27,7 @@ class VisitListItem extends Component<Props> {
     let is_overdue;
     if (visit.is_overdue) {
       is_overdue = (
-        <Box
-          alignContent="start"
-          alignSelf="start"
-          margin={{vertical: "small"}}
-          pad={{horizontal: "small"}}
-          colorIndex="warning"
-        >
-          <Heading
-            tag="h6"
-            uppercase={true}
-            truncate={true}
-            margin="none"
-          >
-            OVERDUE
-          </Heading>
-        </Box>
+        <Tag text="Overdue" color="accent-2" />
       )
     }
 
