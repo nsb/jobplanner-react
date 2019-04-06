@@ -40,8 +40,8 @@ export type Visit = {
   id: number,
   business: number,
   job: number,
-  property: Object,
-  client: Object,
+  property: number,
+  client: number,
   line_items: [Object],
   completed: boolean,
   begins: Date,
@@ -52,7 +52,8 @@ export type Visit = {
   title: string,
   details: string,
   anytime: boolean,
-  total_cost: number
+  total_cost: number,
+  is_overdue: boolean
 };
 
 export type VisitsResponse = {

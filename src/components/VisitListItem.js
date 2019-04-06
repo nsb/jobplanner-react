@@ -1,6 +1,8 @@
 // @flow
 
 import React, { Component } from "react";
+import Box from "grommet/components/Box";
+import Heading from "grommet/components/Heading";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
@@ -22,10 +24,32 @@ class VisitListItem extends Component<Props> {
     let clientName = job ? undefined : (<span>{visit.client_name}</span>);
     let details = visit.completed ? (<span>Completed</span>) : (<span>{visit.details}</span>);
 
+    let is_overdue;
+    if (visit.is_overdue) {
+      is_overdue = (
+        <Box
+          alignContent="start"
+          alignSelf="start"
+          margin={{vertical: "small"}}
+          pad={{horizontal: "small"}}
+          colorIndex="warning"
+        >
+          <Heading
+            tag="h6"
+            uppercase={true}
+            truncate={true}
+            margin="none"
+          >
+            OVERDUE
+          </Heading>
+        </Box>
+      )
+    }
+
     return (
       <ListItem
         direction="row"
-        align="center"
+        align="start"
         justify="between"
         separator={index === 0 ? "horizontal" : "bottom"}
         pad={{ horizontal: "medium", vertical: "small", between: "medium" }}
@@ -35,10 +59,13 @@ class VisitListItem extends Component<Props> {
       >
         {clientName}
         <span>
+          <Box>
           <Timestamp
             fields={visit.anytime ? "date" : ["date", "time"]}
             value={visit.begins}
           />
+          {is_overdue}
+          </Box>
         </span>
         {details}
         <span>
