@@ -25,6 +25,7 @@ import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import VisitAddContainer from "./VisitAddContainer";
 import JobClose from "./JobClose";
+import { HasLateVisitTag } from "./tags";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Client } from "../actions/clients";
@@ -180,6 +181,13 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       )
     }
 
+    let has_late_visit;
+    if (job && job.has_late_visit) {
+      has_late_visit = (
+        <HasLateVisitTag />
+      )
+    }
+
     if (isFetching) {
       return (
         <Article scrollStep={true} controls={true}>
@@ -229,6 +237,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                     />{" "}
                     <strong>Job #{job.id}</strong>
                   </Heading>
+                  {has_late_visit}
                 </Box>
                 {sidebarControl}
               </Header>
