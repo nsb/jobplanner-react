@@ -35,10 +35,12 @@ export const clientListSchema = new schema.Array(clientSchema);
 const lineItem = new schema.Entity("lineItems");
 
 export const jobSchema = new schema.Entity("jobs", {
+  client: clientSchema,
   line_items: [lineItem]
 });
 
 export const jobSchemaDenormalize = new schema.Entity("jobs", {
+  client: clientSchema,
   line_items: [lineItem]
 });
 

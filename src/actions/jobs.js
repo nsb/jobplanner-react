@@ -39,7 +39,8 @@ export const DELETE_JOB_FAILURE: "DELETE_JOB_FAILURE" = "DELETE_JOB_FAILURE";
 
 export type Job = {
   id: number,
-  client: number,
+  property: number,
+  client: Object,
   client_firstname: string,
   client_lastname: string,
   business: number,

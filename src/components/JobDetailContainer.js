@@ -20,11 +20,10 @@ const mapStateToProps = (
     fetchJob: (string, number) => ThunkAction,
     partialUpdateJob: (number, string) => ThunkAction,
     deleteJob: (Job, string) => ThunkAction,
-    fetchClient: (string, number) => ThunkAction,
     resetVisits: () => ThunkAction
   }
 ): Props => {
-  const { auth, entities, jobs, clients, nav } = state;
+  const { auth, entities, jobs, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
@@ -32,7 +31,7 @@ const mapStateToProps = (
   return {
     token: auth.token,
     business: ensureState(entities).businesses[businessId],
-    isFetching: jobs.isFetching || clients.isFetching,
+    isFetching: jobs.isFetching,
     push: ownProps.history.push,
     client: job && ensureState(entities).clients[job.client],
     property: job && ensureState(entities).properties[job.property],
@@ -42,7 +41,6 @@ const mapStateToProps = (
     fetchJob: ownProps.fetchJob,
     partialUpdateJob: ownProps.partialUpdateJob,
     deleteJob: ownProps.deleteJob,
-    fetchClient: ownProps.fetchClient,
     responsive: nav.responsive,
     resetVisits: ownProps.resetVisits,
     job,

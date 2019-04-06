@@ -57,7 +57,7 @@ class JobEdit extends Component<Props> {
 
   handleSubmit = values => {
     // get client Id
-    const { client: { value: clientId } } = values;
+    const { client: { value: client } } = values;
 
     const { token, business, dispatch } = this.props;
     dispatch(
@@ -65,7 +65,7 @@ class JobEdit extends Component<Props> {
         {
           ...values,
           business: business.id,
-          client: clientId,
+          property: client.properties[0].id,
           assigned: values.assigned.map(v => v.value),
           invoice_reminder: values.invoice_reminder.value
         },

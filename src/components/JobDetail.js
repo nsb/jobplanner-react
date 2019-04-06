@@ -35,7 +35,7 @@ import type { Responsive } from "../actions/nav";
 export type Props = {
   business: Business,
   job: Job,
-  client: ?Client,
+  client: Client,
   lineItems: Array<Object>,
   jobId: number,
   property: ?Property,
@@ -45,7 +45,6 @@ export type Props = {
   fetchJob: Function,
   partialUpdateJob: Function,
   deleteJob: Function,
-  fetchClient: Function,
   resetVisits: Function,
   responsive: Responsive
 };
@@ -64,12 +63,9 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   componentDidMount() {
-    const { job, client, jobId, token, fetchJob, fetchClient } = this.props;
+    const { job, jobId, token, fetchJob } = this.props;
     if (!job && token) {
       fetchJob(token, jobId);
-    }
-    if (job && !client && token) {
-      fetchClient(token, job.client);
     }
   }
 

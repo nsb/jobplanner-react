@@ -19,7 +19,7 @@ type Props = {
   dispatch: Dispatch,
   push: string => void,
   employees: Array<Employee>,
-  client: ?{ value: number, label: string }
+  client: ?{ value: Client, label: string }
 };
 
 type State = {
@@ -57,7 +57,7 @@ class JobsAdd extends Component<Props, State> {
   }
 
   handleSubmit = values => {
-    const { client: { value: clientId } } = values;
+    const { client: { value: client } } = values;
     const { token, business } = this.props;
 
     if (token) {
@@ -65,7 +65,7 @@ class JobsAdd extends Component<Props, State> {
         business,
         {
           ...values,
-          client: clientId,
+          property: client.properties[0],
           assigned: values.assigned && values.assigned.map(v => v.value),
           invoice_reminder: values.invoice_reminder.value
         },
@@ -78,7 +78,7 @@ class JobsAdd extends Component<Props, State> {
   onClose = () => {
     const { business, client, push } = this.props;
     if (client) {
-      push(`/${business.id}/clients/${client.value}`);
+      push(`/${business.id}/clients/${client.value.id}`);
     } else {
       push(`/${business.id}/jobs`);
     }
@@ -116,7 +116,7 @@ const mapStateToProps = (
         return employee.businesses.indexOf(businessId) > -1 ? employee : false;
       }),
     client: client
-      ? { value: client.id, label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}` }
+      ? { value: client, label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}` }
       : undefined
   };
 };

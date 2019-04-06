@@ -634,8 +634,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   };
 
   onSelectClient = (selection: {
-    option: { value: number, label: string },
-    value: { value: number, label: string }
+    option: { value: Client, label: string },
+    value: { value: Client, label: string }
   }) => {
     const { dispatch, change } = this.props;
     dispatch(change("client", selection.option));
