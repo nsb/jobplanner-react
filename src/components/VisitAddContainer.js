@@ -6,6 +6,7 @@ import { createVisitAndLoadJob } from "../actions/index";
 import VisitAdd from "./VisitAdd";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
+import type { LineItem } from "../actions/lineitems";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Props } from "./VisitAdd";
@@ -16,6 +17,7 @@ const mapStateToProps = (
   ownProps: {
     business: Business,
     job: Job,
+    lineItems: Array<LineItem>,
     onClose: Function
   }
 ): Props => {
@@ -34,6 +36,9 @@ const mapStateToProps = (
       }),
     business: ownProps.business,
     job: ownProps.job,
+    lineItems: ownProps.job.line_items.map((Id: number) => {
+      return ensureState(entities).lineItems[Id]
+    }),
     onClose: ownProps.onClose,
     createVisitAndLoadJob: createVisitAndLoadJob
   };

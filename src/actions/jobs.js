@@ -47,7 +47,7 @@ export type Job = {
   recurrences: string,
   title: string,
   description: string,
-  line_items: [Object],
+  line_items: [number],
   begins: Date,
   ends: ?Date,
   start_time: Date,
@@ -59,7 +59,8 @@ export type Job = {
   incomplete_visit_count: number,
   completed_visit_count: number,
   requires_invoicing: boolean,
-  has_late_visit: boolean
+  has_late_visit: boolean,
+
 };
 
 export type JobsMap = { [id: number]: Job };

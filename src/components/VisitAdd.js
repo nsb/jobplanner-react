@@ -5,6 +5,7 @@ import Layer from "grommet/components/Layer";
 import VisitForm from "./VisitForm";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
+import type { LineItem } from "../actions/lineitems";
 import type { Employee } from "../actions/employees";
 
 export type Props = {
@@ -12,13 +13,14 @@ export type Props = {
   token: ?string,
   business: Business,
   job: Job,
+  lineItems: Array<LineItem>,
   onClose: Function,
   createVisitAndLoadJob: Function
 };
 
 class VisitAdd extends Component<Props> {
   render() {
-    const { employees, onClose, job } = this.props;
+    const { employees, onClose, job, lineItems } = this.props;
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
@@ -29,7 +31,7 @@ class VisitAdd extends Component<Props> {
             ends: new Date(),
             anytime: false,
             assigned: [],
-            line_items: [],
+            line_items: lineItems,
             job: job.id
           }}
           onSubmit={this.handleSubmit}
