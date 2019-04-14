@@ -52,7 +52,7 @@ class JobList extends Component<Props, State> {
   componentDidMount() {
     const { business, jobs, token, dispatch } = this.props;
     if (!jobs.length) {
-      dispatch(fetchJobs(token, { business: business.id }));
+      dispatch(fetchJobs(token, { business: business.id, ordering: "status_order,next_visit" }));
     }
   }
 
