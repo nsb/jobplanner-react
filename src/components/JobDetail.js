@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { intlShape } from "react-intl";
+import moment from "moment";
 import Split from "grommet/components/Split";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
@@ -16,6 +17,7 @@ import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import ListItem from "grommet/components/ListItem";
 import Spinning from "grommet/components/icons/Spinning";
+import Timestamp from "grommet/components/Timestamp";
 import MoreIcon from "grommet/components/icons/base/More";
 import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
@@ -61,6 +63,18 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     showAddVisit: false,
     showJobClose: false
   };
+
+  constructor(props: Props) {
+    super(props);
+
+    this.dateFormat = moment()
+    .creationData()
+    .locale.longDateFormat("L");
+  this.timeFormat = moment()
+    .creationData()
+    .locale.longDateFormat("LT");
+
+  }
 
   componentDidMount() {
     const { job, jobId, token, fetchJob } = this.props;
@@ -244,7 +258,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                         <Heading tag="h4" margin="none">
                           Details
                         </Heading>
-                        {`Job #${job.id}`}
+                        <span>Started on <Timestamp value={job.begins} fields="date" /></span>
                         <br />
                         {job.recurrences ? rrulestr(job.recurrences).toText() : "One-Off job"}
                       </Box>
