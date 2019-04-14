@@ -51,7 +51,6 @@ class ClientDetail extends Component<Props, State> {
   componentDidMount() {
     const {
       client,
-      jobs,
       clientId,
       token,
       fetchClient,
@@ -60,7 +59,7 @@ class ClientDetail extends Component<Props, State> {
     if (!client && token) {
       fetchClient(token, clientId);
     }
-    if (!jobs.length && token) {
+    if (token) {
       fetchJobs(token, { client: clientId, ordering: "closed,next_visit" });
     }
   }
