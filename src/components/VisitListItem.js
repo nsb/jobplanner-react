@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import Box from "grommet/components/Box";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
-import Tag from "./tags";
+import Tag from "./Tag";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 import type { Job } from "../actions/jobs";

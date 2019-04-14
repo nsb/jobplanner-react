@@ -37,6 +37,15 @@ export const DELETE_JOB: "DELETE_JOB" = "DELETE_JOB";
 export const DELETE_JOB_SUCCESS: "DELETE_JOB_SUCCESS" = "DELETE_JOB_SUCCESS";
 export const DELETE_JOB_FAILURE: "DELETE_JOB_FAILURE" = "DELETE_JOB_FAILURE";
 
+type JobStatus =
+  | 'requires_invoicing'
+  | 'action_required'
+  | 'has_late_visit'
+  | 'today'
+  | 'upcoming'
+  | 'archived'
+  | 'active'
+
 export type Job = {
   id: number,
   property: number,
@@ -60,7 +69,7 @@ export type Job = {
   completed_visit_count: number,
   requires_invoicing: boolean,
   has_late_visit: boolean,
-
+  status: JobStatus
 };
 
 export type JobsMap = { [id: number]: Job };
