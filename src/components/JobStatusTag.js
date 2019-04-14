@@ -13,9 +13,9 @@ class JobStatusTag extends Component<Props> {
             case 'requires_invoicing': return <Tag text="Requires invoicing" color="accent-1" />;
             case 'action_required': return <Tag text="Action required" color="accent-2" />;
             case 'has_late_visit': return <Tag text="Has a late visit" color="accent-3" />;
-            case 'today': return <Tag text="Today" color="accent-1" />;
-            case 'upcoming': return <Tag text="Upcoming" color="accent-1" />;
-            case 'archived': return <Tag text="Archived" color="accent-3" />;
+            case 'today': return <Tag text="Today" color="neutral-1" />;
+            case 'upcoming': return <Tag text="Upcoming" color="neutral-2" />;
+            case 'archived': return <Tag text="Archived" color="neutral-4" />;
             default:
           }
     }
