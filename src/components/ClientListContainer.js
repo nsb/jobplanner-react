@@ -29,7 +29,7 @@ class ClientListContainer extends Component<Props, State> {
   state: State = {
     searchText: "",
     offset: 0,
-    limit: 30
+    limit: 25
   };
 
   componentDidMount() {

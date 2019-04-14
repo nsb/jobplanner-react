@@ -40,24 +40,24 @@ type Props = {
 };
 
 type State = {
-  searchText: string
+  searchText: string,
+  offset: number,
+  limit: number
 };
 
 class JobList extends Component<Props, State> {
-  constructor() {
-    super();
-    this.state = { searchText: "" };
-  }
+  state: State = {
+    searchText: "",
+    offset: 0,
+    limit: 25
+  };
 
   componentDidMount() {
-    const { business, jobs, token, dispatch } = this.props;
-    if (!jobs.length) {
-      dispatch(fetchJobs(token, { business: business.id, ordering: "status_order,next_visit" }));
-    }
+    this.onMore();
   }
 
   render() {
-    const { jobs, business, isFetching } = this.props;
+    const { jobs, business, isFetching, totalCount } = this.props;
 
     const filteredJobs = jobs.filter(job => {
       const searchText = this.state.searchText.toLowerCase();
@@ -90,7 +90,7 @@ class JobList extends Component<Props, State> {
           />
           {addControl}
         </Header>
-        <List onMore={isFetching ? this.onMore : undefined}>
+        <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
           {filteredJobs.map((job, index) => {
             return (
               <JobListItem
@@ -120,7 +120,21 @@ class JobList extends Component<Props, State> {
     );
   }
 
-  onMore = () => {};
+  onMore = () => {
+    const { token, dispatch, business } = this.props;
+    if(token) {
+      dispatch(
+        fetchJobs(token, {
+          business: business.id,
+          ordering: "status_order,next_visit",
+          limit: this.state.limit,
+          offset: this.state.offset,
+          search: this.state.searchText
+        })
+      );
+      this.setState({ offset: this.state.offset + this.state.limit });
+    }
+  };
 
   onClick = (e: SyntheticEvent<>, job: Job) => {
     const { push, business } = this.props;
@@ -150,6 +164,7 @@ const mapStateToProps = (
     isFetching: jobs.isFetching,
     token: auth.token,
     push: ownProps.push,
+    totalCount: jobs.count
   };
 };
 

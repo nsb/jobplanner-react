@@ -69,7 +69,8 @@ export type Job = {
   completed_visit_count: number,
   requires_invoicing: boolean,
   has_late_visit: boolean,
-  status: JobStatus
+  status: JobStatus,
+  next_visit: Date
 };
 
 export type JobsMap = { [id: number]: Job };
@@ -183,6 +184,7 @@ const parse = (job): Job => {
   return merge({}, job, {
     begins: job.begins && new Date(job.begins),
     ends: job.ends && new Date(job.ends),
+    next_visit: job.next_visit && new Date(job.next_visit),
     start_time: job.start_time && moment(job.start_time, "HH:mm"),
     finish_time: job.finish_time && moment(job.finish_time, "HH:mm")
   });

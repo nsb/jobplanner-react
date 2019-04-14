@@ -168,7 +168,7 @@ class CalendarContainer extends Component<Props, State> {
             moment(this.state.date)
               .endOf(this.state.view)
               .toDate(),
-          limit: 100,
+          limit: 200,
           offset: 0
         })
       );
