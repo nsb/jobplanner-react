@@ -49,7 +49,7 @@ class JobList extends Component<Props, State> {
   state: State = {
     searchText: "",
     offset: 0,
-    limit: 25
+    limit: 15
   };
 
   componentDidMount() {
