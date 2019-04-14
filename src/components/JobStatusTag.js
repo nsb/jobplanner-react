@@ -15,7 +15,7 @@ class JobStatusTag extends Component<Props> {
             case 'has_late_visit': return <Tag text="Has a late visit" color="accent-3" />;
             case 'today': return <Tag text="Today" color="neutral-1" />;
             case 'upcoming': return <Tag text="Upcoming" color="neutral-2" />;
-            case 'archived': return <Tag text="Archived" color="neutral-4" />;
+            case 'archived': return <Tag text="Archived" color="unknown" />;
             default:
           }
     }
