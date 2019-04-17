@@ -7,16 +7,18 @@ import Timestamp from "grommet/components/Timestamp";
 import Status from "grommet/components/icons/Status";
 import JobStatusTag from "./JobStatusTag";
 import type { Job } from "../actions/jobs";
+import type { Client } from "../actions/clients";
 
 type Props = {
   job: Job,
+  client: ?Client,
   index: number,
   onClick: Function
 };
 
 class JobListItem extends Component<Props> {
   render() {
-    const { job, index, onClick } = this.props;
+    const { job, client, index, onClick } = this.props;
 
     let jobDescription;
     if (job.description) {
@@ -62,6 +64,7 @@ class JobListItem extends Component<Props> {
             <JobStatusTag status={job.status} />
           </Box>
         </span>
+        <span>{client && (client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`)}</span>
         {dates}
       </ListItem>
     );

@@ -12,7 +12,7 @@ import AddIcon from "grommet/components/icons/base/Add";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import { fetchJobs } from "../actions/jobs";
-import JobListItem from "./JobListItem";
+import JobListItemContainer from "./JobListItemContainer";
 import NavControl from "./NavControl";
 import { ensureState } from "redux-optimistic-ui";
 
@@ -93,7 +93,7 @@ class JobList extends Component<Props, State> {
         <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
           {filteredJobs.map((job, index) => {
             return (
-              <JobListItem
+              <JobListItemContainer
                 key={job.id}
                 job={job}
                 index={index}
