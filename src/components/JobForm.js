@@ -390,7 +390,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 
     const mappedClients = this.state.clients.map(client => {
       return {
-        value: client.id,
+        value: client,
         label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`
       };
     });

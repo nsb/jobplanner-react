@@ -65,7 +65,7 @@ class JobsAdd extends Component<Props, State> {
         business,
         {
           ...values,
-          property: client.properties[0],
+          property: client.properties[0].id ? client.properties[0].id : client.properties[0], // client may not be normalized
           assigned: values.assigned && values.assigned.map(v => v.value),
           invoice_reminder: values.invoice_reminder.value
         },

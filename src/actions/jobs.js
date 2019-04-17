@@ -49,7 +49,7 @@ type JobStatus =
 export type Job = {
   id: number,
   property: number,
-  client: Object,
+  client: number,
   client_firstname: string,
   client_lastname: string,
   business: number,
