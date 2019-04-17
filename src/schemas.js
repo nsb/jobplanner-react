@@ -34,18 +34,6 @@ export const clientListSchema = new schema.Array(clientSchema);
 
 const lineItem = new schema.Entity("lineItems");
 
-export const jobSchema = new schema.Entity("jobs", {
-  client: clientSchema,
-  line_items: [lineItem]
-});
-
-export const jobSchemaDenormalize = new schema.Entity("jobs", {
-  client: clientSchema,
-  line_items: [lineItem]
-});
-
-export const jobListSchema = new schema.Array(jobSchema);
-
 export const visitSchema = new schema.Entity("visits", {
   line_items: [lineItem],
   assigned: [employeeSchema],
@@ -57,6 +45,21 @@ export const visitListSchema = new schema.Array(visitSchema);
 export const visitSchemaDenormalize = new schema.Entity("visits", {
   line_items: [lineItem]
 });
+
+export const jobSchema = new schema.Entity("jobs", {
+  client: clientSchema,
+  line_items: [lineItem],
+  visits: [visitSchema]
+});
+
+export const jobSchemaDenormalize = new schema.Entity("jobs", {
+  client: clientSchema,
+  line_items: [lineItem],
+  visits: [visitSchema]
+});
+
+export const jobListSchema = new schema.Array(jobSchema);
+
 
 export const asyncTaskSchema = new schema.Entity("asyncTasks", {});
 export const asyncTaskListSchema = new schema.Array(asyncTaskSchema);
