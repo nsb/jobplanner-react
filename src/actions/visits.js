@@ -53,7 +53,8 @@ export type Visit = {
   details: string,
   anytime: boolean,
   total_cost: number,
-  is_overdue: boolean
+  is_overdue: boolean,
+  status: string
 };
 
 export type VisitsResponse = {
