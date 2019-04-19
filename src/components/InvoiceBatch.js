@@ -52,9 +52,7 @@ class InvoiceBatch extends Component<Props, State> {
         <List onMore={undefined}>
           {Object.keys(clients).map((id, index) => {
             return (
-              <Box key={index}>
-                <InvoiceBatchClientContainer client={clients[id]} />
-              </Box>
+              <InvoiceBatchClientContainer client={clients[id]} key={index} />
             );
           })}
         </List>

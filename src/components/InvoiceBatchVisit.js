@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import ListItem from "grommet/components/ListItem";
 import Box from 'grommet/components/Box';
+import CheckBox from 'grommet/components/CheckBox';
+import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
 
 export type Props = {
@@ -17,16 +19,17 @@ class InvoiceBatchVisit extends Component<Props> {
 
     return (
       <ListItem
-        direction="row"
-        align="start"
-        justify="between"
-        // separator={index === 0 ? "horizontal" : "bottom"}
-        pad={{ horizontal: "medium", vertical: "small", between: "medium" }}
-        responsive={true}
-        onClick={undefined}
-        selected={false}
+        direction="horizontal"
+        separator="none"
       >
-        <Box>{visit.id}</Box>
+        <Box>
+          <span>
+            <CheckBox
+              checked={true}
+              onChange={(e) => false} />
+            <Timestamp fields={["date", "year"]} value={visit.begins} />
+          </span>
+        </Box>
       </ListItem>
     )
   }

@@ -36,6 +36,11 @@ export const DELETE_VISIT: "DELETE_VISIT" = "DELETE_VISIT";
 export const DELETE_VISIT_SUCCESS: "DELETE_VISIT_SUCCESS" = "DELETE_VISIT_SUCCESS";
 export const DELETE_VISIT_FAILURE: "DELETE_VISIT_FAILURE" = "DELETE_VISIT_FAILURE";
 
+export type VisitStatus =
+  | 'completed'
+  | 'upcoming'
+  | 'overdue'
+
 export type Visit = {
   id: number,
   business: number,
@@ -54,7 +59,7 @@ export type Visit = {
   anytime: boolean,
   total_cost: number,
   is_overdue: boolean,
-  status: string
+  status: VisitStatus
 };
 
 export type VisitsResponse = {

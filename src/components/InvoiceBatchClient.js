@@ -3,12 +3,13 @@
 import React, { Component } from 'react';
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
-import Box from 'grommet/components/Box';
+import CheckBox from 'grommet/components/CheckBox';
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 
 export type Props = {
+    key: number,
     client: Client,
     jobs: Array<Job>
 };
@@ -16,20 +17,21 @@ export type Props = {
 class InvoiceBatchClient extends Component<Props> {
 
   render() {
-    const { client, jobs } = this.props;
+    const { client, jobs, key } = this.props;
 
     return (
       <ListItem
-        direction="row"
+        direction="column"
         align="start"
-        justify="between"
-        // separator={index === 0 ? "horizontal" : "bottom"}
-        pad={{ horizontal: "medium", vertical: "small", between: "medium" }}
-        responsive={true}
-        onClick={undefined}
-        selected={false}
+        separator={key === 0 ? "horizontal" : "bottom"}
       >
-        <Box>{client.first_name}</Box>
+        <span>
+          <CheckBox
+            checked={true}
+            onChange={undefined}
+          />
+          {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
+        </span>
         <List onMore={undefined}>
           {jobs.map((job) => {
             return (

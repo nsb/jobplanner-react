@@ -37,7 +37,7 @@ export const DELETE_JOB: "DELETE_JOB" = "DELETE_JOB";
 export const DELETE_JOB_SUCCESS: "DELETE_JOB_SUCCESS" = "DELETE_JOB_SUCCESS";
 export const DELETE_JOB_FAILURE: "DELETE_JOB_FAILURE" = "DELETE_JOB_FAILURE";
 
-type JobStatus =
+export type JobStatus =
   | 'requires_invoicing'
   | 'action_required'
   | 'has_late_visit'
