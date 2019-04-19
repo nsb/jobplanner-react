@@ -2,8 +2,7 @@
 
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import InvoiceList from "../components/InvoiceListContainer";
-import InvoiceDetail from "../components/InvoiceDetailContainer";
+import InvoiceBatchLoader from "../components/InvoiceBatchLoader";
 
 class Invoices extends Component<*> {
   render() {
@@ -12,9 +11,9 @@ class Invoices extends Component<*> {
         <Route
           exact
           path="/:businessId/invoices/:invoiceId"
-          component={InvoiceDetail}
+          component={Component}
         />
-        <Route component={InvoiceList} />
+        <Route component={InvoiceBatchLoader} />
       </Switch>
     );
   }

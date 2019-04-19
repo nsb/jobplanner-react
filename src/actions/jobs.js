@@ -70,7 +70,8 @@ export type Job = {
   requires_invoicing: boolean,
   has_late_visit: boolean,
   status: JobStatus,
-  next_visit: Date
+  // next_visit: Date,
+  visits: Array<number>
 };
 
 export type JobsMap = { [id: number]: Job };

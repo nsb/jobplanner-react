@@ -8,6 +8,15 @@ import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import { ensureState } from "redux-optimistic-ui";
 
+const visitsSelector = (state: ReduxState) => ensureState(state.entities).visits;
+const idSelector = (state, props) => props.id;
+
+export const getVisitById: (ReduxState, Object) => Visit = createSelector(
+   visitsSelector,
+   idSelector,
+   (visits, id) => visits[id]
+);
+
 type Groupee = "day" | "week" | "month" | "year";
 
 const groupVisits = (
