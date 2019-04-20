@@ -8,41 +8,53 @@ import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
+import type { ClientSelection } from "./InvoiceBatchClient";
+import type { VisitSelection } from "./InvoiceBatchVisit";
+import type { JobSelection } from "./InvoiceBatchJob";
 
 export type Props = {
-  clients: { [key: string]: Array<Client> },
-  jobs: { [key: string]: Array<Job> },
-  visits: { [key: string]: Array<Visit> }
+  clients: { [key: string]: Client },
+  jobs: { [key: string]: Job },
+  visits: { [key: string]: Visit }
 };
-
-type selectHandler = (selected: boolean) => void;
-type VisitSelection = { visit: number, selected: boolean, onChange: selectHandler };
-type JobSelection = { job: number, selected: boolean, onChange: selectHandler, visits: Array<VisitSelection> };
-type ClientSelection = { client: number, selected: boolean, onChange: selectHandler, jobs: Array<JobSelection> };
 
 type State = {
-  selectionTree: { [key: string]: Array<ClientSelection> }
-};
+  selected: ClientSelection
+}
 
 class InvoiceBatch extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { clients } = props;
+    const { clients } = this.props;
+    this.state = { selected: {} };
 
-    this.state = { selectionTree: {} };
+    this.state.selected = Object.keys(clients).reduce((acc, clientId) => { return { ...acc, ...this._clientState(clients[clientId])}}, {})
+  }
 
-    this.state.selectionTree = Object.keys(clients).reduce((acc, id) => {
-      return { ...acc,
-               [id]: { 
-                 client: parseInt(id, 10),
-                 selected: false,
-                 onChange: (selected) => true,
-                 jobs: []
-                }
-              }
-    }, this.state.selectionTree);
+  _visitState = (visit: Visit): VisitSelection => {
+    return { [visit.id]: visit.completed }
+  }
 
+  _jobState = (job: Job): JobSelection => {
+    const { visits } = this.props;
+    const visitsForJob = job.visits.map((visitId) => { return visits[visitId.toString()] });
+    return {
+      [job.id]: {
+        selected: visitsForJob.some((visit) => visit.completed),
+        visits: visitsForJob.reduce((acc, visit) => { return { ...acc, ...this._visitState(visit) } }, {})
+      }
+    }
+  }
+
+  _clientState = (client: Client): ClientSelection => {
+    const { jobs } = this.props;
+    return {
+      [client.id]: {
+        selected: false,
+        jobs: Object.keys(jobs).filter((jobId) => { return jobs[jobId].client === client.id }).map((jobId) => { return jobs[jobId] }).reduce((acc, job) => { return { ...acc, ...this._jobState(job) } }, {})
+      }
+    }
   }
 
   render() {
@@ -52,7 +64,11 @@ class InvoiceBatch extends Component<Props, State> {
         <List onMore={undefined}>
           {Object.keys(clients).map((id, index) => {
             return (
-              <InvoiceBatchClientContainer client={clients[id]} key={index} />
+              <InvoiceBatchClientContainer
+                client={clients[id]}
+                key={index}
+                onChange={this.onChange}
+                selected={{[id]: this.state.selected[id]}} />
             );
           })}
         </List>
@@ -63,6 +79,10 @@ class InvoiceBatch extends Component<Props, State> {
         />
       </Box>
     )
+  }
+
+  onChange = () => {
+    console.log("onChange");
   }
 };
 

@@ -7,40 +7,45 @@ import CheckBox from 'grommet/components/CheckBox';
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
+import type { JobSelection } from "./InvoiceBatchJob";
+
+export type ClientSelection = {
+  [key: string]: { selected: Boolean, jobs: JobSelection }
+}
 
 export type Props = {
-    key: number,
-    client: Client,
-    jobs: Array<Job>
+  client: Client,
+  jobs: Array<Job>,
+  onChange: Function,
+  selected: ClientSelection
 };
 
 class InvoiceBatchClient extends Component<Props> {
 
   render() {
-    const { client, jobs, key } = this.props;
+    const { client, jobs, selected } = this.props;
 
     return (
       <ListItem
         direction="column"
         align="start"
-        separator={key === 0 ? "horizontal" : "bottom"}
       >
         <span>
           <CheckBox
-            checked={true}
+            checked={selected[client.id.toString()].selected}
             onChange={undefined}
           />
           {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
         </span>
         <List onMore={undefined}>
-          {jobs.map((job) => {
+          {jobs.map((job, index) => {
             return (
-              <InvoiceBatchJobContainer job={job} />
+              <InvoiceBatchJobContainer job={job} selected={{ [job.id]: selected[client.id.toString()].jobs[job.id.toString()] }} key={index} />
             )
           })}
         </List>
       </ListItem>
-    )  
+    )
   }
 };
 

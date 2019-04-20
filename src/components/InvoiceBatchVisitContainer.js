@@ -4,19 +4,23 @@ import { connect } from "react-redux";
 import InvoiceBatchVisit from "./InvoiceBatchVisit";
 import type { Props } from "./InvoiceBatchVisit";
 import type { Visit } from "../actions/visits";
+import type { VisitSelection } from "./InvoiceBatchVisit";
 import type { State as ReduxState } from "../types/State";
 
 const mapStateToProps = (
 	state: ReduxState,
 	ownProps: {
 		visit: Visit,
-		lineItems: Array<Visit>
+		lineItems: Array<Visit>,
+		selected: VisitSelection
 	}
 ): Props => {
 
 	return {
 		visit: ownProps.visit,
-		lineItems: []
+		lineItems: [],
+		selected: ownProps.selected,
+		onChange: () => {}
 	};
 };
 
