@@ -16,8 +16,8 @@ export type ClientSelection = {
 export type Props = {
   client: Client,
   jobs: Array<Job>,
-  onChange: Function,
-  selected: ClientSelection
+  selected: ClientSelection,
+  onChange: (ClientSelection) => void
 };
 
 class InvoiceBatchClient extends Component<Props> {
@@ -33,19 +33,47 @@ class InvoiceBatchClient extends Component<Props> {
         <span>
           <CheckBox
             checked={selected[client.id.toString()].selected}
-            onChange={undefined}
+            onChange={this.onClientChanged}
           />
           {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
         </span>
         <List onMore={undefined}>
           {jobs.map((job, index) => {
             return (
-              <InvoiceBatchJobContainer job={job} selected={{ [job.id]: selected[client.id.toString()].jobs[job.id.toString()] }} key={index} />
+              <InvoiceBatchJobContainer
+                job={job}
+                selected={{ [job.id]: selected[client.id.toString()].jobs[job.id.toString()] }}
+                onChange={this.onJobChanged} key={index}
+              />
             )
           })}
         </List>
       </ListItem>
     )
+  }
+
+  onClientChanged = () => {
+    const { onChange, client, selected } = this.props;
+
+    onChange({
+      [client.id]: {
+        ...selected[client.id.toString()],
+        ...{ selected: !selected[client.id.toString()].selected}
+      }
+    });
+  }
+
+  onJobChanged = (selection: JobSelection) => {
+    const { onChange, selected, client } = this.props;
+
+    const newSelected = {
+      [client.id]: {
+        selected: selected[client.id.toString()].selected,
+        jobs: { ...selected[client.id.toString()].jobs, ...selection}
+      }
+    };
+
+    onChange(newSelected);
   }
 };
 

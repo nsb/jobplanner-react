@@ -12,7 +12,8 @@ const mapStateToProps = (
 	ownProps: {
 		visit: Visit,
 		lineItems: Array<Visit>,
-		selected: VisitSelection
+		selected: VisitSelection,
+		onChange: (VisitSelection) => void
 	}
 ): Props => {
 
@@ -20,7 +21,7 @@ const mapStateToProps = (
 		visit: ownProps.visit,
 		lineItems: [],
 		selected: ownProps.selected,
-		onChange: () => {}
+		onChange: ownProps.onChange
 	};
 };
 

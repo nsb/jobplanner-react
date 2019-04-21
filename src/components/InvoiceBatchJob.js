@@ -17,7 +17,7 @@ export type Props = {
   job: Job,
   visits: Array<Visit>,
   selected: JobSelection,
-  onChange: ({ [key: string]: boolean, visits: VisitSelection }) => void
+  onChange: (JobSelection) => void
 };
 
 class InvoiceBatchClient extends Component<Props> {
@@ -34,7 +34,7 @@ class InvoiceBatchClient extends Component<Props> {
         <span>
           <CheckBox
             checked={selected[job.id.toString()].selected}
-            onChange={undefined} />
+            onChange={this.onJobChanged} />
           #{job.id} - {job.recurrences ? 'Recurring job' : 'One-off job'}
         </span>
         <List onMore={undefined}>
@@ -43,12 +43,38 @@ class InvoiceBatchClient extends Component<Props> {
               <InvoiceBatchVisitContainer
                 visit={visit}
                 key={index}
-                selected={{ [visit.id]: selected[job.id.toString()].visits[visit.id.toString()] }} />
+                selected={{ [visit.id]: selected[job.id.toString()].visits[visit.id.toString()] }}
+                onChange={this.onVisitChanged}
+              />
             )
           })}
         </List>
       </ListItem>
     )
+  }
+
+  onJobChanged = () => {
+    const { onChange, job, selected } = this.props;
+
+    onChange({
+      [job.id]: {
+        ...selected[job.id.toString()],
+        ...{ selected: !selected[job.id.toString()].selected}
+      }
+    });
+  }
+
+  onVisitChanged = (selection: VisitSelection): void => {
+    const { onChange, selected, job } = this.props;
+
+    const newSelected = {
+      [job.id]: {
+        selected: selected[job.id.toString()].selected,
+        visits: { ...selected[job.id.toString()].visits, ...selection}
+      }
+    };
+
+    onChange(newSelected);
   }
 };
 

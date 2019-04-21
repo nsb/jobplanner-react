@@ -13,7 +13,7 @@ export type Props = {
   visit: Visit,
   lineItems: Array<Visit>,
   selected: VisitSelection,
-  onChange: ({ [key: string]: boolean }) => void
+  onChange: (VisitSelection) => void
 };
 
 class InvoiceBatchVisit extends Component<Props> {
@@ -30,12 +30,18 @@ class InvoiceBatchVisit extends Component<Props> {
           <span>
             <CheckBox
               checked={selected[visit.id.toString()]}
-              onChange={(e) => false} />
+              onChange={this.onChanged} />
             <Timestamp fields={["date", "year"]} value={visit.begins} />
           </span>
         </Box>
       </ListItem>
     )
+  }
+
+  onChanged = () => {
+    const { onChange, visit, selected } = this.props;
+
+    onChange({ [visit.id]: !selected[visit.id.toString()] });
   }
 };
 

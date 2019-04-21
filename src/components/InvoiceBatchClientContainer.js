@@ -12,16 +12,16 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     client: Client,
-    onChange: Function,
-    selected: ClientSelection
+    selected: ClientSelection,
+    onChange: (ClientSelection) => void
   }
 ): Props => {
 
   return {
     client: ownProps.client,
     jobs: jobsWithRequiresInvoicing(state).filter((job) => job.client === ownProps.client.id),
+    selected: ownProps.selected,
     onChange: ownProps.onChange,
-    selected: ownProps.selected
   };
 };
 

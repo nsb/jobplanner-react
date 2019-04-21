@@ -14,7 +14,8 @@ const mapStateToProps = (
   ownProps: {
     job: Job,
     visits: Array<Visit>,
-    selected: JobSelection
+    selected: JobSelection,
+    onChange: (JobSelection) => void
   }
 ): Props => {
 
@@ -22,7 +23,7 @@ const mapStateToProps = (
     job: ownProps.job,
     visits: ownProps.job.visits.map((visit) => getVisitById(state, { id: visit })),
     selected: ownProps.selected,
-    onChange: () => {}
+    onChange: ownProps.onChange
   };
 };
 

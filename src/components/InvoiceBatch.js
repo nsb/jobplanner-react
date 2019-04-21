@@ -29,7 +29,7 @@ class InvoiceBatch extends Component<Props, State> {
     const { clients } = this.props;
     this.state = { selected: {} };
 
-    this.state.selected = Object.keys(clients).reduce((acc, clientId) => { return { ...acc, ...this._clientState(clients[clientId])}}, {})
+    this.state.selected = Object.keys(clients).reduce((acc, clientId) => { return { ...acc, ...this._clientState(clients[clientId]) } }, {})
   }
 
   _visitState = (visit: Visit): VisitSelection => {
@@ -68,7 +68,7 @@ class InvoiceBatch extends Component<Props, State> {
                 client={clients[id]}
                 key={index}
                 onChange={this.onChange}
-                selected={{[id]: this.state.selected[id]}} />
+                selected={{ [id]: this.state.selected[id] }} />
             );
           })}
         </List>
@@ -81,8 +81,8 @@ class InvoiceBatch extends Component<Props, State> {
     )
   }
 
-  onChange = () => {
-    console.log("onChange");
+  onChange = (selection: ClientSelection) => {
+    this.setState({ selected: selection });
   }
 };
 
