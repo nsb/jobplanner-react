@@ -3,10 +3,15 @@ import { normalize } from "normalizr";
 import { addSuccess, addError } from "redux-flash-messages";
 import { invoiceListSchema, invoiceSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
-import type { Visit } from "./visits";
-import type { Client } from "./clients";
 import invoicesApi from "../api";
 import history from "../history";
+
+//Create new invoice
+export const CREATE_INVOICE: "CREATE_INVOICE" = "CREATE_INVOICE";
+export const CREATE_INVOICE_SUCCESS: "CREATE_INVOICE_SUCCESS" =
+  "CREATE_INVOICE_SUCCESS";
+export const CREATE_INVOICE_FAILURE: "CREATE_INVOICE_FAILURE" =
+  "CREATE_INVOICE_FAILURE";
 
 //Fetch invoices
 export const FETCH_INVOICES: "FETCH_INVOICES" = "FETCH_INVOICES";
@@ -39,18 +44,16 @@ export const DELETE_INVOICE_FAILURE: "DELETE_INVOICE_FAILURE" =
 export type Invoice = {
   id: number,
   business: number,
-  visits: Array<Visit>,
+  visits: Array<number>,
   date: Date,
-  job: number,
-  property: number,
   description: string,
-  client: Client,
+  client: number,
   total_ex_vat: number,
   total_inc_vat: number,
   paid: boolean
 };
 
-export type InvoicesMap = { [id: number]: Invoice };
+export type InvoicesMap = { [id: number]: Invoice | {client: number, visits: Array<number>} };
 
 export type InvoicesResponse = {
   results: Array<Invoice>,
@@ -85,6 +88,22 @@ type FetchInvoiceSuccessAction = {
 
 type FetchInvoiceFailureAction = {
   type: typeof FETCH_INVOICE_FAILURE,
+  error: string
+};
+
+type CreateInvoiceAction = {
+  type: typeof CREATE_INVOICE,
+  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>
+};
+
+type CreateInvoiceSuccessAction = {
+  type: typeof CREATE_INVOICE_SUCCESS,
+  payload: { entities: { invoices: InvoicesMap }, result: number }
+};
+
+type CreateInvoiceFailureAction = {
+  type: typeof CREATE_INVOICE_FAILURE,
+  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
   error: string
 };
 
@@ -131,6 +150,9 @@ export type Action =
   | FetchInvoiceAction
   | FetchInvoiceSuccessAction
   | FetchInvoiceFailureAction
+  | CreateInvoiceAction
+  | CreateInvoiceSuccessAction
+  | CreateInvoiceFailureAction
   | UpdateInvoiceAction
   | UpdateInvoiceSuccessAction
   | UpdateInvoiceFailureAction
@@ -225,6 +247,59 @@ export const fetchInvoice = (token: string, id: number): ThunkAction => {
       })
       .catch((error: string) => {
         dispatch(fetchInvoicesFailure("error"));
+        addError({
+          text: "An error occurred"
+        });
+      });
+  };
+};
+
+export const createInvoiceRequest = (payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>): CreateInvoiceAction => {
+  return {
+    type: CREATE_INVOICE,
+    payload
+  };
+};
+
+export const createInvoiceSuccess = (
+  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>
+): CreateInvoiceSuccessAction => {
+  return {
+    type: CREATE_INVOICE_SUCCESS,
+    receivedAt: Date.now(),
+    payload: normalize(payload, invoiceSchema)
+  };
+};
+
+export const createInvoiceError = (
+  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
+  error: string
+): CreateInvoiceFailureAction => {
+  return {
+    type: CREATE_INVOICE_FAILURE,
+    error,
+    payload
+  };
+};
+
+export const createInvoice = (
+  invoice: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
+  token: string
+): ThunkAction => {
+  return (dispatch: Dispatch) => {
+    dispatch(createInvoiceRequest(invoice));
+
+    return invoicesApi
+      .create("invoices", invoice, token)
+      .then((responseInvoice: Invoice) => {
+        dispatch(createInvoiceSuccess(responseInvoice));
+        addSuccess({
+          text: "Created"
+        });
+        return responseInvoice;
+      })
+      .catch((error: string) => {
+        dispatch(createInvoiceError(invoice, error));
         addError({
           text: "An error occurred"
         });

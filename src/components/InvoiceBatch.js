@@ -15,11 +15,14 @@ import type { Visit } from "../actions/visits";
 import type { ClientSelection } from "./InvoiceBatchClient";
 import type { VisitSelection } from "./InvoiceBatchVisit";
 import type { JobSelection } from "./InvoiceBatchJob";
+import type { ThunkAction } from "../types/Store";
 
 export type Props = {
   clients: { [key: string]: Client },
   jobs: { [key: string]: Job },
-  visits: { [key: string]: Visit }
+  visits: { [key: string]: Visit },
+  createInvoice: (Array<{client: number, visits: Array<number>}>, string) => ThunkAction,
+  token: ?string
 };
 
 type State = {
@@ -87,7 +90,7 @@ class InvoiceBatch extends Component<Props, State> {
           unfilteredTotal={Object.entries(clients).length}
           emptyMessage="Nothing to invoice"
         />
-        <Form>
+        <Form onSubmit={this.onSubmit}>
           <Footer pad={{"vertical": "medium"}}>
             <Button label='Create invoices'
               type='submit'
@@ -101,6 +104,33 @@ class InvoiceBatch extends Component<Props, State> {
 
   onChange = (selection: ClientSelection) => {
     this.setState({ selected: selection });
+  }
+
+  onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const { selected } = this.state;
+
+    let invoices: Array<{client: number, visits: Array<number>}> = [];
+    let selectedClientIds = Object.keys(selected).filter((clientId) => { return selected[clientId].selected });
+
+    for (let clientId of selectedClientIds) {
+      let visitIds = [];
+      let jobs = selected[clientId].jobs;
+      let selectedJobIds = Object.keys(jobs).filter((jobId) => { return jobs[jobId].selected })
+      for (let jobId of selectedJobIds) {
+        let visits = selected[clientId].jobs[jobId].visits;
+        let selectedVisitIds = Object.keys(visits).filter((visitId) => { return visits[visitId] });
+        visitIds.push(...selectedVisitIds);
+      }
+      invoices.push({client: parseInt(clientId, 10), visits: visitIds.map((id) => parseInt(id, 10))});
+
+      const { createInvoice, token } = this.props;
+
+      if (token) {
+        createInvoice(invoices, token);
+      }
+    }
   }
 };
 

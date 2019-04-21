@@ -64,7 +64,5 @@ export const jobListSchema = new schema.Array(jobSchema);
 export const asyncTaskSchema = new schema.Entity("asyncTasks", {});
 export const asyncTaskListSchema = new schema.Array(asyncTaskSchema);
 
-export const invoiceSchema = new schema.Entity("invoices", {
-  client: clientSchema
-});
+export const invoiceSchema = new schema.Entity("invoices", {});
 export const invoiceListSchema = new schema.Array(invoiceSchema);
