@@ -38,7 +38,7 @@ class InvoiceBatchClient extends Component<Props> {
           {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
         </span>
         <List onMore={undefined}>
-          {jobs.map((job, index) => {
+          {(selected[client.id.toString()].selected ? jobs : []).map((job, index) => {
             return (
               <InvoiceBatchJobContainer
                 job={job}

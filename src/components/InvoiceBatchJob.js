@@ -38,7 +38,7 @@ class InvoiceBatchClient extends Component<Props> {
           #{job.id} - {job.recurrences ? 'Recurring job' : 'One-off job'}
         </span>
         <List onMore={undefined}>
-          {visits.map((visit, index) => {
+          {(selected[job.id.toString()].selected ? visits : []).map((visit, index) => {
             return (
               <InvoiceBatchVisitContainer
                 visit={visit}
