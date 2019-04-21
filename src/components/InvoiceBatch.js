@@ -2,7 +2,11 @@
 
 import React, { Component } from 'react';
 import Box from 'grommet/components/Box';
+import Heading from "grommet/components/Heading";
 import List from "grommet/components/List";
+import Form from "grommet/components/Form";
+import Footer from "grommet/components/Footer";
+import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import type { Client } from "../actions/clients";
@@ -63,7 +67,10 @@ class InvoiceBatch extends Component<Props, State> {
   render() {
     const { clients } = this.props;
     return (
-      <Box>
+      <Box pad="medium">
+        <Heading tag="h3" strong={true}>
+          Batch invoice creation
+        </Heading>
         <List onMore={undefined}>
           {Object.keys(clients).map((id, index) => {
             return (
@@ -80,6 +87,14 @@ class InvoiceBatch extends Component<Props, State> {
           unfilteredTotal={Object.entries(clients).length}
           emptyMessage="Nothing to invoice"
         />
+        <Form>
+          <Footer pad={{"vertical": "medium"}}>
+            <Button label='Create invoices'
+              type='submit'
+              primary={true}
+              onClick={undefined} />
+          </Footer>
+        </Form>
       </Box>
     )
   }
