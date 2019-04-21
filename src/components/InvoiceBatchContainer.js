@@ -15,12 +15,6 @@ const mapStateToProps = (
 
   const jobs = jobsWithRequiresInvoicing(state);
 
-  // return {
-  //   clients: jobs.reduce((acc, job) => ({ ...acc, [job.client]: getClientById(state, { id: job.client }) }), {}),
-  //   jobs: jobs.reduce((acc, job) => ({ ...acc, [job.id]: job }), {}),
-  //   visits: jobs.flatMap((job) => { return job.visits.map((visit) => { return getVisitById(state, { id: visit }) }) })
-  // };
-
   return {
     clients: jobs.reduce((acc, job) => ({ ...acc, [job.client]: getClientById(state, { id: job.client }) }), {}),
     jobs: jobs.reduce((acc, job) => ({ ...acc, [job.id]: job }), {}),
