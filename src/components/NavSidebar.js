@@ -70,7 +70,14 @@ class NavSidebar extends Component<Props> {
               defaultMessage: "Reports"
             })}
           />
-
+          <Anchor
+            key="invoices"
+            path={`/${business.id}/invoices`}
+            label={intl.formatMessage({
+              id: "invoices.title",
+              defaultMessage: "Invoices"
+            })}
+          />
           <Anchor
             key="settings"
             path={`/${business.id}/settings`}
