@@ -52,7 +52,10 @@ class InvoiceBatch extends Component<Props, State> {
     return {
       [client.id]: {
         selected: false,
-        jobs: Object.keys(jobs).filter((jobId) => { return jobs[jobId].client === client.id }).map((jobId) => { return jobs[jobId] }).reduce((acc, job) => { return { ...acc, ...this._jobState(job) } }, {})
+        jobs: Object.keys(jobs).filter(
+          (jobId) => { return jobs[jobId].client === client.id }).map(
+            (jobId) => { return jobs[jobId] }).reduce(
+              (acc, job) => { return { ...acc, ...this._jobState(job) } }, {})
       }
     }
   }
