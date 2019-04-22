@@ -23,7 +23,7 @@ class InvoiceBatchLoader extends Component<Props> {
   componentDidMount() {
     const { token, fetchJobs, business } = this.props;
     if (token) {
-      fetchJobs(token, { business: business.id,  status: 'requires_invoicing' });
+      fetchJobs(token, { business: business.id,  status: 'requires_invoicing', limit: 200 });
     }
   }
 
