@@ -69,6 +69,22 @@ class InvoiceBatch extends Component<Props, State> {
 
   render() {
     const { clients } = this.props;
+    const clientCount = Object.entries(clients).length
+
+    let submitForm;
+    if (clientCount) {
+      submitForm = (
+        <Form onSubmit={this.onSubmit}>
+          <Footer pad={{"vertical": "medium"}}>
+            <Button label='Create invoices'
+              type='submit'
+              primary={true}
+              onClick={undefined} />
+          </Footer>
+        </Form>
+      )
+    }
+
     return (
       <Box pad="medium">
         <Heading tag="h3" strong={true}>
@@ -86,18 +102,11 @@ class InvoiceBatch extends Component<Props, State> {
           })}
         </List>
         <ListPlaceholder
-          filteredTotal={Object.entries(clients).length}
-          unfilteredTotal={Object.entries(clients).length}
+          filteredTotal={clientCount}
+          unfilteredTotal={clientCount}
           emptyMessage="Nothing to invoice"
         />
-        <Form onSubmit={this.onSubmit}>
-          <Footer pad={{"vertical": "medium"}}>
-            <Button label='Create invoices'
-              type='submit'
-              primary={true}
-              onClick={undefined} />
-          </Footer>
-        </Form>
+        {submitForm}
       </Box>
     )
   }
