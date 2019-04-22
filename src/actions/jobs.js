@@ -67,7 +67,6 @@ export type Job = {
   invoice_reminder: string,
   incomplete_visit_count: number,
   completed_visit_count: number,
-  requires_invoicing: boolean,
   has_late_visit: boolean,
   status: JobStatus,
   // next_visit: Date,
