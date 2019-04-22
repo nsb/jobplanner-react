@@ -103,7 +103,7 @@ class InvoiceBatch extends Component<Props, State> {
   }
 
   onChange = (selection: ClientSelection) => {
-    this.setState({ selected: selection });
+    this.setState({ selected: { ...this.state.selected, ...selection }});
   }
 
   onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
