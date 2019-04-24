@@ -1,8 +1,9 @@
 // @flow
 
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Box from 'grommet/components/Box';
-import Heading from "grommet/components/Heading";
+import Header from 'grommet/components/Header';
 import List from "grommet/components/List";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
@@ -74,22 +75,21 @@ class InvoiceBatch extends Component<Props, State> {
     let submitForm;
     if (clientCount) {
       submitForm = (
-        <Form onSubmit={this.onSubmit}>
-          <Footer pad={{"vertical": "medium"}}>
-            <Button label='Create invoices'
-              type='submit'
-              primary={true}
-              onClick={undefined} />
-          </Footer>
-        </Form>
+        <Box pad={{horizontal: "medium"}}>
+          <Form onSubmit={this.onSubmit}>
+            <Footer pad={{"vertical": "medium"}}>
+              <Button label='Create invoices'
+                type='submit'
+                primary={true}
+                onClick={undefined} />
+            </Footer>
+          </Form>
+        </Box>
       )
     }
 
     return (
-      <Box pad="medium">
-        <Heading tag="h3" strong={true}>
-          Batch invoice creation
-        </Heading>
+      <Box>
         <List onMore={undefined}>
           {Object.keys(clients).map((id, index) => {
             return (

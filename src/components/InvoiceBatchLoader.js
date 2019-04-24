@@ -4,12 +4,24 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ensureState } from "redux-optimistic-ui";
+import { FormattedMessage } from 'react-intl';
 import { fetchJobs } from "../actions/jobs";
+import Box from 'grommet/components/Box';
+import Header from 'grommet/components/Header';
+import NavControl from './NavControl';
 import Loading from "./Loading";
 import InvoiceBatchContainer from "./InvoiceBatchContainer";
 import type { Business } from "../actions/businesses";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
+
+const title = (
+  <FormattedMessage
+    id="invoices.title"
+    description="Invoices title"
+    defaultMessage="Invoices"
+  />
+)
 
 export type Props = {
   business: Business,
@@ -29,15 +41,15 @@ class InvoiceBatchLoader extends Component<Props> {
 
   render() {
     const { isFetching } = this.props;
-    if (isFetching) {
-      return (
-        <Loading />
-      )
-    } else {
-      return (
-        <InvoiceBatchContainer />
-      )  
-    }
+
+    return (
+      <Box>
+        <Header size="large" pad={{horizontal: 'medium'}}>
+          <NavControl title={title} />
+        </Header>
+        {isFetching ? <Loading /> : <InvoiceBatchContainer />}
+      </Box>
+    )
   }
 };
 
