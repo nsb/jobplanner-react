@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { fetchJobs } from "../actions/jobs";
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
+import Button from "grommet/components/Button";
 import NavControl from './NavControl';
 import Loading from "./Loading";
 import InvoiceBatchContainer from "./InvoiceBatchContainer";
@@ -46,6 +47,10 @@ class InvoiceBatchLoader extends Component<Props> {
       <Box>
         <Header size="large" pad={{horizontal: 'medium'}}>
           <NavControl title={title} />
+          <Box direction="row">
+            <Button label="None" onClick={() => {}} accent={true} />
+            <Button label="All" onClick={() => {}} accent={true} />
+          </Box>
         </Header>
         {isFetching ? <Loading /> : <InvoiceBatchContainer />}
       </Box>

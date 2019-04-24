@@ -1,9 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
 import List from "grommet/components/List";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
