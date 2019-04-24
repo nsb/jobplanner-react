@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ensureState } from "redux-optimistic-ui";
 import { fetchJobs } from "../actions/jobs";
-import Box from 'grommet/components/Box';
+import Loading from "./Loading";
 import InvoiceBatchContainer from "./InvoiceBatchContainer";
 import type { Business } from "../actions/businesses";
 import type { State as ReduxState } from "../types/State";
@@ -31,7 +31,7 @@ class InvoiceBatchLoader extends Component<Props> {
     const { isFetching } = this.props;
     if (isFetching) {
       return (
-        <Box>Davs</Box>
+        <Loading />
       )
     } else {
       return (
