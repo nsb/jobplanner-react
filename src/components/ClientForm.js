@@ -20,6 +20,17 @@ import type { Element } from "react";
 
 const validate = (values: Client) => {
   const errors = {};
+  const propertiesArrayErrors = [];
+  values.properties.forEach((property, propertyIndex) => {
+    const propertyErrors = {};
+    if (!property || !property.address1) {
+      propertyErrors.address1 = "Required";
+      propertiesArrayErrors[propertyIndex] = propertyErrors;
+    }
+  })
+  if (propertiesArrayErrors.length) {
+    errors.properties = propertiesArrayErrors
+  }
   if (!values.is_business && !values.first_name) {
     errors.first_name = "Required";
   }
@@ -64,13 +75,13 @@ const renderProperties = ({
       {fields.map((property, index) => (
         <Box margin={{ bottom: "medium" }}>
           <div key={index}>
-            Property #{index + 1}
+            {/* Property #{index + 1}
             <Button icon={<CloseIcon />}
               onClick={() => fields.remove(index)}
               href='#'
               primary={false}
               accent={false}
-              plain={true} />
+              plain={true} /> */}
             <Field
               name={`${property}.id`}
               type="hidden"
@@ -102,12 +113,12 @@ const renderProperties = ({
           </div>
         </Box>
       ))}
-      <Box>
+      {/* <Box>
         <button type="button" onClick={() => fields.push({})}>
           Add Property
         </button>
         {submitFailed && error && <span>{error}</span>}
-      </Box>
+      </Box> */}
     </Section>
   );
 

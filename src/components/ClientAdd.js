@@ -28,7 +28,11 @@ class ClientAdd extends Component<Props> {
           onSubmit={this.handleSubmit}
           fields={fields}
           onClose={this.onClose}
-          initialValues={{ upcoming_visit_reminder_email_enabled: true, address_use_property: true }}
+          initialValues={{
+            upcoming_visit_reminder_email_enabled: true,
+            address_use_property: true,
+            properties: [{}]
+          }}
         />
       </Article>
     );
