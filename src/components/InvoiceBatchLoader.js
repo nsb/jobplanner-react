@@ -7,7 +7,7 @@ import { ensureState } from "redux-optimistic-ui";
 import { fetchJobs } from "../actions/jobs";
 import Box from 'grommet/components/Box';
 import InvoiceBatchContainer from "./InvoiceBatchContainer";
-import type { Business } from "../actions/business";
+import type { Business } from "../actions/businesses";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
 
