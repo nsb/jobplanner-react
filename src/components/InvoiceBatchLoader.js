@@ -4,25 +4,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ensureState } from "redux-optimistic-ui";
-import { FormattedMessage } from 'react-intl';
 import { fetchJobs } from "../actions/jobs";
-import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
-import Button from "grommet/components/Button";
-import NavControl from './NavControl';
 import Loading from "./Loading";
 import InvoiceBatchContainer from "./InvoiceBatchContainer";
 import type { Business } from "../actions/businesses";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
-
-const title = (
-  <FormattedMessage
-    id="invoices.title"
-    description="Invoices title"
-    defaultMessage="Invoices"
-  />
-)
 
 export type Props = {
   business: Business,
@@ -30,7 +17,11 @@ export type Props = {
   isFetching: boolean,
   fetchJobs: (string, Object) => ThunkAction
 };
-  
+
+export type State = {
+  allSelected: Boolean;
+}
+
 class InvoiceBatchLoader extends Component<Props> {
 
   componentDidMount() {
@@ -43,18 +34,7 @@ class InvoiceBatchLoader extends Component<Props> {
   render() {
     const { isFetching } = this.props;
 
-    return (
-      <Box>
-        <Header size="large" pad={{horizontal: 'medium'}}>
-          <NavControl title={title} />
-          <Box direction="row">
-            <Button label="None" onClick={() => {}} accent={true} />
-            <Button label="All" onClick={() => {}} accent={true} />
-          </Box>
-        </Header>
-        {isFetching ? <Loading /> : <InvoiceBatchContainer />}
-      </Box>
-    )
+    return isFetching ? <Loading /> : <InvoiceBatchContainer />
   }
 };
 

@@ -1,12 +1,15 @@
 // @flow
 
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Box from 'grommet/components/Box';
+import Header from 'grommet/components/Header';
 import List from "grommet/components/List";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import NavControl from './NavControl';
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
@@ -15,6 +18,14 @@ import type { ClientSelection } from "./InvoiceBatchClient";
 import type { VisitSelection } from "./InvoiceBatchVisit";
 import type { JobSelection } from "./InvoiceBatchJob";
 import type { ThunkAction } from "../types/Store";
+
+const title = (
+  <FormattedMessage
+    id="invoices.title"
+    description="Invoices title"
+    defaultMessage="Invoices"
+  />
+)
 
 export type Props = {
   clients: { [key: string]: Client },
@@ -88,6 +99,13 @@ class InvoiceBatch extends Component<Props, State> {
 
     return (
       <Box>
+        <Header size="large" pad={{horizontal: 'medium'}}>
+          <NavControl title={title} />
+          <Box direction="row">
+            <Button label="None" onClick={() => this.onAllOrNone(false)} accent={true} />
+            <Button label="All" onClick={() => this.onAllOrNone(true)} accent={true} />
+          </Box>
+        </Header>
         <List onMore={undefined}>
           {Object.keys(clients).map((id, index) => {
             return (
@@ -111,6 +129,17 @@ class InvoiceBatch extends Component<Props, State> {
 
   onChange = (selection: ClientSelection) => {
     this.setState({ selected: { ...this.state.selected, ...selection }});
+  }
+
+  onAllOrNone = (selection: boolean) => {
+    const { selected } = this.state;
+
+    const newSelected = Object.keys(selected).reduce((acc, clientId) => {
+      acc[clientId].selected = selection;
+      return acc;
+    }, { ...selected })
+
+    this.setState({selected: newSelected});
   }
 
   onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
