@@ -11,6 +11,7 @@ import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import NavControl from './NavControl';
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
+import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
@@ -28,10 +29,11 @@ const title = (
 )
 
 export type Props = {
+  business: Business,
   clients: { [key: string]: Client },
   jobs: { [key: string]: Job },
   visits: { [key: string]: Visit },
-  createInvoice: (Array<{client: number, visits: Array<number>}>, string) => ThunkAction,
+  createInvoiceAndLoadJobs: (Array<{ client: number, visits: Array<number> }>, string, Object) => ThunkAction,
   token: ?string
 };
 
@@ -86,9 +88,9 @@ class InvoiceBatch extends Component<Props, State> {
     let submitForm;
     if (clientCount) {
       submitForm = (
-        <Box pad={{horizontal: "medium"}}>
+        <Box pad={{ horizontal: "medium" }}>
           <Form onSubmit={this.onSubmit}>
-            <Footer pad={{"vertical": "medium"}}>
+            <Footer pad={{ "vertical": "medium" }}>
               <Button label='Create invoices'
                 type={(!hasSelected) ? undefined : 'submit'}
                 primary={true}
@@ -101,7 +103,7 @@ class InvoiceBatch extends Component<Props, State> {
 
     return (
       <Box>
-        <Header size="large" pad={{horizontal: 'medium'}}>
+        <Header size="large" pad={{ horizontal: 'medium' }}>
           <NavControl title={title} />
           <Box direction="row">
             <Button label="None" onClick={() => this.onAllOrNone(false)} accent={true} />
@@ -130,7 +132,7 @@ class InvoiceBatch extends Component<Props, State> {
   }
 
   onChange = (selection: ClientSelection) => {
-    this.setState({ selected: { ...this.state.selected, ...selection }});
+    this.setState({ selected: { ...this.state.selected, ...selection } });
   }
 
   onAllOrNone = (selection: boolean) => {
@@ -141,7 +143,7 @@ class InvoiceBatch extends Component<Props, State> {
       return acc;
     }, { ...selected })
 
-    this.setState({selected: newSelected});
+    this.setState({ selected: newSelected });
   }
 
   onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
@@ -149,7 +151,7 @@ class InvoiceBatch extends Component<Props, State> {
 
     const { selected } = this.state;
 
-    let invoices: Array<{client: number, visits: Array<number>}> = [];
+    let invoices: Array<{ client: number, visits: Array<number> }> = [];
     let selectedClientIds = Object.keys(selected).filter((clientId) => { return selected[clientId].selected });
 
     for (let clientId of selectedClientIds) {
@@ -161,12 +163,12 @@ class InvoiceBatch extends Component<Props, State> {
         let selectedVisitIds = Object.keys(visits).filter((visitId) => { return visits[visitId] });
         visitIds.push(...selectedVisitIds);
       }
-      invoices.push({client: parseInt(clientId, 10), visits: visitIds.map((id) => parseInt(id, 10))});
+      invoices.push({ client: parseInt(clientId, 10), visits: visitIds.map((id) => parseInt(id, 10)) });
 
-      const { createInvoice, token } = this.props;
+      const { createInvoiceAndLoadJobs, token, business } = this.props;
 
       if (token) {
-        createInvoice(invoices, token);
+        createInvoiceAndLoadJobs(invoices, token, { business: business.id, limit: 200 });
       }
     }
   }

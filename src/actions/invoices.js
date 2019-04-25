@@ -109,7 +109,7 @@ type CreateInvoiceFailureAction = {
 
 type UpdateInvoiceAction = {
   type: typeof UPDATE_INVOICE,
-  payload: Invoice | { id: number }
+  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}> | { id: number }
 };
 
 type UpdateInvoiceSuccessAction = {
@@ -308,7 +308,7 @@ export const createInvoice = (
 };
 
 export const updateInvoiceRequest = (
-  payload: Invoice | { id: number }
+  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}> | { id: number }
 ): UpdateInvoiceAction => {
   return {
     type: UPDATE_INVOICE,

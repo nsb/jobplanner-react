@@ -184,7 +184,6 @@ const parse = (job): Job => {
   return merge({}, job, {
     begins: job.begins && new Date(job.begins),
     ends: job.ends && new Date(job.ends),
-    next_visit: job.next_visit && new Date(job.next_visit),
     start_time: job.start_time && moment(job.start_time, "HH:mm"),
     finish_time: job.finish_time && moment(job.finish_time, "HH:mm")
   });

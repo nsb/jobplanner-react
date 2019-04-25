@@ -32,9 +32,9 @@ class InvoiceBatchLoader extends Component<Props> {
   }
 
   render() {
-    const { isFetching } = this.props;
+    const { business, isFetching } = this.props;
 
-    return isFetching ? <Loading /> : <InvoiceBatchContainer />
+    return isFetching ? <Loading /> : <InvoiceBatchContainer business={business} />
   }
 };
 

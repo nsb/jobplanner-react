@@ -2,11 +2,13 @@
 import { verify } from "./auth";
 import { me } from "./users";
 import { fetchBusinesses } from "./businesses";
-import { fetchJob } from "./jobs";
+import { fetchJob, fetchJobs } from "./jobs";
 import { createVisit, updateVisit, partialUpdateVisit } from "./visits";
+import { createInvoice } from "./invoices";
 import type { Dispatch, GetState, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
 import type { Visit } from "./visits";
+import type { Invoice } from "./invoices";
 
 export const verifyAuthAndFetchBusinesses = (
   token: string
@@ -52,6 +54,18 @@ export const partialUpdateVisitAndLoadJob = (
   return (dispatch: Dispatch, getState: GetState) => {
     return dispatch(partialUpdateVisit(visit, token)).then(() => {
       return dispatch(fetchJob(token, visit.job));
+    });
+  };
+};
+
+export const createInvoiceAndLoadJobs = (
+  invoice: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
+  token: string,
+  queryParams: Object = {}
+): ThunkAction => {
+  return (dispatch: Dispatch, getState: GetState) => {
+    return dispatch(createInvoice(invoice, token)).then(() => {
+      return dispatch(fetchJobs(token, queryParams));
     });
   };
 };
