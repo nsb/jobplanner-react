@@ -79,7 +79,9 @@ class InvoiceBatch extends Component<Props, State> {
 
   render() {
     const { clients } = this.props;
+    const { selected } = this.state;
     const clientCount = Object.entries(clients).length
+    const hasSelected = Object.keys(selected).some(clientId => selected[clientId].selected)
 
     let submitForm;
     if (clientCount) {
@@ -88,9 +90,9 @@ class InvoiceBatch extends Component<Props, State> {
           <Form onSubmit={this.onSubmit}>
             <Footer pad={{"vertical": "medium"}}>
               <Button label='Create invoices'
-                type='submit'
+                type={(!hasSelected) ? undefined : 'submit'}
                 primary={true}
-                onClick={undefined} />
+              />
             </Footer>
           </Form>
         </Box>

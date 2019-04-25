@@ -33,6 +33,15 @@ const isFetching = (
     case "FETCH_INVOICE_FAILURE":
       return false;
 
+    case "CREATE_INVOICE":
+      return true;
+
+    case "CREATE_INVOICE_SUCCESS":
+      return false;
+
+    case "CREATE_INVOICE_FAILURE":
+      return false;
+
     default:
       return state;
   }
