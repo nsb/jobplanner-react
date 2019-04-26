@@ -11,15 +11,12 @@ const mapStateToProps = (
 	state: ReduxState,
 	ownProps: {
 		visit: Visit,
-		lineItems: Array<Visit>,
 		selected: VisitSelection,
 		onChange: (VisitSelection) => void
 	}
 ): Props => {
-
 	return {
 		visit: ownProps.visit,
-		lineItems: [],
 		selected: ownProps.selected,
 		onChange: ownProps.onChange
 	};

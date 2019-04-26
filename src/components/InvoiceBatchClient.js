@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 import CheckBox from 'grommet/components/CheckBox';
@@ -29,25 +30,35 @@ class InvoiceBatchClient extends Component<Props> {
       <ListItem
         direction="column"
         align="start"
+        separator="none"
+        
       >
-        <span>
-          <CheckBox
-            checked={selected[client.id.toString()].selected}
-            onChange={this.onClientChanged}
-          />
-          {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
-        </span>
-        <List onMore={undefined}>
-          {(selected[client.id.toString()].selected ? jobs : []).map((job, index) => {
-            return (
-              <InvoiceBatchJobContainer
-                job={job}
-                selected={{ [job.id]: selected[client.id.toString()].jobs[job.id.toString()] }}
-                onChange={this.onJobChanged} key={index}
-              />
-            )
-          })}
-        </List>
+        <Box
+          colorIndex="light-2"
+          pad="medium"
+          full={"horizontal"}
+        >
+          <Box
+            direction="row"
+          >
+            <CheckBox
+              checked={selected[client.id.toString()].selected}
+              onChange={this.onClientChanged}
+            />
+            {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
+          </Box>
+          <List onMore={undefined}>
+            {(selected[client.id.toString()].selected ? jobs : []).map((job, index) => {
+              return (
+                <InvoiceBatchJobContainer
+                  job={job}
+                  selected={{ [job.id]: selected[client.id.toString()].jobs[job.id.toString()] }}
+                  onChange={this.onJobChanged} key={index}
+                />
+              )
+            })}
+          </List>
+        </Box>
       </ListItem>
     )
   }

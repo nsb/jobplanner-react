@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 import CheckBox from 'grommet/components/CheckBox';
@@ -28,27 +29,30 @@ class InvoiceBatchClient extends Component<Props> {
     return (
       <ListItem
         direction="column"
-        // align="start"
+        align="start"
         separator="none"
+        // colorIndex="accent-1"
       >
-        <span>
-          <CheckBox
-            checked={selected[job.id.toString()].selected}
-            onChange={this.onJobChanged} />
-          #{job.id} - {job.recurrences ? 'Recurring job' : 'One-off job'}
-        </span>
-        <List onMore={undefined}>
-          {(selected[job.id.toString()].selected ? visits : []).map((visit, index) => {
-            return (
-              <InvoiceBatchVisitContainer
-                visit={visit}
-                key={index}
-                selected={{ [visit.id]: selected[job.id.toString()].visits[visit.id.toString()] }}
-                onChange={this.onVisitChanged}
-              />
-            )
-          })}
-        </List>
+        <Box full="horizontal">
+          <Box direction="row">
+            <CheckBox
+              checked={selected[job.id.toString()].selected}
+              onChange={this.onJobChanged} />
+            #{job.id} - {job.recurrences ? 'Recurring job' : 'One-off job'}
+          </Box>
+          <List onMore={undefined}>
+            {(selected[job.id.toString()].selected ? visits : []).map((visit, index) => {
+              return (
+                <InvoiceBatchVisitContainer
+                  visit={visit}
+                  key={index}
+                  selected={{ [visit.id]: selected[job.id.toString()].visits[visit.id.toString()] }}
+                  onChange={this.onVisitChanged}
+                />
+              )
+            })}
+          </List>
+        </Box>
       </ListItem>
     )
   }
