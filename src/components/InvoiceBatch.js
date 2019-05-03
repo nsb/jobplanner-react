@@ -165,11 +165,12 @@ class InvoiceBatch extends Component<Props, State> {
       }
       invoices.push({ client: parseInt(clientId, 10), visits: visitIds.map((id) => parseInt(id, 10)) });
 
-      const { createInvoiceAndLoadJobs, token, business } = this.props;
+    }
 
-      if (token) {
-        createInvoiceAndLoadJobs(invoices, token, { business: business.id, limit: 200 });
-      }
+    const { createInvoiceAndLoadJobs, token, business } = this.props;
+
+    if (token) {
+      createInvoiceAndLoadJobs(invoices, token, { business: business.id, limit: 200 });
     }
   }
 };
