@@ -25,6 +25,7 @@ export type Props = {
   assigned: Array<Object>,
   lineItems: Array<LineItem>,
   onEdit: Function,
+  onUpdateFutureVisits: Function,
   partialUpdateVisitAndLoadJob: Function,
   onDelete: Function,
   onClose: Function
@@ -32,7 +33,7 @@ export type Props = {
 
 class VisitDetail extends Component<Props> {
   render() {
-    const { visit, job, property, assigned, lineItems, onEdit, onDelete } = this.props;
+    const { visit, job, property, assigned, lineItems, onEdit, onUpdateFutureVisits, onDelete } = this.props;
 
     let schedule;
     schedule = (
@@ -100,6 +101,9 @@ class VisitDetail extends Component<Props> {
                 Directions >
                 <Anchor href="#" onClick={onEdit}>
                   Edit
+                </Anchor>
+                <Anchor href="#" onClick={onUpdateFutureVisits}>
+                  Update future visits
                 </Anchor>
                 <Anchor href="#" onClick={onDelete}>
                   Delete

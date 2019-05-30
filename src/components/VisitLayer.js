@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Layer from "grommet/components/Layer";
 import VisitDetailContainer from "./VisitDetailContainer";
 import VisitEdit from "./VisitEdit";
+import VisitUpdateFutureVisits from "./VisitUpdateFutureVisits";
 import VisitRemove from "./VisitRemove";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
@@ -16,7 +17,7 @@ export type Props = {
 };
 
 type State = {
-  view: ?string
+  view: ?"edit" | "updateFutureVisits" | "delete"
 };
 
 class VisitLayer extends Component<Props, State> {
@@ -33,12 +34,15 @@ class VisitLayer extends Component<Props, State> {
           return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} token={token} />;
         case "edit":
           return <VisitEdit visit={visit} onClose={onClose} toggleEdit={this.toggleEdit} />;
+        case "updateFutureVisits":
+          return <VisitUpdateFutureVisits visit={visit} job={job} onClose={onClose} token={token} />
         default:
           return (
             <VisitDetailContainer
               visit={visit}
               job={job}
               onEdit={this.toggleEdit}
+              onUpdateFutureVisits={this.toggleUpdateFutureVisits}
               onDelete={this.toggleDelete}
               onClose={onClose}
             />
@@ -56,6 +60,10 @@ class VisitLayer extends Component<Props, State> {
   toggleEdit = () => {
     this.setState({ view: this.state.view ? undefined : "edit" });
   };
+
+  toggleUpdateFutureVisits = () => {
+    this.setState({ view: this.state.view ? undefined : "updateFutureVisits" });
+  }
 
   toggleDelete = () => {
     this.setState({ view: this.state.view ? undefined : "delete" });

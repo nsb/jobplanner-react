@@ -20,6 +20,7 @@ import Tab from 'grommet/components/Tab';
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import JobScheduleEdit from "./JobScheduleEdit";
+import ScheduleInput from "./ScheduleInput";
 import LineItemsFormContainer from "./JobLineItemsFormContainer";
 import { RRule, rrulestr } from "rrule";
 import clientsApi from "../api";
@@ -156,40 +157,6 @@ const renderTextArea = ({
     <textarea rows="5" {...input} type={type} />
   </FormField>
 );
-
-type ScheduleProps = {
-  value: string,
-  onClick: Function
-};
-
-class ScheduleInput extends Component<ScheduleProps> {
-  render() {
-    const { value, onClick } = this.props;
-    let rule = value ? rrulestr(value) : new RRule({
-      freq: RRule.WEEKLY,
-      interval: 1,
-      byweekday: RRule.MO
-    });
-    return (
-      <div>
-        <Anchor
-          icon={<EditIcon />}
-          label="Label"
-          href="#"
-          reverse={true}
-          onClick={onClick}
-        >
-          <Heading tag="h4">Visit frequency</Heading>
-          {rule.toText()}
-        </Anchor>
-      </div>
-    );
-  }
-
-  onChange(e: SyntheticInputEvent<*>) {
-    console.log(e);
-  }
-}
 
 const renderSchedule = ({
   input,
