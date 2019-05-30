@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 import { union } from "lodash/array";
 import type { Action } from "../actions/jobs";
 
-const isFetching = (state: boolean = true, action: Action): boolean => {
+const isFetching = (state: boolean = false, action: Action): boolean => {
   switch (action.type) {
     case "FETCH_JOBS":
       return true;

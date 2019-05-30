@@ -68,7 +68,7 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { auth, fields, entities } = state;
+  const { auth, fields, entities, clients } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
 
@@ -89,7 +89,8 @@ const mapStateToProps = (
       }),
     properties: ensureState(entities).properties,
     push: ownProps.history.push,
-    dispatch: ownProps.dispatch
+    dispatch: ownProps.dispatch,
+    isFetching: clients.isFetching
   };
 };
 

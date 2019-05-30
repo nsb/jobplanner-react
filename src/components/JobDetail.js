@@ -36,7 +36,7 @@ import type { Responsive } from "../actions/nav";
 
 export type Props = {
   business: Business,
-  job: Job,
+  job: ?Job,
   client: Client,
   lineItems: Array<Object>,
   jobId: number,
@@ -58,6 +58,9 @@ type State = {
 };
 
 class JobDetail extends Component<Props & { intl: intlShape }, State> {
+  dateFormat = undefined;
+  timeFormat = undefined;
+
   state = {
     showSidebarWhenSingle: false,
     showAddVisit: false,
@@ -84,10 +87,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { job, client, token, fetchClient, resetVisits } = this.props;
-    if (!prevProps.job && job && !client && token) {
-      fetchClient(token, job.client);
-    }
+    const { job, resetVisits } = this.props;
 
     if (prevProps.job && prevProps.job.closed !== job.closed) {
       // if job status has changed we should reload visits
@@ -191,7 +191,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       )
     }
 
-    if (isFetching) {
+    if (isFetching || !job) {
       return (
         <Article scrollStep={true} controls={true}>
           <Section

@@ -19,12 +19,13 @@ export type Props = {
   assigned: Array<Employee>,
   token: string,
   toggleEdit: Function,
-  onClose: Function
+  onClose: Function,
+  isFetching: boolean
 };
 
 class VisitEdit extends Component<Props> {
   render() {
-    const { visit, employees, assigned } = this.props;
+    const { visit, employees, assigned, isFetching } = this.props;
 
     return (
       <VisitForm
@@ -36,6 +37,7 @@ class VisitEdit extends Component<Props> {
           })
         }}
         employees={employees}
+        isFetching={isFetching}
       />
     );
   }
@@ -61,7 +63,7 @@ const mapStateToProps = (
     toggleEdit: Function
   }
 ): * => {
-  const { auth, employees, entities } = state;
+  const { auth, employees, entities, visits, jobs } = state;
 
   return {
     token: auth.token,
@@ -82,7 +84,8 @@ const mapStateToProps = (
       visitSchemaDenormalize,
       ensureState(entities)
     ),
-    toggleEdit: ownProps.toggleEdit
+    toggleEdit: ownProps.toggleEdit,
+    isFetching: ensureState(visits).isFetching || jobs.isFetching
   };
 };
 
