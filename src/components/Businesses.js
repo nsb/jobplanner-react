@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, Redirect } from "react-router-dom";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
@@ -38,7 +38,7 @@ const intlTitle = (
   />
 )
 
-const intlSearch = (
+const intlSearch = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
     id="businesses.search"
     description="businesses search"
@@ -57,7 +57,8 @@ const intlEmptyMessage = (
 type Props = {
   businesses: Array<Business>,
   push: string => void,
-  isFetching: boolean
+  isFetching: boolean,
+  intl: intlShape
 };
 
 type State = {
@@ -72,7 +73,7 @@ class Businesses extends Component<Props, State> {
   }
 
   render() {
-    const { businesses, isFetching } = this.props;
+    const { businesses, isFetching, intl } = this.props;
 
     if (isFetching) {
       return (
@@ -121,7 +122,7 @@ class Businesses extends Component<Props, State> {
                 inline={true}
                 fill={true}
                 size="medium"
-                placeHolder={intlSearch}
+                placeHolder={intl.formatMessage({id: 'businesses.search'})}
                 value={this.state.searchText}
                 onDOMChange={this.onSearch}
               />
