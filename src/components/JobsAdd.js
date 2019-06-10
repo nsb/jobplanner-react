@@ -32,11 +32,12 @@ class JobsAdd extends Component<Props, State> {
   };
 
   render() {
-    const { token, employees, client } = this.props;
+    const { token, employees, client, business } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
         <JobForm
+          business={business}
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
           employees={employees}

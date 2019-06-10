@@ -24,6 +24,7 @@ import ScheduleInput from "./ScheduleInput";
 import LineItemsFormContainer from "./JobLineItemsFormContainer";
 import { RRule, rrulestr } from "rrule";
 import clientsApi from "../api";
+import type { Business } from "../actions/businesses";
 import type { Client, ClientsResponse } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Schedule } from "../types/Schedule";
@@ -254,6 +255,7 @@ const rruleToSchedule = (rrule): Schedule => {
 }
 
 type JobFormProps = {
+  business: Business,
   handleSubmit?: Function,
   valid: boolean,
   dirty: boolean,
@@ -615,12 +617,12 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   };
 
   onClientSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    const { token } = this.props;
+    const { business, token } = this.props;
     const value = event.target.value;
 
     if (value && token) {
       clientsApi
-        .getAll("clients", token, { search: event.target.value, limit: "10" })
+        .getAll("clients", token, { business: business.id, search: event.target.value, limit: "10" })
         .then((responseClients: ClientsResponse) => {
           this.setState({ clients: responseClients.results });
         })

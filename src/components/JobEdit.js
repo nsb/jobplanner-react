@@ -28,11 +28,12 @@ type Props = {
 
 class JobEdit extends Component<Props> {
   render() {
-    const { job, employees, assigned } = this.props;
+    const { job, employees, assigned, business } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
         <JobForm
+          business={business}
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
           employees={employees}
