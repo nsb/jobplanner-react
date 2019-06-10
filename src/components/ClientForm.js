@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
@@ -18,13 +19,101 @@ import type { Client } from "../actions/clients";
 import type { Field as CustomField } from "../actions/fields";
 import type { Element } from "react";
 
+const intlClientEditTitle = (
+  <FormattedMessage
+    id="clientForm.editTitle"
+    description="Client form edit title"
+    defaultMessage="Edit client"
+  />
+);
+
+const intlClientAddTitle = (
+  <FormattedMessage
+    id="clientForm.addTitle"
+    description="Client form add title"
+    defaultMessage="Add client"
+  />
+);
+
+const intlFormFieldRequired = (
+  <FormattedMessage
+    id="form.required"
+    description="Form field required"
+    defaultMessage="Required"
+  />
+);
+
+const intlClientDetailsHeading = (
+  <FormattedMessage
+    id="clientForm.detailsHeading"
+    description="Client form details heading"
+    defaultMessage="Client details"
+  />
+);
+
+const intlFirstName = (
+  <FormattedMessage
+    id="clientForm.FirstNameLabel"
+    description="Client form first name label"
+    defaultMessage="First name"
+  />
+);
+
+const intlLastName = (
+  <FormattedMessage
+    id="clientForm.LastNameLabel"
+    description="Client form last name label"
+    defaultMessage="Last name"
+  />
+);
+
+const intlCompanyName = (
+  <FormattedMessage
+    id="clientForm.CompanyNameLabel"
+    description="Client form company name label"
+    defaultMessage="Company name"
+  />
+)
+
+const intlIsBusiness = (
+  <FormattedMessage
+    id="clientForm.isBusinessLabel"
+    description="Client form is business label"
+    defaultMessage="Use company name as the primary name"
+  />
+)
+
+const intlContactDetailsHeading = (
+  <FormattedMessage
+    id="clientForm.contactDetailsHeading"
+    description="Client form contact details heading"
+    defaultMessage="Contact details"
+  />
+)
+
+const intlPhone = (
+  <FormattedMessage
+    id="clientForm.phoneLabel"
+    description="Client form phone label"
+    defaultMessage="Phone"
+  />
+)
+
+const intlEmail = (
+  <FormattedMessage
+    id="clientForm.emailLabel"
+    description="Client form email label"
+    defaultMessage="E-mail"
+  />
+)
+
 const validate = (values: Client) => {
   const errors = {};
   const propertiesArrayErrors = [];
   values.properties.forEach((property, propertyIndex) => {
     const propertyErrors = {};
     if (!property || !property.address1) {
-      propertyErrors.address1 = "Required";
+      propertyErrors.address1 = intlFormFieldRequired;
       propertiesArrayErrors[propertyIndex] = propertyErrors;
     }
   })
@@ -32,16 +121,16 @@ const validate = (values: Client) => {
     errors.properties = propertiesArrayErrors
   }
   if (!values.is_business && !values.first_name) {
-    errors.first_name = "Required";
+    errors.first_name = intlFormFieldRequired;
   }
   if (!values.is_business && !values.last_name) {
-    errors.last_name = "Required";
+    errors.last_name = intlFormFieldRequired;
   }
   if (values.is_business && !values.business_name) {
-    errors.business_name = "Required"
+    errors.business_name = intlFormFieldRequired
   }
   if (!values.address_use_property && !values.address1) {
-    errors.address1 = "Required"
+    errors.address1 = intlFormFieldRequired
   }
   return errors;
 };
@@ -191,53 +280,53 @@ class ClientForm extends Component<Props, State> {
       <Form onSubmit={handleSubmit}>
         <Header size="large" justify="between" pad="none">
           <Heading tag="h2" margin="none" strong={true}>
-            {initialValues && initialValues.id ? "Edit client" : "Add Client"}
+            {initialValues && initialValues.id ? intlClientEditTitle : intlClientAddTitle}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
 
         <FormFields>
           <fieldset>
-            <Heading tag="h3">Client details</Heading>
+            <Heading tag="h3">{intlClientDetailsHeading}</Heading>
             <Box direction="row">
               <Field
                 name="first_name"
-                label="First name"
+                label={intlFirstName}
                 component={renderField}
                 type="text"
               />
               <Field
                 name="last_name"
-                label="Last Name"
+                label={intlLastName}
                 component={renderField}
                 type="text"
               />
             </Box>
             <Field
               name="business_name"
-              label="Company name"
+              label={intlCompanyName}
               component={renderField}
               type="text"
             />
             <Field
               name="is_business"
-              label="Use company name as the primary name"
+              label={intlIsBusiness}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
           </fieldset>
 
           <fieldset>
-            <Heading tag="h3">Contact details</Heading>
+            <Heading tag="h3">{intlContactDetailsHeading}</Heading>
             <Field
               name="phone"
-              label="Phone"
+              label={intlPhone}
               component={renderField}
               type="text"
             />
             <Field
               name="email"
-              label="E-mail"
+              label={intlEmail}
               component={renderField}
               type="email"
             />
@@ -301,4 +390,4 @@ class ClientForm extends Component<Props, State> {
 export default reduxForm({
   form: "client", // a unique identifier for this form
   validate
-})(ClientForm);
+})(injectIntl(ClientForm));
