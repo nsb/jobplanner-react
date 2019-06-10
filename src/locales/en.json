@@ -1,3 +1,13 @@
 {
-  "clients.title": "Clients"
+  "businesses.addLabel": "Add businesses",
+  "businesses.title": "Businesses",
+  "businesses.search": "Search",
+  "businesses.emptyMessage": "You do not have any businesses.",
+  "calendar.title": "Calendar",
+  "calendarlist.title": "Calendar",
+  "clients.title": "Clients",
+  "invoices.title": "Invoices",
+  "jobs.title": "Jobs",
+  "settings.title": "Settings",
+  "visitsreport.title": "Visits Report"
 }

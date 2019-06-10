@@ -51,7 +51,10 @@ class NavSidebar extends Component<Props> {
           <Anchor
             key="calendar"
             path={`/${business.id}/calendar`}
-            label="Calendar"
+            label={intl.formatMessage({
+              id: "calendar.title",
+              defaultMessage: "Calendar"
+            })}
           />
           <Anchor
             key="clients"
@@ -61,7 +64,14 @@ class NavSidebar extends Component<Props> {
               defaultMessage: "Clients"
             })}
           />
-          <Anchor key="jobs" path={`/${business.id}/jobs`} label="Jobs" />
+          <Anchor
+            key="jobs"
+            path={`/${business.id}/jobs`}
+            label={intl.formatMessage({
+              id: "jobs.title",
+              defaultMessage: "Jobs"
+            })}
+          />
           <Anchor
             key="reports"
             path={`/${business.id}/reports`}

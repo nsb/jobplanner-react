@@ -1,3 +1,17 @@
 {
-  "clients.title": "Kunder"
+  "businessAdd.labelName": "Navn",
+  "businessAdd.title": "Opret firma",
+  "businesses.addLabel": "Opret firma",
+  "businesses.emptyMessage": "Ingen firmaer.",
+  "businesses.search": "Søg",
+  "businesses.title": "Firmaer",
+  "calendar.title": "Kalender",
+  "calendarlist.title": "Kalender",
+  "clients.title": "Kunder",
+  "form.close": "Luk",
+  "form.save": "Gem",
+  "invoices.title": "Faktura",
+  "jobs.title": "Jobs",
+  "settings.title": "Indstillinger",
+  "visitsreport.title": "Besøgsrapport"
 }

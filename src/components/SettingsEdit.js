@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import {injectIntl, FormattedMessage} from 'react-intl';
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import Header from "grommet/components/Header";
@@ -39,7 +39,6 @@ const title = (
 
 type Props = {
   business: Business,
-  intl: intlShape
 };
 
 type State = {
@@ -124,7 +123,6 @@ const mapStateToProps = (
     token: auth.token,
     dispatch: ownProps.dispatch,
     push: ownProps.history.push,
-    intl: intlShape
   };
 };
 
