@@ -86,6 +86,15 @@ class NavSidebar extends Component<Props> {
               defaultMessage: "Settings"
             })}
           />
+          <Anchor
+            key="integrations"
+            path={`/${business.id}/integrations`}
+            label={intl.formatMessage({
+              id: "integrations.title",
+              defaultMessage: "Integrations"
+            })}
+          />
+
         </Menu>
         <Footer pad={{ horizontal: "medium", vertical: "small" }}>
           <SessionMenu
