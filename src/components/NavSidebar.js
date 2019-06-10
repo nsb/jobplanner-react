@@ -91,7 +91,7 @@ class NavSidebar extends Component<Props> {
             path={`/${business.id}/integrations`}
             label={intl.formatMessage({
               id: "integrations.title",
-              defaultMessage: "Integrations"
+              defaultMessage: "Add-ons"
             })}
           />
 

@@ -14,10 +14,10 @@ export default () => (
         colorIndex='light-2'
         contentPad='small'
         textSize='small'
-        heading='Dinero Integration'
+        heading='Dinero'
         description='Automatically create invoices with Dinero.'
         link={<Anchor href='https://dinero.myjobplanner.com'
-          label='Go to Dinero Addon'
+          label='Go to Dinero Add-on'
           target='_' />} />
     </Tile>
   </Tiles>
