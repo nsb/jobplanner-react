@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Menu from "grommet/components/Menu";
 import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
@@ -7,6 +8,22 @@ import Heading from "grommet/components/Heading";
 import UserIcon from "grommet/components/icons/base/User";
 import history from "../history";
 import type { User } from "../actions/users";
+
+const intlSession = (
+  <FormattedMessage
+    id="session.title"
+    description="Session label"
+    defaultMessage="Session"
+  />
+)
+
+const intlLogout = (
+  <FormattedMessage
+    id="session.logout"
+    description="Logout label"
+    defaultMessage="Logout"
+  />
+)
 
 type Props = {
   user: User,
@@ -24,14 +41,14 @@ class SessionMenu extends Component<Props> {
         icon={<UserIcon />}
         dropAlign={dropAlign}
         colorIndex={colorIndex}
-        a11yTitle="Session"
+        a11yTitle={intlSession}
       >
         <Box pad="medium">
           <Heading tag="h3" margin="none">
             {user.username}
           </Heading>
         </Box>
-        <Anchor href="#" onClick={this.onLogout} label="Logout" />
+        <Anchor href="#" onClick={this.onLogout} label={intlLogout} />
       </Menu>
     );
   }
@@ -43,4 +60,4 @@ class SessionMenu extends Component<Props> {
   };
 }
 
-export default SessionMenu;
+export default injectIntl(SessionMenu);
