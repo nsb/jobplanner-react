@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Split from "grommet/components/Split";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
@@ -24,6 +25,22 @@ import type { Client } from "../actions/clients";
 import type { Property } from "../actions/properties";
 import type { Job } from "../actions/jobs";
 import type { Responsive } from "../actions/nav";
+
+const intlContactHeading = (
+  <FormattedMessage
+    id="clientDetail.contact"
+    description="Client detail contact heading"
+    defaultMessage="Contact"
+  />
+);
+
+const intlPropertiesHeading = (
+  <FormattedMessage
+    id="clientDetail.propertiesHeading"
+    description="Client detail properties heading"
+    defaultMessage="Properties"
+  />
+);
 
 export type Props = {
   business: Business,
@@ -161,7 +178,7 @@ class ClientDetail extends Component<Props, State> {
             <Article pad="none" align="start" primary={true}>
               <Section pad="medium" full="horizontal">
                 <Heading tag="h4" margin="none">
-                  Contact
+                  {intlContactHeading}
                 </Heading>
                 <Columns>
                   <Box margin={{ horizontal: "none", vertical: "small" }}>
@@ -177,7 +194,7 @@ class ClientDetail extends Component<Props, State> {
               {billingAddress}
               <Section pad="medium" full="horizontal">
                 <Heading tag="h4" margin="none">
-                  Properties
+                  {intlPropertiesHeading}
                 </Heading>
                 <Columns>
                   {properties.map((property: Property, index: number) => {
@@ -271,4 +288,4 @@ class ClientDetail extends Component<Props, State> {
   };
 }
 
-export default ClientDetail;
+export default injectIntl(ClientDetail);

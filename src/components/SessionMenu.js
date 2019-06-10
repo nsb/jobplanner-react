@@ -15,7 +15,7 @@ const intlSession = (
     description="Session label"
     defaultMessage="Session"
   />
-)
+);
 
 const intlLogout = (
   <FormattedMessage
@@ -23,7 +23,7 @@ const intlLogout = (
     description="Logout label"
     defaultMessage="Logout"
   />
-)
+);
 
 type Props = {
   user: User,
