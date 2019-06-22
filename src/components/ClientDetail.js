@@ -42,6 +42,30 @@ const intlPropertiesHeading = (
   />
 );
 
+const intlJobsEmptyMessage = (
+  <FormattedMessage
+    id="clientDetail.jobsEmptyMessage"
+    description="Client detail jobs empty message"
+    defaultMessage="No jobs."
+  />
+);
+
+const intlJobAdd = (
+  <FormattedMessage
+    id="clientDetail.jobAdd"
+    description="Client detail job add"
+    defaultMessage="Add job"
+  />
+);
+
+const intlJobTitle = (
+  <FormattedMessage
+    id="clientDetail.jobTitle"
+    description="Client detail job title"
+    defaultMessage="Jobs"
+  />
+);
+
 export type Props = {
   business: Business,
   client: Client,
@@ -216,7 +240,7 @@ class ClientDetail extends Component<Props, State> {
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertical: "none" }}>
                   <Header>
-                    <Title>Jobs</Title>
+                    <Title>{intlJobTitle}</Title>
                     <Box
                       flex={true}
                       justify="end"
@@ -226,7 +250,7 @@ class ClientDetail extends Component<Props, State> {
                       <Anchor
                         icon={<AddIcon />}
                         path={`/${business.id}/jobs/add?client=${client.id}`}
-                        a11yTitle="New job"
+                        a11yTitle={intlJobAdd}
                       />
                     </Box>
                   </Header>
@@ -246,13 +270,13 @@ class ClientDetail extends Component<Props, State> {
                 <ListPlaceholder
                   filteredTotal={jobs.length}
                   unfilteredTotal={jobs.length}
-                  emptyMessage="No jobs."
+                  emptyMessage={intlJobsEmptyMessage}
                   addControl={
                     <Button
                       icon={<AddIcon />}
-                      label="Add job"
+                      label={intlJobAdd}
                       primary={true}
-                      a11yTitle={`Add job`}
+                      a11yTitle={intlJobAdd}
                       path={`/${business.id}/jobs/add?client=${client.id}`}
                     />
                   }
