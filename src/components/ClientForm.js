@@ -107,6 +107,70 @@ const intlEmail = (
   />
 )
 
+const intlNotificationsHeading = (
+  <FormattedMessage
+    id="clientForm.notificationsHeading"
+    description="Client form automated notifications heading"
+    defaultMessage="Automated notifications"
+  />
+)
+
+const intlVisitRemindersLabel = (
+  <FormattedMessage
+    id="clientForm.visitRemindersLabel"
+    description="Client form automated notifications visit reminders label"
+    defaultMessage="Visit reminders"
+  />
+)
+
+const intlPropertiesHeading = (
+  <FormattedMessage
+    id="clientForm.propertiesHeading"
+    description="Client form properties heading"
+    defaultMessage="Property details"
+  />
+)
+
+const intlAddress1Label = (
+  <FormattedMessage
+    id="clientForm.address1Label"
+    description="Client form address 1 label"
+    defaultMessage="Address 1"
+  />
+)
+
+const intlAddress2Label = (
+  <FormattedMessage
+    id="clientForm.address2Label"
+    description="Client form address 2 label"
+    defaultMessage="Address 2"
+  />
+)
+
+const intlCityLabel = (
+  <FormattedMessage
+    id="clientForm.cityLabel"
+    description="Client form city label"
+    defaultMessage="City"
+  />
+)
+
+const intlZipCodeLabel = (
+  <FormattedMessage
+    id="clientForm.zipcodeLabel"
+    description="Client form zip code label"
+    defaultMessage="Zip Code"
+  />
+)
+
+const intlAddressUsePropertyLabel = (
+  <FormattedMessage
+    id="clientForm.addressUsePropertyLabel"
+    description="Client form address use property label"
+    defaultMessage="Billing address is the same as property address"
+  />
+)
+
 const validate = (values: Client) => {
   const errors = {};
   const propertiesArrayErrors = [];
@@ -179,25 +243,25 @@ const renderProperties = ({
               name={`${property}.address1`}
               type="text"
               component={renderField}
-              label="Address 1"
+              label={intlAddress1Label}
             />
             <Field
               name={`${property}.address2`}
               type="text"
               component={renderField}
-              label="Address 2"
+              label={intlAddress2Label}
             />
             <Field
               name={`${property}.city`}
               type="text"
               component={renderField}
-              label="City"
+              label={intlCityLabel}
             />
             <Field
               name={`${property}.zip_code`}
               type="text"
               component={renderField}
-              label="Zip Code"
+              label={intlZipCodeLabel}
             />
           </div>
         </Box>
@@ -252,25 +316,25 @@ class ClientForm extends Component<Props, State> {
             name="address1"
             type="text"
             component={renderField}
-            label="Address 1"
+            label={intlAddress1Label}
           />
           <Field
             name="address2"
             type="text"
             component={renderField}
-            label="Address 2"
+            label={intlAddress2Label}
           />
           <Field
             name="city"
             type="text"
             component={renderField}
-            label="City"
+            label={intlCityLabel}
           />
           <Field
             name="zip_code"
             type="text"
             component={renderField}
-            label="Zip Code"
+            label={intlZipCodeLabel}
           />
         </fieldset>
       )
@@ -333,17 +397,17 @@ class ClientForm extends Component<Props, State> {
           </fieldset>
 
           <fieldset>
-            <Heading tag="h3">Automated notifications</Heading>
+            <Heading tag="h3">{intlNotificationsHeading}</Heading>
             <Field
               name="upcoming_visit_reminder_email_enabled"
-              label="Visit reminders"
+              label={intlVisitRemindersLabel}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
           </fieldset>
 
           <fieldset>
-            <Heading tag="h3">Property details</Heading>
+            <Heading tag="h3">{intlPropertiesHeading}</Heading>
             <FieldArray
               name="properties"
               label="Properties"
@@ -351,7 +415,7 @@ class ClientForm extends Component<Props, State> {
             />
             <Field
               name="address_use_property"
-              label="Billing address is the same as property address"
+              label={intlAddressUsePropertyLabel}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
               onChange={(event, value) => { this.setState({ address_use_property: value }) }}
