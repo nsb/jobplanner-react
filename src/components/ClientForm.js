@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
@@ -282,7 +282,8 @@ type Props = {
   submitting: boolean,
   onClose: Function,
   fields: Array<CustomField>,
-  initialValues: Object
+  initialValues: Object,
+  intl: intlShape
 };
 
 type State = {
@@ -304,7 +305,8 @@ class ClientForm extends Component<Props, State> {
       submitting,
       onClose,
       // fields,
-      initialValues
+      initialValues,
+      intl
     } = this.props;
 
     let billingAddress;
@@ -442,7 +444,7 @@ class ClientForm extends Component<Props, State> {
           <Button
             type="submit"
             primary={true}
-            label={initialValues ? "Save" : "Add"}
+            label={intl.formatMessage({id: 'form.save'})}
             onClick={valid && dirty && !submitting ? () => true : undefined}
           />
         </Footer>
