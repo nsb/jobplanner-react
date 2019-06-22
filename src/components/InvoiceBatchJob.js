@@ -11,19 +11,21 @@ import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
 import type { VisitSelection } from "./InvoiceBatchVisit";
 
-const intlRecurringJob = (
+const intlRecurringJob = (id: number) => (
   <FormattedMessage
     id="invoiceBatch.recurringJob"
     description="invoice batch job type recurring"
-    defaultMessage="Recurring job"
+    defaultMessage="#{id} - Recurring job"
+    values={{id}}
   />
 );
 
-const intlOneOffJob = (
+const intlOneOffJob = (id: number) => (
   <FormattedMessage
     id="invoiceBatch.oneOffJob"
     description="invoice batch job type one-off"
-    defaultMessage="One-off job"
+    defaultMessage="#{id} - One-off job"
+    values={{id}}
   />
 );
 
@@ -55,7 +57,7 @@ class InvoiceBatchClient extends Component<Props> {
             <CheckBox
               checked={selected[job.id.toString()].selected}
               onChange={this.onJobChanged} />
-            #{job.id} - {job.recurrences ? intlRecurringJob : intlOneOffJob}
+            {job.recurrences ? intlRecurringJob(job.id) : intlOneOffJob(job.id)}
           </Box>
           <List onMore={undefined}>
             {(selected[job.id.toString()].selected ? visits : []).map((visit, index) => {
