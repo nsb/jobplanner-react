@@ -2,12 +2,38 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { injectIntl, FormattedMessage } from "react-intl";
 import { deleteClient } from '../actions/clients';
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
 import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { State } from '../types/State';
+
+const intlTitle = (
+  <FormattedMessage
+    id="clientRemove.Title"
+    description="Client remove title"
+    defaultMessage="Remove"
+  />
+)
+
+const intlLabel = (
+  <FormattedMessage
+    id="clientRemove.label"
+    description="Client remove title"
+    defaultMessage="Yes, remove"
+  />
+)
+
+const intlParagraph = (client: Client) => (
+  <FormattedMessage
+    id="clientRemove.paragraph"
+    description="Client remove paragraph"
+    defaultMessage='Are you sure you want to remove {name}?'
+    values={{name: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}}
+  />
+)
 
 type Props = {
   client: Client,
@@ -28,16 +54,15 @@ class ClientRemove extends Component<Props> {
     const { client, onClose } = this.props;
     return (
       <LayerForm
-        title="Remove"
-        submitLabel="Yes, remove"
+        title={intlTitle}
+        submitLabel={intlLabel}
         compact={true}
         onClose={onClose}
         onSubmit={this._onRemove}
       >
         <fieldset>
           <Paragraph>
-            Are you sure you want to
-            remove <strong>{client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</strong>?
+            {intlParagraph(client)}
           </Paragraph>
         </fieldset>
       </LayerForm>
@@ -59,4 +84,4 @@ const mapStateToProps = (
 //     dispatch
 //   );
 
-export default connect(mapStateToProps)(ClientRemove);
+export default connect(mapStateToProps)(injectIntl(ClientRemove));
