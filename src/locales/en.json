@@ -42,6 +42,8 @@
   "clientRemove.Title": "Remove",
   "clientRemove.label": "Yes, remove",
   "clientRemove.paragraph": "Are you sure you want to remove {name}?",
+  "integrationList.DineroDescription": "Automatically create invoices with Dinero.",
+  "integrationList.DineroLabel": "Go to Dinero Add-on",
   "invoices.title": "Invoices",
   "jobs.title": "Jobs",
   "session.title": "Session",

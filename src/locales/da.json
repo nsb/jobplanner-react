@@ -42,6 +42,8 @@
   "form.close": "Luk",
   "form.required": "Påkrævet",
   "form.save": "Gem",
+  "integrationList.DineroDescription": "Automatisk fakturering med Dinero.",
+  "integrationList.DineroLabel": "Gå til Dinero Add-on",
   "invoices.title": "Faktura",
   "jobs.title": "Jobs",
   "session.logout": "Log ud",
