@@ -558,10 +558,10 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
     const oneoffSchedule = (
       <div>
         <fieldset>
-          <Heading tag="h3">Schedule</Heading>
+          <Heading tag="h3">{intlJobFormScheduleHeading}</Heading>
           <Field
             name="begins"
-            label="Begins"
+            label={intlJobFormScheduleBegins}
             component={renderDateTime}
             dateFormat={this.dateFormat}
             normalize={(value: string) => moment(value, this.dateFormat).toDate()}
@@ -569,7 +569,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
           />
           <Field
             name="ends"
-            label="Ends"
+            label={intlJobFormScheduleEnds}
             component={renderDateTime}
             dateFormat={this.dateFormat}
             normalize={(value: string) => moment(value, this.dateFormat).toDate()}
@@ -579,7 +579,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
           {finish_time}
           <Field
             name="anytime"
-            label="Anytime"
+            label={intlJobFormScheduleAnytime}
             component={renderCheckBox}
             parse={(value: boolean | string) => !!value}
             onChange={this.onChangeSchedule}
@@ -587,7 +587,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
         </fieldset>
 
         <fieldset>
-          <Heading tag="h3">Invoicing</Heading>
+          <Heading tag="h3">{intlJobFormInvoicingHeading}</Heading>
           <Field
             name="invoice_reminder"
             label="When do you want to invoice?"
@@ -699,7 +699,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
       <fieldset>
         <Field
           name="recurrences"
-          label="Schedule"
+          label={intlJobFormScheduleHeading}
           component={renderSchedule}
           onClick={this.onScheduleAdd}
           onChange={this.onChangeSchedule}
