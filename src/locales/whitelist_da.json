@@ -1,6 +1,7 @@
 [
   "clientDetail.jobTitle",
   "clientForm.emailLabel",
+  "jobForm.titleEdit",
   "jobs.title",
   "session.title"
 ]

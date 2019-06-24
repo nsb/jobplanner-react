@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import moment from "moment";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
@@ -32,30 +33,130 @@ import type { Element } from "react";
 import type { Employee } from "../actions/employees";
 import Notification from "grommet/components/Notification";
 
-export const invoicingReminderMap: { [key: string]: string } = {
-  never: "As needed - we won't prompt you",
-  visit: "After each visit",
-  closed: "When the job is closed",
-  monthly: "Monthly on the last day of the month"
-};
+const intlJobFormTitleEdit = (name: string) => (
+  <FormattedMessage
+    id="jobForm.titleEdit"
+    description="Job form edit title"
+    defaultMessage="Job for {name}"
+    values={{name}}
+  />
+);
 
-export const invoicingReminderOptions: Array<Object> = Object.entries(
-  invoicingReminderMap
-).map(([key, value]) => {
-  return { label: value, value: key };
-});
+const intlJobFormTitleAdd = (
+  <FormattedMessage
+    id="jobForm.titleAdd"
+    description="Job form add title"
+    defaultMessage="Add job"
+  />
+)
+
+const intlJobFormDetailsHeading = (
+  <FormattedMessage
+    id="jobForm.detailsHeading"
+    description="Job form details heading"
+    defaultMessage="Details"
+  />
+)
+
+const intlJobFormDetailsTitle = (
+  <FormattedMessage
+    id="jobForm.detailsTitle"
+    description="Job form details title"
+    defaultMessage="Title"
+  />
+)
+
+const intlJobFormDetailsInstructions = (
+  <FormattedMessage
+    id="jobForm.detailsInstructions"
+    description="Job form details instructions"
+    defaultMessage="Instructions"
+  />
+)
+
+const intlJobFormScheduleHeading = (
+  <FormattedMessage
+    id="jobForm.scheduleHeading"
+    description="Job form schedule heading"
+    defaultMessage="Schedule"
+  />
+)
+
+const intlJobFormScheduleBegins = (
+  <FormattedMessage
+    id="jobForm.scheduleBegins"
+    description="Job form schedule begins"
+    defaultMessage="Begins"
+  />
+)
+
+const intlJobFormScheduleEnds = (
+  <FormattedMessage
+    id="jobForm.scheduleEnds"
+    description="Job form schedule ends"
+    defaultMessage="Ends"
+  />
+)
+
+const intlJobFormScheduleAnytime = (
+  <FormattedMessage
+    id="jobForm.scheduleAnytime"
+    description="Job form schedule anytime"
+    defaultMessage="Anytime"
+  />
+)
+
+const intlJobFormInvoicingHeading = (
+  <FormattedMessage
+    id="jobForm.invoicingHeading"
+    description="Job form invoicing heading"
+    defaultMessage="Invoicing"
+  />
+)
+
+const intlJobFormInvoicingReminderMapNever = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobForm.invoicingNever"
+    description="Job form invoicing never"
+    defaultMessage="As needed - we won't prompt you"
+  />
+)
+
+const intlJobFormInvoicingReminderMapVisit = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobForm.invoicingVisit"
+    description="Job form invoicing visit"
+    defaultMessage="After each visit"
+  />
+)
+
+const intlJobFormInvoicingReminderMapClosed = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobForm.invoicingClosed"
+    description="Job form invoicing closed"
+    defaultMessage="When the job is closed"
+  />
+)
+
+const intlJobFormInvoicingReminderMapMonthly = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobForm.invoicingMonthly"
+    description="Job form invoicing monthly"
+    defaultMessage="Monthly on the last day of the month"
+  />
+)
+
+export const invoicingReminderMap: { [key: string]: string } = {
+  never: "jobForm.invoicingNever",
+  visit: "jobForm.invoicingVisit",
+  closed: "jobForm.invoicingClosed",
+  monthly: "jobForm.invoicingMonthly"
+};
 
 export const oneoffInvoicingReminderMap: { [key: string]: string } = {
-  never: "As needed - we won't prompt you",
-  closed: "When the job is closed"
+  never: "jobForm.invoicingNever",
+  closed: "jobForm.invoicingClosed"
 };
-
-export const oneoffInvoicingReminderOptions: Array<Object> = Object.entries(
-  oneoffInvoicingReminderMap
-).map(([key, value]) => {
-  return { label: value, value: key };
-});
-
 
 const validate = (values: {
   client: Object,
@@ -280,7 +381,7 @@ type JobFormState = {
   visitsWillBeRegenerated: boolean
 };
 
-class JobForm extends Component<JobFormProps, JobFormState> {
+class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState> {
   dateFormat: string;
   timeFormat: string;
   static defaultProps = {
@@ -326,7 +427,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       onClose,
       initialValues,
       anytime,
-      employees
+      employees,
+      intl
     } = this.props;
 
     let start_time;
@@ -392,13 +494,19 @@ class JobForm extends Component<JobFormProps, JobFormState> {
       );
     }
 
+    const invoicingReminderOptions: Array<Object> = Object.entries(
+      invoicingReminderMap
+    ).map(([key, value]) => {
+      return { label: intl.formatMessage({id: value}), value: key };
+    });
+
     const recurringSchedule = (
       <div>
         <fieldset>
-          <Heading tag="h3">Schedule</Heading>
+          <Heading tag="h3">{intlJobFormScheduleHeading}</Heading>
           <Field
             name="begins"
-            label="Begins"
+            label={intlJobFormScheduleBegins}
             component={renderDateTime}
             dateFormat={this.dateFormat}
             normalize={(value: string) => moment(value, this.dateFormat).toDate()}
@@ -406,7 +514,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           />
           <Field
             name="ends"
-            label="Ends"
+            label={intlJobFormScheduleEnds}
             component={renderDateTime}
             dateFormat={this.dateFormat}
             normalize={(value: string) => moment(value, this.dateFormat).toDate()}
@@ -416,7 +524,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           {finish_time}
           <Field
             name="anytime"
-            label="Anytime"
+            label={intlJobFormScheduleAnytime}
             component={renderCheckBox}
             parse={(value: boolean | string) => !!value}
             onChange={this.onChangeSchedule}
@@ -428,7 +536,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
         {scheduleNotification}
 
         <fieldset>
-          <Heading tag="h3">Invoicing</Heading>
+          <Heading tag="h3">{intlJobFormInvoicingHeading}</Heading>
           <Field
             name="invoice_reminder"
             label="When do you want to invoice?"
@@ -440,6 +548,12 @@ class JobForm extends Component<JobFormProps, JobFormState> {
         </fieldset>
       </div>
     )
+
+    const oneoffInvoicingReminderOptions: Array<Object> = Object.entries(
+      oneoffInvoicingReminderMap
+    ).map(([key, value]) => {
+      return { label: intl.formatMessage({id: value}), value: key };
+    });
 
     const oneoffSchedule = (
       <div>
@@ -502,10 +616,8 @@ class JobForm extends Component<JobFormProps, JobFormState> {
         <Header size="large" justify="between" pad="none">
           <Heading tag="h3" margin="none" strong={true}>
             {initialValues.id
-              ? `Job for ${initialValues.client_firstname} ${
-              initialValues.client_lastname
-              }`
-              : "Add Job"}
+              ? intlJobFormTitleEdit(`${initialValues.client_firstname} ${initialValues.client_lastname}`)
+              : intlJobFormTitleAdd}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
@@ -514,16 +626,16 @@ class JobForm extends Component<JobFormProps, JobFormState> {
           {clientField}
 
           <fieldset>
-            <Heading tag="h3">Details</Heading>
+            <Heading tag="h3">{intlJobFormDetailsHeading}</Heading>
             <Field
               name="title"
-              label="Title"
+              label={intlJobFormDetailsTitle}
               component={renderField}
               type="text"
             />
             <Field
               name="description"
-              label="Instructions"
+              label={intlJobFormDetailsInstructions}
               component={renderTextArea}
               type="text"
               rows="3"
@@ -661,7 +773,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
   };
 
   onRecurringTab = () => {
-    const { dispatch, change } = this.props;
+    const { dispatch, change, intl } = this.props;
 
     const rrule = new RRule({
       freq: RRule.WEEKLY,
@@ -671,7 +783,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
     this.onScheduleSubmit(rruleToSchedule(rrule))
     dispatch(change("invoice_reminder", {
       value: "monthly",
-      label: invoicingReminderMap["monthly"]
+      label: intl.formatMessage({id: invoicingReminderMap["monthly"]})
     }))
   }
 
@@ -690,7 +802,7 @@ class JobForm extends Component<JobFormProps, JobFormState> {
 let SelectingFormValuesJobForm = reduxForm({
   form: "job", // a unique identifier for this form
   validate
-})(JobForm);
+})(injectIntl(JobForm));
 
 // Decorate with connect to read form values
 const selector = formValueSelector("job"); // <-- same as form name

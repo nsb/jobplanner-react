@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
+import { injectIntl, intlShape } from "react-intl";
 import { jobSchemaDenormalize } from "../schemas";
 import Article from "grommet/components/Article";
 import JobForm, { invoicingReminderMap } from "./JobForm";
@@ -26,9 +27,9 @@ type Props = {
   assigned: Array<Employee>
 };
 
-class JobEdit extends Component<Props> {
+class JobEdit extends Component<Props & { intl: intlShape }> {
   render() {
-    const { job, employees, assigned, business } = this.props;
+    const { job, employees, assigned, business, intl } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -48,7 +49,7 @@ class JobEdit extends Component<Props> {
             }),
             invoice_reminder: {
               value: job.invoice_reminder,
-              label: invoicingReminderMap[job.invoice_reminder]
+              label: intl.formatMessage({id: invoicingReminderMap[job.invoice_reminder]})
             }
           }}
         />
@@ -118,4 +119,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(JobEdit);
+export default connect(mapStateToProps)(injectIntl(JobEdit));
