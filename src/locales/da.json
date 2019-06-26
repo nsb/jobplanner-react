@@ -91,6 +91,7 @@
   "jobForm.titleAdd": "Tilføj job",
   "jobForm.titleEdit": "Job for {name}",
   "jobs.title": "Jobs",
+  "scheduleInput.heading": "Besøgsfrekvens",
   "session.logout": "Log ud",
   "session.title": "Session",
   "settings.title": "Indstillinger",
