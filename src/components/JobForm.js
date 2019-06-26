@@ -50,6 +50,14 @@ const intlJobFormTitleAdd = (
   />
 )
 
+const intlJobFormClientHeading = (
+  <FormattedMessage
+    id="jobForm.clientHeading"
+    description="Job form client heading"
+    defaultMessage="Client"
+  />
+)
+
 const intlJobFormDetailsHeading = (
   <FormattedMessage
     id="jobForm.detailsHeading"
@@ -71,6 +79,22 @@ const intlJobFormDetailsInstructions = (
     id="jobForm.detailsInstructions"
     description="Job form details instructions"
     defaultMessage="Instructions"
+  />
+)
+
+const intlJobFormScheduleTabOneOff = (
+  <FormattedMessage
+    id="jobForm.scheduleTabOneOff"
+    description="Job form schedule tab one off"
+    defaultMessage="One-Off job"
+  />
+)
+
+const intlJobFormScheduleTabRecurring = (
+  <FormattedMessage
+    id="jobForm.scheduleTabRecurring"
+    description="Job form schedule tab recurring"
+    defaultMessage="Recurring job"
   />
 )
 
@@ -103,6 +127,14 @@ const intlJobFormScheduleAnytime = (
     id="jobForm.scheduleAnytime"
     description="Job form schedule anytime"
     defaultMessage="Anytime"
+  />
+)
+
+const intlJobFormScheduleNotification = (
+  <FormattedMessage
+    id="jobForm.scheduleNotification"
+    description="Job form schedule notifiaction"
+    defaultMessage="Editing this schedule will clear all incomplete visits from this job and new visits will be created using the updated information."
   />
 )
 
@@ -143,6 +175,22 @@ const intlJobFormInvoicingReminderMapMonthly = ( // eslint-disable-line no-unuse
     id="jobForm.invoicingMonthly"
     description="Job form invoicing monthly"
     defaultMessage="Monthly on the last day of the month"
+  />
+)
+
+const intlJobFormTeamHeading = (
+  <FormattedMessage
+    id="jobForm.teamHeading"
+    description="Job form team heading"
+    defaultMessage="Team"
+  />
+)
+
+const intlJobFormAssignedLabel = (
+  <FormattedMessage
+    id="jobForm.teamAssignedLabel"
+    description="Job form team assigned label"
+    defaultMessage="Assigned team members"
   />
 )
 
@@ -289,17 +337,17 @@ class ClientInput extends Component<ClientInputProps> {
       onClick ? (
         <Anchor
           icon={<EditIcon />}
-          label="Label"
+          label={intlJobFormClientHeading}
           href="#"
           reverse={true}
           onClick={onClick}
         >
-          <Heading tag="h3">Client</Heading>
+          <Heading tag="h3">{intlJobFormClientHeading}</Heading>
           {value.label}
         </Anchor>
       ) : (
           <div>
-            <Heading tag="h3">Client</Heading>
+            <Heading tag="h3">{intlJobFormClientHeading}</Heading>
             {value.label}
           </div>
         )
@@ -472,7 +520,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
         <fieldset>
           <Field
             name="client"
-            label="Client"
+            label={intlJobFormClientHeading}
             component={renderClient}
             onClientSearch={this.onClientSearch}
             onSelectClient={this.onSelectClient}
@@ -487,7 +535,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
     if (this.state.visitsWillBeRegenerated) {
       scheduleNotification = (
         <Notification
-          message="Editing this schedule will clear all incomplete visits from this job and new visits will be created using the updated information."
+          message={intlJobFormScheduleNotification}
           status="warning"
           size="small"
         />
@@ -602,10 +650,10 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
 
     const schedule = initialValues.id ? initialValues.recurrences ? recurringSchedule : oneoffSchedule : (
       <Tabs onActive={(tabIndex: number) => { tabIndex ? this.onRecurringTab() : this.onOneoffTab() }}>
-        <Tab title='One-Off job'>
+        <Tab title={intlJobFormScheduleTabOneOff}>
           {oneoffSchedule}
         </Tab>
-        <Tab title='Recurring job'>
+        <Tab title={intlJobFormScheduleTabRecurring}>
           {recurringSchedule}
         </Tab>
       </Tabs>
@@ -645,10 +693,10 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
           {schedule}
 
           <fieldset>
-            <Heading tag="h3">Team</Heading>
+            <Heading tag="h3">{intlJobFormTeamHeading}</Heading>
             <Field
               name="assigned"
-              label="Assigned team members"
+              label={intlJobFormAssignedLabel}
               component={renderSelect}
               options={employees.map(employee => {
                 return { value: employee.id, label: employee.username };
@@ -673,7 +721,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
           <Button
             type="submit"
             primary={true}
-            label={initialValues ? "Save" : "Add"}
+            label={intl.formatMessage({id: 'form.save'})}
             onClick={valid && dirty && !submitting ? () => true : undefined}
           />
         </Footer>
@@ -788,12 +836,12 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
   }
 
   onOneoffTab = () => {
-    const { dispatch, change } = this.props;
+    const { dispatch, change, intl } = this.props;
 
     dispatch(change("recurrences", ''));
     dispatch(change("invoice_reminder", {
       value: "closed",
-      label: oneoffInvoicingReminderMap["closed"]
+      label: intl.formatMessage({id: oneoffInvoicingReminderMap["closed"]})
     }))
   }
 
