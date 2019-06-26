@@ -18,6 +18,15 @@ const intlAddButton = (
   />
 )
 
+const intlLineItem = (index: number) => (
+  <FormattedMessage
+    id="lineItemsForm.lineItemIndex"
+    description="Line items index"
+    defaultMessage="Line item #{index}"
+    values={{index}}
+  />
+)
+
 const intlName = (
   <FormattedMessage
     id="lineItemsForm.nameLabel"
@@ -119,7 +128,7 @@ class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineI
           {fields.map((lineItem, index) => (
             <Box margin={{bottom: "medium"}}>
               <div key={index}>
-                Line item #{index + 1}
+                {intlLineItem(index + 1)}
                 <Button icon={<CloseIcon />}
                   onClick={() => fields.remove(index)}
                   href='#'
