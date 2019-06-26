@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Field } from "redux-form";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Section from "grommet/components/Section";
 import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
@@ -8,6 +9,46 @@ import Button from "grommet/components/Button";
 import CloseIcon from "grommet/components/icons/base/Close";
 import RenderTextField from "./LineItemTextInput";
 import type { Service } from "../actions/services";
+
+const intlAddButton = (
+  <FormattedMessage
+    id="lineItemsForm.addButton"
+    description="Line items add button"
+    defaultMessage="Add Line item"
+  />
+)
+
+const intlName = (
+  <FormattedMessage
+    id="lineItemsForm.nameLabel"
+    description="Line items name label"
+    defaultMessage="Name"
+  />
+)
+
+const intlDescription = (
+  <FormattedMessage
+    id="lineItemsForm.descriptionLabel"
+    description="Line items description label"
+    defaultMessage="Description"
+  />
+)
+
+const intlQuantity = (
+  <FormattedMessage
+    id="lineItemsForm.quantityLabel"
+    description="Line items quantity label"
+    defaultMessage="Quantity"
+  />
+)
+
+const intlUnitCost = (
+  <FormattedMessage
+    id="lineItemsForm.unitCostLabel"
+    description="Line items unit cost label"
+    defaultMessage="Unit cost"
+  />
+)
 
 const renderField = ({
   input,
@@ -45,7 +86,7 @@ type LineItemState = {
   change: Function
 };
 
-class LineItemsForm extends Component<LineItemProps, LineItemState> {
+class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineItemState> {
   constructor(props: LineItemProps) {
     super();
     this.state = { value: "", suggestions: props.suggestions };
@@ -93,7 +134,7 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
                 <Field
                   name={`${lineItem}.name`}
                   component={RenderTextField}
-                  label="Name"
+                  label={intlName}
                   onDomChange={e => this.onNameChange(e, index)}
                   onSelect={e => this.onNameSelect(e, index)}
                   suggestions={this.state.suggestions}
@@ -102,24 +143,24 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
                   name={`${lineItem}.description`}
                   type="text"
                   component={renderField}
-                  label="Description"
+                  label={intlDescription}
                 />
                 <Field
                   name={`${lineItem}.quantity`}
                   component={renderNumberField}
-                  label="Quantity"
+                  label={intlQuantity}
                 />
                 <Field
                   name={`${lineItem}.unit_cost`}
                   component={renderNumberField}
-                  label="Unit cost"
+                  label={intlUnitCost}
                 />
               </div>
             </Box>
           ))}
         <Box>
           <button type="button" onClick={() => fields.push({})}>
-            Add Line item
+            {intlAddButton}
           </button>
           {submitFailed && error && <span>{error}</span>}
         </Box>
@@ -128,4 +169,4 @@ class LineItemsForm extends Component<LineItemProps, LineItemState> {
   }
 }
 
-export default LineItemsForm;
+export default injectIntl(LineItemsForm);
