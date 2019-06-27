@@ -99,6 +99,102 @@ const intlWeekDayLabel = (
   />
 )
 
+const intlWeekdayMonday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayMonday"
+    description="Job schedule by weekday Monday"
+    defaultMessage="Monday"
+  />
+)
+
+const intlWeekdayTuesday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayTuesday"
+    description="Job schedule by weekday Tuesday"
+    defaultMessage="Tuesday"
+  />
+)
+
+const intlWeekdayWednesday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayWednesday"
+    description="Job schedule by weekday Wednesday"
+    defaultMessage="Wednesday"
+  />
+)
+
+const intlWeekdayThursday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayThursday"
+    description="Job schedule by weekday Thursday"
+    defaultMessage="Thursday"
+  />
+)
+
+const intlWeekdayFriday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayFriday"
+    description="Job schedule by weekday Friday"
+    defaultMessage="Friday"
+  />
+)
+
+const intlWeekdaySaturday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdaySaturday"
+    description="Job schedule by weekday Saturday"
+    defaultMessage="Saturday"
+  />
+)
+
+const intlWeekdaySunday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdaySunday"
+    description="Job schedule by weekday Sunday"
+    defaultMessage="Sunday"
+  />
+)
+
+const intlWeekFirst = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekFirst"
+    description="Job schedule week first"
+    defaultMessage="First"
+  />
+)
+
+const intlWeekSecond = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekSecond"
+    description="Job schedule week second"
+    defaultMessage="Second"
+  />
+)
+
+const intlWeekThird = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekThird"
+    description="Job schedule week third"
+    defaultMessage="Third"
+  />
+)
+
+const intlWeekFourth = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekFourth"
+    description="Job schedule week fourth"
+    defaultMessage="Fourth"
+  />
+)
+
+const intlWeekLast = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekLast"
+    description="Job schedule week last"
+    defaultMessage="Last"
+  />
+)
+
 const byMonthWeekDays = [
   [1, 2, 3, 4, 5, 6, 7],
   [8, 9, 10, 11, 12, 13, 14],
@@ -115,21 +211,21 @@ const rruleFrequency = [
 ];
 
 const rruleByWeekDay = [
-  { label: "Monday", value: RRule.MO.weekday },
-  { label: "Tuesday", value: RRule.TU.weekday },
-  { label: "Wednesday", value: RRule.WE.weekday },
-  { label: "Thursday", value: RRule.TH.weekday },
-  { label: "Friday", value: RRule.FR.weekday },
-  { label: "Saturday", value: RRule.SA.weekday },
-  { label: "Sunday", value: RRule.SU.weekday }
+  { label: "jobScheduleEdit.byWeekdayMonday", value: RRule.MO.weekday },
+  { label: "jobScheduleEdit.byWeekdayTuesday", value: RRule.TU.weekday },
+  { label: "jobScheduleEdit.byWeekdayWednesday", value: RRule.WE.weekday },
+  { label: "jobScheduleEdit.byWeekdayThursday", value: RRule.TH.weekday },
+  { label: "jobScheduleEdit.byWeekdayFriday", value: RRule.FR.weekday },
+  { label: "jobScheduleEdit.byWeekdaySaturday", value: RRule.SA.weekday },
+  { label: "jobScheduleEdit.byWeekdaySunday", value: RRule.SU.weekday }
 ];
 
 const rruleByMonthDay = [
-  { label: "First", value: 1 },
-  { label: "Second", value: 2 },
-  { label: "Third", value: 3 },
-  { label: "Fourth", value: 4 },
-  { label: "Last", value: 5 }
+  { label: "jobScheduleEdit.weekFirst", value: 1 },
+  { label: "jobScheduleEdit.weekSecond", value: 2 },
+  { label: "jobScheduleEdit.weekThird", value: 3 },
+  { label: "jobScheduleEdit.weekFourth", value: 4 },
+  { label: "jobScheduleEdit.weekLast", value: 5 }
 ];
 
 type Props = {
@@ -191,6 +287,11 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     }
 
     if (schedule.freq === RRule.WEEKLY) {
+      const weekdayOptions: Array<{ label: String, value: string }> = 
+        rruleByWeekDay.map((option) => {
+        return { label: intl.formatMessage({id: option.label}), value: option.value };
+      });
+
       scheduleByWeekday = (
         <FormField label={intlWeekdaysLabel} htmlFor="byweekday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
@@ -200,7 +301,7 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
               inline={true}
               multiple={true}
               value={byweekday}
-              options={rruleByWeekDay}
+              options={weekdayOptions}
               onChange={this.onByWeekDayChange}
               onSearch={undefined}
             />
@@ -210,6 +311,16 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     }
 
     if (schedule.freq === RRule.MONTHLY) {
+      const monthDayOptions: Array<{ label: String, value: string }> = 
+        rruleByMonthDay.map((option) => {
+        return { label: intl.formatMessage({id: option.label}), value: option.value };
+      });
+
+      const weekdayOptions: Array<{ label: String, value: string }> = 
+        rruleByWeekDay.map((option) => {
+        return { label: intl.formatMessage({id: option.label}), value: option.value };
+      });
+
       let scheduleByMonthDay = (
         <FormField label={intlWeekLabel} htmlFor="bymonthday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
@@ -219,7 +330,7 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
               inline={true}
               multiple={true}
               value={byMonthDaySplashed}
-              options={rruleByMonthDay}
+              options={monthDayOptions}
               onChange={this.onByMonthDayChange}
               onSearch={undefined}
             />
@@ -236,7 +347,7 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
               inline={true}
               multiple={true}
               value={byweekday}
-              options={rruleByWeekDay}
+              options={weekdayOptions}
               onChange={this.onByWeekDayChange}
               onSearch={undefined}
             />
