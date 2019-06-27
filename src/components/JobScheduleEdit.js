@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Select from "grommet/components/Select";
 import FormField from "grommet/components/FormField";
@@ -9,6 +10,94 @@ import LayerForm from "grommet-templates/components/LayerForm";
 import { RRule } from "rrule";
 import { xor } from "lodash";
 import type { Schedule } from "../types/Schedule";
+
+const intlTitle = (
+  <FormattedMessage
+    id="jobScheduleEdit.title"
+    description="Job schedule edit title"
+    defaultMessage="Repeat"
+  />
+)
+
+const intlSubmitLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.submitLabel"
+    description="Job schedule submit label"
+    defaultMessage="OK"
+  />
+)
+
+const intlFrequencyLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyLabel"
+    description="Job schedule frequency label"
+    defaultMessage="Frequency"
+  />
+)
+
+const intlFrequencyDaily = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyDaily"
+    description="Job schedule frequency daily"
+    defaultMessage="Daily"
+  />
+)
+
+const intlFrequencyWeekly = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyWeekly"
+    description="Job schedule frequency weekly"
+    defaultMessage="Weekly"
+  />
+)
+
+const intlFrequencyMonthly = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyMonthly"
+    description="Job schedule frequency monthly"
+    defaultMessage="Monthly"
+  />
+)
+
+const intlFrequencyYearly = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyYearly"
+    description="Job schedule frequency yearly"
+    defaultMessage="Yearly"
+  />
+)
+
+const intlIntervalLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.intervalLabel"
+    description="Job schedule interval label"
+    defaultMessage="Interval"
+  />
+)
+
+const intlWeekdaysLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.weekdaysLabel"
+    description="Job schedule weekdays label"
+    defaultMessage="Weekdays"
+  />
+)
+
+const intlWeekLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.weekLabel"
+    description="Job schedule week label"
+    defaultMessage="Week"
+  />
+)
+
+const intlWeekDayLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.weekDayLabel"
+    description="Job schedule week day label"
+    defaultMessage="On day"
+  />
+)
 
 const byMonthWeekDays = [
   [1, 2, 3, 4, 5, 6, 7],
@@ -19,10 +108,10 @@ const byMonthWeekDays = [
 ];
 
 const rruleFrequency = [
-  { label: "Daily", value: RRule.DAILY },
-  { label: "Weekly", value: RRule.WEEKLY },
-  { label: "Monthly", value: RRule.MONTHLY },
-  { label: "Yearly", value: RRule.YEARLY }
+  { label: "jobScheduleEdit.frequencyDaily", value: RRule.DAILY },
+  { label: "jobScheduleEdit.frequencyWeekly", value: RRule.WEEKLY },
+  { label: "jobScheduleEdit.frequencyMonthly", value: RRule.MONTHLY },
+  { label: "jobScheduleEdit.frequencyYearly", value: RRule.YEARLY }
 ];
 
 const rruleByWeekDay = [
@@ -54,7 +143,7 @@ type State = {
   byMonthDaySplashed: Array<number>
 };
 
-class JobScheduleEdit extends Component<Props, State> {
+class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
   state = {
     schedule: Object.assign({}, this.props.schedule),
     byMonthDaySplashed: []
@@ -71,11 +160,7 @@ class JobScheduleEdit extends Component<Props, State> {
   }
 
   render() {
-    const { onClose } = this.props;
-
-    const freqOption = rruleFrequency.find(freq => {
-      return freq.value === this.state.schedule.freq;
-    });
+    const { onClose, intl } = this.props;
 
     const {
       schedule: { byweekday },
@@ -93,7 +178,7 @@ class JobScheduleEdit extends Component<Props, State> {
       schedule.freq === RRule.YEARLY
     ) {
       scheduleInterval = (
-        <FormField label="Interval" htmlFor="interval">
+        <FormField label={intlIntervalLabel} htmlFor="interval">
           <NumberInput
             id="interval"
             name="interval"
@@ -107,7 +192,7 @@ class JobScheduleEdit extends Component<Props, State> {
 
     if (schedule.freq === RRule.WEEKLY) {
       scheduleByWeekday = (
-        <FormField label="Weekdays" htmlFor="byweekday">
+        <FormField label={intlWeekdaysLabel} htmlFor="byweekday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="byweekday"
@@ -126,7 +211,7 @@ class JobScheduleEdit extends Component<Props, State> {
 
     if (schedule.freq === RRule.MONTHLY) {
       let scheduleByMonthDay = (
-        <FormField label="Week" htmlFor="bymonthday">
+        <FormField label={intlWeekLabel} htmlFor="bymonthday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="bymonthday"
@@ -143,7 +228,7 @@ class JobScheduleEdit extends Component<Props, State> {
       );
 
       let scheduleByWeekDay = (
-        <FormField label="on day" htmlFor="byweekday">
+        <FormField label={intlWeekDayLabel} htmlFor="byweekday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="byweekday"
@@ -167,21 +252,31 @@ class JobScheduleEdit extends Component<Props, State> {
       );
     }
 
+    let freqOption = rruleFrequency.find(freq => {
+      return freq.value === this.state.schedule.freq;
+    });
+    freqOption = { ...freqOption, label: intl.formatMessage({id: freqOption.label}) };
+
+    const frequencyOptions: Array<{ label: String, value: string }> = 
+      rruleFrequency.map((option) => {
+      return { label: intl.formatMessage({id: option.label}), value: option.value };
+    });
+
     return (
       <LayerForm
-        title="Repeat"
-        submitLabel="OK"
+        title={intlTitle}
+        submitLabel={intlSubmitLabel}
         onClose={onClose}
         onSubmit={this.onSubmit}
         secondaryControl={null}
       >
         <fieldset>
-          <FormField label="Frequency" htmlFor="freq">
+          <FormField label={intlFrequencyLabel} htmlFor="freq">
             <Select
               id="freq"
               name="freq"
               value={freqOption}
-              options={rruleFrequency}
+              options={frequencyOptions}
               onChange={this.onFreqChange}
               onSearch={undefined}
             />
@@ -236,4 +331,4 @@ class JobScheduleEdit extends Component<Props, State> {
   };
 }
 
-export default JobScheduleEdit;
+export default injectIntl(JobScheduleEdit);

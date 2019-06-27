@@ -4,5 +4,7 @@
   "jobForm.titleEdit",
   "jobForm.teamHeading",
   "jobs.title",
+  "jobScheduleEdit.submitLabel",
+  "jobScheduleEdit.intervalLabel",
   "session.title"
 ]
