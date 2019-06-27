@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Button from "grommet/components/Button";
 import Box from "grommet/components/Box";
 import Split from "grommet/components/Split";
@@ -17,6 +18,22 @@ import type { Credentials } from "../actions/auth";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
 
+const intlwithGoogle = (
+  <FormattedMessage
+    id="login.withGoogle"
+    description="Login with Google"
+    defaultMessage="Login with Google"
+  />
+)
+
+const intlOr = (
+  <FormattedMessage
+    id="login.or"
+    description="Login or"
+    defaultMessage="or"
+  />
+)
+
 type Props = {
   loginBusy: boolean,
   isAuthenticated: boolean,
@@ -24,7 +41,7 @@ type Props = {
   googleAuth: typeof Auth
 };
 
-class Login extends Component<Props> {
+class Login extends Component<Props & { intl: intlShape }> {
   googleAuth: typeof Auth
 
   onSubmit = (credentials: Credentials) => {
@@ -49,10 +66,10 @@ class Login extends Component<Props> {
                   primary={true}
                   fill={true}
                   type="button"
-                  label="Login with Google"
+                  label={intlwithGoogle}
                   onClick={googleAuth.login} />
               </Box>
-              <Box pad={{ horizontal: "medium", vertical: "none" }} align="center">or</Box>
+              <Box pad={{ horizontal: "medium", vertical: "none" }} align="center">{intlOr}</Box>
               <Box>
                 <LoginForm
                   onSubmit={this.onSubmit}
@@ -86,4 +103,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(injectIntl(Login));

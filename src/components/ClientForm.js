@@ -15,6 +15,7 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
+import { intlFormFieldRequired } from "../i18n";
 import type { Client } from "../actions/clients";
 import type { Field as CustomField } from "../actions/fields";
 import type { Element } from "react";
@@ -32,14 +33,6 @@ const intlClientAddTitle = (
     id="clientForm.addTitle"
     description="Client form add title"
     defaultMessage="Add client"
-  />
-);
-
-const intlFormFieldRequired = (
-  <FormattedMessage
-    id="form.required"
-    description="Form field required"
-    defaultMessage="Required"
   />
 );
 

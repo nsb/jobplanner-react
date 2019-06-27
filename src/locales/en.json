@@ -18,7 +18,6 @@
   "clientDetail.jobTitle": "Jobs",
   "clientForm.editTitle": "Edit client",
   "clientForm.addTitle": "Add client",
-  "form.required": "Required",
   "clientForm.detailsHeading": "Client details",
   "clientForm.FirstNameLabel": "First name",
   "clientForm.LastNameLabel": "Last name",
@@ -126,9 +125,18 @@
   "lineItemsForm.descriptionLabel": "Description",
   "lineItemsForm.quantityLabel": "Quantity",
   "lineItemsForm.unitCostLabel": "Unit cost",
+  "login.withGoogle": "Login with Google",
+  "login.or": "or",
+  "loginForm.usernameLabel": "Username",
+  "loginForm.passwordLabel": "Password",
+  "loginForm.forgotPassword": "Forgot password?",
+  "loginForm.submitLabel": "Login",
+  "loginForm.noAccount": "Don't have an account?",
+  "loginForm.signup": "Signup here",
   "scheduleInput.heading": "Visit frequency",
   "session.title": "Session",
   "session.logout": "Logout",
   "settings.title": "Settings",
-  "visitsreport.title": "Visits Report"
+  "visitsreport.title": "Visits Report",
+  "form.required": "Required"
 }
