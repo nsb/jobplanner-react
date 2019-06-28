@@ -138,5 +138,11 @@
   "session.logout": "Log ud",
   "session.title": "Session",
   "settings.title": "Indstillinger",
+  "signup.haveAccount": "Har du allerede en konto?",
+  "signup.login": "Log ind her",
+  "signup.or": "eller",
+  "signup.submitLabel": "Tilmeld",
+  "signup.usernameLabel": "E-mail",
+  "signup.withGoogle": "Tilmeld med Google",
   "visitsreport.title": "Besøgsrapport"
 }
