@@ -9,6 +9,7 @@ import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
+import { intlFormFieldRequired } from "../i18n";
 import type { Element } from "react";
 
 const intlUsernameLabel = (
@@ -46,7 +47,7 @@ const intlLogin = (
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.username) {
-    errors.username = "Required";
+    errors.username = {intlFormFieldRequired};
   }
   return errors;
 };
