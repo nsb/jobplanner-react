@@ -47,7 +47,7 @@ const intlLogin = (
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.username) {
-    errors.username = {intlFormFieldRequired};
+    errors.username = intlFormFieldRequired;
   }
   return errors;
 };
