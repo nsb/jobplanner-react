@@ -143,6 +143,18 @@
   "signup.submitLabel": "Register",
   "signup.haveAccount": "Already have an account?",
   "signup.login": "Login here here",
+  "visitDetail.title": "Visit",
+  "visitDetail.directions": "Directions",
+  "visitDetail.actionsHeading": "Actions",
+  "visitDetail.actionsEdit": "Edit",
+  "visitDetail.actionsUpdate": "Update future visits",
+  "visitDetail.actionsDelete": "Delete",
+  "visitDetail.actionsMarkCompleted": "Mark completed",
+  "visitDetail.actionsMarkIncomplete": "Mark incomplete",
+  "visitDetail.jobHeading": "Job #{id}",
+  "visitDetail.teamHeading": "Team",
+  "visitDetail.teamUnassigned": "Unassigned",
+  "visitDetail.lineItemsHeading": "Line Items",
   "visitsreport.title": "Visits Report",
   "form.required": "Required"
 }

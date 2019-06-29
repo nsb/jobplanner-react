@@ -6,5 +6,6 @@
   "jobs.title",
   "jobScheduleEdit.submitLabel",
   "jobScheduleEdit.intervalLabel",
-  "session.title"
+  "session.title",
+  "visitDetail.jobHeading"
 ]

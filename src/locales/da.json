@@ -144,5 +144,17 @@
   "signup.submitLabel": "Tilmeld",
   "signup.usernameLabel": "E-mail",
   "signup.withGoogle": "Tilmeld med Google",
+  "visitDetail.actionsDelete": "Fjern",
+  "visitDetail.actionsEdit": "Rediger",
+  "visitDetail.actionsHeading": "Handlinger",
+  "visitDetail.actionsMarkCompleted": "Marker udført",
+  "visitDetail.actionsMarkIncomplete": "Marker ikke udført",
+  "visitDetail.actionsUpdate": "Opdater fremtidige besøg",
+  "visitDetail.directions": "Rute",
+  "visitDetail.jobHeading": "Job #{id}",
+  "visitDetail.lineItemsHeading": "Opgaver",
+  "visitDetail.teamHeading": "Team",
+  "visitDetail.teamUnassigned": "Ingen tildelt",
+  "visitDetail.title": "Besøg",
   "visitsreport.title": "Besøgsrapport"
 }

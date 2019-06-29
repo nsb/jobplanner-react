@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
@@ -17,6 +18,103 @@ import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
 import type { LineItem } from "../actions/lineitems";
 
+const intlTitle = (
+  <FormattedMessage
+    id="visitDetail.title"
+    description="Visit detail title"
+    defaultMessage="Visit"
+  />
+)
+
+const intlDirections = (
+  <FormattedMessage
+    id="visitDetail.directions"
+    description="Visit detail directions"
+    defaultMessage="Directions"
+  />
+)
+
+const intlActions = (
+  <FormattedMessage
+    id="visitDetail.actionsHeading"
+    description="Visit detail actions heading"
+    defaultMessage="Actions"
+  />
+)
+
+const intlEdit = (
+  <FormattedMessage
+    id="visitDetail.actionsEdit"
+    description="Visit detail actions edit"
+    defaultMessage="Edit"
+  />
+)
+
+const intlUpdateFuture = (
+  <FormattedMessage
+    id="visitDetail.actionsUpdate"
+    description="Visit detail actions update future visits"
+    defaultMessage="Update future visits"
+  />
+)
+
+const intlDelete = (
+  <FormattedMessage
+    id="visitDetail.actionsDelete"
+    description="Visit detail actions delete"
+    defaultMessage="Delete"
+  />
+)
+
+const intlMarkCompleted = (
+  <FormattedMessage
+    id="visitDetail.actionsMarkCompleted"
+    description="Visit detail actions mark completed"
+    defaultMessage="Mark completed"
+  />
+)
+
+const intlMarkIncomplete = (
+  <FormattedMessage
+    id="visitDetail.actionsMarkIncomplete"
+    description="Visit detail actions mark incomplete"
+    defaultMessage="Mark incomplete"
+  />
+)
+
+const intlJob = (id) => (
+  <FormattedMessage
+    id="visitDetail.jobHeading"
+    description="Visit detail job heading"
+    defaultMessage="Job #{id}"
+    values={{id}}
+  />
+)
+
+const intlTeam = (
+  <FormattedMessage
+    id="visitDetail.teamHeading"
+    description="Visit detail team heading"
+    defaultMessage="Team"
+  />
+)
+
+const intlUnassigned = (
+  <FormattedMessage
+    id="visitDetail.teamUnassigned"
+    description="Visit detail team unassigned"
+    defaultMessage="Unassigned"
+  />
+)
+
+const intlLineItems = (
+  <FormattedMessage
+    id="visitDetail.lineItemsHeading"
+    description="Visit detail line items heading"
+    defaultMessage="Line Items"
+  />
+)
+
 export type Props = {
   visit: Visit,
   job: ?Job,
@@ -31,7 +129,7 @@ export type Props = {
   onClose: Function
 };
 
-class VisitDetail extends Component<Props> {
+class VisitDetail extends Component<Props & { intl: intlShape }> {
   render() {
     const { visit, job, property, assigned, lineItems, onEdit, onUpdateFutureVisits, onDelete } = this.props;
 
@@ -55,7 +153,7 @@ class VisitDetail extends Component<Props> {
           href={`https://maps.google.com/?${directionsParams.toString()}`}
           target='_blank'
           primary={true} >
-          Directions
+          {intlDirections}
         </Anchor >)
     }
 
@@ -63,7 +161,7 @@ class VisitDetail extends Component<Props> {
       <Box>
         <Header justify="between" pad="none">
           <Heading tag="h4" margin="none" strong={true}>
-            Visit
+            {intlTitle}
           </Heading>
         </Header>
 
@@ -96,20 +194,20 @@ class VisitDetail extends Component<Props> {
                 responsive={true}
                 inline={false}
                 primary={false}
-                label="Actions"
+                label={intlActions}
                 icon={<ActionsIcon />}
                 Directions >
                 <Anchor href="#" onClick={onEdit}>
-                  Edit
+                  {intlEdit}
                 </Anchor>
                 <Anchor href="#" onClick={onUpdateFutureVisits}>
-                  Update future visits
+                  {intlUpdateFuture}
                 </Anchor>
                 <Anchor href="#" onClick={onDelete}>
-                  Delete
+                  {intlDelete}
                 </Anchor>
                 <Anchor href="#" onClick={this.toggleCompleted}>
-                  {visit.completed ? "Mark incomplete" : "Mark completed"}
+                  {visit.completed ? intlMarkIncomplete : intlMarkCompleted}
                 </Anchor>
               </Menu>
             </Box>
@@ -118,7 +216,7 @@ class VisitDetail extends Component<Props> {
                 <Box direction="row">
                   <Anchor
                     path={`/${visit.business}/jobs/${visit.job}`}>
-                    Job #{visit.job}
+                    {intlJob(visit.job)}
                   </Anchor>
                 </Box>
               </Heading>
@@ -126,20 +224,20 @@ class VisitDetail extends Component<Props> {
             </Box>
             <Box colorIndex="light-2" pad={{ horizontal: "medium", vertical: "small" }}>
               <Heading tag="h4" strong={true}>
-                <Box direction="row">Team</Box>
+                <Box direction="row">{intlTeam}</Box>
               </Heading>
               {assigned.length ? (
                 assigned.map(employee => {
                   return <div>{employee.username}</div>;
                 })
               ) : (
-                  <div>Unassigned</div>
+                  <div>{intlUnassigned}</div>
                 )}
             </Box>
           </Columns>
           <Box pad={{ horizontal: "none", vertical: "small" }}>
             <Heading tag="h4" strong={true}>
-              <Box direction="row">Line Items</Box>
+              <Box direction="row">{intlLineItems}</Box>
             </Heading>
             {lineItems.map(item => {
               return <div>{item.name}</div>;
@@ -158,4 +256,4 @@ class VisitDetail extends Component<Props> {
   };
 }
 
-export default VisitDetail;
+export default injectIntl(VisitDetail);
