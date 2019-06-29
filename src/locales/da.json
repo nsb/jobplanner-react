@@ -170,5 +170,8 @@
   "visitListItem.completed": "Udført",
   "visitListItem.noneAssigned": "Ingen tildelt",
   "visitListItem.overdueTag": "Forsinket",
+  "visitRemove.paragraph1": "Er du sikker på du vil fjerne besøg for {name}?",
+  "visitRemove.submitLabel": "Ja, fjern",
+  "visitRemove.title": "Fjern",
   "visitsreport.title": "Besøgsrapport"
 }

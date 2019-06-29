@@ -168,6 +168,9 @@
   "visitListItem.overdueTag": "Overdue",
   "visitListItem.noneAssigned": "Not assigned yet",
   "visitListItem.completed": "Completed",
+  "visitRemove.title": "Remove",
+  "visitRemove.paragraph1": "Are you sure you want to remove visit for {name}?",
+  "visitRemove.submitLabel": "Yes, remove",
   "visitsreport.title": "Visits Report",
   "form.required": "Required",
   "form.save": "Save"
