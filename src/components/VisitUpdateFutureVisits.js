@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import { RRule, rrulestr } from "rrule";
 import { partialUpdateVisit } from '../actions/visits';
 import LayerForm from "grommet-templates/components/LayerForm";
@@ -13,6 +14,30 @@ import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Schedule } from "../types/Schedule";
 import type { State as ReduxState } from '../types/State';
+
+const intlTitle = (
+  <FormattedMessage
+    id="visitUpdateFutureVisits.title"
+    description="Visit update future visits title"
+    defaultMessage="Update future visits?"
+  />
+)
+
+const intlParagraph = (
+  <FormattedMessage
+    id="visitUpdateFutureVisits.paragraph1"
+    description="Visit update future visits paragraph 1"
+    defaultMessage="This will update the schedule for all future visits."
+  />
+)
+
+const intlSubmitLabel = (
+  <FormattedMessage
+    id="visitUpdateFutureVisits.submitLabel"
+    description="Visit update future visits submit label"
+    defaultMessage="Yes, update"
+  />
+)
 
 const rruleToSchedule = (rrule): Schedule => {
   return {
@@ -37,7 +62,7 @@ type State = {
   schedule: Schedule
 };
 
-class VisitUpdateFutureVisits extends Component<Props, State> {
+class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, State> {
   constructor(props: Props) {
     super();
 
@@ -75,8 +100,8 @@ class VisitUpdateFutureVisits extends Component<Props, State> {
     } else {
       return (
         <LayerForm
-          title="Update future visits?"
-          submitLabel="Yes, update"
+          title={intlTitle}
+          submitLabel={intlSubmitLabel}
           compact={true}
           onClose={onClose}
           onSubmit={this.handleSubmit}
@@ -84,7 +109,7 @@ class VisitUpdateFutureVisits extends Component<Props, State> {
           <fieldset>
             <ScheduleInput value={`RRULE:${new RRule({ ...schedule }).toString()}`} onClick={this.onScheduleEdit} />
             <Paragraph>
-              This will update the schedule for all future visits.
+              {intlParagraph}
             </Paragraph>
           </fieldset>
         </LayerForm>
@@ -144,4 +169,4 @@ const mapDispatchToProps = (dispatch: *) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(VisitUpdateFutureVisits);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(VisitUpdateFutureVisits));

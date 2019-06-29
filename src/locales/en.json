@@ -190,6 +190,9 @@
   "visitStatusTag.completed": "Completed",
   "visitStatusTag.upcoming": "Upcoming",
   "visitStatusTag.overdue": "Overdue",
+  "visitUpdateFutureVisits.title": "Update future visits?",
+  "visitUpdateFutureVisits.paragraph1": "This will update the schedule for all future visits.",
+  "visitUpdateFutureVisits.submitLabel": "Yes, update",
   "form.required": "Required",
   "form.save": "Save"
 }
