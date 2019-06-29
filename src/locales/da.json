@@ -166,5 +166,6 @@
   "visitForm.scheduleHeading": "Job plan",
   "visitForm.titleAdd": "Tilføj besøg",
   "visitForm.titleEdit": "Rediger besøg",
+  "visitList.emptyMessage": "Ingen besøg.",
   "visitsreport.title": "Besøgsrapport"
 }

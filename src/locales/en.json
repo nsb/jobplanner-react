@@ -6,7 +6,6 @@
   "businessAdd.title": "Add business",
   "form.close": "Close",
   "businessAdd.labelName": "Name",
-  "form.save": "Save",
   "calendar.title": "Calendar",
   "calendarlist.title": "Calendar",
   "clientActions.edit": "Edit",
@@ -165,6 +164,8 @@
   "visitForm.assignedLabel": "Team",
   "visitForm.completedLabel": "Completed",
   "visitForm.lineitemsHeading": "Line Items",
+  "visitList.emptyMessage": "You do not have any visits at the moment.",
   "visitsreport.title": "Visits Report",
-  "form.required": "Required"
+  "form.required": "Required",
+  "form.save": "Save"
 }

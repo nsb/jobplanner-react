@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
-import { injectIntl, intlShape } from "react-intl";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import Heading from "grommet/components/Heading";
@@ -12,25 +12,32 @@ import VisitListItemContainer from "./VisitListItemContainer";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 
+const intlEmpytMessage = (
+  <FormattedMessage
+    id="visitList.emptyMessage"
+    description="Visit list empty message"
+    defaultMessage="You do not have any visits at the moment."
+  />
+)
+
 type Props = {
   visits: { [key: Date]: Array<Visit> },
   job?: Job,
   isFetching: boolean,
-  onMore: () => void,
-  intl: intlShape
+  onMore: () => void
 };
 
 type State = {
   selected?: Visit
 };
 
-class VisitList extends Component<Props, State> {
+class VisitList extends Component<Props & { intl: intlShape }, State> {
   state = {
     selected: undefined
   };
 
   render() {
-    const { visits, isFetching, job, onMore, intl } = this.props;
+    const { visits, isFetching, job, onMore } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
@@ -73,10 +80,7 @@ class VisitList extends Component<Props, State> {
         <ListPlaceholder
           filteredTotal={isFetching ? null : Object.entries(visits).length}
           unfilteredTotal={isFetching ? null : Object.entries(visits).length}
-          emptyMessage={intl.formatMessage({
-            id: "visits.emptyMessage",
-            defaultMessage: "You do not have any visits at the moment."
-          })}
+          emptyMessage={intlEmpytMessage}
         />
         {visitLayer}
       </Box>
