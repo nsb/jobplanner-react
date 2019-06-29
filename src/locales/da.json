@@ -177,5 +177,14 @@
   "visitsReport.filterCompleted": "Udført",
   "visitsReport.filterCount": "Viser {count} af {total} besøg.",
   "visitsReport.filterIncomplete": "Uafviklet",
+  "visitsReportFilter.applyLabel": "Udfør",
+  "visitsReportFilter.assignedLabel": "Tildelt til",
+  "visitsReportFilter.assignedPlaceholder": "Alle",
+  "visitsReportFilter.fromLabel": "Fra",
+  "visitsReportFilter.statusCompleted": "Udført",
+  "visitsReportFilter.statusIncomplete": "Uafviklet",
+  "visitsReportFilter.statusLabel": "Status",
+  "visitsReportFilter.title": "Filter",
+  "visitsReportFilter.toLabel": "Til",
   "visitsreport.title": "Besøgsrapport"
 }

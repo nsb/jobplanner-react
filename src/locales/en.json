@@ -176,6 +176,15 @@
   "visitsReport.filterCount": "Showing {count} of {total} visits.",
   "visitsReport.emptyMessage": "No visits found.",
   "visitsreport.title": "Visits Report",
+  "visitsReportFilter.title": "Filter",
+  "visitsReportFilter.fromLabel": "From",
+  "visitsReportFilter.toLabel": "To",
+  "visitsReportFilter.statusLabel": "Status",
+  "visitsReportFilter.statusCompleted": "Completed",
+  "visitsReportFilter.statusIncomplete": "Incomplete",
+  "visitsReportFilter.assignedLabel": "Assigned to",
+  "visitsReportFilter.assignedPlaceholder": "All",
+  "visitsReportFilter.applyLabel": "Apply",
   "form.required": "Required",
   "form.save": "Save"
 }
