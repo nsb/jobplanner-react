@@ -21,6 +21,14 @@ import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 
+const intlTitle = (
+  <FormattedMessage
+    id="settings.title"
+    description="Settings title"
+    defaultMessage="Settings"
+  />
+)
+
 const LAYERS: {} = {
   businessEdit: BusinessEdit,
   servicesEdit: ServicesEdit,
@@ -28,14 +36,6 @@ const LAYERS: {} = {
   fieldsEdit: FieldsEdit,
   emailsEdit: EmailsEdit
 };
-
-const title = (
-  <FormattedMessage
-    id="settings.title"
-    description="Settings title"
-    defaultMessage="Settings"
-  />
-)
 
 type Props = {
   business: Business,
@@ -56,7 +56,7 @@ class SettingsEdit extends Component<Props, State> {
     return (
       <Box flex={true}>
         <Header size="large" pad={{ horizontal: "medium" }}>
-          <NavControl title={title} />
+          <NavControl title={intlTitle} />
         </Header>
         <List>
           <BusinessSection

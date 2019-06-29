@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import { Field, reduxForm } from "redux-form";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -9,12 +10,37 @@ import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
+import { intlFormFieldRequired } from "../i18n";
 import type { Element } from "react";
+
+const intlTitle = (
+  <FormattedMessage
+    id="settingsBusinessForm.title"
+    description="Settings business form title"
+    defaultMessage="Company settings"
+  />
+)
+
+const intlName = (
+  <FormattedMessage
+    id="settingsBusinessForm.nameLabel"
+    description="Settings business form name label"
+    defaultMessage="Name"
+  />
+)
+
+const intlSubmitLabel = (
+  <FormattedMessage
+    id="settingsBusinessForm.submitLabel"
+    description="Settings business form submit label"
+    defaultMessage="Update settings"
+  />
+)
 
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.name) {
-    errors.name = "Required";
+    errors.name = intlFormFieldRequired;
   }
   return errors;
 };
@@ -43,13 +69,13 @@ export const BusinessForm = ({
   dirty,
   submitting,
   onClose
-}: Props) => {
+}: Props & { intl: intlShape }) => {
   return (
     <Form onSubmit={handleSubmit}>
 
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
-          Company settings
+          {intlTitle}
         </Heading>
       </Header>
 
@@ -57,7 +83,7 @@ export const BusinessForm = ({
 
         <fieldset>
 
-          <Field name="name" label="Name" component={renderField} type="text" />
+          <Field name="name" label={intlName} component={renderField} type="text" />
 
         </fieldset>
 
@@ -68,7 +94,7 @@ export const BusinessForm = ({
         <Button
           type="submit"
           primary={true}
-          label="Update settings"
+          label={intlSubmitLabel}
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>
@@ -79,4 +105,4 @@ export const BusinessForm = ({
 export default reduxForm({
   form: "businessedit",
   validate
-})(BusinessForm);
+})(injectIntl(BusinessForm));

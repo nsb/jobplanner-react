@@ -1,9 +1,26 @@
 // @flow
 
 import React from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Button from "grommet/components/Button";
 import EditIcon from "grommet/components/icons/base/Edit";
 import SettingsListItem from "./SettingsListItem";
+
+const intlHeading = (
+  <FormattedMessage
+    id="settingsBusinessSection.heading"
+    description="Settings business section heading"
+    defaultMessage="Company"
+  />
+)
+
+const intlDetails = (
+  <FormattedMessage
+    id="settingsBusinessSection.details"
+    description="Settings business section details"
+    defaultMessage="Update your company details here."
+  />
+)
 
 type Props = {
   onOpen: Function
@@ -16,18 +33,12 @@ const BusinessSection = (props: Props) => {
     <Button icon={<EditIcon />} onClick={onOpen} a11yTitle="Edit Company" />
   );
 
-  let details;
-  details = (
-    <span>
-      Update your company details here.
-    </span>
-  );
   return (
     <SettingsListItem key="business" control={control} first={true}>
-      <strong>Company</strong>
-      {details}
+      <strong>{intlHeading}</strong>
+      {intlDetails}
     </SettingsListItem>
   );
 };
 
-export default BusinessSection;
+export default injectIntl(BusinessSection);
