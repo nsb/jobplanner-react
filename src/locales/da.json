@@ -186,5 +186,7 @@
   "visitsReportFilter.statusLabel": "Status",
   "visitsReportFilter.title": "Filter",
   "visitsReportFilter.toLabel": "Til",
+  "visitsReportListItem.assigned": "Tildelt {names}",
+  "visitsReportListItem.notAssigned": "Ikke tildelt",
   "visitsreport.title": "Besøgsrapport"
 }

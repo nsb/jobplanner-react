@@ -1,10 +1,28 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
+
+const intlAssigned = (names: Array<string>) => (
+  <FormattedMessage
+    id="visitsReportListItem.assigned"
+    description="Visits report list item assigned"
+    defaultMessage="Assigned to {names}"
+    values={{names: names.join(", ")}}
+  />
+)
+
+const intlNotAssigned = (
+  <FormattedMessage
+    id="visitsReportListItem.notAssigned"
+    description="Visits report list item not assigned"
+    defaultMessage="Not assigned"
+  />
+)
 
 type Props = {
   visit: Visit,
@@ -12,20 +30,12 @@ type Props = {
   index: number
 };
 
-class VisitsReportListItem extends Component<Props> {
+class VisitsReportListItem extends Component<Props & { intl: intlShape }> {
   render() {
     const { visit, assigned, index } = this.props;
 
-    let assignedNames;
-    if (assigned.length) {
-       assignedNames = (
-        <span>Assigned to {assigned.map(employee => employee.first_name).join(", ")}</span>
-      );
-    } else {
-      assignedNames = (
-        <span>Not assigned</span>
-      )
-    }
+    const assignedNames = assigned.length ? intlAssigned(assigned.map(employee => employee.first_name)) : intlNotAssigned;
+    
     return (
       <ListItem
         direction="row"
@@ -50,4 +60,4 @@ class VisitsReportListItem extends Component<Props> {
   }
 }
 
-export default VisitsReportListItem;
+export default injectIntl(VisitsReportListItem);

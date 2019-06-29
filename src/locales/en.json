@@ -185,6 +185,8 @@
   "visitsReportFilter.assignedLabel": "Assigned to",
   "visitsReportFilter.assignedPlaceholder": "All",
   "visitsReportFilter.applyLabel": "Apply",
+  "visitsReportListItem.assigned": "Assigned to {names}",
+  "visitsReportListItem.notAssigned": "Not assigned",
   "form.required": "Required",
   "form.save": "Save"
 }
