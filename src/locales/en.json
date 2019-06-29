@@ -187,6 +187,9 @@
   "visitsReportFilter.applyLabel": "Apply",
   "visitsReportListItem.assigned": "Assigned to {names}",
   "visitsReportListItem.notAssigned": "Not assigned",
+  "visitStatusTag.completed": "Completed",
+  "visitStatusTag.upcoming": "Upcoming",
+  "visitStatusTag.overdue": "Overdue",
   "form.required": "Required",
   "form.save": "Save"
 }
