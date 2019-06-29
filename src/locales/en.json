@@ -165,6 +165,9 @@
   "visitForm.completedLabel": "Completed",
   "visitForm.lineitemsHeading": "Line Items",
   "visitList.emptyMessage": "You do not have any visits at the moment.",
+  "visitListItem.overdueTag": "Overdue",
+  "visitListItem.noneAssigned": "Not assigned yet",
+  "visitListItem.completed": "Completed",
   "visitsreport.title": "Visits Report",
   "form.required": "Required",
   "form.save": "Save"

@@ -167,5 +167,8 @@
   "visitForm.titleAdd": "Tilføj besøg",
   "visitForm.titleEdit": "Rediger besøg",
   "visitList.emptyMessage": "Ingen besøg.",
+  "visitListItem.completed": "Udført",
+  "visitListItem.noneAssigned": "Ingen tildelt",
+  "visitListItem.overdueTag": "Forsinket",
   "visitsreport.title": "Besøgsrapport"
 }
