@@ -47,7 +47,7 @@ class VisitListItem extends Component<Props & { intl: intlShape }> {
     const { visit, assigned, index, onClick, job, intl } = this.props;
 
     let clientName = job ? undefined : (<span>{visit.client_name}</span>);
-    let details = visit.completed ? ({intlCompleted}) : (<span>{visit.details}</span>);
+    let details = visit.completed ? intlCompleted : visit.details;
 
     let is_overdue;
     if (visit.is_overdue) {
