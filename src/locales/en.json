@@ -155,6 +155,16 @@
   "visitDetail.teamHeading": "Team",
   "visitDetail.teamUnassigned": "Unassigned",
   "visitDetail.lineItemsHeading": "Line Items",
+  "visitForm.titleEdit": "Edit visit",
+  "visitForm.titleAdd": "Add visit",
+  "visitForm.detailsLabel": "Details",
+  "visitForm.scheduleHeading": "Schedule",
+  "visitForm.beginsLabel": "Begins",
+  "visitForm.endsLabel": "Ends",
+  "visitForm.anytimeLabel": "Anytime",
+  "visitForm.assignedLabel": "Team",
+  "visitForm.completedLabel": "Completed",
+  "visitForm.lineitemsHeading": "Line Items",
   "visitsreport.title": "Visits Report",
   "form.required": "Required"
 }

@@ -12,6 +12,7 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
+import { intlFormSaveLabel } from "../i18n";
 import type { Element } from "react";
 
 const intlAddBusiness = (
@@ -35,14 +36,6 @@ const intlNameLabel = (
     id="businessAdd.labelName"
     description="Name label"
     defaultMessage="Name"
-  />
-)
-
-const intlSaveLabel = (
-  <FormattedMessage
-    id="form.save"
-    description="Form save button"
-    defaultMessage="Save"
   />
 )
 
@@ -109,7 +102,7 @@ export const BusinessForm = ({
         <Button
           type="submit"
           primary={true}
-          label={intlSaveLabel}
+          label={intlFormSaveLabel}
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>

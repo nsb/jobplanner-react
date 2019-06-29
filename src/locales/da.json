@@ -156,5 +156,15 @@
   "visitDetail.teamHeading": "Team",
   "visitDetail.teamUnassigned": "Ingen tildelt",
   "visitDetail.title": "Besøg",
+  "visitForm.anytimeLabel": "Når som helst på dagen",
+  "visitForm.assignedLabel": "Team",
+  "visitForm.beginsLabel": "Begynder",
+  "visitForm.completedLabel": "Udført",
+  "visitForm.detailsLabel": "Detaljer",
+  "visitForm.endsLabel": "Slutter",
+  "visitForm.lineitemsHeading": "Opgaver",
+  "visitForm.scheduleHeading": "Job plan",
+  "visitForm.titleAdd": "Tilføj besøg",
+  "visitForm.titleEdit": "Rediger besøg",
   "visitsreport.title": "Besøgsrapport"
 }

@@ -8,3 +8,11 @@ export const intlFormFieldRequired = (
     defaultMessage="Required"
   />
 );
+
+export const intlFormSaveLabel = (
+  <FormattedMessage
+    id="form.save"
+    description="Form save button"
+    defaultMessage="Save"
+  />
+)

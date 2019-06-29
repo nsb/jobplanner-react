@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -16,10 +17,91 @@ import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import LineItemsFormContainer from "./VisitLineItemsFormContainer";
+import { intlFormSaveLabel } from "../i18n";
 import type { Client } from "../actions/clients";
 import type { Employee } from "../actions/employees";
 import type { Element } from "react";
 import type { Dispatch } from "../types/Store";
+
+const intlTitleEdit = (
+  <FormattedMessage
+    id="visitForm.titleEdit"
+    description="Visit form title edit"
+    defaultMessage="Edit visit"
+  />
+)
+
+const intlTitleAdd = (
+  <FormattedMessage
+    id="visitForm.titleAdd"
+    description="Visit form title add"
+    defaultMessage="Add visit"
+  />
+)
+
+const intlDetails = (
+  <FormattedMessage
+    id="visitForm.detailsLabel"
+    description="Visit form details laben"
+    defaultMessage="Details"
+  />
+)
+
+const intlSchedule = (
+  <FormattedMessage
+    id="visitForm.scheduleHeading"
+    description="Visit form schedule heading"
+    defaultMessage="Schedule"
+  />
+)
+
+const intlBegins = (
+  <FormattedMessage
+    id="visitForm.beginsLabel"
+    description="Visit form begins label"
+    defaultMessage="Begins"
+  />
+)
+
+const intlEnds = (
+  <FormattedMessage
+    id="visitForm.endsLabel"
+    description="Visit form ends label"
+    defaultMessage="Ends"
+  />
+)
+
+const intlAnytime = (
+  <FormattedMessage
+    id="visitForm.anytimeLabel"
+    description="Visit form anytime label"
+    defaultMessage="Anytime"
+  />
+)
+
+const intlAssigned = (
+  <FormattedMessage
+    id="visitForm.assignedLabel"
+    description="Visit form assigned label"
+    defaultMessage="Team"
+  />
+)
+
+const intlCompleted = (
+  <FormattedMessage
+    id="visitForm.completedLabel"
+    description="Visit form completed label"
+    defaultMessage="Completed"
+  />
+)
+
+const intlLineItems = (
+  <FormattedMessage
+    id="visitForm.lineitemsHeading"
+    description="Visit form line items heading"
+    defaultMessage="Line Items"
+  />
+)
 
 const validate = (values: Client) => {
   const errors = {};
@@ -105,7 +187,7 @@ type Props = {
   dispatch: Dispatch
 };
 
-class VisitForm extends Component<Props> {
+class VisitForm extends Component<Props & { intl: intlShape }> {
   dateFormat: string;
   static defaultProps = {
     employees: []
@@ -131,7 +213,7 @@ class VisitForm extends Component<Props> {
 
         <Header justify="between" pad="none">
           <Heading tag="h4" margin="none" strong={true}>
-            {initialValues && initialValues.id ? "Edit visit" : "Add visit"}
+            {initialValues && initialValues.id ? intlTitleEdit : intlTitleAdd}
           </Heading>
         </Header>
 
@@ -145,17 +227,17 @@ class VisitForm extends Component<Props> {
           <fieldset>
             <Field
               name="details"
-              label="Details"
+              label={intlDetails}
               component={renderField}
               type="text"
             />
           </fieldset>
 
           <fieldset>
-            <Heading tag="h3">Schedule</Heading>
+            <Heading tag="h3">{intlSchedule}</Heading>
             <Field
               name="begins"
-              label="Begins"
+              label={intlBegins}
               component={renderDateTime}
               dateFormat={dateFormat}
               format={(value, name) => moment(value).toDate()}
@@ -164,7 +246,7 @@ class VisitForm extends Component<Props> {
             />
             <Field
               name="ends"
-              label="Ends"
+              label={intlEnds}
               component={renderDateTime}
               dateFormat={dateFormat}
               format={(value, name) => moment(value).toDate()}
@@ -172,7 +254,7 @@ class VisitForm extends Component<Props> {
             />
             <Field
               name="anytime"
-              label="Anytime"
+              label={intlAnytime}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
@@ -181,7 +263,7 @@ class VisitForm extends Component<Props> {
           <fieldset>
             <Field
               name="assigned"
-              label="Team"
+              label={intlAssigned}
               component={renderSelect}
               options={employees.map(employee => {
                 return { value: employee.id, label: `${employee.first_name} ${employee.last_name}` || employee.username };
@@ -190,7 +272,7 @@ class VisitForm extends Component<Props> {
             />
             <Field
               name="completed"
-              label="Completed"
+              label={intlCompleted}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
@@ -199,7 +281,7 @@ class VisitForm extends Component<Props> {
           <fieldset>
             <FieldArray
               name="line_items"
-              label="Line items"
+              label={intlLineItems}
               component={LineItemsFormContainer}
             />
           </fieldset>
@@ -210,7 +292,7 @@ class VisitForm extends Component<Props> {
           <Button
             type="submit"
             primary={true}
-            label={initialValues ? "Save" : "Add"}
+            label={intlFormSaveLabel}
             onClick={valid && dirty && !submitting ? () => true : undefined}
           />
         </Footer>
@@ -245,4 +327,4 @@ SelectingFormValuesVisitForm = connect(
   }
 )(SelectingFormValuesVisitForm);
 
-export default SelectingFormValuesVisitForm;
+export default injectIntl(SelectingFormValuesVisitForm);
