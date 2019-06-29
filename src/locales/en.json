@@ -171,6 +171,10 @@
   "visitRemove.title": "Remove",
   "visitRemove.paragraph1": "Are you sure you want to remove visit for {name}?",
   "visitRemove.submitLabel": "Yes, remove",
+  "visitsReport.filterCompleted": "Completed",
+  "visitsReport.filterIncomplete": "Incomplete",
+  "visitsReport.filterCount": "Showing {count} of {total} visits.",
+  "visitsReport.emptyMessage": "No visits found.",
   "visitsreport.title": "Visits Report",
   "form.required": "Required",
   "form.save": "Save"
