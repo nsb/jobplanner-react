@@ -7,6 +7,8 @@
   "jobList.title",
   "jobScheduleEdit.submitLabel",
   "jobScheduleEdit.intervalLabel",
+  "navSidebar.jobs",
+  "navSidebar.integrations",
   "session.title",
   "settingsEmailSection.heading",
   "settingsEmployeeForm.emailLabel",
