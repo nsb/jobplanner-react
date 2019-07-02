@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import {injectIntl, FormattedMessage} from 'react-intl';
 import { Field, reduxForm } from "redux-form";
 import Button from "grommet/components/Button";
 import Form from "grommet/components/Form";
@@ -8,13 +9,54 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
+import { intlFormFieldRequired } from "../i18n";
 import type { Element } from "react";
 import type { Service } from "../actions/services";
+
+const intlName = (
+  <FormattedMessage
+    id="settingsServiceForm.nameLabel"
+    description="Settings service form name label"
+    defaultMessage="Name"
+  />
+)
+
+const intlDescription = (
+  <FormattedMessage
+    id="settingsServiceForm.descriptionLabel"
+    description="Settings service form description label"
+    defaultMessage="Description"
+  />
+)
+
+const intlUnitCost = (
+  <FormattedMessage
+    id="settingsServiceForm.unitCostLabel"
+    description="Settings service form unit cost label"
+    defaultMessage="Unit cost"
+  />
+)
+
+const intlUpdate = (
+  <FormattedMessage
+    id="settingsServiceForm.updateLabel"
+    description="Settings service form update label"
+    defaultMessage="Update service"
+  />
+)
+
+const intlAdd = (
+  <FormattedMessage
+    id="settingsServiceForm.addLabel"
+    description="Settings service form add label"
+    defaultMessage="Add service"
+  />
+)
 
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.name) {
-    errors.name = "Required";
+    errors.name = intlFormFieldRequired;
   }
   return errors;
 };
@@ -62,16 +104,16 @@ export const ServiceForm = ({
 
         <fieldset>
 
-          <Field name="name" label="Name" component={renderField} type="text" />
+          <Field name="name" label={intlName} component={renderField} type="text" />
           <Field
             name="description"
-            label="Description"
+            label={intlDescription}
             component={renderField}
             type="text"
           />
           <Field
             name="unit_cost"
-            label="Unit cost"
+            label={intlUnitCost}
             component={renderNumberField}
           />
 
@@ -85,7 +127,7 @@ export const ServiceForm = ({
           type="submit"
           primary={true}
           label={
-            initialValues && initialValues.id ? "Update service" : "Add service"
+            initialValues && initialValues.id ? intlUpdate : intlAdd
           }
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
@@ -96,4 +138,4 @@ export const ServiceForm = ({
 
 export default reduxForm({
   validate
-})(ServiceForm);
+})(injectIntl(ServiceForm));
