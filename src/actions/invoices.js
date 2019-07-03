@@ -45,6 +45,7 @@ export type Invoice = {
   id: number,
   business: number,
   visits: Array<number>,
+  jobs: Array<number>,
   date: Date,
   description: string,
   client: number,
