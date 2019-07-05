@@ -192,6 +192,7 @@
   "signup.submitLabel": "Register",
   "signup.haveAccount": "Already have an account?",
   "signup.login": "Login here here",
+  "signup.invalidEmail": "Invalid",
   "visitDetail.title": "Visit",
   "visitDetail.directions": "Directions",
   "visitDetail.actionsHeading": "Actions",

@@ -189,6 +189,7 @@
   "settingsServicesSection.edit": "Rediger ydelser.",
   "settingsServicesSection.heading": "Ydelser",
   "signup.haveAccount": "Har du allerede en konto?",
+  "signup.invalidEmail": "Ugyldig",
   "signup.login": "Log ind her",
   "signup.or": "eller",
   "signup.submitLabel": "Tilmeld",

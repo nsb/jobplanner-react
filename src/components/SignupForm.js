@@ -44,10 +44,20 @@ const intlLogin = (
   />
 )
 
+const intlInvalidEmail = (
+  <FormattedMessage
+    id="signup.invalidEmail"
+    description="Signup form invalid email"
+    defaultMessage="Invalid"
+  />
+)
+
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.username) {
     errors.username = intlFormFieldRequired;
+  } else if (!values.username.includes('@')) {
+    errors.username = intlInvalidEmail
   }
   return errors;
 };
