@@ -18,7 +18,7 @@ import type { Credentials } from "../actions/auth";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
 
-const intlAuthFailed = ( // eslint-disable-line no-unused-vars
+const intlAuthFailed = (
   <FormattedMessage
     id="login.authFailed"
     description="Login auth failed message"
@@ -62,7 +62,7 @@ class Login extends Component<Props & { intl: intlShape }> {
 
     let errors = [];
     if (authFailed) {
-      errors.push("login.authFailed");
+      errors.push(intlAuthFailed);
     }
 
     return isAuthenticated ? (
