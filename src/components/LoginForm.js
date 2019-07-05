@@ -92,37 +92,58 @@ type Props = {
   submitting: boolean
 };
 
-let LoginForm = ({ handleSubmit, valid, dirty, submitting }: Props & { intl: intlShape }) => (
-  <Form onSubmit={handleSubmit} pad="medium">
-    <fieldset>
-      <Field
-        name="username"
-        label={intlUsernameLabel}
-        component={renderField}
-        type="text"
-      />
-      <Field
-        name="password"
-        label={intlPasswordLabel}
-        component={renderField}
-        type="password"
-      />
-      <Box pad="none">
-        <Anchor label={intlForgotPassword} href={`${API_ENDPOINT}/password_reset/`} />
-      </Box>
-    </fieldset>
-    <Footer size="small" direction="column"
-      align="start"
-      pad={{ vertical: 'none', between: 'medium' }}>
-      <Button
-        primary={true}
-        type="submit"
-        label={intlSubmitLabel}
-        onClick={valid && dirty && !submitting ? () => true : undefined} />
-      <div>{intlNoAccount} <Anchor label={intlSignup} path="/signup" /></div>
-    </Footer>
-  </Form>
-);
+let LoginForm = ({ handleSubmit, valid, dirty, submitting, errors, intl }: Props & { intl: intlShape }) => {
+
+  const errorsNode = errors.map((error, index) => {
+    if (error) {
+      let errorMessage;
+      if (React.isValidElement(error)) {
+        errorMessage = error;
+      } else {
+        errorMessage = intl.formatMessage({id: error});
+      }
+      return (
+        <div key={index} className='error'>
+          {errorMessage}
+        </div>
+      );
+    }
+    return undefined;
+  });
+
+  return (
+    <Form onSubmit={handleSubmit} pad="medium">
+      <fieldset>
+        <Field
+          name="username"
+          label={intlUsernameLabel}
+          component={renderField}
+          type="text"
+        />
+        <Field
+          name="password"
+          label={intlPasswordLabel}
+          component={renderField}
+          type="password"
+        />
+         {errorsNode}
+        <Box pad="none">
+          <Anchor label={intlForgotPassword} href={`${API_ENDPOINT}/password_reset/`} />
+        </Box>
+      </fieldset>
+      <Footer size="small" direction="column"
+        align="start"
+        pad={{ vertical: 'none', between: 'medium' }}>
+        <Button
+          primary={true}
+          type="submit"
+          label={intlSubmitLabel}
+          onClick={valid && dirty && !submitting ? () => true : undefined} />
+        <div>{intlNoAccount} <Anchor label={intlSignup} path="/signup" /></div>
+      </Footer>
+    </Form>
+  )
+};
 
 export default reduxForm({
   form: "mylogin", // a unique identifier for this form

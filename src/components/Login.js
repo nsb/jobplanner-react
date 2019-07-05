@@ -18,6 +18,14 @@ import type { Credentials } from "../actions/auth";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
 
+const intlAuthFailed = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="login.authFailed"
+    description="Login auth failed message"
+    defaultMessage="Invalid username or password."
+  />
+)
+
 const intlwithGoogle = (
   <FormattedMessage
     id="login.withGoogle"
@@ -35,6 +43,7 @@ const intlOr = (
 )
 
 type Props = {
+  authFailed: boolean,
   loginBusy: boolean,
   isAuthenticated: boolean,
   dispatch: Dispatch,
@@ -49,7 +58,12 @@ class Login extends Component<Props & { intl: intlShape }> {
   };
 
   render() {
-    const { isAuthenticated, googleAuth } = this.props;
+    const { isAuthenticated, googleAuth, authFailed } = this.props;
+
+    let errors = [];
+    if (authFailed) {
+      errors.push("login.authFailed");
+    }
 
     return isAuthenticated ? (
       <Redirect to="/" />
@@ -73,6 +87,7 @@ class Login extends Component<Props & { intl: intlShape }> {
               <Box>
                 <LoginForm
                   onSubmit={this.onSubmit}
+                  errors={errors}
                 />
               </Box>
             </Box>
@@ -96,6 +111,7 @@ const mapStateToProps = (
   const { auth } = state;
 
   return {
+    authFailed: auth.authFailed,
     loginBusy: auth.busy,
     isAuthenticated: auth.isAuthenticated,
     dispatch: ownProps.dispatch,

@@ -134,6 +134,7 @@
   "lineItemsForm.descriptionLabel": "Description",
   "lineItemsForm.quantityLabel": "Quantity",
   "lineItemsForm.unitCostLabel": "Unit cost",
+  "login.authFailed": "Invalid username or password.",
   "login.withGoogle": "Login with Google",
   "login.or": "or",
   "loginForm.usernameLabel": "Username",

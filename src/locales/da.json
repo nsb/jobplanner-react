@@ -136,6 +136,7 @@
   "lineItemsForm.nameLabel": "Navn",
   "lineItemsForm.quantityLabel": "Antal",
   "lineItemsForm.unitCostLabel": "Enhedspris",
+  "login.authFailed": "Ugyldigt brugernavn eller kodeord.",
   "login.or": "eller",
   "login.withGoogle": "Log ind med Google",
   "loginForm.forgotPassword": "Glemt dit kodeord?",
