@@ -16,18 +16,20 @@ type Props = {
   business: Business,
   fields: Array<Field>,
   dispatch: Dispatch,
-  push: string => void
+  push: string => void,
+  isFetching: boolean
 };
 
 class ClientAdd extends Component<Props> {
   render() {
-    const { fields } = this.props;
+    const { fields, isFetching } = this.props;
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
         <ClientForm
           onSubmit={this.handleSubmit}
           fields={fields}
           onClose={this.onClose}
+          isFetching={isFetching}
           initialValues={{
             upcoming_visit_reminder_email_enabled: true,
             address_use_property: true,
@@ -66,7 +68,7 @@ type OwnProps = {
 };
 
 const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
-  const { auth, fields, entities } = state;
+  const { auth, clients, fields, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
@@ -80,7 +82,8 @@ const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
         return field.business === businessId;
       }),
     dispatch: ownProps.dispatch,
-    push: ownProps.history.push
+    push: ownProps.history.push,
+    isFetching: clients.isFetching
   };
 };
 

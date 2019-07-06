@@ -42,6 +42,15 @@ const isFetching = (
     case "UPDATE_CLIENT_FAILURE":
       return false;
 
+    case "CREATE_CLIENT":
+      return true;
+    
+    case "CREATE_CLIENT_SUCCESS":
+      return false;
+
+    case "CREATE_CLIENT_FAILURE":
+      return false;
+
     default:
       return state;
   }
