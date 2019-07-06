@@ -2,6 +2,7 @@
 import "url-search-params-polyfill";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { injectIntl, intlShape } from "react-intl";
 import Article from "grommet/components/Article";
 import JobForm, { oneoffInvoicingReminderMap } from "./JobForm";
 import { createJob } from "../actions/jobs";
@@ -26,17 +27,18 @@ type State = {
   scheduleLayer: boolean
 };
 
-class JobsAdd extends Component<Props, State> {
+class JobsAdd extends Component<Props & { intl: intlShape }, State> {
   state = {
     scheduleLayer: false
   };
 
   render() {
-    const { token, employees, client } = this.props;
+    const { token, employees, client, business, intl } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
         <JobForm
+          business={business}
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
           employees={employees}
@@ -47,7 +49,7 @@ class JobsAdd extends Component<Props, State> {
             client: client,
             invoice_reminder: {
               value: "closed",
-              label: oneoffInvoicingReminderMap["closed"]
+              label: intl.formatMessage({id: oneoffInvoicingReminderMap["closed"]})
             }
           }}
           token={token}
@@ -121,4 +123,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(JobsAdd);
+export default connect(mapStateToProps)(injectIntl(JobsAdd));

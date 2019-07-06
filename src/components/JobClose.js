@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { partialUpdateJob } from '../actions/jobs';
 import LayerForm from "grommet-templates/components/LayerForm";
@@ -8,6 +9,56 @@ import Paragraph from "grommet/components/Paragraph";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
 import type { State } from '../types/State';
+
+const intlTitle = (
+  <FormattedMessage
+    id="jobClose.title"
+    description="Job close title"
+    defaultMessage="Close job"
+  />
+);
+
+const intlSubmitLabel = (
+  <FormattedMessage
+    id="jobClose.submitLabel"
+    description="Job close submit label"
+    defaultMessage="Yes, close"
+  />
+);
+
+const intlHasIncompleteVisitsParagraph1 = (id: number) => (
+  <FormattedMessage
+    id="jobClose.hasIncompleteVisitsParagraph1"
+    description="Job close has incomplete visits paragraph 1"
+    defaultMessage="Are you sure you want to close job {id}?"
+    values={{id: <strong>#{id}</strong>}}
+  />
+);
+
+const intlHasIncompleteVisitsParagraph2 = (
+  <FormattedMessage
+    id="jobClose.hasIncompleteVisitsParagraph2"
+    description="Job close has incomplete visits paragraph 2"
+    defaultMessage="This will remove all incomplete visits."
+  />
+);
+
+const intlNoIncompleteVisitsParagraph1 = (id: number) => (
+  <FormattedMessage
+    id="jobClose.noIncompleteVisitsParagraph1"
+    description="Job close no incomplete visits paragraph 1"
+    defaultMessage="Job {id} has no upcoming visits."
+    values={{id: <strong>#{id}</strong>}}
+  />
+);
+
+const intlNoIncompleteVisitsParagraph2 = (
+  <FormattedMessage
+    id="jobClose.noIncompleteVisitsParagraph2"
+    description="Job close no incomplete visits paragraph 2"
+    defaultMessage="Do you want close this job?"
+  />
+);
 
 type Props = {
   job: Job,
@@ -30,25 +81,25 @@ class JobClose extends Component<Props> {
     let formContent = job.incomplete_visit_count ?
       <fieldset>
         <Paragraph>
-          Are you sure you want to close job <strong>#{`${job.id}`}</strong> for <strong>{`${job.client_firstname} ${job.client_lastname}`}</strong>?
+          {intlHasIncompleteVisitsParagraph1(job.id)}
         </Paragraph>
         <Paragraph>
-          This will remove all incomplete visits.
+          {intlHasIncompleteVisitsParagraph2}
         </Paragraph>
       </fieldset> :
       <fieldset>
         <Paragraph>
-        Job <strong>#{`${job.id}`}</strong> for <strong>{`${job.client_firstname} ${job.client_lastname}`}</strong> has no upcoming visits.
+          {intlNoIncompleteVisitsParagraph1(job.id)}
         </Paragraph>
         <Paragraph>
-          Do you want close this job?
+          {intlNoIncompleteVisitsParagraph2}
         </Paragraph>
       </fieldset>
 
     return (
       <LayerForm
-        title="Close job"
-        submitLabel="Yes, close"
+        title={intlTitle}
+        submitLabel={intlSubmitLabel}
         compact={true}
         onClose={onClose}
         onSubmit={this._onClose}
@@ -73,4 +124,4 @@ const mapStateToProps = (
 //     dispatch
 //   );
 
-export default connect(mapStateToProps)(JobClose);
+export default connect(mapStateToProps)(injectIntl(JobClose));

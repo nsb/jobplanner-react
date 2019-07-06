@@ -3,6 +3,7 @@
 import { merge } from "lodash/object";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {injectIntl, FormattedMessage} from 'react-intl';
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
@@ -16,6 +17,22 @@ import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
 import EmployeeForm from "./SettingsEmployeeForm";
+
+const intlTitle = (
+  <FormattedMessage
+    id="settingsEmployeeList.title"
+    description="Settings employee list title"
+    defaultMessage="Employees"
+  />
+)
+
+const intlAdd = (
+  <FormattedMessage
+    id="settingsEmployeeList.add"
+    description="Settings employee list add"
+    defaultMessage="Add employee"
+  />
+)
 
 type Props = {
   business: Business,
@@ -41,7 +58,7 @@ class EmployeeList extends Component<Props, State> {
       <Box>
         <Header size="large" justify="between" pad="none">
           <Heading tag="h2" margin="none" strong={true}>
-            Employees
+            {intlTitle}
           </Heading>
         </Header>
         <Accordion onActive={this.onActive} active={this.state.activePanel}>
@@ -58,7 +75,7 @@ class EmployeeList extends Component<Props, State> {
               </AccordionPanel>
             );
           })}
-          <AccordionPanel heading="Add employee" key="employee-new">
+          <AccordionPanel heading={intlAdd} key="employee-new">
             <Paragraph>
               <EmployeeForm
                 form={`employeeform-new`}
@@ -110,4 +127,4 @@ const mapStateToProps = (
     }),
 });
 
-export default connect(mapStateToProps)(EmployeeList);
+export default connect(mapStateToProps)(injectIntl(EmployeeList));

@@ -59,7 +59,8 @@ export type Visit = {
   anytime: boolean,
   total_cost: number,
   is_overdue: boolean,
-  status: VisitStatus
+  status: VisitStatus,
+  recurrences: ?string
 };
 
 export type VisitsResponse = {

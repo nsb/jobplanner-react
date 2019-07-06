@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -11,7 +12,32 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
+import { intlFormSaveLabel } from "../i18n";
 import type { Element } from "react";
+
+const intlAddBusiness = (
+  <FormattedMessage
+    id="businessAdd.title"
+    description="Add business title"
+    defaultMessage="Add business"
+  />
+)
+
+const intlFormClose = (
+  <FormattedMessage
+    id="form.close"
+    description="Close form label"
+    defaultMessage="Close"
+  />
+)
+
+const intlNameLabel = (
+  <FormattedMessage
+    id="businessAdd.labelName"
+    description="Name label"
+    defaultMessage="Name"
+  />
+)
 
 const validate = (values: Object): Object => {
   const errors = {};
@@ -51,23 +77,24 @@ export const BusinessForm = ({
 
       <Header size="large" justify="between" pad="none">
         <Heading tag="h2" margin="none" strong={true}>
-          Add Business
+          {intlAddBusiness}
         </Heading>
         <Anchor
           icon={<CloseIcon />}
           onClick={onClose}
-          a11yTitle="Close Add Client Form"
+          a11yTitle={intlFormClose}
         />
       </Header>
 
       <FormFields>
-
         <fieldset>
-
-          <Field name="name" label="Name" component={renderField} type="text" />
-
+          <Field
+            name="name"
+            label={intlNameLabel}
+            component={renderField}
+            type="text"
+          />
         </fieldset>
-
       </FormFields>
 
       <Footer pad={{ vertical: "medium" }}>
@@ -75,7 +102,7 @@ export const BusinessForm = ({
         <Button
           type="submit"
           primary={true}
-          label="Save"
+          label={intlFormSaveLabel}
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>
@@ -86,4 +113,4 @@ export const BusinessForm = ({
 export default reduxForm({
   form: "business", // a unique identifier for this form
   validate
-})(BusinessForm);
+})(injectIntl(BusinessForm));

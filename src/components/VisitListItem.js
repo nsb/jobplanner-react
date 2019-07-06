@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
@@ -8,6 +9,30 @@ import Tag from "./Tag";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 import type { Job } from "../actions/jobs";
+
+const intlOverdue = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="visitListItem.overdueTag"
+    description="Visit list item overdue tag"
+    defaultMessage="Overdue"
+  />
+)
+
+const intlAssigned = (
+  <FormattedMessage
+    id="visitListItem.noneAssigned"
+    description="Visit list item none assigned"
+    defaultMessage="Not assigned yet"
+  />
+)
+
+const intlCompleted = (
+  <FormattedMessage
+    id="visitListItem.completed"
+    description="Visit list completed"
+    defaultMessage="Completed"
+  />
+)
 
 export type Props = {
   visit: Visit,
@@ -17,17 +42,17 @@ export type Props = {
   onClick: Visit => void
 };
 
-class VisitListItem extends Component<Props> {
+class VisitListItem extends Component<Props & { intl: intlShape }> {
   render() {
-    const { visit, assigned, index, onClick, job } = this.props;
+    const { visit, assigned, index, onClick, job, intl } = this.props;
 
     let clientName = job ? undefined : (<span>{visit.client_name}</span>);
-    let details = visit.completed ? (<span>Completed</span>) : (<span>{visit.details}</span>);
+    let details = visit.completed ? intlCompleted : (<span>{visit.details}</span>);
 
     let is_overdue;
     if (visit.is_overdue) {
       is_overdue = (
-        <Tag text="Overdue" color="accent-2" />
+        <Tag text={intl.formatMessage({id: "visitListItem.overdueTag"})} color="accent-2" />
       )
     }
 
@@ -63,11 +88,11 @@ class VisitListItem extends Component<Props> {
                       : a.username
                 )
                 .join(", ")
-            : "Not assigned yet"}
+            : intlAssigned}
         </span>
       </ListItem>
     );
   }
 }
 
-export default VisitListItem;
+export default injectIntl(VisitListItem);

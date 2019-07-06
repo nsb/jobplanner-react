@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Header from "grommet/components/Header";
 import Box from "grommet/components/Box";
 import Sidebar from "grommet/components/Sidebar";
@@ -14,6 +15,38 @@ import EditIcon from "grommet/components/icons/base/Edit";
 import TrashIcon from "grommet/components/icons/base/Trash";
 import JobClose from "./JobClose";
 import type { Job } from "../actions/jobs";
+
+const intlEdit = (
+  <FormattedMessage
+    id="jobActions.edit"
+    description="Job actions edit"
+    defaultMessage="Edit"
+  />
+);
+
+const intlClose = (
+  <FormattedMessage
+    id="jobActions.close"
+    description="Job actions close job"
+    defaultMessage="Close job"
+  />
+);
+
+const intlReopen = (
+  <FormattedMessage
+    id="jobActions.reopen"
+    description="Job actions reopen"
+    defaultMessage="Reopen job"
+  />
+);
+
+const intlRemove = (
+  <FormattedMessage
+    id="jobActions.remove"
+    description="Job actions remove"
+    defaultMessage="Remove job"
+  />
+);
 
 const LAYERS = {
   close: JobClose
@@ -57,7 +90,7 @@ class JobActions extends Component<Props, State> {
         <Button
           icon={<CloseIcon />}
           onClick={onClose}
-          a11yTitle={`Close job name`}
+          a11yTitle={intlClose}
         />
       );
     }
@@ -75,9 +108,9 @@ class JobActions extends Component<Props, State> {
           align="start"
           plain={true}
           icon={<EditIcon />}
-          label="Edit"
+          label={intlEdit}
           onClick={onEdit}
-          a11yTitle={`Edit Job Name`}
+          a11yTitle={intlEdit}
         />
       );
     }
@@ -87,17 +120,17 @@ class JobActions extends Component<Props, State> {
           align="start"
           plain={true}
           icon={<RevertIcon />}
-          label="Reopen job"
+          label={intlReopen}
           onClick={onToggleCloseJob}
-          a11yTitle={`Reopen Job`}
+          a11yTitle={intlReopen}
         />
       : <Button
           align="start"
           plain={true}
           icon={<TaskIcon />}
-          label="Close job"
+          label={intlClose}
           onClick={() => this._onLayerOpen("close")}
-          a11yTitle={`Close Job`}
+          a11yTitle={intlClose}
         />;
 
     let removeButton;
@@ -107,9 +140,9 @@ class JobActions extends Component<Props, State> {
           align="start"
           plain={true}
           icon={<TrashIcon />}
-          label="Remove job"
+          label={intlRemove}
           onClick={onRemove}
-          a11yTitle={`Remove Job Name`}
+          a11yTitle={intlRemove}
         />
       );
     }
@@ -137,4 +170,4 @@ class JobActions extends Component<Props, State> {
   }
 }
 
-export default JobActions;
+export default injectIntl(JobActions);

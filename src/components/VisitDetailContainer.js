@@ -15,6 +15,7 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     onEdit: Function,
+    onUpdateFutureVisits: Function,
     onDelete: Function,
     onClose: Function,
     visit: Visit,
@@ -37,6 +38,7 @@ const mapStateToProps = (
       return ensureState(entities).lineItems[Id]
     }),
     onEdit: ownProps.onEdit,
+    onUpdateFutureVisits: ownProps.onUpdateFutureVisits,
     partialUpdateVisitAndLoadJob: ownProps.partialUpdateVisitAndLoadJob,
     onDelete: ownProps.onDelete,
     onClose: ownProps.onClose

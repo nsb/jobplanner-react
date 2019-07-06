@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, Redirect } from "react-router-dom";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
@@ -21,10 +22,43 @@ import type { Business } from "../actions/businesses";
 import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 
+const intlAddLabel = (
+  <FormattedMessage
+    id="businesses.addLabel"
+    description="Add businesses button label"
+    defaultMessage="Add businesses"
+  />
+)
+
+const intlTitle = (
+  <FormattedMessage
+    id="businesses.title"
+    description="Businesses title"
+    defaultMessage="Businesses"
+  />
+)
+
+const intlSearch = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="businesses.search"
+    description="businesses search"
+    defaultMessage="Search"
+  />
+)
+
+const intlEmptyMessage = (
+  <FormattedMessage
+    id="businesses.emptyMessage"
+    description="Businesses empty message"
+    defaultMessage="You do not have any businesses."
+  />
+)
+
 type Props = {
   businesses: Array<Business>,
   push: string => void,
-  isFetching: boolean
+  isFetching: boolean,
+  intl: intlShape
 };
 
 type State = {
@@ -39,7 +73,7 @@ class Businesses extends Component<Props, State> {
   }
 
   render() {
-    const { businesses, isFetching } = this.props;
+    const { businesses, isFetching, intl } = this.props;
 
     if (isFetching) {
       return (
@@ -67,7 +101,7 @@ class Businesses extends Component<Props, State> {
       });
 
       const addControl = (
-        <Anchor icon={<AddIcon />} path="/add" a11yTitle={`Add business`} />
+        <Anchor icon={<AddIcon />} path="/add" a11yTitle={intlAddLabel} />
       );
 
       switch (businesses.length) {
@@ -80,13 +114,15 @@ class Businesses extends Component<Props, State> {
             <Header size="large" pad={{ horizontal: "medium" }}>
               <Title responsive={false}>
                 <NavControl />
-                <span>Businesses</span>
+                <span>
+                  {intlTitle}
+                </span>
               </Title>
               <Search
                 inline={true}
                 fill={true}
                 size="medium"
-                placeHolder="Search"
+                placeHolder={intl.formatMessage({id: 'businesses.search'})}
                 value={this.state.searchText}
                 onDOMChange={this.onSearch}
               />
@@ -108,13 +144,13 @@ class Businesses extends Component<Props, State> {
             <ListPlaceholder
               filteredTotal={filteredBusinesses.length}
               unfilteredTotal={businesses.length}
-              emptyMessage="You do not have any businesses."
+              emptyMessage={intlEmptyMessage}
               addControl={
                 <Button
                   icon={<AddIcon />}
-                  label="Add business"
+                  label={intlAddLabel}
                   primary={true}
-                  a11yTitle={`Add business`}
+                  a11yTitle={intlAddLabel}
                   path="/add"
                 />
               }
@@ -149,4 +185,4 @@ const mapStateToProps = (
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Businesses));
+export default withRouter(connect(mapStateToProps)(injectIntl(Businesses)));

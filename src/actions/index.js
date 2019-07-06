@@ -64,8 +64,9 @@ export const createInvoiceAndLoadJobs = (
   queryParams: Object = {}
 ): ThunkAction => {
   return (dispatch: Dispatch, getState: GetState) => {
-    return dispatch(createInvoice(invoice, token)).then(() => {
-      return dispatch(fetchJobs(token, queryParams));
+    return dispatch(createInvoice(invoice, token)).then((invoices) => {
+      const jobIds = [...new Set(invoices.flatMap(invoice => invoice.jobs))];
+      return dispatch(fetchJobs(token, {...queryParams, id__in: jobIds.join() }));
     });
   };
 };

@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Select from "grommet/components/Select";
 import FormField from "grommet/components/FormField";
@@ -9,6 +10,190 @@ import LayerForm from "grommet-templates/components/LayerForm";
 import { RRule } from "rrule";
 import { xor } from "lodash";
 import type { Schedule } from "../types/Schedule";
+
+const intlTitle = (
+  <FormattedMessage
+    id="jobScheduleEdit.title"
+    description="Job schedule edit title"
+    defaultMessage="Repeat"
+  />
+)
+
+const intlSubmitLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.submitLabel"
+    description="Job schedule submit label"
+    defaultMessage="OK"
+  />
+)
+
+const intlFrequencyLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyLabel"
+    description="Job schedule frequency label"
+    defaultMessage="Frequency"
+  />
+)
+
+const intlFrequencyDaily = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyDaily"
+    description="Job schedule frequency daily"
+    defaultMessage="Daily"
+  />
+)
+
+const intlFrequencyWeekly = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyWeekly"
+    description="Job schedule frequency weekly"
+    defaultMessage="Weekly"
+  />
+)
+
+const intlFrequencyMonthly = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyMonthly"
+    description="Job schedule frequency monthly"
+    defaultMessage="Monthly"
+  />
+)
+
+const intlFrequencyYearly = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.frequencyYearly"
+    description="Job schedule frequency yearly"
+    defaultMessage="Yearly"
+  />
+)
+
+const intlIntervalLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.intervalLabel"
+    description="Job schedule interval label"
+    defaultMessage="Interval"
+  />
+)
+
+const intlWeekdaysLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.weekdaysLabel"
+    description="Job schedule weekdays label"
+    defaultMessage="Weekdays"
+  />
+)
+
+const intlWeekLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.weekLabel"
+    description="Job schedule week label"
+    defaultMessage="Week"
+  />
+)
+
+const intlWeekDayLabel = (
+  <FormattedMessage
+    id="jobScheduleEdit.weekDayLabel"
+    description="Job schedule week day label"
+    defaultMessage="On day"
+  />
+)
+
+const intlWeekdayMonday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayMonday"
+    description="Job schedule by weekday Monday"
+    defaultMessage="Monday"
+  />
+)
+
+const intlWeekdayTuesday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayTuesday"
+    description="Job schedule by weekday Tuesday"
+    defaultMessage="Tuesday"
+  />
+)
+
+const intlWeekdayWednesday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayWednesday"
+    description="Job schedule by weekday Wednesday"
+    defaultMessage="Wednesday"
+  />
+)
+
+const intlWeekdayThursday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayThursday"
+    description="Job schedule by weekday Thursday"
+    defaultMessage="Thursday"
+  />
+)
+
+const intlWeekdayFriday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdayFriday"
+    description="Job schedule by weekday Friday"
+    defaultMessage="Friday"
+  />
+)
+
+const intlWeekdaySaturday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdaySaturday"
+    description="Job schedule by weekday Saturday"
+    defaultMessage="Saturday"
+  />
+)
+
+const intlWeekdaySunday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.byWeekdaySunday"
+    description="Job schedule by weekday Sunday"
+    defaultMessage="Sunday"
+  />
+)
+
+const intlWeekFirst = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekFirst"
+    description="Job schedule week first"
+    defaultMessage="First"
+  />
+)
+
+const intlWeekSecond = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekSecond"
+    description="Job schedule week second"
+    defaultMessage="Second"
+  />
+)
+
+const intlWeekThird = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekThird"
+    description="Job schedule week third"
+    defaultMessage="Third"
+  />
+)
+
+const intlWeekFourth = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekFourth"
+    description="Job schedule week fourth"
+    defaultMessage="Fourth"
+  />
+)
+
+const intlWeekLast = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobScheduleEdit.weekLast"
+    description="Job schedule week last"
+    defaultMessage="Last"
+  />
+)
 
 const byMonthWeekDays = [
   [1, 2, 3, 4, 5, 6, 7],
@@ -19,28 +204,28 @@ const byMonthWeekDays = [
 ];
 
 const rruleFrequency = [
-  { label: "Daily", value: RRule.DAILY },
-  { label: "Weekly", value: RRule.WEEKLY },
-  { label: "Monthly", value: RRule.MONTHLY },
-  { label: "Yearly", value: RRule.YEARLY }
+  { label: "jobScheduleEdit.frequencyDaily", value: RRule.DAILY },
+  { label: "jobScheduleEdit.frequencyWeekly", value: RRule.WEEKLY },
+  { label: "jobScheduleEdit.frequencyMonthly", value: RRule.MONTHLY },
+  { label: "jobScheduleEdit.frequencyYearly", value: RRule.YEARLY }
 ];
 
 const rruleByWeekDay = [
-  { label: "Monday", value: RRule.MO.weekday },
-  { label: "Tuesday", value: RRule.TU.weekday },
-  { label: "Wednesday", value: RRule.WE.weekday },
-  { label: "Thursday", value: RRule.TH.weekday },
-  { label: "Friday", value: RRule.FR.weekday },
-  { label: "Saturday", value: RRule.SA.weekday },
-  { label: "Sunday", value: RRule.SU.weekday }
+  { label: "jobScheduleEdit.byWeekdayMonday", value: RRule.MO.weekday },
+  { label: "jobScheduleEdit.byWeekdayTuesday", value: RRule.TU.weekday },
+  { label: "jobScheduleEdit.byWeekdayWednesday", value: RRule.WE.weekday },
+  { label: "jobScheduleEdit.byWeekdayThursday", value: RRule.TH.weekday },
+  { label: "jobScheduleEdit.byWeekdayFriday", value: RRule.FR.weekday },
+  { label: "jobScheduleEdit.byWeekdaySaturday", value: RRule.SA.weekday },
+  { label: "jobScheduleEdit.byWeekdaySunday", value: RRule.SU.weekday }
 ];
 
 const rruleByMonthDay = [
-  { label: "First", value: 1 },
-  { label: "Second", value: 2 },
-  { label: "Third", value: 3 },
-  { label: "Fourth", value: 4 },
-  { label: "Last", value: 5 }
+  { label: "jobScheduleEdit.weekFirst", value: 1 },
+  { label: "jobScheduleEdit.weekSecond", value: 2 },
+  { label: "jobScheduleEdit.weekThird", value: 3 },
+  { label: "jobScheduleEdit.weekFourth", value: 4 },
+  { label: "jobScheduleEdit.weekLast", value: 5 }
 ];
 
 type Props = {
@@ -54,7 +239,7 @@ type State = {
   byMonthDaySplashed: Array<number>
 };
 
-class JobScheduleEdit extends Component<Props, State> {
+class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
   state = {
     schedule: Object.assign({}, this.props.schedule),
     byMonthDaySplashed: []
@@ -71,11 +256,7 @@ class JobScheduleEdit extends Component<Props, State> {
   }
 
   render() {
-    const { onClose } = this.props;
-
-    const freqOption = rruleFrequency.find(freq => {
-      return freq.value === this.state.schedule.freq;
-    });
+    const { onClose, intl } = this.props;
 
     const {
       schedule: { byweekday },
@@ -93,7 +274,7 @@ class JobScheduleEdit extends Component<Props, State> {
       schedule.freq === RRule.YEARLY
     ) {
       scheduleInterval = (
-        <FormField label="Interval" htmlFor="interval">
+        <FormField label={intlIntervalLabel} htmlFor="interval">
           <NumberInput
             id="interval"
             name="interval"
@@ -106,8 +287,13 @@ class JobScheduleEdit extends Component<Props, State> {
     }
 
     if (schedule.freq === RRule.WEEKLY) {
+      const weekdayOptions: Array<{ label: String, value: string }> = 
+        rruleByWeekDay.map((option) => {
+        return { label: intl.formatMessage({id: option.label}), value: option.value };
+      });
+
       scheduleByWeekday = (
-        <FormField label="Weekdays" htmlFor="byweekday">
+        <FormField label={intlWeekdaysLabel} htmlFor="byweekday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="byweekday"
@@ -115,7 +301,7 @@ class JobScheduleEdit extends Component<Props, State> {
               inline={true}
               multiple={true}
               value={byweekday}
-              options={rruleByWeekDay}
+              options={weekdayOptions}
               onChange={this.onByWeekDayChange}
               onSearch={undefined}
             />
@@ -125,8 +311,18 @@ class JobScheduleEdit extends Component<Props, State> {
     }
 
     if (schedule.freq === RRule.MONTHLY) {
+      const monthDayOptions: Array<{ label: String, value: string }> = 
+        rruleByMonthDay.map((option) => {
+        return { label: intl.formatMessage({id: option.label}), value: option.value };
+      });
+
+      const weekdayOptions: Array<{ label: String, value: string }> = 
+        rruleByWeekDay.map((option) => {
+        return { label: intl.formatMessage({id: option.label}), value: option.value };
+      });
+
       let scheduleByMonthDay = (
-        <FormField label="Week" htmlFor="bymonthday">
+        <FormField label={intlWeekLabel} htmlFor="bymonthday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="bymonthday"
@@ -134,7 +330,7 @@ class JobScheduleEdit extends Component<Props, State> {
               inline={true}
               multiple={true}
               value={byMonthDaySplashed}
-              options={rruleByMonthDay}
+              options={monthDayOptions}
               onChange={this.onByMonthDayChange}
               onSearch={undefined}
             />
@@ -143,7 +339,7 @@ class JobScheduleEdit extends Component<Props, State> {
       );
 
       let scheduleByWeekDay = (
-        <FormField label="on day" htmlFor="byweekday">
+        <FormField label={intlWeekDayLabel} htmlFor="byweekday">
           <Box margin={{ vertical: "none", horizontal: "medium" }}>
             <Select
               id="byweekday"
@@ -151,7 +347,7 @@ class JobScheduleEdit extends Component<Props, State> {
               inline={true}
               multiple={true}
               value={byweekday}
-              options={rruleByWeekDay}
+              options={weekdayOptions}
               onChange={this.onByWeekDayChange}
               onSearch={undefined}
             />
@@ -167,21 +363,31 @@ class JobScheduleEdit extends Component<Props, State> {
       );
     }
 
+    let freqOption = rruleFrequency.find(freq => {
+      return freq.value === this.state.schedule.freq;
+    });
+    freqOption = { ...freqOption, label: intl.formatMessage({id: freqOption.label}) };
+
+    const frequencyOptions: Array<{ label: String, value: string }> = 
+      rruleFrequency.map((option) => {
+      return { label: intl.formatMessage({id: option.label}), value: option.value };
+    });
+
     return (
       <LayerForm
-        title="Repeat"
-        submitLabel="OK"
+        title={intlTitle}
+        submitLabel={intlSubmitLabel}
         onClose={onClose}
         onSubmit={this.onSubmit}
         secondaryControl={null}
       >
         <fieldset>
-          <FormField label="Frequency" htmlFor="freq">
+          <FormField label={intlFrequencyLabel} htmlFor="freq">
             <Select
               id="freq"
               name="freq"
               value={freqOption}
-              options={rruleFrequency}
+              options={frequencyOptions}
               onChange={this.onFreqChange}
               onSearch={undefined}
             />
@@ -236,4 +442,4 @@ class JobScheduleEdit extends Component<Props, State> {
   };
 }
 
-export default JobScheduleEdit;
+export default injectIntl(JobScheduleEdit);

@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
-import { intlShape } from "react-intl";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import moment from "moment";
 import Split from "grommet/components/Split";
 import Box from "grommet/components/Box";
@@ -33,6 +33,79 @@ import type { Job } from "../actions/jobs";
 import type { Client } from "../actions/clients";
 import type { Property } from "../actions/properties";
 import type { Responsive } from "../actions/nav";
+
+const intlAddress = (
+  <FormattedMessage
+    id="jobDetail.addressHeading"
+    description="Job detail address heading"
+    defaultMessage="Address"
+  />
+);
+
+const intlDetails = (
+  <FormattedMessage
+    id="jobDetail.detailsHeading"
+    description="Job detail details heading"
+    defaultMessage="Details"
+  />
+);
+
+const intlDetailsStarted = (date: Date) => (
+  <FormattedMessage
+    id="jobDetail.detailsStarted"
+    description="Job detail details started"
+    defaultMessage="Started on {date}"
+    values={{date: <Timestamp value={date} fields="date" />}}
+  />
+);
+
+const intlDetailsOneOff = (
+  <FormattedMessage
+    id="jobDetail.detailsOneOff"
+    description="Job detail details One-off"
+    defaultMessage="One-Off job"
+  />
+);
+
+const intlContact = (
+  <FormattedMessage
+    id="jobDetail.contactHeading"
+    description="Job detail contact heading"
+    defaultMessage="Contact"
+  />
+);
+
+const intlLineItems = (
+  <FormattedMessage
+    id="jobDetail.lineItemsHeading"
+    description="Job detail lineitems heading"
+    defaultMessage="Line items"
+  />
+);
+
+const intlLineItemsEmptyMessage = (
+  <FormattedMessage
+    id="jobDetail.lineItemsEmptyMessage"
+    description="Job detail lineitems empty message"
+    defaultMessage="No line items."
+  />
+);
+
+const intlVisits = (
+  <FormattedMessage
+    id="jobDetail.visitsHeading"
+    description="Job detail visits heading"
+    defaultMessage="Visits"
+  />
+);
+
+const intlVisitsAdd = (
+  <FormattedMessage
+    id="jobDetail.visitAdd"
+    description="Job detail visit add"
+    defaultMessage="Add visit"
+  />
+);
 
 export type Props = {
   business: Business,
@@ -109,8 +182,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       property,
       responsive,
       isFetching,
-      token,
-      intl
+      token
     } = this.props;
 
     let onSidebarClose;
@@ -148,7 +220,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       propertyAddress = (
         <Box pad={{ horizontal: "none", vertical: "small" }}>
           <Heading tag="h4" margin="none">
-            Address
+            {intlAddress}
           </Heading>
           <div>{property.address1}</div>
           {property.address2}
@@ -161,7 +233,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       clientDetails = (
         <Box pad={{ horizontal: "none", vertical: "small" }}>
           <Heading tag="h4" margin="none">
-            Contact
+            {intlContact}
           </Heading>
           <div>{client.phone}</div>
           {client.email}
@@ -256,17 +328,17 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                       {clientDetails}
                       <Box pad={{ horizontal: "none", vertical: "small" }}>
                         <Heading tag="h4" margin="none">
-                          Details
+                          {intlDetails}
                         </Heading>
-                        <span>Started on <Timestamp value={job.begins} fields="date" /></span>
+                        {intlDetailsStarted(job.begins)}
                         <br />
-                        {job.recurrences ? rrulestr(job.recurrences).toText() : "One-Off job"}
+                        {job.recurrences ? rrulestr(job.recurrences).toText() : intlDetailsOneOff}
                       </Box>
                     </Columns>
                   </Section>
                   <Section full="horizontal">
                     <Box pad={{ horizontal: "medium", vertical: "none" }}>
-                      <Heading tag="h4">Line items</Heading>
+                      <Heading tag="h4">{intlLineItems}</Heading>
                     </Box>
                     <Box>
                       <List onMore={undefined}>
@@ -295,17 +367,14 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                       <ListPlaceholder
                         filteredTotal={lineItems.length}
                         unfilteredTotal={lineItems.length}
-                        emptyMessage={intl.formatMessage({
-                          id: "lineItems.emptyMessage",
-                          defaultMessage: "No line items."
-                        })}
+                        emptyMessage={intlLineItemsEmptyMessage}
                       />
                     </Box>
                   </Section>
                   <Section full="horizontal">
                     <Box pad={{ horizontal: "medium", vertical: "none" }}>
                       <Header>
-                        <Title>Visits</Title>
+                        <Title>{intlVisits}</Title>
                         <Box
                           flex={true}
                           justify="end"
@@ -317,7 +386,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                             onClick={() =>
                               this.setState({ showAddVisit: true })
                             }
-                            a11yTitle="New job"
+                            a11yTitle={intlVisitsAdd}
                           />
                         </Box>
                       </Header>
@@ -368,4 +437,4 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 }
 
-export default JobDetail;
+export default injectIntl(JobDetail);

@@ -15,11 +15,35 @@ import ClientListItem from './ClientListItem';
 import type {Business} from '../actions/businesses';
 import type {Client} from '../actions/clients';
 
-const title = (
+const intlTitle = (
   <FormattedMessage
     id="clients.title"
     description="Clients title"
     defaultMessage="Clients"
+  />
+)
+
+const intlSearch = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="clients.search"
+    description="Clients search"
+    defaultMessage="Search"
+  />
+)
+
+const intlAdd = (
+  <FormattedMessage
+    id="clients.add"
+    description="Client add"
+    defaultMessage="Add client"
+  />
+)
+
+const intlEmptyMessage = (
+  <FormattedMessage
+    id="clients.emptyMessage"
+    description="Clients empty message"
+    defaultMessage="You do not have any clients at the moment."
   />
 )
 
@@ -48,19 +72,19 @@ const ClientList = ({
 }: Props) => (
   <Box>
     <Header size="large" pad={{horizontal: 'medium'}}>
-      <NavControl title={title} />
+      <NavControl title={intlTitle} />
       <Search
         inline={true}
         fill={true}
         size="medium"
-        placeHolder="Search"
+        placeHolder={intl.formatMessage({id: 'clients.search'})}
         value={searchText}
         onDOMChange={onSearch}
       />
       <Anchor
         icon={<AddIcon />}
         path={`/${business.id}/clients/add`}
-        a11yTitle={`Add business`}
+        a11yTitle={intlAdd}
       />
 
     </Header>
@@ -79,16 +103,13 @@ const ClientList = ({
     <ListPlaceholder
       filteredTotal={isFetching ? null : clients.length}
       unfilteredTotal={isFetching ? null : clients.length}
-      emptyMessage={intl.formatMessage({
-        id: 'clients.emptyMessage',
-        defaultMessage: 'You do not have any clients at the moment.',
-      })}
+      emptyMessage={intlEmptyMessage}
       addControl={
         <Button
           icon={<AddIcon />}
           label="Add client"
           primary={true}
-          a11yTitle={`Add client`}
+          a11yTitle={intlAdd}
           path={`/${business.id}/clients/add`}
         />
       }

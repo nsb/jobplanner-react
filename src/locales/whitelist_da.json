@@ -1,0 +1,21 @@
+[
+  "calendar.agendaLabel",
+  "clientDetail.jobTitle",
+  "clientForm.emailLabel",
+  "jobForm.titleEdit",
+  "jobForm.teamHeading",
+  "jobList.title",
+  "jobScheduleEdit.submitLabel",
+  "jobScheduleEdit.intervalLabel",
+  "navSidebar.jobs",
+  "navSidebar.integrations",
+  "session.title",
+  "settingsEmailSection.heading",
+  "settingsEmployeeForm.emailLabel",
+  "signup.usernameLabel",
+  "visitDetail.jobHeading",
+  "visitDetail.teamHeading",
+  "visitForm.assignedLabel",
+  "visitsReportFilter.title",
+  "visitsReportFilter.statusLabel"
+]

@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
-import { injectIntl, intlShape } from "react-intl";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Sidebar from "grommet/components/Sidebar";
 import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
@@ -15,17 +15,72 @@ import SessionMenu from "./SessionMenu";
 import type { Business } from "../actions/businesses";
 import type { User } from "../actions/users";
 
+const intlCalendar = (
+  <FormattedMessage
+    id="navSidebar.calendar"
+    description="Navsidebar menu calendar"
+    defaultMessage="Calendar"
+  />
+)
+
+const intlClients = (
+  <FormattedMessage
+    id="navSidebar.clients"
+    description="Navsidebar menu clients"
+    defaultMessage="Clients"
+  />
+)
+
+const intlJobs = (
+  <FormattedMessage
+    id="navSidebar.jobs"
+    description="Navsidebar menu jobs"
+    defaultMessage="Jobs"
+  />
+)
+
+const intlReports = (
+  <FormattedMessage
+    id="navSidebar.reports"
+    description="Navsidebar menu reports"
+    defaultMessage="Reports"
+  />
+)
+
+const intlInvoices = (
+  <FormattedMessage
+    id="navSidebar.invoices"
+    description="Navsidebar menu invoices"
+    defaultMessage="Invoices"
+  />
+)
+
+const intlSettings = (
+  <FormattedMessage
+    id="navSidebar.settings"
+    description="Navsidebar menu settings"
+    defaultMessage="Settings"
+  />
+)
+
+const intlIntegrations = (
+  <FormattedMessage
+    id="navSidebar.integrations"
+    description="Navsidebar menu integrations"
+    defaultMessage="Add-ons"
+  />
+)
+
 type Props = {
   toggleNav: () => void,
   business: Business,
-  intl: intlShape,
   user: User,
   logout: Function
 };
 
 class NavSidebar extends Component<Props> {
   render() {
-    const { business, intl, user, logout } = this.props;
+    const { business, user, logout } = this.props;
     const colorIndex = "neutral-1";
 
     return (
@@ -51,41 +106,39 @@ class NavSidebar extends Component<Props> {
           <Anchor
             key="calendar"
             path={`/${business.id}/calendar`}
-            label="Calendar"
+            label={intlCalendar}
           />
           <Anchor
             key="clients"
             path={`/${business.id}/clients`}
-            label={intl.formatMessage({
-              id: "clients.title",
-              defaultMessage: "Clients"
-            })}
+            label={intlClients}
           />
-          <Anchor key="jobs" path={`/${business.id}/jobs`} label="Jobs" />
+          <Anchor
+            key="jobs"
+            path={`/${business.id}/jobs`}
+            label={intlJobs}
+          />
           <Anchor
             key="reports"
             path={`/${business.id}/reports`}
-            label={intl.formatMessage({
-              id: "reports.title",
-              defaultMessage: "Reports"
-            })}
+            label={intlReports}
           />
           <Anchor
             key="invoices"
             path={`/${business.id}/invoices`}
-            label={intl.formatMessage({
-              id: "invoices.title",
-              defaultMessage: "Invoices"
-            })}
+            label={intlInvoices}
           />
           <Anchor
             key="settings"
             path={`/${business.id}/settings`}
-            label={intl.formatMessage({
-              id: "settings.title",
-              defaultMessage: "Settings"
-            })}
+            label={intlSettings}
           />
+          <Anchor
+            key="integrations"
+            path={`/${business.id}/integrations`}
+            label={intlIntegrations}
+          />
+
         </Menu>
         <Footer pad={{ horizontal: "medium", vertical: "small" }}>
           <SessionMenu

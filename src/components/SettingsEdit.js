@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import {injectIntl, FormattedMessage} from 'react-intl';
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import Header from "grommet/components/Header";
@@ -21,6 +21,14 @@ import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 
+const intlTitle = (
+  <FormattedMessage
+    id="settings.title"
+    description="Settings title"
+    defaultMessage="Settings"
+  />
+)
+
 const LAYERS: {} = {
   businessEdit: BusinessEdit,
   servicesEdit: ServicesEdit,
@@ -29,17 +37,8 @@ const LAYERS: {} = {
   emailsEdit: EmailsEdit
 };
 
-const title = (
-  <FormattedMessage
-    id="settings.title"
-    description="Settings title"
-    defaultMessage="Settings"
-  />
-)
-
 type Props = {
   business: Business,
-  intl: intlShape
 };
 
 type State = {
@@ -57,7 +56,7 @@ class SettingsEdit extends Component<Props, State> {
     return (
       <Box flex={true}>
         <Header size="large" pad={{ horizontal: "medium" }}>
-          <NavControl title={title} />
+          <NavControl title={intlTitle} />
         </Header>
         <List>
           <BusinessSection
@@ -124,7 +123,6 @@ const mapStateToProps = (
     token: auth.token,
     dispatch: ownProps.dispatch,
     push: ownProps.history.push,
-    intl: intlShape
   };
 };
 

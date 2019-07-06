@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from "react-intl";
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import List from "grommet/components/List";
@@ -20,11 +20,43 @@ import type { VisitSelection } from "./InvoiceBatchVisit";
 import type { JobSelection } from "./InvoiceBatchJob";
 import type { ThunkAction } from "../types/Store";
 
-const title = (
+const intlTitle = (
   <FormattedMessage
     id="invoices.title"
     description="Invoices title"
     defaultMessage="Invoices"
+  />
+)
+
+const intlNone = (
+  <FormattedMessage
+    id="invoices.none"
+    description="Invoices none selection"
+    defaultMessage="None"
+  />
+)
+
+const intlAll = (
+  <FormattedMessage
+    id="invoices.all"
+    description="Invoices all selection"
+    defaultMessage="All"
+  />
+)
+
+const intlEmptyMessage = (
+  <FormattedMessage
+    id="invoices.emptyMessage"
+    description="Invoices empty message"
+    defaultMessage="Nothing to invoice"
+  />
+)
+
+const intlCreateButton = (
+  <FormattedMessage
+    id="invoices.createButton"
+    description="Invoices create button"
+    defaultMessage="Create invoices"
   />
 )
 
@@ -91,7 +123,7 @@ class InvoiceBatch extends Component<Props, State> {
         <Box pad={{ horizontal: "medium" }}>
           <Form onSubmit={this.onSubmit}>
             <Footer pad={{ "vertical": "medium" }}>
-              <Button label='Create invoices'
+              <Button label={intlCreateButton}
                 type={(!hasSelected) ? undefined : 'submit'}
                 primary={true}
               />
@@ -104,10 +136,10 @@ class InvoiceBatch extends Component<Props, State> {
     return (
       <Box>
         <Header size="large" pad={{ horizontal: 'medium' }}>
-          <NavControl title={title} />
+          <NavControl title={intlTitle} />
           <Box direction="row">
-            <Button label="None" onClick={() => this.onAllOrNone(false)} accent={true} />
-            <Button label="All" onClick={() => this.onAllOrNone(true)} accent={true} />
+            <Button label={intlNone} onClick={() => this.onAllOrNone(false)} accent={true} />
+            <Button label={intlAll} onClick={() => this.onAllOrNone(true)} accent={true} />
           </Box>
         </Header>
         <List onMore={undefined}>
@@ -124,7 +156,7 @@ class InvoiceBatch extends Component<Props, State> {
         <ListPlaceholder
           filteredTotal={clientCount}
           unfilteredTotal={clientCount}
-          emptyMessage="Nothing to invoice"
+          emptyMessage={intlEmptyMessage}
         />
         {submitForm}
       </Box>
@@ -175,4 +207,4 @@ class InvoiceBatch extends Component<Props, State> {
   }
 };
 
-export default InvoiceBatch;
+export default injectIntl(InvoiceBatch);

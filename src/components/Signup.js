@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 import Split from "grommet/components/Split";
@@ -16,6 +17,22 @@ import { signup } from "../actions/auth";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
 
+const intlwithGoogle = (
+  <FormattedMessage
+    id="signup.withGoogle"
+    description="Signup with Google"
+    defaultMessage="Signup with Google"
+  />
+)
+
+const intlOr = (
+  <FormattedMessage
+    id="signup.or"
+    description="Signup or"
+    defaultMessage="or"
+  />
+)
+
 type Props = {
   signupBusy: boolean,
   isAuthenticated: boolean,
@@ -23,7 +40,7 @@ type Props = {
   googleAuth: typeof Auth
 };
 
-class Signup extends Component<Props> {
+class Signup extends Component<Props & { intl: intlShape }> {
   googleAuth: typeof Auth
 
   onSubmit = (user: { username: string }) => {
@@ -46,10 +63,10 @@ class Signup extends Component<Props> {
                 primary={true}
                 fill={true}
                 type="button"
-                label="Signup with Google"
+                label={intlwithGoogle}
                 onClick={googleAuth.login} />
             </Box>
-            <Box pad={{ horizontal: "medium", vertical: "none" }} align="center">or</Box>
+            <Box pad={{ horizontal: "medium", vertical: "none" }} align="center">{intlOr}</Box>
             <Box>
               <SignupForm
                 align="start"
@@ -84,4 +101,4 @@ const mapStateToProps = (
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Signup));
+export default withRouter(connect(mapStateToProps)(injectIntl(Signup)));

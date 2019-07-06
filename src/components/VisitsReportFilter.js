@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import moment from "moment";
 import Layer from "grommet/components/Layer";
 import Sidebar from "grommet/components/Sidebar";
@@ -16,6 +17,78 @@ import DateTime from "grommet/components/DateTime";
 import CheckBox from "grommet/components/CheckBox";
 import Footer from "grommet/components/Footer";
 import type { Employee } from "../actions/employees";
+
+const intlTitle = (
+  <FormattedMessage
+    id="visitsReportFilter.title"
+    description="Visits report filter title"
+    defaultMessage="Filter"
+  />
+)
+
+const intlFrom = (
+  <FormattedMessage
+    id="visitsReportFilter.fromLabel"
+    description="Visits report filter from label"
+    defaultMessage="From"
+  />
+)
+
+const intlTo = (
+  <FormattedMessage
+    id="visitsReportFilter.toLabel"
+    description="Visits report filter to label"
+    defaultMessage="To"
+  />
+)
+
+const intlStatus = (
+  <FormattedMessage
+    id="visitsReportFilter.statusLabel"
+    description="Visits report filter status label"
+    defaultMessage="Status"
+  />
+)
+
+const intlCompleted = (
+  <FormattedMessage
+    id="visitsReportFilter.statusCompleted"
+    description="Visits report filter status completed"
+    defaultMessage="Completed"
+  />
+)
+
+const intlIncomplete = (
+  <FormattedMessage
+    id="visitsReportFilter.statusIncomplete"
+    description="Visits report filter status incomplete"
+    defaultMessage="Incomplete"
+  />
+)
+
+const intlAssigned = (
+  <FormattedMessage
+    id="visitsReportFilter.assignedLabel"
+    description="Visits report filter assigned label"
+    defaultMessage="Assigned to"
+  />
+)
+
+const intlAll = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="visitsReportFilter.assignedPlaceholder"
+    description="Visits report filter assigned all"
+    defaultMessage="All"
+  />
+)
+
+const intlApply = (
+  <FormattedMessage
+    id="visitsReportFilter.applyLabel"
+    description="Visits report filter apply label"
+    defaultMessage="Apply"
+  />
+)
 
 export type FilterValues = {
   begins: Date,
@@ -34,7 +107,7 @@ type Props = {
 
 type State = FilterValues;
 
-class VisitsReportFilter extends Component<Props, State> {
+class VisitsReportFilter extends Component<Props & { intl: intlShape }, State> {
   dateFormat: string;
   static defaultProps = {
     employees: []
@@ -49,14 +122,14 @@ class VisitsReportFilter extends Component<Props, State> {
   }
 
   render() {
-    const { employees } = this.props;
+    const { employees, intl } = this.props;
 
     return (
       <Layer
         align="right"
         flush={true}
         closer={false}
-        a11yTitle="Visits Report Filter"
+        a11yTitle={intlTitle}
       >
         <Sidebar size="medium">
           <div>
@@ -67,7 +140,7 @@ class VisitsReportFilter extends Component<Props, State> {
               pad={{ horizontal: "medium", vertical: "none" }}
             >
               <Heading tag="h3" margin="none">
-                Filter
+                {intlTitle}
               </Heading>
               <Button
                 icon={<CloseIcon />}
@@ -77,7 +150,7 @@ class VisitsReportFilter extends Component<Props, State> {
             </Header>
             <Form pad="medium" onSubmit={this._onSubmit}>
               <FormFields>
-                <FormField label="From date">
+                <FormField label={intlFrom}>
                   <DateTime
                     id="begins"
                     name="begins"
@@ -86,7 +159,7 @@ class VisitsReportFilter extends Component<Props, State> {
                     value={this.state.begins}
                   />
                 </FormField>
-                <FormField label="To date">
+                <FormField label={intlTo}>
                   <DateTime
                     id="ends"
                     name="ends"
@@ -95,24 +168,24 @@ class VisitsReportFilter extends Component<Props, State> {
                     value={this.state.ends}
                   />
                 </FormField>
-                <FormField label="Status">
+                <FormField label={intlStatus}>
                   <CheckBox
                     name="complete"
-                    label="Complete"
+                    label={intlCompleted}
                     checked={this.state.complete}
                     onChange={this.onCompleteChange}
                   />
                   <CheckBox
                     name="incomplete"
-                    label="Incomplete"
+                    label={intlIncomplete}
                     checked={this.state.incomplete}
                     onChange={this.onIncompleteChange}
                   />
                 </FormField>
-                <FormField label="Assigned to">
+                <FormField label={intlAssigned}>
                   <Select
                     name="assigned"
-                    placeHolder="All"
+                    placeHolder={intl.formatMessage({id: "visitsReportFilter.assignedPlaceholder"})}
                     options={employees.map(employee => {
                       return { value: employee.id, label: employee.username };
                     })}
@@ -124,7 +197,7 @@ class VisitsReportFilter extends Component<Props, State> {
                 </FormField>
               </FormFields>
               <Footer pad={{ vertical: "medium" }}>
-                <Button label="Apply" type="submit" primary={true} />
+                <Button label={intlApply} type="submit" primary={true} />
               </Footer>
             </Form>
           </div>
@@ -165,4 +238,4 @@ class VisitsReportFilter extends Component<Props, State> {
   };
 }
 
-export default VisitsReportFilter;
+export default injectIntl(VisitsReportFilter);

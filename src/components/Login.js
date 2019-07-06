@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Button from "grommet/components/Button";
 import Box from "grommet/components/Box";
 import Split from "grommet/components/Split";
@@ -17,14 +18,39 @@ import type { Credentials } from "../actions/auth";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
 
+const intlAuthFailed = (
+  <FormattedMessage
+    id="login.authFailed"
+    description="Login auth failed message"
+    defaultMessage="Invalid username or password."
+  />
+)
+
+const intlwithGoogle = (
+  <FormattedMessage
+    id="login.withGoogle"
+    description="Login with Google"
+    defaultMessage="Login with Google"
+  />
+)
+
+const intlOr = (
+  <FormattedMessage
+    id="login.or"
+    description="Login or"
+    defaultMessage="or"
+  />
+)
+
 type Props = {
+  authFailed: boolean,
   loginBusy: boolean,
   isAuthenticated: boolean,
   dispatch: Dispatch,
   googleAuth: typeof Auth
 };
 
-class Login extends Component<Props> {
+class Login extends Component<Props & { intl: intlShape }> {
   googleAuth: typeof Auth
 
   onSubmit = (credentials: Credentials) => {
@@ -32,7 +58,12 @@ class Login extends Component<Props> {
   };
 
   render() {
-    const { isAuthenticated, googleAuth } = this.props;
+    const { isAuthenticated, googleAuth, authFailed } = this.props;
+
+    let errors = [];
+    if (authFailed) {
+      errors.push(intlAuthFailed);
+    }
 
     return isAuthenticated ? (
       <Redirect to="/" />
@@ -49,13 +80,14 @@ class Login extends Component<Props> {
                   primary={true}
                   fill={true}
                   type="button"
-                  label="Login with Google"
+                  label={intlwithGoogle}
                   onClick={googleAuth.login} />
               </Box>
-              <Box pad={{ horizontal: "medium", vertical: "none" }} align="center">or</Box>
+              <Box pad={{ horizontal: "medium", vertical: "none" }} align="center">{intlOr}</Box>
               <Box>
                 <LoginForm
                   onSubmit={this.onSubmit}
+                  errors={errors}
                 />
               </Box>
             </Box>
@@ -79,6 +111,7 @@ const mapStateToProps = (
   const { auth } = state;
 
   return {
+    authFailed: auth.authFailed,
     loginBusy: auth.busy,
     isAuthenticated: auth.isAuthenticated,
     dispatch: ownProps.dispatch,
@@ -86,4 +119,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(injectIntl(Login));

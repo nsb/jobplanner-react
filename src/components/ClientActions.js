@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { injectIntl, FormattedMessage } from "react-intl";
 import Header from "grommet/components/Header";
 import Box from "grommet/components/Box";
 import Sidebar from "grommet/components/Sidebar";
@@ -12,6 +13,23 @@ import EditIcon from "grommet/components/icons/base/Edit";
 import TrashIcon from "grommet/components/icons/base/Trash";
 import ClientRemove from "./ClientRemove";
 import type { Client } from "../actions/clients";
+
+const intlEdit = (
+  <FormattedMessage
+    id="clientActions.edit"
+    description="Client actions edit"
+    defaultMessage="Edit"
+  />
+);
+
+const intlRemove = (
+  <FormattedMessage
+    id="clientActions.remove"
+    description="Client actions remove"
+    defaultMessage="Remove"
+  />
+);
+
 
 const LAYERS = {
   remove: ClientRemove
@@ -81,17 +99,17 @@ class ClientActions extends Component<Props, State> {
               align="start"
               plain={true}
               icon={<EditIcon />}
-              label="Edit"
+              label={intlEdit}
               onClick={onEdit}
-              a11yTitle={`Edit Job Name`}
+              a11yTitle={intlEdit}
             />
             <Button
               align="start"
               plain={true}
               icon={<TrashIcon />}
-              label="Remove"
+              label={intlRemove}
               onClick={() => this._onLayerOpen("remove")}
-              a11yTitle={`Remove Job Name`}
+              a11yTitle={intlRemove}
             />
           </Menu>
         </Box>
@@ -101,4 +119,4 @@ class ClientActions extends Component<Props, State> {
   }
 }
 
-export default ClientActions;
+export default injectIntl(ClientActions);

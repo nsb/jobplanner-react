@@ -21,11 +21,35 @@ import type { Job } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
 
-const title = (
+const intlTitle = (
   <FormattedMessage
-    id="jobs.title"
-    description="Jobs title"
+    id="jobList.title"
+    description="Job list title"
     defaultMessage="Jobs"
+  />
+)
+
+const intlSearch = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="jobList.searchPlaceholder"
+    description="Job list search placeholder"
+    defaultMessage="Search"
+  />
+)
+
+const intlAdd = (
+  <FormattedMessage
+    id="jobList.addJob"
+    description="Job list add job"
+    defaultMessage="Add job"
+  />
+)
+
+const intlEmptyMessage = (
+  <FormattedMessage
+    id="jobList.emptyMessage"
+    description="Job list empty message"
+    defaultMessage="You do not have any jobs."
   />
 )
 
@@ -35,8 +59,7 @@ type Props = {
   jobs: Array<Job>,
   token: string,
   isFetching: boolean,
-  push: Function,
-  intl: intlShape
+  push: Function
 };
 
 type State = {
@@ -45,7 +68,7 @@ type State = {
   limit: number
 };
 
-class JobList extends Component<Props, State> {
+class JobList extends Component<Props & { intl: intlShape }, State> {
   state: State = {
     searchText: "",
     offset: 0,
@@ -57,7 +80,7 @@ class JobList extends Component<Props, State> {
   }
 
   render() {
-    const { jobs, business, isFetching, totalCount } = this.props;
+    const { jobs, business, isFetching, totalCount, intl } = this.props;
 
     const filteredJobs = jobs.filter(job => {
       const searchText = this.state.searchText.toLowerCase();
@@ -72,19 +95,19 @@ class JobList extends Component<Props, State> {
       <Anchor
         icon={<AddIcon />}
         path={`/${business.id}/jobs/add`}
-        a11yTitle={`Add job`}
+        a11yTitle={intlAdd}
       />
     );
 
     return (
       <Box>
         <Header size="large" pad={{ horizontal: "medium" }}>
-          <NavControl title={title} />
+          <NavControl title={intlTitle} />
           <Search
             inline={true}
             fill={true}
             size="medium"
-            placeHolder="Search"
+            placeHolder={intl.formatMessage({id: "jobList.searchPlaceholder"})}
             value={this.state.searchText}
             onDOMChange={this.onSearch}
           />
@@ -105,13 +128,13 @@ class JobList extends Component<Props, State> {
         <ListPlaceholder
           filteredTotal={isFetching ? null : filteredJobs.length}
           unfilteredTotal={isFetching ? null : jobs.length}
-          emptyMessage="You do not have any jobs."
+          emptyMessage={intlEmptyMessage}
           addControl={
             <Button
               icon={<AddIcon />}
-              label="Add job"
+              label={intlAdd}
               primary={true}
-              a11yTitle={`Add job`}
+              a11yTitle={intlAdd}
               path={`/${business.id}/jobs/add`}
             />
           }

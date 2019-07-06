@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import { injectIntl, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
@@ -9,6 +10,24 @@ import InvoiceBatchVisitContainer from "./InvoiceBatchVisitContainer";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
 import type { VisitSelection } from "./InvoiceBatchVisit";
+
+const intlRecurringJob = (id: number) => (
+  <FormattedMessage
+    id="invoiceBatch.recurringJob"
+    description="invoice batch job type recurring"
+    defaultMessage="#{id} - Recurring job"
+    values={{id}}
+  />
+);
+
+const intlOneOffJob = (id: number) => (
+  <FormattedMessage
+    id="invoiceBatch.oneOffJob"
+    description="invoice batch job type one-off"
+    defaultMessage="#{id} - One-off job"
+    values={{id}}
+  />
+);
 
 export type JobSelection = {
   [key: string]: { selected: boolean, visits: VisitSelection }
@@ -38,7 +57,7 @@ class InvoiceBatchClient extends Component<Props> {
             <CheckBox
               checked={selected[job.id.toString()].selected}
               onChange={this.onJobChanged} />
-            #{job.id} - {job.recurrences ? 'Recurring job' : 'One-off job'}
+            {job.recurrences ? intlRecurringJob(job.id) : intlOneOffJob(job.id)}
           </Box>
           <List onMore={undefined}>
             {(selected[job.id.toString()].selected ? visits : []).map((visit, index) => {
@@ -82,4 +101,4 @@ class InvoiceBatchClient extends Component<Props> {
   }
 };
 
-export default InvoiceBatchClient;
+export default injectIntl(InvoiceBatchClient);

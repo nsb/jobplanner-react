@@ -20,9 +20,41 @@ import type { Business } from "../actions/businesses";
 import type { Visit, VisitsResponse } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 
+const intlCompleted = (
+  <FormattedMessage
+    id="visitsReport.filterCompleted"
+    description="Visits report filter completed"
+    defaultMessage="Completed"
+  />
+)
+
+const intlIncomplete = (
+  <FormattedMessage
+    id="visitsReport.filterIncomplete"
+    description="Visits report filter incomplete"
+    defaultMessage="Incomplete"
+  />
+)
+
+const intlCount = (count: number, total: number) => (
+  <FormattedMessage
+    id="visitsReport.filterCount"
+    description="Visits report filter count"
+    defaultMessage="Showing {count} of {total} visits."
+    values={{count, total}}
+  />
+)
+
+const intlEmptyMessage = (
+  <FormattedMessage
+    id="visitsReport.emptyMessage"
+    description="Visits report empty message"
+    defaultMessage="No visits found."
+  />
+)
+
 type Props = {
   business: Business,
-  intl: intlShape,
   employees: Array<Employee>,
   token: ?string
 };
@@ -37,7 +69,7 @@ type State = {
   isFetching: boolean
 };
 
-class VisitsReport extends Component<Props, State> {
+class VisitsReport extends Component<Props & { intl: intlShape }, State> {
   state: State = {
     offset: 0,
     limit: 30,
@@ -59,7 +91,7 @@ class VisitsReport extends Component<Props, State> {
   }
 
   render() {
-    const { intl, employees } = this.props;
+    const { employees } = this.props;
     const { filterActive, filterValues, visits, count } = this.state;
 
     let filterLayer;
@@ -90,12 +122,12 @@ class VisitsReport extends Component<Props, State> {
         <Box>
           <Timestamp fields={["date", "year"]} value={filterValues.begins} />
           <Timestamp fields={["date", "year"]} value={filterValues.ends} />
-          {filterValues.complete && "Completed"}
-          {filterValues.incomplete && "Incomplete"}
+          {filterValues.complete && intlCompleted}
+          {filterValues.incomplete && intlIncomplete}
           {filterValues.assigned && filterValues.assigned.label}
         </Box>
         <Box>
-          Showing {visits.length} of {count} visits.
+          {intlCount(visits.length, count)}
         </Box>
         <List
           onMore={this.state.offset < this.state.count ? this.onMore : null}
@@ -120,10 +152,7 @@ class VisitsReport extends Component<Props, State> {
           unfilteredTotal={
             this.state.isFetching ? null : this.state.visits.length
           }
-          emptyMessage={intl.formatMessage({
-            id: "visits.emptyMessage",
-            defaultMessage: "No visits found."
-          })}
+          emptyMessage={intlEmptyMessage}
         />
         {filterLayer}
       </Box>

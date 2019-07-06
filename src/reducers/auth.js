@@ -5,6 +5,7 @@ import type { User } from "../actions/users";
 const token = localStorage.getItem("token");
 
 type State = {
+  authFailed: boolean,
   busy: boolean,
   token: ?string,
   isAuthenticated: boolean,
@@ -12,6 +13,7 @@ type State = {
 };
 
 const initialState: State = {
+  authFailed: false,
   busy: false,
   token: token,
   user: null,
@@ -28,12 +30,14 @@ const authReducer = (state: State = initialState, action: Action): State => {
     case "REQUEST_LOGIN_SUCCESS":
       return Object.assign({}, state, {
         token: action.token,
+        authFailed: false,
         busy: false,
         isAuthenticated: true
       });
 
     case "REQUEST_LOGIN_FAILURE":
       return Object.assign({}, state, {
+        authFailed: true,
         busy: false
       });
 
@@ -88,6 +92,7 @@ const authReducer = (state: State = initialState, action: Action): State => {
 
     case "LOGOUT":
       return Object.assign({}, state, {
+        authFailed: false,
         token: null
       });
 

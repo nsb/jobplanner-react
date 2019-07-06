@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
@@ -15,9 +16,154 @@ import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
 import BusyIcon from 'grommet/components/icons/Spinning';
+import { intlFormFieldRequired } from "../i18n";
 import type { Client } from "../actions/clients";
 import type { Field as CustomField } from "../actions/fields";
 import type { Element } from "react";
+
+const intlClientEditTitle = (
+  <FormattedMessage
+    id="clientForm.editTitle"
+    description="Client form edit title"
+    defaultMessage="Edit client"
+  />
+);
+
+const intlClientAddTitle = (
+  <FormattedMessage
+    id="clientForm.addTitle"
+    description="Client form add title"
+    defaultMessage="Add client"
+  />
+);
+
+const intlClientDetailsHeading = (
+  <FormattedMessage
+    id="clientForm.detailsHeading"
+    description="Client form details heading"
+    defaultMessage="Client details"
+  />
+);
+
+const intlFirstName = (
+  <FormattedMessage
+    id="clientForm.FirstNameLabel"
+    description="Client form first name label"
+    defaultMessage="First name"
+  />
+);
+
+const intlLastName = (
+  <FormattedMessage
+    id="clientForm.LastNameLabel"
+    description="Client form last name label"
+    defaultMessage="Last name"
+  />
+);
+
+const intlCompanyName = (
+  <FormattedMessage
+    id="clientForm.CompanyNameLabel"
+    description="Client form company name label"
+    defaultMessage="Company name"
+  />
+)
+
+const intlIsBusiness = (
+  <FormattedMessage
+    id="clientForm.isBusinessLabel"
+    description="Client form is business label"
+    defaultMessage="Use company name as the primary name"
+  />
+)
+
+const intlContactDetailsHeading = (
+  <FormattedMessage
+    id="clientForm.contactDetailsHeading"
+    description="Client form contact details heading"
+    defaultMessage="Contact details"
+  />
+)
+
+const intlPhone = (
+  <FormattedMessage
+    id="clientForm.phoneLabel"
+    description="Client form phone label"
+    defaultMessage="Phone"
+  />
+)
+
+const intlEmail = (
+  <FormattedMessage
+    id="clientForm.emailLabel"
+    description="Client form email label"
+    defaultMessage="E-mail"
+  />
+)
+
+const intlNotificationsHeading = (
+  <FormattedMessage
+    id="clientForm.notificationsHeading"
+    description="Client form automated notifications heading"
+    defaultMessage="Automated notifications"
+  />
+)
+
+const intlVisitRemindersLabel = (
+  <FormattedMessage
+    id="clientForm.visitRemindersLabel"
+    description="Client form automated notifications visit reminders label"
+    defaultMessage="Visit reminders"
+  />
+)
+
+const intlPropertiesHeading = (
+  <FormattedMessage
+    id="clientForm.propertiesHeading"
+    description="Client form properties heading"
+    defaultMessage="Property details"
+  />
+)
+
+const intlAddress1Label = (
+  <FormattedMessage
+    id="clientForm.address1Label"
+    description="Client form address 1 label"
+    defaultMessage="Address 1"
+  />
+)
+
+const intlAddress2Label = (
+  <FormattedMessage
+    id="clientForm.address2Label"
+    description="Client form address 2 label"
+    defaultMessage="Address 2"
+  />
+)
+
+const intlCityLabel = (
+  <FormattedMessage
+    id="clientForm.cityLabel"
+    description="Client form city label"
+    defaultMessage="City"
+  />
+)
+
+const intlZipCodeLabel = (
+  <FormattedMessage
+    id="clientForm.zipcodeLabel"
+    description="Client form zip code label"
+    defaultMessage="Zip Code"
+  />
+)
+
+const intlAddressUsePropertyLabel = (
+  <FormattedMessage
+    id="clientForm.addressUsePropertyLabel"
+    description="Client form address use property label"
+    defaultMessage="Billing address is the same as property address"
+  />
+)
 
 const validate = (values: Client) => {
   const errors = {};
@@ -25,7 +171,7 @@ const validate = (values: Client) => {
   values.properties.forEach((property, propertyIndex) => {
     const propertyErrors = {};
     if (!property || !property.address1) {
-      propertyErrors.address1 = "Required";
+      propertyErrors.address1 = intlFormFieldRequired;
       propertiesArrayErrors[propertyIndex] = propertyErrors;
     }
   })
@@ -33,16 +179,16 @@ const validate = (values: Client) => {
     errors.properties = propertiesArrayErrors
   }
   if (!values.is_business && !values.first_name) {
-    errors.first_name = "Required";
+    errors.first_name = intlFormFieldRequired;
   }
   if (!values.is_business && !values.last_name) {
-    errors.last_name = "Required";
+    errors.last_name = intlFormFieldRequired;
   }
   if (values.is_business && !values.business_name) {
-    errors.business_name = "Required"
+    errors.business_name = intlFormFieldRequired
   }
   if (!values.address_use_property && !values.address1) {
-    errors.address1 = "Required"
+    errors.address1 = intlFormFieldRequired
   }
   return errors;
 };
@@ -91,25 +237,25 @@ const renderProperties = ({
               name={`${property}.address1`}
               type="text"
               component={renderField}
-              label="Address 1"
+              label={intlAddress1Label}
             />
             <Field
               name={`${property}.address2`}
               type="text"
               component={renderField}
-              label="Address 2"
+              label={intlAddress2Label}
             />
             <Field
               name={`${property}.city`}
               type="text"
               component={renderField}
-              label="City"
+              label={intlCityLabel}
             />
             <Field
               name={`${property}.zip_code`}
               type="text"
               component={renderField}
-              label="Zip Code"
+              label={intlZipCodeLabel}
             />
           </div>
         </Box>
@@ -131,7 +277,8 @@ type Props = {
   onClose: Function,
   fields: Array<CustomField>,
   initialValues: Object,
-  isFetching: boolean
+  isFetching: boolean,
+  intl: intlShape
 };
 
 type State = {
@@ -154,7 +301,8 @@ class ClientForm extends Component<Props, State> {
       onClose,
       // fields,
       initialValues,
-      isFetching
+      isFetching,
+      intl
     } = this.props;
 
     let billingAddress;
@@ -166,25 +314,25 @@ class ClientForm extends Component<Props, State> {
             name="address1"
             type="text"
             component={renderField}
-            label="Address 1"
+            label={intlAddress1Label}
           />
           <Field
             name="address2"
             type="text"
             component={renderField}
-            label="Address 2"
+            label={intlAddress2Label}
           />
           <Field
             name="city"
             type="text"
             component={renderField}
-            label="City"
+            label={intlCityLabel}
           />
           <Field
             name="zip_code"
             type="text"
             component={renderField}
-            label="Zip Code"
+            label={intlZipCodeLabel}
           />
         </fieldset>
       )
@@ -199,7 +347,7 @@ class ClientForm extends Component<Props, State> {
         <Button
           type="submit"
           primary={true}
-          label={initialValues ? "Save" : "Add"}
+          label={intl.formatMessage({id: 'form.save'})}
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       )
@@ -208,70 +356,70 @@ class ClientForm extends Component<Props, State> {
       <Form onSubmit={handleSubmit}>
         <Header size="large" justify="between" pad="none">
           <Heading tag="h2" margin="none" strong={true}>
-            {initialValues && initialValues.id ? "Edit client" : "Add Client"}
+            {initialValues && initialValues.id ? intlClientEditTitle : intlClientAddTitle}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
 
         <FormFields>
           <fieldset>
-            <Heading tag="h3">Client details</Heading>
+            <Heading tag="h3">{intlClientDetailsHeading}</Heading>
             <Box direction="row">
               <Field
                 name="first_name"
-                label="First name"
+                label={intlFirstName}
                 component={renderField}
                 type="text"
               />
               <Field
                 name="last_name"
-                label="Last Name"
+                label={intlLastName}
                 component={renderField}
                 type="text"
               />
             </Box>
             <Field
               name="business_name"
-              label="Company name"
+              label={intlCompanyName}
               component={renderField}
               type="text"
             />
             <Field
               name="is_business"
-              label="Use company name as the primary name"
+              label={intlIsBusiness}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
           </fieldset>
 
           <fieldset>
-            <Heading tag="h3">Contact details</Heading>
+            <Heading tag="h3">{intlContactDetailsHeading}</Heading>
             <Field
               name="phone"
-              label="Phone"
+              label={intlPhone}
               component={renderField}
               type="text"
             />
             <Field
               name="email"
-              label="E-mail"
+              label={intlEmail}
               component={renderField}
               type="email"
             />
           </fieldset>
 
           <fieldset>
-            <Heading tag="h3">Automated notifications</Heading>
+            <Heading tag="h3">{intlNotificationsHeading}</Heading>
             <Field
               name="upcoming_visit_reminder_email_enabled"
-              label="Visit reminders"
+              label={intlVisitRemindersLabel}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
           </fieldset>
 
           <fieldset>
-            <Heading tag="h3">Property details</Heading>
+            <Heading tag="h3">{intlPropertiesHeading}</Heading>
             <FieldArray
               name="properties"
               label="Properties"
@@ -279,7 +427,7 @@ class ClientForm extends Component<Props, State> {
             />
             <Field
               name="address_use_property"
-              label="Billing address is the same as property address"
+              label={intlAddressUsePropertyLabel}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
               onChange={(event, value) => { this.setState({ address_use_property: value }) }}
@@ -313,4 +461,4 @@ class ClientForm extends Component<Props, State> {
 export default reduxForm({
   form: "client", // a unique identifier for this form
   validate
-})(ClientForm);
+})(injectIntl(ClientForm));

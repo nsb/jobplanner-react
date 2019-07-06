@@ -63,6 +63,11 @@ const Invoices = Loadable({
   loading: Loading
 })
 
+const Integrations = Loadable({
+  loader: () => import("../components/Integrations"),
+  loading: Loading
+})
+
 class AppAuthenticatedNav extends Component<Props> {
   render() {
     const {
@@ -115,6 +120,7 @@ class AppAuthenticatedNav extends Component<Props> {
           <Route path="/:businessId/reports" component={Reports} />
           <Route path="/:businessId/settings" component={Settings} />
           <Route path="/:businessId/invoices" component={Invoices} />
+          <Route path="/:businessId/integrations" component={Integrations} />
           <Route component={ClientListContainer} />
         </Switch>
       </Split>

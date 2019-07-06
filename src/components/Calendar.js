@@ -23,6 +23,62 @@ const title = (
   />
 )
 
+const intlPrevious = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="calendar.previousLabel"
+    description="Calendar previous label"
+    defaultMessage="previous"
+  />
+)
+
+const intlToday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="calendar.todayLabel"
+    description="Calendar today label"
+    defaultMessage="today"
+  />
+)
+
+const intlNext = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="calendar.nextLabel"
+    description="Calendar next label"
+    defaultMessage="next"
+  />
+)
+
+const intlMonth = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="calendar.monthLabel"
+    description="Calendar month label"
+    defaultMessage="month"
+  />
+)
+
+const intlWeek = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="calendar.weekLabel"
+    description="Calendar week label"
+    defaultMessage="week"
+  />
+)
+
+const intlDay = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="calendar.dayLabel"
+    description="Calendar day label"
+    defaultMessage="day"
+  />
+)
+
+const intlAgenda = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="calendar.agendaLabel"
+    description="Calendar agenda label"
+    defaultMessage="agenda"
+  />
+)
+
 type Props = {
   visits: Array<Visit>,
   defaultView: "day" | "week" | "month" | "agenda",
@@ -31,11 +87,10 @@ type Props = {
   onView: Function,
   onSelectSlot: Function,
   onSelectEvent: Function,
-  onEventDrop: Function,
-  intl: intlShape
+  onEventDrop: Function
 };
 
-class Calendar extends Component<Props> {
+class Calendar extends Component<Props & { intl: intlShape }> {
   render() {
     const {
       visits,
@@ -44,17 +99,29 @@ class Calendar extends Component<Props> {
       onView,
       onSelectSlot,
       onSelectEvent,
-      onEventDrop
+      onEventDrop,
+      intl
     } = this.props;
 
     let scrollToTime = new Date();
     scrollToTime.setHours(6);
 
+    const messages = {
+      next: intl.formatMessage({id: "calendar.nextLabel"}),
+      previous: intl.formatMessage({id: "calendar.previousLabel"}),
+      today: intl.formatMessage({id: "calendar.todayLabel"}),
+      month: intl.formatMessage({id: "calendar.monthLabel"}),
+      week: intl.formatMessage({id: "calendar.weekLabel"}),
+      day: intl.formatMessage({id: "calendar.dayLabel"}),
+      agenda: intl.formatMessage({id: "calendar.agendaLabel"})
+    };
+    
     return (
       <Box>
         <NavControl title={title} />
         <Box full={true} pad="medium">
           <DragAndDropCalendar
+            messages={messages} 
             localizer={localizer}
             selectable={true}
             popup={true}
