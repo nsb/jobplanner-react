@@ -107,7 +107,7 @@ const ClientList = ({
       addControl={
         <Button
           icon={<AddIcon />}
-          label="Add client"
+          label={intlAdd}
           primary={true}
           a11yTitle={intlAdd}
           path={`/${business.id}/clients/add`}
