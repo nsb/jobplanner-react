@@ -20,7 +20,8 @@ type Props = {
   dispatch: Dispatch,
   push: string => void,
   employees: Array<Employee>,
-  client: ?{ value: Client, label: string }
+  client: ?{ value: Client, label: string },
+  isFetching: boolean
 };
 
 type State = {
@@ -33,7 +34,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
   };
 
   render() {
-    const { token, employees, client, business, intl } = this.props;
+    const { token, employees, client, business, intl, isFetching } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -42,6 +43,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
           employees={employees}
+          isFetching={isFetching}
           initialValues={{
             recurrences: '',
             begins: new Date(),
@@ -94,7 +96,7 @@ const mapStateToProps = (
     history: { push: string => void }
   }
 ): * => {
-  const { auth, employees, entities } = state;
+  const { auth, employees, entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const searchParams: URLSearchParams = new URLSearchParams(
     document.location.search
@@ -119,7 +121,8 @@ const mapStateToProps = (
       }),
     client: client
       ? { value: client, label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}` }
-      : undefined
+      : undefined,
+    isFetching: jobs.isFetching
   };
 };
 

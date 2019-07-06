@@ -24,12 +24,13 @@ type Props = {
   push: string => void,
   dispatch: Dispatch,
   employees: Array<Employee>,
-  assigned: Array<Employee>
+  assigned: Array<Employee>,
+  isFetching: boolean
 };
 
 class JobEdit extends Component<Props & { intl: intlShape }> {
   render() {
-    const { job, employees, assigned, business, intl } = this.props;
+    const { job, employees, assigned, business, intl, isFetching } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -38,6 +39,7 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
           onSubmit={this.handleSubmit}
           onClose={this.onClose}
           employees={employees}
+          isFetching={isFetching}
           initialValues={{
             ...job,
             client: {
@@ -90,7 +92,7 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { auth, clients, employees, entities } = state;
+  const { auth, clients, employees, entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
@@ -115,7 +117,8 @@ const mapStateToProps = (
       ensureState(entities).jobs[jobId],
       jobSchemaDenormalize,
       ensureState(entities)
-    )
+    ),
+    isFetching: jobs.isFetching
   };
 };
 

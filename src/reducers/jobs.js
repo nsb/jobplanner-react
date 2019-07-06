@@ -32,6 +32,15 @@ const isFetching = (state: boolean = false, action: Action): boolean => {
     case "UPDATE_JOB_FAILURE":
       return false;
 
+    case "CREATE_JOB":
+      return true;
+
+    case "CREATE_JOB_SUCCESS":
+      return false;
+
+    case "CREATE_JOB_FAILURE":
+      return false;
+
     default:
       return state;
   }

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Field, FieldArray, formValueSelector, reduxForm } from "redux-form";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import moment from "moment";
+import Box from "grommet/components/Box";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -20,9 +21,11 @@ import Tabs from 'grommet/components/Tabs';
 import Tab from 'grommet/components/Tab';
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
+import BusyIcon from 'grommet/components/icons/Spinning';
 import JobScheduleEdit from "./JobScheduleEdit";
 import ScheduleInput from "./ScheduleInput";
 import LineItemsFormContainer from "./JobLineItemsFormContainer";
+import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import { RRule, rrulestr } from "rrule";
 import clientsApi from "../api";
 import type { Business } from "../actions/businesses";
@@ -217,11 +220,11 @@ const validate = (values: {
 }) => {
   const errors = {};
   if (!values.client) {
-    errors.client = "Required";
+    errors.client = intlFormFieldRequired;
   }
 
   if (!values.begins) {
-    errors.begins = "Required";
+    errors.begins = intlFormFieldRequired;
   } else {
     if (!moment(values.begins).isValid()) {
       errors.begins = "Invalid";
@@ -230,10 +233,10 @@ const validate = (values: {
 
   if (!values.anytime) {
     if (!values.start_time) {
-      errors.start_time = "Required";
+      errors.start_time = intlFormFieldRequired;
     }
     if (!values.finish_time) {
-      errors.finish_time = "Required";
+      errors.finish_time = intlFormFieldRequired;
     }
   }
   return errors;
@@ -476,7 +479,8 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
       initialValues,
       anytime,
       employees,
-      intl
+      intl,
+      isFetching
     } = this.props;
 
     let start_time;
@@ -659,6 +663,20 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
       </Tabs>
     )
 
+    const control = isFetching ? (
+      <Box direction="row" align="center"
+        pad={{ horizontal: 'medium', between: 'small' }}>
+        <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
+      </Box>
+    ) : (
+        <Button
+          type="submit"
+          primary={true}
+          label={intl.formatMessage({id: 'form.save'})}
+          onClick={valid && dirty && !submitting ? () => true : undefined}
+        />
+      )
+
     return (
       <Form onSubmit={handleSubmit}>
         <Header size="large" justify="between" pad="none">
@@ -717,13 +735,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
 
         <Footer pad={{ vertical: "medium" }}>
           <span />
-
-          <Button
-            type="submit"
-            primary={true}
-            label={intl.formatMessage({id: 'form.save'})}
-            onClick={valid && dirty && !submitting ? () => true : undefined}
-          />
+          {control}
         </Footer>
       </Form>
     );
