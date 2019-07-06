@@ -3,13 +3,15 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import Box from "grommet/components/Box";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
-import { intlFormFieldRequired } from "../i18n";
+import BusyIcon from 'grommet/components/icons/Spinning';
+import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import type { Element } from "react";
 
 const intlUsernameLabel = (
@@ -78,15 +80,32 @@ type Props = {
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  onClose?: Function
+  onClose?: Function,
+  isFetching: boolean
 };
 
 export const SignupForm = ({
   handleSubmit,
   valid,
   dirty,
-  submitting
+  submitting,
+  isFetching
 }: Props & { intl: intlShape }) => {
+
+  const control = isFetching ? (
+    <Box direction="row" align="center"
+      pad={{ horizontal: 'medium', between: 'small' }}>
+      <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
+    </Box>
+  ) : (
+    <Button
+      type="submit"
+      primary={true}
+      label={intlSubmitLabel}
+      onClick={valid && dirty && !submitting ? () => true : undefined}
+    />
+  )
+
   return (
     <Form onSubmit={handleSubmit} pad="medium">
       <FormFields>
@@ -103,12 +122,7 @@ export const SignupForm = ({
       <Footer size="small" direction="column" align="start"
       pad={{ vertical: 'none', between: 'medium' }}>
         <span />
-        <Button
-          type="submit"
-          primary={true}
-          label={intlSubmitLabel}
-          onClick={valid && dirty && !submitting ? () => true : undefined}
-        />
+        {control}
         <div>{intlHaveAccount} <Anchor label={intlLogin} path="/login" /></div>
       </Footer>
     </Form>

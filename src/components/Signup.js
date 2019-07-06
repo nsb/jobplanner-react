@@ -48,7 +48,7 @@ class Signup extends Component<Props & { intl: intlShape }> {
   };
 
   render() {
-    const { googleAuth } = this.props;
+    const { googleAuth, signupBusy } = this.props;
 
     return (
       <Split flex="left">
@@ -72,6 +72,7 @@ class Signup extends Component<Props & { intl: intlShape }> {
                 align="start"
                 title="myJobPlanner"
                 onSubmit={this.props.signupBusy ? undefined : this.onSubmit}
+                isFetching={signupBusy}
               />
             </Box>
           </Box>

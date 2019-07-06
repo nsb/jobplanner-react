@@ -18,7 +18,7 @@ import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import BusyIcon from 'grommet/components/icons/Spinning';
 import LineItemsFormContainer from "./VisitLineItemsFormContainer";
-import { intlFormSaveLabel } from "../i18n";
+import { intlFormSaveLabel, intlFormSavingLabel } from "../i18n";
 import type { Client } from "../actions/clients";
 import type { Employee } from "../actions/employees";
 import type { Element } from "react";
@@ -214,7 +214,7 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
       const control = isFetching ? (
         <Box direction="row" align="center"
           pad={{ horizontal: 'medium', between: 'small' }}>
-          <BusyIcon /><span className="secondary">Saving...</span>
+          <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
         </Box>
       ) : (
           <Button
@@ -225,7 +225,6 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
           />
         )
   
-
     return (
       <Form onSubmit={handleSubmit}>
 
