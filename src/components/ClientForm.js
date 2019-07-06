@@ -16,7 +16,7 @@ import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
 import BusyIcon from 'grommet/components/icons/Spinning';
-import { intlFormFieldRequired } from "../i18n";
+import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import type { Client } from "../actions/clients";
 import type { Field as CustomField } from "../actions/fields";
 import type { Element } from "react";
@@ -340,7 +340,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
     const control = isFetching ? (
       <Box direction="row" align="center"
         pad={{ horizontal: 'medium', between: 'small' }}>
-        <BusyIcon /><span className="secondary">Saving...</span>
+        <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
       </Box>
     ) : (
         <Button

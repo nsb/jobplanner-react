@@ -245,5 +245,6 @@
   "visitUpdateFutureVisits.paragraph1": "This will update the schedule for all future visits.",
   "visitUpdateFutureVisits.submitLabel": "Yes, update",
   "form.required": "Required",
-  "form.save": "Save"
+  "form.save": "Save",
+  "form.saving": "Saving..."
 }

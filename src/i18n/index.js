@@ -16,3 +16,11 @@ export const intlFormSaveLabel = (
     defaultMessage="Save"
   />
 )
+
+export const intlFormSavingLabel = (
+  <FormattedMessage
+    id="form.saving"
+    description="Form saving message"
+    defaultMessage="Saving..."
+  />
+)
