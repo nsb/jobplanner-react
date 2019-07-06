@@ -21,7 +21,7 @@ const mapStateToProps = (
     onClose: Function
   }
 ): Props => {
-  const { auth, employees, entities } = state;
+  const { auth, employees, entities, visits } = state;
 
   return {
     token: auth.token,
@@ -40,7 +40,8 @@ const mapStateToProps = (
       return ensureState(entities).lineItems[Id]
     }),
     onClose: ownProps.onClose,
-    createVisitAndLoadJob: createVisitAndLoadJob
+    createVisitAndLoadJob: createVisitAndLoadJob,
+    isFetching: visits.isFetching
   };
 };
 

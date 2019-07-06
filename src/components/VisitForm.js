@@ -16,6 +16,7 @@ import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
+import BusyIcon from 'grommet/components/icons/Spinning';
 import LineItemsFormContainer from "./VisitLineItemsFormContainer";
 import { intlFormSaveLabel } from "../i18n";
 import type { Client } from "../actions/clients";
@@ -184,7 +185,8 @@ type Props = {
   anytime: boolean,
   employees: Array<Employee>,
   change: Function,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  isFetching: boolean
 };
 
 class VisitForm extends Component<Props & { intl: intlShape }> {
@@ -201,12 +203,28 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
       submitting,
       initialValues,
       anytime,
-      employees
+      employees,
+      isFetching
     } = this.props;
 
     const dateFormat = moment()
       .creationData()
       .locale.longDateFormat(anytime ? "L" : "LLL");
+
+      const control = isFetching ? (
+        <Box direction="row" align="center"
+          pad={{ horizontal: 'medium', between: 'small' }}>
+          <BusyIcon /><span className="secondary">Saving...</span>
+        </Box>
+      ) : (
+          <Button
+            type="submit"
+            primary={true}
+            label={intlFormSaveLabel}
+            onClick={valid && dirty && !submitting ? () => true : undefined}
+          />
+        )
+  
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -289,12 +307,7 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
 
         <Footer pad={{ vertical: "medium" }}>
           <span />
-          <Button
-            type="submit"
-            primary={true}
-            label={intlFormSaveLabel}
-            onClick={valid && dirty && !submitting ? () => true : undefined}
-          />
+          {control}
         </Footer>
       </Form>
     );

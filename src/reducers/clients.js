@@ -32,6 +32,15 @@ const isFetching = (
 
     case "FETCH_CLIENT_FAILURE":
       return false;
+    
+    case "UPDATE_CLIENT":
+      return true;
+
+    case "UPDATE_CLIENT_SUCCESS":
+      return false;
+
+    case "UPDATE_CLIENT_FAILURE":
+      return false;
 
     default:
       return state;

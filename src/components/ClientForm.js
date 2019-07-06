@@ -15,6 +15,7 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
+import BusyIcon from 'grommet/components/icons/Spinning';
 import { intlFormFieldRequired } from "../i18n";
 import type { Client } from "../actions/clients";
 import type { Field as CustomField } from "../actions/fields";
@@ -276,6 +277,7 @@ type Props = {
   onClose: Function,
   fields: Array<CustomField>,
   initialValues: Object,
+  isFetching: boolean,
   intl: intlShape
 };
 
@@ -299,6 +301,7 @@ class ClientForm extends Component<Props, State> {
       onClose,
       // fields,
       initialValues,
+      isFetching,
       intl
     } = this.props;
 
@@ -334,6 +337,20 @@ class ClientForm extends Component<Props, State> {
         </fieldset>
       )
     }
+
+    const control = isFetching ? (
+      <Box direction="row" align="center"
+        pad={{ horizontal: 'medium', between: 'small' }}>
+        <BusyIcon /><span className="secondary">Saving...</span>
+      </Box>
+    ) : (
+        <Button
+          type="submit"
+          primary={true}
+          label={intl.formatMessage({id: 'form.save'})}
+          onClick={valid && dirty && !submitting ? () => true : undefined}
+        />
+      )
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -434,12 +451,7 @@ class ClientForm extends Component<Props, State> {
 
         <Footer pad={{ vertical: "medium" }}>
           <span />
-          <Button
-            type="submit"
-            primary={true}
-            label={intl.formatMessage({id: 'form.save'})}
-            onClick={valid && dirty && !submitting ? () => true : undefined}
-          />
+          {control}
         </Footer>
       </Form>
     );

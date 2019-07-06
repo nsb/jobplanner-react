@@ -15,12 +15,13 @@ export type Props = {
   job: Job,
   lineItems: Array<LineItem>,
   onClose: Function,
-  createVisitAndLoadJob: Function
+  createVisitAndLoadJob: Function,
+  isFetching: boolean
 };
 
 class VisitAdd extends Component<Props> {
   render() {
-    const { employees, onClose, job, lineItems } = this.props;
+    const { employees, onClose, job, lineItems, isFetching } = this.props;
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
@@ -36,6 +37,7 @@ class VisitAdd extends Component<Props> {
           }}
           onSubmit={this.handleSubmit}
           employees={employees}
+          isFetching={isFetching}
         />
       </Layer>
     );
