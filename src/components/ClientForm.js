@@ -277,15 +277,14 @@ type Props = {
   onClose: Function,
   fields: Array<CustomField>,
   initialValues: Object,
-  isFetching: boolean,
-  intl: intlShape
+  isFetching: boolean
 };
 
 type State = {
   address_use_property: boolean
 }
 
-class ClientForm extends Component<Props, State> {
+class ClientForm extends Component<Props & { intl: intlShape }, State> {
 
   constructor({ initialValues }: Props) {
     super();

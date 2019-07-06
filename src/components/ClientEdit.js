@@ -27,7 +27,7 @@ type Props = {
 
 class ClientEdit extends Component<Props> {
   render() {
-    const { client, fields } = this.props;
+    const { client, fields, isFetching } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -36,6 +36,7 @@ class ClientEdit extends Component<Props> {
           onClose={this.onClose}
           fields={fields}
           initialValues={client}
+          isFetching={isFetching}
         />
       </Article>
     );
