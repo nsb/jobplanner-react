@@ -24,3 +24,19 @@ export const intlFormSavingLabel = (
     defaultMessage="Saving..."
   />
 )
+
+export const intlFlashSaved = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="flash.saved"
+    description="Flash message saved"
+    defaultMessage="Saved"
+  />
+)
+
+export const intlFlashError = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="flash.error"
+    description="Flash message error"
+    defaultMessage="An error occurred"
+  />
+)

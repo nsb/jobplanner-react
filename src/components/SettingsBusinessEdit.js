@@ -2,6 +2,8 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { injectIntl, intlShape } from 'react-intl';
+import { addSuccess, addError } from "redux-flash-messages";
 import { updateBusiness } from "../actions/businesses";
 import Layer from "grommet/components/Layer";
 import BusinessForm from "./SettingsBusinessForm";
@@ -16,7 +18,7 @@ type Props = {
   token: string
 };
 
-class BusinessEdit extends Component<Props> {
+class BusinessEdit extends Component<Props & { intl: intlShape }> {
   render() {
     const { business, onClose } = this.props;
     return (
@@ -31,10 +33,13 @@ class BusinessEdit extends Component<Props> {
   }
 
   handleSubmit = (business: Business) => {
-    const { token, dispatch, onClose } = this.props;
+    const { token, dispatch, onClose, intl } = this.props;
     if (token) {
-      dispatch(updateBusiness(business, token));
-      onClose();
+      dispatch(updateBusiness(business, token)).then(() => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})})
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      }).finally(onClose);
     }
   };
 }
@@ -53,4 +58,4 @@ const mapStateToProps = (
   dispatch: ownProps.dispatch
 });
 
-export default connect(mapStateToProps)(BusinessEdit);
+export default connect(mapStateToProps)(injectIntl(BusinessEdit));

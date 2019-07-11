@@ -246,16 +246,11 @@ export const updateBusiness = (
       .update("businesses", business, token)
       .then((responseBusiness: Business) => {
         dispatch(updateBusinessSuccess(responseBusiness));
-        addSuccess({
-          text: "Saved"
-        });
         return responseBusiness;
       })
       .catch((error: string) => {
         dispatch(updateBusinessError(error));
-        addError({
-          text: "An error occurred"
-        });
+        return Promise.reject(error);
       });
   };
 };

@@ -246,5 +246,7 @@
   "visitUpdateFutureVisits.submitLabel": "Yes, update",
   "form.required": "Required",
   "form.save": "Save",
-  "form.saving": "Saving..."
+  "form.saving": "Saving...",
+  "flash.saved": "Saved",
+  "flash.error": "An error occurred"
 }

@@ -80,7 +80,7 @@ class Api {
     return fetch(request)
       .then(response => {
         if (!response.ok) {
-          return Promise.reject(response.json());
+          throw Error(response.statusText);
         }
         return response.json();
       })

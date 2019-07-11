@@ -46,6 +46,8 @@
   "clients.emptyMessage": "Ingen kunder",
   "clients.search": "Søg",
   "clients.title": "Kunder",
+  "flash.error": "Der opstod en fejl",
+  "flash.saved": "Gemt",
   "form.close": "Luk",
   "form.required": "Påkrævet",
   "form.save": "Gem",
