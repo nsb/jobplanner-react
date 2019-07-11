@@ -253,9 +253,6 @@ export const fetchClient = (token: string, id: number): ThunkAction => {
       })
       .catch((error: string) => {
         dispatch(fetchClientsFailure("error"));
-        // addError({
-        //   text: "An error occurred"
-        // });
         throw error;
       });
   };
