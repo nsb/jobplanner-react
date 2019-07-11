@@ -302,17 +302,10 @@ export const createClient = (
       .create("clients", client, token)
       .then((responseClient: Client) => {
         dispatch(createClientSuccess(responseClient));
-        // history.push(`/${business.id}/clients/${responseClient.id}`);
-        // addSuccess({
-        //   text: "Created"
-        // });
         return responseClient;
       })
       .catch((error: string) => {
         dispatch(createClientError(client, error));
-        // addError({
-        //   text: "An error occurred"
-        // });
         throw error;
       });
   };
@@ -354,17 +347,18 @@ export const updateClient = (client: Client, token: string): ThunkAction => {
       .update("clients", client, token)
       .then((responseClient: Client) => {
         dispatch(updateClientSuccess(responseClient));
-        history.push(`/${client.business}/clients/${responseClient.id}`);
-        addSuccess({
-          text: "Saved"
-        });
+        // history.push(`/${client.business}/clients/${responseClient.id}`);
+        // addSuccess({
+        //   text: "Saved"
+        // });
         return responseClient;
       })
       .catch((error: string) => {
         dispatch(updateClientError(client, error));
-        addError({
-          text: "An error occurred"
-        });
+        // addError({
+        //   text: "An error occurred"
+        // });
+        throw error;
       });
   };
 };

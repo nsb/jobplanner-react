@@ -3,6 +3,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
+import { injectIntl, intlShape } from 'react-intl';
+import { addSuccess, addError } from "redux-flash-messages";
+import history from "../history";
 import { clientSchema } from "../schemas";
 import Article from "grommet/components/Article";
 import ClientForm from "./ClientForm";
@@ -25,7 +28,7 @@ type Props = {
   dispatch: Dispatch
 };
 
-class ClientEdit extends Component<Props> {
+class ClientEdit extends Component<Props & { intl: intlShape }> {
   render() {
     const { client, fields, isFetching } = this.props;
 
@@ -43,7 +46,7 @@ class ClientEdit extends Component<Props> {
   }
 
   handleSubmit = (values: Client): void => {
-    const { token, client, dispatch } = this.props;
+    const { token, client, dispatch, intl } = this.props;
     dispatch(
       updateClient(
         {
@@ -52,7 +55,12 @@ class ClientEdit extends Component<Props> {
         },
         token || ""
       )
-    );
+    ).then((responseClient: Client) => {
+      addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+      history.push(`/${client.business}/clients/${responseClient.id}`);
+    }).catch(() => {
+      addError({text: intl.formatMessage({id: "flash.error"})})
+    });
   };
 
   onClose = () => {
@@ -95,4 +103,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(ClientEdit);
+export default connect(mapStateToProps)(injectIntl(ClientEdit));
