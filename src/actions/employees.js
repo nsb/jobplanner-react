@@ -381,15 +381,10 @@ export const deleteEmployee = (
       .delete("users", employee, token)
       .then(() => {
         dispatch(deleteEmployeeSuccess(employee));
-        addSuccess({
-          text: "Deleted"
-        });
       })
       .catch((error: string) => {
         dispatch(deleteEmployeeError(employee, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
