@@ -3,6 +3,9 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { injectIntl, intlShape } from 'react-intl';
+import { addSuccess, addError } from "redux-flash-messages";
+import history from "../history";
 import type { State as ReduxState } from "../types/State";
 import type { Business } from "../actions/businesses";
 import Article from "grommet/components/Article";
@@ -18,7 +21,7 @@ type Props = {
 
 type State = {}
 
-class BusinessAdd extends Component<Props, State> {
+class BusinessAdd extends Component<Props & { intl: intlShape }, State> {
 
   render() {
     return (
@@ -31,8 +34,15 @@ class BusinessAdd extends Component<Props, State> {
   }
 
   handleSubmit = (business: Business) => {
-    const { token, createBusiness } = this.props;
-    if (token) createBusiness(business, token);
+    const { token, createBusiness, intl } = this.props;
+    if (token) {
+      createBusiness(business, token).then((responseBusiness: Business) => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})})
+        history.push(`/${responseBusiness.id}`);
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      });
+    };
   };
 
   onClose = () => {
@@ -56,4 +66,4 @@ const mapDispatchToProps = (dispatch: *) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(BusinessAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(BusinessAdd));

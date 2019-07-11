@@ -4,7 +4,6 @@ import { addSuccess, addError } from "redux-flash-messages";
 import { businessListSchema, businessSchema } from "../schemas";
 import businessesApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
-import history from "../history";
 
 //Create new business
 export const CREATE_BUSINESS: "CREATE_BUSINESS" = "CREATE_BUSINESS";
@@ -192,17 +191,11 @@ export const createBusiness = (data: Business, token: string): ThunkAction => {
       .create("businesses", data, token)
       .then((responseBusiness: Business) => {
         dispatch(createBusinessSuccess(responseBusiness));
-        history.push(`/${responseBusiness.id}`);
-        addSuccess({
-          text: "Saved"
-        });
         return responseBusiness;
       })
       .catch((error: string) => {
         dispatch(createBusinessError(error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -250,7 +243,7 @@ export const updateBusiness = (
       })
       .catch((error: string) => {
         dispatch(updateBusinessError(error));
-        return Promise.reject(error);
+        throw error;
       });
   };
 };
