@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from "react";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
+import { addError } from "redux-flash-messages";
 import Split from "grommet/components/Split";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
@@ -84,7 +85,7 @@ type State = {
   showSidebarWhenSingle: boolean
 };
 
-class ClientDetail extends Component<Props, State> {
+class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
     showSidebarWhenSingle: false
   };
@@ -95,10 +96,13 @@ class ClientDetail extends Component<Props, State> {
       clientId,
       token,
       fetchClient,
-      fetchJobs
+      fetchJobs,
+      intl
     } = this.props;
     if (!client && token) {
-      fetchClient(token, clientId);
+      fetchClient(token, clientId).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      })
     }
     if (token) {
       fetchJobs(token, { client: clientId, ordering: "closed,next_visit" });
@@ -312,4 +316,4 @@ class ClientDetail extends Component<Props, State> {
   };
 }
 
-export default injectIntl(ClientDetail);
+export default injectIntl(injectIntl(ClientDetail));
