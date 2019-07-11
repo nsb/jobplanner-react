@@ -1,6 +1,9 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { injectIntl, intlShape } from 'react-intl';
+import { addSuccess, addError } from "redux-flash-messages";
+import history from "../history";
 import Article from "grommet/components/Article";
 import ClientForm from "./ClientForm";
 import { createClient } from "../actions/clients";
@@ -20,7 +23,7 @@ type Props = {
   isFetching: boolean
 };
 
-class ClientAdd extends Component<Props> {
+class ClientAdd extends Component<Props & { intl: intlShape }> {
   render() {
     const { fields, isFetching } = this.props;
     return (
@@ -41,7 +44,7 @@ class ClientAdd extends Component<Props> {
   }
 
   handleSubmit = (values: Client): void => {
-    const { token, business, dispatch } = this.props;
+    const { token, business, dispatch, intl } = this.props;
     if (token) {
       let action = createClient(
         business,
@@ -51,7 +54,12 @@ class ClientAdd extends Component<Props> {
         },
         token
       );
-      dispatch(action);
+      dispatch(action).then((responseClient: Client) => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+        history.push(`/${business.id}/clients/${responseClient.id}`);
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      });
     }
   };
 
@@ -87,4 +95,4 @@ const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
   };
 };
 
-export default connect(mapStateToProps)(ClientAdd);
+export default connect(mapStateToProps)(injectIntl(ClientAdd));

@@ -1,6 +1,5 @@
 // @flow
 import { normalize } from "normalizr";
-import { addSuccess, addError } from "redux-flash-messages";
 import { businessListSchema, businessSchema } from "../schemas";
 import businessesApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
@@ -260,16 +259,11 @@ export const partialUpdateBusiness = (
       .then((responseBusiness: Business) => {
         const coercedBusiness = parse(responseBusiness);
         dispatch(updateBusinessSuccess(coercedBusiness));
-        addSuccess({
-          text: "Saved"
-        });
         return coercedBusiness;
       })
       .catch((error: string) => {
         dispatch(updateBusinessError(error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
