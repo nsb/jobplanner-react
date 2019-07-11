@@ -1,6 +1,5 @@
 // @flow
 import { normalize } from "normalizr";
-import { addSuccess, addError } from "redux-flash-messages";
 import { employeeListSchema, employeeSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import employeesApi from "../api";
