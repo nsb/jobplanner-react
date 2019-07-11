@@ -2,7 +2,9 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
+import history from "../history";
 import { deleteClient } from '../actions/clients';
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
@@ -42,12 +44,18 @@ type Props = {
   token: string
 };
 
-class ClientRemove extends Component<Props> {
+class ClientRemove extends Component<Props & { intl: intlShape }> {
 
   _onRemove = () => {
-    const { client, token } = this.props;
-    this.props.dispatch(deleteClient(client, token));
-    this.props.onClose();
+    const { client, token, onClose, intl, dispatch } = this.props;
+    dispatch(
+      deleteClient(client, token)
+    ).then((responseClient: Client) => {
+      addSuccess({text: intl.formatMessage({id: "flash.deleted"})});
+      history.push(`/${client.business}/clients`);
+    }).catch(() => {
+      addError({text: intl.formatMessage({id: "flash.error"})})
+    }).finally(onClose);
   }
 
   render() {

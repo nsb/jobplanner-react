@@ -15,7 +15,7 @@ export const intlFormSaveLabel = (
     description="Form save button"
     defaultMessage="Save"
   />
-)
+);
 
 export const intlFormSavingLabel = (
   <FormattedMessage
@@ -23,7 +23,7 @@ export const intlFormSavingLabel = (
     description="Form saving message"
     defaultMessage="Saving..."
   />
-)
+);
 
 export const intlFlashSaved = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -31,7 +31,7 @@ export const intlFlashSaved = ( // eslint-disable-line no-unused-vars
     description="Flash message saved"
     defaultMessage="Saved"
   />
-)
+);
 
 export const intlFlashError = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -39,4 +39,12 @@ export const intlFlashError = ( // eslint-disable-line no-unused-vars
     description="Flash message error"
     defaultMessage="An error occurred"
   />
-)
+);
+
+export const intlFlashDeleted = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="flash.deleted"
+    description="Flash message deleted"
+    defaultMessage="Removed"
+  />
+);

@@ -248,5 +248,6 @@
   "form.save": "Save",
   "form.saving": "Saving...",
   "flash.saved": "Saved",
-  "flash.error": "An error occurred"
+  "flash.error": "An error occurred",
+  "flash.deleted": "Removed"
 }

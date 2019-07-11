@@ -1,12 +1,11 @@
 // @flow
 import { normalize } from "normalizr";
-import { addSuccess, addError } from "redux-flash-messages";
+import { addError } from "redux-flash-messages";
 import { clientListSchema, clientSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
 import type { Property } from "./properties";
 import clientsApi from "../api";
-import history from "../history";
 
 //Create new client
 export const CREATE_CLIENT: "CREATE_CLIENT" = "CREATE_CLIENT";
@@ -392,16 +391,10 @@ export const deleteClient = (client: Client, token: string): ThunkAction => {
       .delete("clients", client, token)
       .then(() => {
         dispatch(deleteClientSuccess(client));
-        history.push(`/${client.business}/clients`);
-        addSuccess({
-          text: "Deleted"
-        });
       })
       .catch((error: string) => {
         dispatch(deleteClientError(client, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
