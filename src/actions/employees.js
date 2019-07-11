@@ -281,16 +281,11 @@ export const createEmployee = (
       .create("users", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(createEmployeeSuccess(responseEmployee));
-        addSuccess({
-          text: "Saved"
-        });
         return responseEmployee;
       })
       .catch((error: string) => {
         dispatch(createEmployeeError(employee, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -336,16 +331,11 @@ export const updateEmployee = (
       .update("users", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(updateEmployeeSuccess(responseEmployee));
-        addSuccess({
-          text: "Saved"
-        });
         return responseEmployee;
       })
       .catch((error: string) => {
         dispatch(updateEmployeeError(employee, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };

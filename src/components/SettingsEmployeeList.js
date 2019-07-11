@@ -3,7 +3,8 @@
 import { merge } from "lodash/object";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {injectIntl, FormattedMessage} from 'react-intl';
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
@@ -45,7 +46,7 @@ type State = {
   activePanel?: number
 };
 
-class EmployeeList extends Component<Props, State> {
+class EmployeeList extends Component<Props & { intl: intlShape }, State> {
   constructor(props: Props) {
     super(props);
     const { employees } = props;
@@ -96,14 +97,23 @@ class EmployeeList extends Component<Props, State> {
   };
 
   onSubmit = (employee: Employee) => {
-    const { business, dispatch, token } = this.props;
+    const { business, dispatch, token, intl } = this.props;
     if (employee.id) {
-      dispatch(updateEmployee(employee, token));
+      dispatch(
+        updateEmployee(employee, token)
+      ).then(() => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      });
     } else {
       dispatch(
         createEmployee(merge({}, { businesses: [business.id] }, employee), token)
-      );
-      this.onActive();
+      ).then(() => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      }).finally(this.onActive);
     }
   };
 }
