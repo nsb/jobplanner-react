@@ -1,10 +1,8 @@
 // @flow
 import { normalize } from "normalizr";
-import { addSuccess, addError } from "redux-flash-messages";
 import { serviceListSchema, serviceSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import servicesApi from "../api";
-import history from "../history";
 
 //Create new service
 export const CREATE_SERVICE: "CREATE_SERVICE" = "CREATE_SERVICE";
@@ -277,16 +275,11 @@ export const createService = (service: Service, token: string): ThunkAction => {
       .create("services", service, token)
       .then((responseService: Service) => {
         dispatch(createServiceSuccess(responseService));
-        addSuccess({
-          text: "Saved"
-        });
         return responseService;
       })
       .catch((error: string) => {
         dispatch(createServiceError(service, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -327,16 +320,11 @@ export const updateService = (service: Service, token: string): ThunkAction => {
       .update("services", service, token)
       .then((responseService: Service) => {
         dispatch(updateServiceSuccess(responseService));
-        addSuccess({
-          text: "Saved"
-        });
         return responseService;
       })
       .catch((error: string) => {
         dispatch(updateServiceError(service, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -377,16 +365,9 @@ export const deleteService = (service: Service, token: string): ThunkAction => {
       .delete("services", service, token)
       .then(() => {
         dispatch(deleteServiceSuccess(service));
-        history.push(`/${service.business}/services`);
-        addSuccess({
-          text: "Deleted"
-        });
       })
       .catch((error: string) => {
         dispatch(deleteServiceError(service, error));
-        addError({
-          text: "An error occurred"
-        });
       });
   };
 };

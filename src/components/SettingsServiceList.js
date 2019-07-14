@@ -3,6 +3,8 @@
 import { merge } from "lodash/object";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { injectIntl, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
 import type { Service } from "../actions/services";
@@ -28,7 +30,7 @@ type State = {
   activePanel?: number
 };
 
-class ServiceList extends Component<Props, State> {
+class ServiceList extends Component<Props & { intl: intlShape }, State> {
   constructor(props: Props) {
     super(props);
     const { services } = props;
@@ -76,15 +78,26 @@ class ServiceList extends Component<Props, State> {
   };
 
   onSubmit = (service: Service) => {
-    const { business, dispatch, token } = this.props;
+    const { business, dispatch, token, intl } = this.props;
     if(token) {
       if (service.id) {
-        dispatch(updateService(service, token));
+        dispatch(updateService(service, token)).then(
+          (responseService: Service) => {
+            addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+          }).catch(() => {
+            addError({text: intl.formatMessage({id: "flash.error"})});
+          }
+        );
       } else {
         dispatch(
           createService(merge({}, { business: business.id }, service), token)
-        );
-        this.onActive();
+        ).then(
+          (responseService: Service) => {
+            addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+          }).catch(() => {
+            addError({text: intl.formatMessage({id: "flash.error"})});
+          }
+        ).finally(this.onActive);
       }
     }
   };
@@ -109,4 +122,4 @@ const mapStateToProps = (
   dispatch: ownProps.dispatch
 });
 
-export default connect(mapStateToProps)(ServiceList);
+export default connect(mapStateToProps)(injectIntl(ServiceList));
