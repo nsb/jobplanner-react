@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
@@ -249,9 +250,15 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
   }
 
   toggleCompleted = () => {
-    const { visit, token, partialUpdateVisitAndLoadJob, onClose } = this.props;
+    const { visit, token, partialUpdateVisitAndLoadJob, onClose, intl } = this.props;
     if (token) {
-      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, token).then(onClose);
+      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, token).then(
+        () => {
+          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+        }).catch(() => {
+          addError({text: intl.formatMessage({id: "flash.error"})});
+        }
+      ).finally(onClose);;
     }
   };
 }
