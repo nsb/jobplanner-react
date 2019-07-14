@@ -2,13 +2,11 @@
 import { merge } from "lodash/object";
 import moment from "moment";
 import { normalize } from "normalizr";
-import { addSuccess, addError } from "redux-flash-messages";
 import { jobListSchema, jobSchema } from "../schemas";
 import jobsApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Property } from "../actions/properties";
-import history from "../history";
 
 //Create new job
 export const CREATE_JOB: "CREATE_JOB" = "CREATE_JOB";
@@ -299,17 +297,11 @@ export const createJob = (
       .then((responseJob: Job) => {
         const coercedJob = parse(responseJob);
         dispatch(createJobSuccess(coercedJob));
-        history.push(`/${business.id}/jobs/${responseJob.id}`);
-        addSuccess({
-          text: "Saved"
-        });
         return coercedJob;
       })
       .catch((error: string) => {
         dispatch(createJobError(error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -386,17 +378,10 @@ export const updateJob = (job: Job, token: string): ThunkAction => {
         const coercedJob = parse(responseJob);
         dispatch(updateJobSuccess(coercedJob));
         dispatch({ type: "RESET_VISITS" });
-        history.push(`/${job.business}/jobs/${job.id}`);
-        addSuccess({
-          text: "Saved"
-        });
         return coercedJob;
       })
       .catch((error: string) => {
         dispatch(updateJobError(error));
-        addError({
-          text: "An error occurred"
-        });
       });
   };
 };
@@ -413,16 +398,11 @@ export const partialUpdateJob = (
       .then((responseJob: Job) => {
         const coercedJob = parse(responseJob);
         dispatch(updateJobSuccess(coercedJob));
-        addSuccess({
-          text: "Saved"
-        });
         return coercedJob;
       })
       .catch((error: string) => {
         dispatch(updateJobError(error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -460,16 +440,10 @@ export const deleteJob = (job: Job, token: string): ThunkAction => {
       .delete("jobs", job, token)
       .then(() => {
         dispatch(deleteJobSuccess(job));
-        history.push(`/${job.business}/jobs`);
-        addSuccess({
-          text: "Deleted"
-        });
       })
       .catch((error: string) => {
         dispatch(deleteJobError(job, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };

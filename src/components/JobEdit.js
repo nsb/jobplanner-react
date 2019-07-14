@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { injectIntl, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
+import history from "../history";
 import { jobSchemaDenormalize } from "../schemas";
 import Article from "grommet/components/Article";
 import JobForm, { invoicingReminderMap } from "./JobForm";
@@ -63,7 +65,7 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
     // get client Id
     const { client: { value: client } } = values;
 
-    const { token, business, dispatch } = this.props;
+    const { token, business, dispatch, intl } = this.props;
     dispatch(
       updateJob(
         {
@@ -75,7 +77,12 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
         },
         token || ""
       )
-    );
+    ).then((responseJob: Job) => {
+      addSuccess({text: intl.formatMessage({id: "flash.saved"})})
+      history.push(`/${business.id}/jobs/${responseJob.id}`);
+    }).catch(() => {
+      addError({text: intl.formatMessage({id: "flash.error"})})
+    });
   };
 
   onClose = () => {

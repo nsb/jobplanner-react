@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import moment from "moment";
 import Split from "grommet/components/Split";
 import Box from "grommet/components/Box";
@@ -23,6 +24,7 @@ import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Status from "grommet/components/icons/Status";
 import { rrulestr } from "rrule";
+import history from "../history";
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import VisitAddContainer from "./VisitAddContainer";
@@ -411,8 +413,14 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   onToggleCloseJob = (e: SyntheticEvent<HTMLButtonElement>) => {
-    const { job, token, partialUpdateJob } = this.props;
-    partialUpdateJob({ id: job.id, closed: !job.closed }, token || "");
+    const { job, token, partialUpdateJob, intl } = this.props;
+    partialUpdateJob({ id: job.id, closed: !job.closed }, token || "").then(
+      (responseJob: Job) => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})});
+      }
+    );
     e.preventDefault();
   };
 
@@ -422,8 +430,15 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   onRemove = () => {
-    const { job, token, deleteJob } = this.props;
-    deleteJob(job, token);
+    const { job, token, deleteJob, intl } = this.props;
+    deleteJob(job, token).then(
+      (responseJob: Job) => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+        history.push(`/${job.business}/jobs`);
+      }).catch(() => {
+      addError({text: intl.formatMessage({id: "flash.error"})});
+      }
+    );
   };
 
   _onToggleSidebar = () => {

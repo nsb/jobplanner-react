@@ -3,8 +3,10 @@ import "url-search-params-polyfill";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { injectIntl, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import Article from "grommet/components/Article";
 import JobForm, { oneoffInvoicingReminderMap } from "./JobForm";
+import history from "../history";
 import { createJob } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
@@ -62,7 +64,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
 
   handleSubmit = values => {
     const { client: { value: client } } = values;
-    const { token, business } = this.props;
+    const { token, business, dispatch, intl } = this.props;
 
     if (token) {
       let action = createJob(
@@ -75,7 +77,12 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
         },
         token
       );
-      this.props.dispatch(action);
+      dispatch(action).then((responseJob: Job) => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})})
+        history.push(`/${business.id}/jobs/${responseJob.id}`);
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      });
     }
   };
 

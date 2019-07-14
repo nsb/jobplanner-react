@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { injectIntl, FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
+import { addSuccess, addError } from "redux-flash-messages";
 import { partialUpdateJob } from '../actions/jobs';
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
@@ -70,9 +71,14 @@ type Props = {
 class JobClose extends Component<Props> {
 
   _onClose = () => {
-    const { job, token } = this.props;
-    this.props.dispatch(partialUpdateJob({ id: job.id, closed: true }, token));
-    this.props.onClose();
+    const { job, token, dispatch, intl, onClose } = this.props;
+    dispatch(
+      partialUpdateJob({ id: job.id, closed: true }, token)).then(
+        (responseJob: Job) => {
+          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})});
+      }).finally(onClose);
   }
 
   render() {
