@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { visitSchemaDenormalize } from "../schemas";
+import { injectIntl, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import { updateVisitAndLoadJob } from "../actions/index";
 import VisitForm from "./VisitForm";
 import type { Visit } from "../actions/visits";
@@ -23,7 +25,7 @@ export type Props = {
   isFetching: boolean
 };
 
-class VisitEdit extends Component<Props> {
+class VisitEdit extends Component<Props & { intl: intlShape }> {
   render() {
     const { visit, employees, assigned, isFetching } = this.props;
 
@@ -43,7 +45,7 @@ class VisitEdit extends Component<Props> {
   }
 
   handleSubmit = values => {
-    const { token, dispatch, onClose } = this.props;
+    const { token, dispatch, onClose, intl } = this.props;
     return dispatch(
       updateVisitAndLoadJob(
         {
@@ -52,7 +54,13 @@ class VisitEdit extends Component<Props> {
         },
         token || ""
       )
-    ).then(onClose);
+    ).then(
+      () => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})});
+      }
+    ).finally(onClose);
   };
 }
 
@@ -89,4 +97,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(VisitEdit);
+export default connect(mapStateToProps)(injectIntl(VisitEdit));

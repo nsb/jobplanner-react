@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import { RRule, rrulestr } from "rrule";
 import { partialUpdateVisit } from '../actions/visits';
 import LayerForm from "grommet-templates/components/LayerForm";
@@ -130,7 +131,7 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
   };
 
   handleSubmit = values => {
-    const { visit, token, onClose, partialUpdateVisit } = this.props;
+    const { visit, token, onClose, partialUpdateVisit, intl } = this.props;
     const { schedule } = this.state;
 
     return partialUpdateVisit(
@@ -139,7 +140,13 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
           recurrences: `RRULE:${new RRule({ ...schedule }).toString()}`
         },
         token || ""
-      ).then(onClose);
+      ).then(
+        () => {
+          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+        }).catch(() => {
+          addError({text: intl.formatMessage({id: "flash.error"})});
+        }
+      ).finally(onClose);
   };
 }
 

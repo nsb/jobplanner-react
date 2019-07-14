@@ -1,7 +1,6 @@
 // @flow
 import { merge } from "lodash/object";
 import { normalize } from "normalizr";
-import { addSuccess, addError } from "redux-flash-messages";
 import { visitListSchema, visitSchema } from "../schemas";
 import visitsApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
@@ -264,16 +263,11 @@ export const createVisit = (
       .then((responseVisit: Visit) => {
         const coercedVisit = parse(responseVisit);
         dispatch(createVisitSuccess(coercedVisit));
-        addSuccess({
-          text: "Saved"
-        });
         return coercedVisit;
       })
       .catch((error: string) => {
         dispatch(createVisitError(error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -365,16 +359,11 @@ export const updateVisit = (
       .then((responseVisit: Visit) => {
         const coercedVisit = parse(responseVisit);
         dispatch(updateVisitSuccess(coercedVisit, optimistic, transactionID));
-        addSuccess({
-          text: "Saved"
-        });
         return coercedVisit;
       })
       .catch((error: string) => {
         dispatch(updateVisitError(error, optimistic, transactionID));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -395,9 +384,7 @@ export const partialUpdateVisit = (
       })
       .catch((error: string) => {
         dispatch(updateVisitError(error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };
@@ -435,15 +422,10 @@ export const deleteVisit = (visit: Visit, token: string): ThunkAction => {
       .delete("visits", visit, token)
       .then(() => {
         dispatch(deleteVisitSuccess(visit));
-        addSuccess({
-          text: "Deleted"
-        });
       })
       .catch((error: string) => {
         dispatch(deleteVisitError(visit, error));
-        addError({
-          text: "An error occurred"
-        });
+        throw error;
       });
   };
 };

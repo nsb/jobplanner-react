@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import { deleteVisit } from '../actions/visits';
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
@@ -46,10 +47,15 @@ type Props = {
 class VisitRemove extends Component<Props & { intl: intlShape }> {
 
   _onRemove = () => {
-    const { visit, token } = this.props;
+    const { visit, token, dispatch, onRemove, intl } = this.props;
     if(token) {
-      this.props.dispatch(deleteVisit(visit, token));
-      this.props.onRemove();
+      dispatch(deleteVisit(visit, token)).then(
+        () => {
+          addSuccess({text: intl.formatMessage({id: "flash.deleted"})});
+        }).catch(() => {
+          addError({text: intl.formatMessage({id: "flash.error"})});
+        }
+      ).finally(onRemove);
     }
   }
 

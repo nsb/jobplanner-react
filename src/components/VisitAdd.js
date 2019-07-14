@@ -2,6 +2,8 @@
 
 import React, { Component } from "react";
 import Layer from "grommet/components/Layer";
+import { injectIntl, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import VisitForm from "./VisitForm";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
@@ -19,7 +21,7 @@ export type Props = {
   isFetching: boolean
 };
 
-class VisitAdd extends Component<Props> {
+class VisitAdd extends Component<Props & { intl: intlShape }> {
   render() {
     const { employees, onClose, job, lineItems, isFetching } = this.props;
 
@@ -44,7 +46,7 @@ class VisitAdd extends Component<Props> {
   }
 
   handleSubmit = (values: Object) => {
-    const { business, job, token, createVisitAndLoadJob, onClose } = this.props;
+    const { business, job, token, createVisitAndLoadJob, onClose, intl } = this.props;
     if(token) {
       createVisitAndLoadJob(
         business,
@@ -54,10 +56,15 @@ class VisitAdd extends Component<Props> {
           assigned: values.assigned && values.assigned.map(v => v.value)
         },
         token || ""
-      );
-      onClose()
+      ).then(
+        () => {
+          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+        }).catch(() => {
+          addError({text: intl.formatMessage({id: "flash.error"})});
+        }
+      ).finally(onClose);
     }
   };
 }
 
-export default VisitAdd;
+export default injectIntl(VisitAdd);
