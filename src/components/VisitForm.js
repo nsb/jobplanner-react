@@ -282,8 +282,8 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
               name="assigned"
               label={intlAssigned}
               component={renderSelect}
-              options={employees.map(employee => {
-                return { value: employee.id, label: `${employee.first_name} ${employee.last_name}` || employee.username };
+              options={employees.filter((employee) => employee.is_active).map(employee => {
+                return { value: employee.id, label: ((employee.first_name || employee.last_name) && `${employee.first_name} ${employee.last_name}`) || employee.username };
               })}
               normalize={selected => selected.value}
             />

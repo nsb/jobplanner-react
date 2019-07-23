@@ -43,7 +43,8 @@ export type Employee = {
   username: string,
   first_name: string,
   last_name: string,
-  businesses: Array<number>
+  businesses: Array<number>,
+  is_active: boolean
 };
 
 export type EmployeesMap = { [id: number]: Employee };

@@ -716,7 +716,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
               name="assigned"
               label={intlJobFormAssignedLabel}
               component={renderSelect}
-              options={employees.map(employee => {
+              options={employees.filter((employee) => employee.is_active).map(employee => {
                 return { value: employee.id, label: employee.username };
               })}
               multiple={true}

@@ -8,6 +8,7 @@ import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
+import CheckBox from "grommet/components/CheckBox";
 import { intlFormFieldRequired } from "../i18n";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
@@ -60,6 +61,14 @@ const intlEmail = (
   />
 )
 
+const intlIsActive = (
+  <FormattedMessage
+    id="settingsEmployeeForm.isActiveLabel"
+    description="Settings employee form is active label"
+    defaultMessage="Active"
+  />
+)
+
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.username) {
@@ -77,6 +86,16 @@ const renderField = ({
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>;
+
+const renderCheckBox = ({
+  input,
+  label,
+  meta: { touched, error, warning }
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <CheckBox {...input} checked={!!input.value} />
+  </FormField>
+);
 
 type Props = {
   handleSubmit: Function,
@@ -123,6 +142,12 @@ export const EmployeeForm = ({
             label={intlEmail}
             component={renderField}
             type="text"
+          />
+          <Field
+            name="is_active"
+            label={intlIsActive}
+            component={renderCheckBox}
+            parse={(value: boolean | string) => !!value}
           />
         </fieldset>
       </FormFields>
