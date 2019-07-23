@@ -41,11 +41,13 @@
     "eject": "react-scripts eject",
     "flow": "flow",
     "manage:translations": "node ./scripts/translationRunner.js",
-    "build:langs": "BABEL_ENV=production ./node_modules/.bin/babel-node scripts/translator.js",
+    "build:langs": "BABEL_ENV=production node scripts/translator.js",
     "extract:messages": "node scripts/translate.js"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "@babel/cli": "^7.5.5",
+    "@babel/preset-flow": "^7.0.0 ",
+    "@babel/preset-react": "^7.0.0 ",
     "babel-plugin-react-intl": "^4.1.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.4.0",

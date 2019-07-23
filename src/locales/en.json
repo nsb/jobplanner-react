@@ -173,6 +173,7 @@
   "settingsEmployeeForm.updateLabel": "Update employee",
   "settingsEmployeeForm.addLabel": "Add employee",
   "settingsEmployeeForm.emailLabel": "E-mail",
+  "settingsEmployeeForm.isActiveLabel": "Active",
   "settingsEmployeeList.title": "Employees",
   "settingsEmployeeList.add": "Add employee",
   "settingsEmployeeSection.Heading": "Employees",

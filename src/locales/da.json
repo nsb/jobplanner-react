@@ -176,6 +176,7 @@
   "settingsEmployeeForm.addLabel": "Tilføj medarbejder",
   "settingsEmployeeForm.emailLabel": "E-mail",
   "settingsEmployeeForm.firstNameLabel": "Fornavn",
+  "settingsEmployeeForm.isActiveLabel": "Aktiv",
   "settingsEmployeeForm.lastNameLabel": "Efternavn",
   "settingsEmployeeForm.updateLabel": "Opdater medarbejder",
   "settingsEmployeeForm.usernameLabel": "Brugernavn",
