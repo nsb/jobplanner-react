@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { injectIntl, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import moment from "moment";
 import { ensureState } from "redux-optimistic-ui";
 import type { State as ReduxState } from "../types/State";
@@ -29,7 +31,7 @@ type State = {
   showJobClose: number
 };
 
-class CalendarContainer extends Component<Props, State> {
+class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   state: State = { view: "week", date: new Date(), selected: undefined, showJobClose: 0 };
 
   componentDidMount() {
@@ -117,7 +119,7 @@ class CalendarContainer extends Component<Props, State> {
     start: Date,
     end: Date
   }) => {
-    const { dispatch, token } = this.props;
+    const { dispatch, token, intl } = this.props;
     const origBegins: Date = new Date(event.begins);
 
     const timeChanged = !(
@@ -140,7 +142,11 @@ class CalendarContainer extends Component<Props, State> {
         true,
         true
       )
-    );
+    ).then(() => {
+      addSuccess({text: intl.formatMessage({id: "flash.saved"})})
+    }).catch(() => {
+      addError({text: intl.formatMessage({id: "flash.error"})})
+    });
   };
 
   onClick = (visit: Visit) => {
@@ -199,4 +205,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(CalendarContainer);
+export default connect(mapStateToProps)(injectIntl(CalendarContainer));
