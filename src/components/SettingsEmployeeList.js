@@ -62,7 +62,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
             {intlTitle}
           </Heading>
         </Header>
-        <Accordion onActive={this.onActive} active={this.state.activePanel}>
+        <Accordion onActive={this.onActive}>
           {employees.map((employee, index: number) => {
             return (
               <AccordionPanel heading={employee.username} key={employee.id}>

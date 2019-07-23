@@ -390,6 +390,7 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
               options={frequencyOptions}
               onChange={this.onFreqChange}
               onSearch={undefined}
+              inline={true}
             />
           </FormField>
           {scheduleInterval}
@@ -405,8 +406,11 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     this.props.onSubmit(schedule);
   };
 
-  onFreqChange = (e: SyntheticEvent<>) => {
-    this._onChange(e);
+  onFreqChange = (event: SyntheticEvent<>) => {
+    var schedule = { ...this.state.schedule };
+    const value = event.option ? event.option.value : event.target.value;
+    schedule.freq = value;
+    this.setState({ schedule });
   };
 
   onByWeekDayChange = (event: Object) => {

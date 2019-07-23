@@ -2,7 +2,9 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Provider } from "react-intl-redux";
 import Layer from "grommet/components/Layer";
+import store from "../store";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -19,7 +21,9 @@ class EmployeesEdit extends Component<Props> {
     const { onClose, business } = this.props;
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <EmployeeList business={business} />
+        <Provider store={store}>
+          <EmployeeList business={business} />
+        </Provider>
       </Layer>
     );
   }

@@ -1,10 +1,11 @@
 // @flow
 import React, { Component } from "react";
 import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
-import HTML5Backend from "react-dnd-html5-backend";
-import { DragDropContext } from "react-dnd";
-import BigCalendar from "react-big-calendar";
+// import HTML5Backend from "react-dnd-html5-backend";
+// import { DragDropContext } from "react-dnd";
+import { Calendar } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import localizer from 'react-big-calendar/lib/localizers/moment'
 import moment from "moment";
 import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
@@ -12,8 +13,8 @@ import CalendarEvent from "./CalendarEvent";
 import CalendarEventAgenda from "./CalendarEventAgenda";
 import type { Visit } from "../actions/visits";
 
-const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
-const DragAndDropCalendar = withDragAndDrop(BigCalendar);
+const DragAndDropCalendar = withDragAndDrop(Calendar);
+const momentLocalizer = localizer(moment);
 
 const title = (
   <FormattedMessage
@@ -90,7 +91,7 @@ type Props = {
   onEventDrop: Function
 };
 
-class Calendar extends Component<Props & { intl: intlShape }> {
+class DnDCalendar extends Component<Props & { intl: intlShape }> {
   render() {
     const {
       visits,
@@ -122,7 +123,7 @@ class Calendar extends Component<Props & { intl: intlShape }> {
         <Box full={true} pad="medium">
           <DragAndDropCalendar
             messages={messages} 
-            localizer={localizer}
+            localizer={momentLocalizer}
             selectable={true}
             popup={true}
             defaultView={defaultView}
@@ -174,4 +175,4 @@ class Calendar extends Component<Props & { intl: intlShape }> {
   }
 }
 
-export default DragDropContext(HTML5Backend)(injectIntl(Calendar));
+export default injectIntl(DnDCalendar);

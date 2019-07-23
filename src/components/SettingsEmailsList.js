@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateBusiness } from "../actions/businesses";
-import Layer from "grommet/components/Layer";
 import EmailsForm from "./SettingsEmailsForm";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
@@ -20,13 +19,11 @@ class EmailsEdit extends Component<Props> {
   render() {
     const { business, onClose } = this.props;
     return (
-      <Layer align="right" closer={true} onClose={onClose}>
-        <EmailsForm
-          onSubmit={this.handleSubmit}
-          onClose={onClose}
-          initialValues={business}
-        />
-      </Layer>
+      <EmailsForm
+        onSubmit={this.handleSubmit}
+        onClose={onClose}
+        initialValues={business}
+      />
     );
   }
 

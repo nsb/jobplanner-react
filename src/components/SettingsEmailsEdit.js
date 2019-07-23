@@ -2,7 +2,9 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Provider } from "react-intl-redux";
 import Layer from "grommet/components/Layer";
+import store from "../store";
 import EmailsList from "./SettingsEmailsList";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
@@ -19,7 +21,9 @@ class EmailsEdit extends Component<Props> {
     const { onClose, business, dispatch } = this.props;
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <EmailsList business={business} dispatch={dispatch} onClose={onClose} />
+        <Provider store={store}>
+          <EmailsList business={business} dispatch={dispatch} onClose={onClose} />
+        </Provider>
       </Layer>
     );
   }

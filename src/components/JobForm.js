@@ -823,7 +823,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
   onScheduleSubmit = (schedule: Schedule) => {
     const { dispatch, change, initialValues } = this.props;
     dispatch(
-      change("recurrences", `RRULE:${new RRule({ ...schedule }).toString()}`)
+      change("recurrences", new RRule({ ...schedule }).toString())
     );
     this.setState({
       scheduleLayer: false,

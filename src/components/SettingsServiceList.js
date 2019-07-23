@@ -46,7 +46,7 @@ class ServiceList extends Component<Props & { intl: intlShape }, State> {
             Services
           </Heading>
         </Header>
-        <Accordion onActive={this.onActive} active={this.state.activePanel}>
+        <Accordion onActive={this.onActive}>
           {services.map((service, index: number) => {
             return (
               <AccordionPanel heading={service.name} key={service.id}>

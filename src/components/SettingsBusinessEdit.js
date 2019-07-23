@@ -3,9 +3,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { injectIntl, intlShape } from 'react-intl';
+import { Provider } from "react-intl-redux";
 import { addSuccess, addError } from "redux-flash-messages";
 import { updateBusiness } from "../actions/businesses";
 import Layer from "grommet/components/Layer";
+import store from "../store";
 import BusinessForm from "./SettingsBusinessForm";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
@@ -23,11 +25,13 @@ class BusinessEdit extends Component<Props & { intl: intlShape }> {
     const { business, onClose } = this.props;
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <BusinessForm
-          onSubmit={this.handleSubmit}
-          onClose={onClose}
-          initialValues={business}
-        />
+        <Provider store={store}>
+          <BusinessForm
+            onSubmit={this.handleSubmit}
+            onClose={onClose}
+            initialValues={business}
+          />
+        </Provider>
       </Layer>
     );
   }

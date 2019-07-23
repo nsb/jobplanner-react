@@ -1,11 +1,13 @@
 // @flow
 
 import React, { Component } from "react";
+import { Provider } from "react-intl-redux";
 import Layer from "grommet/components/Layer";
 import VisitDetailContainer from "./VisitDetailContainer";
 import VisitEdit from "./VisitEdit";
 import VisitUpdateFutureVisits from "./VisitUpdateFutureVisits";
 import VisitRemove from "./VisitRemove";
+import store from "../store";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 
@@ -52,7 +54,9 @@ class VisitLayer extends Component<Props, State> {
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        {visitView}
+        <Provider store={store}>
+          {visitView}
+        </Provider>
       </Layer>
     );
   }

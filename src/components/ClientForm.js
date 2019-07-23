@@ -168,7 +168,7 @@ const intlAddressUsePropertyLabel = (
 const validate = (values: Client) => {
   const errors = {};
   const propertiesArrayErrors = [];
-  values.properties.forEach((property, propertyIndex) => {
+  values.properties && values.properties.forEach((property, propertyIndex) => {
     const propertyErrors = {};
     if (!property || !property.address1) {
       propertyErrors.address1 = intlFormFieldRequired;
