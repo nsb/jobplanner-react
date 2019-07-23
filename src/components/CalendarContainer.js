@@ -158,7 +158,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   };
 
   loadVisits = (begins = null, ends = null) => {
-    const { business, token, dispatch } = this.props;
+    const { business, token, dispatch, intl } = this.props;
     if (token) {
       dispatch(
         fetchVisits(token, {
@@ -177,7 +177,9 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
           limit: 200,
           offset: 0
         })
-      );
+      ).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      });
     }
   };
 }
