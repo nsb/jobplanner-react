@@ -3,7 +3,9 @@
 import React, { Component } from "react";
 import Layer from "grommet/components/Layer";
 import { injectIntl, intlShape } from "react-intl";
+import { Provider } from "react-intl-redux";
 import { addSuccess, addError } from "redux-flash-messages";
+import store from "../store";
 import VisitForm from "./VisitForm";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
@@ -27,20 +29,22 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
-        <VisitForm
-          initialValues={{
-            description: "",
-            begins: new Date(),
-            ends: new Date(),
-            anytime: false,
-            assigned: [],
-            line_items: lineItems,
-            job: job.id
-          }}
-          onSubmit={this.handleSubmit}
-          employees={employees}
-          isFetching={isFetching}
-        />
+        <Provider store={store} >
+          <VisitForm
+            initialValues={{
+              description: "",
+              begins: new Date(),
+              ends: new Date(),
+              anytime: false,
+              assigned: [],
+              line_items: lineItems,
+              job: job.id
+            }}
+            onSubmit={this.handleSubmit}
+            employees={employees}
+            isFetching={isFetching}
+          />
+        </Provider>
       </Layer>
     );
   }
