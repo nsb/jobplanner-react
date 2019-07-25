@@ -11,6 +11,7 @@ import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
 import CalendarEvent from "./CalendarEvent";
 import CalendarEventAgenda from "./CalendarEventAgenda";
+import CalendarDateHeaderContainer from "./CalendarDateHeaderContainer";
 import type { Visit } from "../actions/visits";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -146,6 +147,9 @@ class DnDCalendar extends Component<Props & { intl: intlShape }> {
               event: CalendarEvent,
               agenda: {
                 event: CalendarEventAgenda
+              },
+              week: {
+                header: CalendarDateHeaderContainer
               }
             }}
             eventPropGetter={(

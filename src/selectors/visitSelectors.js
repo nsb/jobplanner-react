@@ -26,6 +26,9 @@ const groupVisits = (
   return groupBy(visits, visit => moment(visit.begins).startOf(groupee));
 };
 
+const groupVisitsByDay = (visits: Array<Visit>) =>
+  groupVisits(visits, "day");
+
 const groupVisitsByMonth = (visits: Array<Visit>) =>
   groupVisits(visits, "month");
 
@@ -36,6 +39,11 @@ export const getVisits = (state: ReduxState): Array<Visit> => {
     }
   );
 };
+
+export const getVisitsGroupedByDay: Function = createSelector(
+  [getVisits],
+  groupVisitsByDay
+)
 
 export const getVisitsGrouped: Function = createSelector(
   [getVisits],
