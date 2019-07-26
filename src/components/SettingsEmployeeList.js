@@ -80,6 +80,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
             <Paragraph>
               <EmployeeForm
                 form={`employeeform-new`}
+                initialValues={{is_active: true}}
                 onSubmit={this.onSubmit}
               />
             </Paragraph>

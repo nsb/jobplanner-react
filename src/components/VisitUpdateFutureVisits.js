@@ -108,7 +108,7 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
           onSubmit={this.handleSubmit}
         >
           <fieldset>
-            <ScheduleInput value={`RRULE:${new RRule({ ...schedule }).toString()}`} onClick={this.onScheduleEdit} />
+            <ScheduleInput value={new RRule({ ...schedule }).toString()} onClick={this.onScheduleEdit} />
             <Paragraph>
               {intlParagraph}
             </Paragraph>
@@ -137,7 +137,7 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
     return partialUpdateVisit(
         {
           id: visit.id,
-          recurrences: `RRULE:${new RRule({ ...schedule }).toString()}`
+          recurrences: new RRule({ ...schedule }).toString()
         },
         token || ""
       ).then(
