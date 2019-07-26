@@ -8,12 +8,11 @@ export type Props = {
     onDrillDown: Function,
     isOffRange: boolean,
     // visitCount: number,
-    visits: { [key: Date]: Array<Visit> },
+    visits: { [key: string]: Array<Visit> },
 }
   
 const DateHeader = ({ label, drilldownView, onDrillDown, visits, date }: Props) => {
   if (!drilldownView) {
-    console.dir(visits);
     return <span>{label} { visits[date] && visits[date].length } events</span>
   }
 

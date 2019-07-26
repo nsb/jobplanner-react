@@ -11,7 +11,7 @@ import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
 import CalendarEvent from "./CalendarEvent";
 import CalendarEventAgenda from "./CalendarEventAgenda";
-import CalendarDateHeaderContainer from "./CalendarDateHeaderContainer";
+// import CalendarDateHeaderContainer from "./CalendarDateHeaderContainer";
 import type { Visit } from "../actions/visits";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -83,6 +83,7 @@ const intlAgenda = ( // eslint-disable-line no-unused-vars
 
 type Props = {
   visits: Array<Visit>,
+  // visitsGroupedByDay: { [key: string]: Array<Visit> },
   defaultView: "day" | "week" | "month" | "agenda",
   defaultDate: Date,
   onNavigate: Function,
@@ -148,9 +149,9 @@ class DnDCalendar extends Component<Props & { intl: intlShape }> {
               agenda: {
                 event: CalendarEventAgenda
               },
-              week: {
-                header: CalendarDateHeaderContainer
-              }
+              // week: {
+              //   header: CalendarDateHeaderContainer
+              // }
             }}
             eventPropGetter={(
               event: Visit,
@@ -158,20 +159,31 @@ class DnDCalendar extends Component<Props & { intl: intlShape }> {
               end: Date,
               selected: boolean
             ) => {
-              return {
-                className: event.completed
-                  ? "jobplanner__completed"
-                  : "jobplanner__incomplete",
-                style: event.completed
-                  ? {
-                      "background-color": "#bbb",
-                      "text-decoration": "line-through"
+              if (event.id) {
+                return {
+                  className: event.completed
+                    ? "jobplanner__completed"
+                    : "jobplanner__incomplete",
+                  style: event.completed
+                    ? {
+                        "background-color": "#bbb",
+                        "text-decoration": "line-through"
+                      }
+                    : {
+                        "background-color": "#0A64A0"
+                      }
+                }
+              } else {
+                  return {
+                    className: "jobplanner__counter",
+                    style: {
+                      "background-color": "#fff",
+                      "color": "#000"
                     }
-                  : {
-                      "background-color": "#0A64A0"
-                    }
-              };
-            }}
+                  }
+                }
+              }
+            }
           />
         </Box>
       </Box>

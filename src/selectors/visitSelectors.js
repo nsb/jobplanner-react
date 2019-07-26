@@ -23,7 +23,7 @@ const groupVisits = (
   visits: Array<Visit>,
   groupee: Groupee
 ): { [key: Date]: Array<Visit> } => {
-  return groupBy(visits, visit => moment(visit.begins).startOf(groupee));
+  return groupBy(visits, visit => moment(visit.begins).startOf(groupee).toDate());
 };
 
 const groupVisitsByDay = (visits: Array<Visit>) =>

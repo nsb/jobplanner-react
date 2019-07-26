@@ -11,6 +11,7 @@ import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
 import { fetchVisits, updateVisit } from "../actions/visits";
 import VisitLayerContainer from "./VisitLayerContainer";
+import { getVisitsGroupedByDay } from "../selectors/visitSelectors";
 import Calendar from "./Calendar";
 import JobClose from "./JobClose";
 
@@ -192,14 +193,19 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { visits, entities, auth, nav } = state;
+  const { entities, auth, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
+
+  const visits = Object.entries(getVisitsGroupedByDay(state)).map(([date, visits]) => {
+    return [{begins: date, ends: date, anytime: true, title: `${visits.length} events`}, ...visits]
+  }).flatMap(arr => arr)
 
   return {
     business: ensureState(entities).businesses[businessId],
-    visits: ensureState(visits).result.map((Id: number) => {
-      return ensureState(entities).visits[Id];
-    }),
+    // visits: ensureState(visits).result.map((Id: number) => {
+    //   return ensureState(entities).visits[Id];
+    // }),
+    visits: visits,
     token: auth.token,
     dispatch: ownProps.dispatch,
     responsive: nav.responsive,
