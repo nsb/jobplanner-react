@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { injectIntl, intlShape } from "react-intl";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import moment from "moment";
 import { ensureState } from "redux-optimistic-ui";
@@ -14,6 +14,15 @@ import VisitLayerContainer from "./VisitLayerContainer";
 import { getVisitsGroupedByDay } from "../selectors/visitSelectors";
 import Calendar from "./Calendar";
 import JobClose from "./JobClose";
+
+const intlVisitCount = (count: number) => (
+  <FormattedMessage
+    id="calendar.visitCount"
+    description="Calendar visit count"
+    defaultMessage={`{count, number} {count, plural, one {visit} other {visits}}`}
+    values={{count}}
+  />
+)
 
 type Props = {
   business: Business,
@@ -197,7 +206,7 @@ const mapStateToProps = (
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   const visits = Object.entries(getVisitsGroupedByDay(state)).map(([date, visits]) => {
-    return [{begins: date, ends: date, anytime: true, title: `${visits.length} visits`}, ...visits]
+    return [{begins: date, ends: date, anytime: true, title: intlVisitCount(visits.length)}, ...visits]
   }).flatMap(arr => arr)
 
   return {

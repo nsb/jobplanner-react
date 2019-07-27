@@ -14,6 +14,7 @@
   "calendar.weekLabel": "week",
   "calendar.dayLabel": "day",
   "calendar.agendaLabel": "agenda",
+  "calendar.visitCount": "{count, 2} {count,plural,,one{visit} other{visits}}",
   "calendarlist.title": "Calendar",
   "clientActions.edit": "Edit",
   "clientActions.remove": "Remove",

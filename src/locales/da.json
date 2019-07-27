@@ -12,6 +12,7 @@
   "calendar.previousLabel": "forrige",
   "calendar.title": "Kalender",
   "calendar.todayLabel": "i dag",
+  "calendar.visitCount": "{count, number} {count, plural, one {besøg} other {besøg}}",
   "calendar.weekLabel": "uge",
   "calendarlist.title": "Kalender",
   "clientActions.edit": "Rediger",
