@@ -202,9 +202,6 @@ const mapStateToProps = (
 
   return {
     business: ensureState(entities).businesses[businessId],
-    // visits: ensureState(visits).result.map((Id: number) => {
-    //   return ensureState(entities).visits[Id];
-    // }),
     visits: visits,
     token: auth.token,
     dispatch: ownProps.dispatch,
