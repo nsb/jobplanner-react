@@ -197,7 +197,7 @@ const mapStateToProps = (
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   const visits = Object.entries(getVisitsGroupedByDay(state)).map(([date, visits]) => {
-    return [{begins: date, ends: date, anytime: true, title: `${visits.length} events`}, ...visits]
+    return [{begins: date, ends: date, anytime: true, title: `${visits.length} visits`}, ...visits]
   }).flatMap(arr => arr)
 
   return {
