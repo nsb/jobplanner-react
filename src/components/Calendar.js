@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from "react";
 import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
-// import HTML5Backend from "react-dnd-html5-backend";
-// import { DragDropContext } from "react-dnd";
 import { Calendar } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import localizer from 'react-big-calendar/lib/localizers/moment'
@@ -11,7 +9,6 @@ import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
 import CalendarEvent from "./CalendarEvent";
 import CalendarEventAgenda from "./CalendarEventAgenda";
-// import CalendarDateHeaderContainer from "./CalendarDateHeaderContainer";
 import type { Visit } from "../actions/visits";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -148,10 +145,7 @@ class DnDCalendar extends Component<Props & { intl: intlShape }> {
               event: CalendarEvent,
               agenda: {
                 event: CalendarEventAgenda
-              },
-              // week: {
-              //   header: CalendarDateHeaderContainer
-              // }
+              }
             }}
             eventPropGetter={(
               event: Visit,
