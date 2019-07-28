@@ -69,7 +69,7 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
 
     const { visit, job } = props;
 
-    const recurrences = visit.recurrences || job.recurrences || null;
+    const recurrences = visit.recurrences || (job && job.recurrences) || null;
     const rrule = recurrences
       ? rrulestr(recurrences)
       : new RRule({
