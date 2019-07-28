@@ -172,7 +172,8 @@ class DnDCalendar extends Component<Props & { intl: intlShape }> {
                     className: "jobplanner__counter",
                     style: {
                       "background-color": "#fff",
-                      "color": "#333"
+                      "color": "#333",
+                      "font-weight": "bold"
                     }
                   }
                 }
