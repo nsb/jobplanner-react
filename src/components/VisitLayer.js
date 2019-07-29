@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
-import { Provider } from "react-intl-redux";
+import { Provider } from "react-redux";
 import Layer from "grommet/components/Layer";
 import VisitDetailContainer from "./VisitDetailContainer";
 import VisitEdit from "./VisitEdit";

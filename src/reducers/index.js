@@ -1,7 +1,6 @@
 // @flow
 import { combineReducers } from "redux";
 // import { routerReducer } from "react-router-redux";
-import { intlReducer } from "react-intl-redux";
 import { reducer as reduxFormReducer } from "redux-form";
 import { optimistic } from "redux-optimistic-ui";
 import { flashMessage } from 'redux-flash-messages';
@@ -24,7 +23,6 @@ import invoices from "./invoices";
 const reducers = {
   // router: routerReducer,
   form: reduxFormReducer,
-  intl: intlReducer,
   visits: optimistic(visits),
   auth,
   nav,

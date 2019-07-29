@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Provider } from "react-intl-redux";
+import { Provider } from "react-redux";
 import Layer from "grommet/components/Layer";
 import store from "../store";
 import EmailsList from "./SettingsEmailsList";

@@ -1,11 +1,12 @@
 // @flow
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { IntlProvider } from "react-intl";
 import moment from "moment";
 import "moment/locale/da";
 import Raven from "raven-js";
 import { Router } from "react-router-dom";
-import { updateIntl, Provider } from "react-intl-redux";
 import { addLocaleData } from "react-intl";
 import { configureFlashMessages } from "redux-flash-messages";
 import history from "./history";
@@ -55,13 +56,6 @@ if (process.env.REACT_APP_SENTRY_PUBLIC_DSN) {
 // const history = syncHistoryWithStore(createBrowserHistory(), store);
 // const history = createHistory();
 
-store.dispatch(
-  updateIntl({
-    locale: languageWithoutRegionCode,
-    messages
-  })
-);
-
 configureFlashMessages({
   // The dispatch function for the Redux store.
   dispatch: store.dispatch
@@ -71,9 +65,11 @@ const root = document.getElementById("root");
 if (root) {
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={history}>
-        <App />
-      </Router>
+      <IntlProvider locale={languageWithoutRegionCode} messages={messages} >
+        <Router history={history}>
+          <App />
+        </Router>
+      </IntlProvider>
     </Provider>,
     root
   );

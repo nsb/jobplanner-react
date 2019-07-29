@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import Layer from "grommet/components/Layer";
 import { injectIntl, intlShape } from "react-intl";
-import { Provider } from "react-intl-redux";
+import { Provider } from "react-redux";
 import { addSuccess, addError } from "redux-flash-messages";
 import store from "../store";
 import VisitForm from "./VisitForm";
