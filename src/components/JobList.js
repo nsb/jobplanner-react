@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import Box from "grommet/components/Box";
@@ -55,22 +56,25 @@ const intlEmptyMessage = (
 
 type Props = {
   business: Business,
-  dispatch: Dispatch,
   jobs: Array<Job>,
   token: string,
   isFetching: boolean,
-  push: Function
+  push: Function,
+  fetchJobs: Function
 };
 
 type State = {
   searchText: string,
+  searchResults: Array<number>,
   offset: number,
   limit: number
 };
 
 class JobList extends Component<Props & { intl: intlShape }, State> {
+  searchTimeout: number = null;
   state: State = {
     searchText: "",
+    searchResults: [],
     offset: 0,
     limit: 15
   };
@@ -79,13 +83,21 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
     this.onMore();
   }
 
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (prevState.searchText !== this.state.searchText) {
+      clearTimeout(this.searchTimeout);
+      this.searchTimeout = setTimeout(() => {
+        this.setState({ offset: 0, searchResults: [] }, this.onMore);
+      }, 500);
+    }
+  }
+
   render() {
     const { jobs, business, isFetching, totalCount, intl } = this.props;
 
     const filteredJobs = jobs.filter(job => {
-      const searchText = this.state.searchText.toLowerCase();
-      if (searchText) {
-        return job.description.toLowerCase().includes(searchText);
+      if (this.state.searchText) {
+        return this.state.searchResults.includes(job.id)
       } else {
         return true;
       }
@@ -127,7 +139,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
         </List>
         <ListPlaceholder
           filteredTotal={isFetching ? null : filteredJobs.length}
-          unfilteredTotal={isFetching ? null : jobs.length}
+          unfilteredTotal={isFetching ? null : this.state.searchText ? jobs.length : totalCount}
           emptyMessage={intlEmptyMessage}
           addControl={
             <Button
@@ -144,18 +156,20 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
   }
 
   onMore = () => {
-    const { token, dispatch, business } = this.props;
+    const { token, business, fetchJobs } = this.props;
     if(token) {
-      dispatch(
-        fetchJobs(token, {
-          business: business.id,
-          ordering: "status_order,next_visit",
-          limit: this.state.limit,
-          offset: this.state.offset,
-          search: this.state.searchText
-        })
-      );
-      this.setState({ offset: this.state.offset + this.state.limit });
+      fetchJobs(token, {
+        business: business.id,
+        ordering: "status_order,next_visit",
+        limit: this.state.limit,
+        offset: this.state.offset,
+        search: this.state.searchText
+      }).then((resultJobs) => {
+        return this.setState({
+          offset: this.state.offset + this.state.limit,
+          searchResults: resultJobs.results.map(job => job.id)
+        });
+      });
     }
   };
 
@@ -165,8 +179,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
   };
 
   onSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    const searchText = event.target.value;
-    this.setState({ searchText });
+    this.setState({ searchText: event.target.value });
   };
 }
 
@@ -175,6 +188,7 @@ const mapStateToProps = (
   ownProps: {
     businessId: number,
     push: string => void,
+    fetchJobs: Function
   }
 ): * => {
   const { entities, jobs, auth } = state;
@@ -187,8 +201,17 @@ const mapStateToProps = (
     isFetching: jobs.isFetching,
     token: auth.token,
     push: ownProps.push,
-    totalCount: jobs.count
+    totalCount: jobs.count,
+    fetchJobs: ownProps.fetchJobs
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(JobList));
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      fetchJobs
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(JobList));
