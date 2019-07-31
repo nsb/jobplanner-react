@@ -9,8 +9,10 @@ import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import BusyIcon from 'grommet/components/icons/Spinning';
 import NavControl from './NavControl';
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
+import { intlFormSavingLabel } from "../i18n";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
@@ -66,7 +68,8 @@ export type Props = {
   jobs: { [key: string]: Job },
   visits: { [key: string]: Visit },
   createInvoiceAndLoadJobs: (Array<{ client: number, visits: Array<number> }>, string, Object) => ThunkAction,
-  token: ?string
+  token: ?string,
+  isFetching: boolean
 };
 
 type State = {
@@ -112,14 +115,19 @@ class InvoiceBatch extends Component<Props, State> {
   }
 
   render() {
-    const { clients } = this.props;
+    const { clients, isFetching } = this.props;
     const { selected } = this.state;
     const clientCount = Object.entries(clients).length
     const hasSelected = Object.keys(selected).some(clientId => selected[clientId].selected)
 
     let submitForm;
     if (clientCount) {
-      submitForm = (
+      submitForm = isFetching ? (
+        <Box direction="row" align="center"
+          pad={{ horizontal: 'medium', between: 'small' }}>
+          <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
+        </Box>
+      ) : (
         <Box pad={{ horizontal: "medium" }}>
           <Form onSubmit={this.onSubmit}>
             <Footer pad={{ "vertical": "medium" }}>

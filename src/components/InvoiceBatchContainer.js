@@ -21,7 +21,7 @@ const mapStateToProps = (
 ): Props => {
 
   const jobs = jobsWithRequiresInvoicing(state);
-  const { auth } = state;
+  const { invoices, auth } = state;
 
   return {
     clients: jobs.reduce((acc, job) => ({ ...acc, [job.client]: getClientById(state, { id: job.client }) }), {}),
@@ -29,7 +29,8 @@ const mapStateToProps = (
     visits: jobs.flatMap((job) => { return job.visits.map((visit) => { return getVisitById(state, { id: visit }) }) }).reduce((acc, visit) => ({ ...acc, [visit.id]: visit }), {}),
     createInvoiceAndLoadJobs: ownProps.createInvoiceAndLoadJobs,
     token: auth.token,
-    business: ownProps.business
+    business: ownProps.business,
+    isFetching: invoices.isFetching
   };
 };
 

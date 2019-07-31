@@ -11,7 +11,7 @@ export type State = {
 };
 
 const isFetching = (
-  state: IsFetchingState = true,
+  state: IsFetchingState = false,
   action: Action
 ): IsFetchingState => {
   switch (action.type) {
