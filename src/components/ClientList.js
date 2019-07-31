@@ -69,7 +69,7 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
     searchText: "",
     searchResults: [],
     offset: 0,
-    limit: 15
+    limit: 25
   };
 
   componentDidMount() {
