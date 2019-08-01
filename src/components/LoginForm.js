@@ -89,7 +89,8 @@ type Props = {
   handleSubmit: Function,
   valid: boolean,
   dirty: boolean,
-  submitting: boolean
+  submitting: boolean,
+  errors: Object
 };
 
 let LoginForm = ({ handleSubmit, valid, dirty, submitting, errors, intl }: Props & { intl: intlShape }) => {

@@ -47,7 +47,7 @@ type State = {
 };
 
 class EmployeeList extends Component<Props & { intl: intlShape }, State> {
-  constructor(props: Props) {
+  constructor(props: Props & { intl: intlShape }) {
     super(props);
     const { employees } = props;
     this.state = { activePanel: employees.length };

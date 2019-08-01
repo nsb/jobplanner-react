@@ -9,6 +9,7 @@ import JobForm, { oneoffInvoicingReminderMap } from "./JobForm";
 import history from "../history";
 import { createJob } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
+import type { Job } from "../actions/jobs";
 import type { Employee } from "../actions/employees";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";

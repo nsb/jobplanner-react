@@ -41,7 +41,6 @@ type Props = {
 };
 
 class Signup extends Component<Props & { intl: intlShape }> {
-  googleAuth: typeof Auth
 
   onSubmit = (user: { username: string }) => {
     this.props.dispatch(signup({ businesses: [], ...user }));
@@ -91,14 +90,15 @@ class Signup extends Component<Props & { intl: intlShape }> {
 
 const mapStateToProps = (
   state: State,
-  { dispatch }: { dispatch: Dispatch }
+  { dispatch, googleAuth }: { dispatch: Dispatch, googleAuth: typeof Auth }
 ): Props => {
   const { auth } = state;
 
   return {
     signupBusy: auth.busy,
     isAuthenticated: auth.isAuthenticated,
-    dispatch: dispatch
+    dispatch: dispatch,
+    googleAuth
   };
 };
 

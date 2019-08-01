@@ -31,7 +31,7 @@ type State = {
 };
 
 class ServiceList extends Component<Props & { intl: intlShape }, State> {
-  constructor(props: Props) {
+  constructor(props: Props & { intl: intlShape }) {
     super(props);
     const { services } = props;
     this.state = { activePanel: services.length };
