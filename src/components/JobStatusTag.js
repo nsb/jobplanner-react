@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from "react";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Tag from "./Tag";

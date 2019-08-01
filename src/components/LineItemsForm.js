@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from "react";
 import { Field } from "redux-form";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
