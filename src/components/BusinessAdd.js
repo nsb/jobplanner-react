@@ -11,12 +11,12 @@ import type { Business } from "../actions/businesses";
 import Article from "grommet/components/Article";
 import BusinessForm from "./BusinessForm";
 import { createBusiness } from "../actions/businesses";
-import type { ThunkAction } from "../types/Store";
+import type { PromiseAction } from "../types/Store";
 
 type Props = {
   token: ?string,
   push: string => void,
-  createBusiness: (Business, string) => ThunkAction
+  createBusiness: (Business, string) => PromiseAction
 }
 
 type State = {}
@@ -52,7 +52,7 @@ class BusinessAdd extends Component<Props & { intl: intlShape }, State> {
 
 const mapStateToProps = (
   { auth }: ReduxState,
-  ownProps: { history: { push: string => void } }
+  ownProps: { history: { push: string => void }, createBusiness: (Business, string) => Promise<any> }
 ) => ({
   token: auth.token,
   push: ownProps.history.push,
