@@ -26,7 +26,7 @@ const intlVisitCount = (count: number) => (
 
 type Props = {
   business: Business,
-  visits: Array<Visit>,
+  visits: Array<Visit | { begins: string, ends: string, anytime: boolean, title: string }>,
   token: ?string,
   getJobById: Function,
   dispatch: Dispatch
