@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { injectIntl } from "react-intl";
 import JobDetail from "./JobDetail";
-import { fetchJob, partialUpdateJob, deleteJob } from "../actions/jobs";
+import { fetchJob, partialUpdateJob } from "../actions/jobs";
 import { fetchClient } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Props } from "./JobDetail";
@@ -40,7 +40,6 @@ const mapStateToProps = (
       job.line_items.map(lineItem => ensureState(entities).lineItems[lineItem]),
     fetchJob: ownProps.fetchJob,
     partialUpdateJob: ownProps.partialUpdateJob,
-    deleteJob: ownProps.deleteJob,
     responsive: nav.responsive,
     resetVisits: ownProps.resetVisits,
     job,
@@ -54,7 +53,6 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
       resetVisits: () => dispatch({ type: "RESET_VISITS" }),
       fetchJob,
       partialUpdateJob,
-      deleteJob,
       fetchClient
     },
     dispatch

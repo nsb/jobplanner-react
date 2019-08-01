@@ -14,6 +14,7 @@ import RevertIcon from "grommet/components/icons/base/Revert";
 import EditIcon from "grommet/components/icons/base/Edit";
 import TrashIcon from "grommet/components/icons/base/Trash";
 import JobClose from "./JobClose";
+import JobRemove from "./JobRemove";
 import type { Job } from "../actions/jobs";
 
 const intlEdit = (
@@ -49,15 +50,15 @@ const intlRemove = (
 );
 
 const LAYERS = {
-  close: JobClose
+  close: JobClose,
+  remove: JobRemove
 };
 
 type Props = {
   job: Job,
   onToggleCloseJob: Function,
   onClose?: Function,
-  onEdit: Function,
-  onRemove: Function
+  onEdit: Function
 };
 
 type State = {
@@ -81,7 +82,7 @@ class JobActions extends Component<Props, State> {
   };
 
   render() {
-    const { onClose, onEdit, onToggleCloseJob, onRemove, job } = this.props;
+    const { onClose, onEdit, onToggleCloseJob, job } = this.props;
 
     let closeControl;
     if (onClose) {
@@ -141,7 +142,7 @@ class JobActions extends Component<Props, State> {
           plain={true}
           icon={<TrashIcon />}
           label={intlRemove}
-          onClick={onRemove}
+          onClick={() => this._onLayerOpen("remove")}
           a11yTitle={intlRemove}
         />
       );

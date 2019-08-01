@@ -24,7 +24,6 @@ import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Status from "grommet/components/icons/Status";
 import { rrulestr } from "rrule";
-import history from "../history";
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
 import VisitAddContainer from "./VisitAddContainer";
@@ -121,7 +120,6 @@ export type Props = {
   push: string => void,
   fetchJob: Function,
   partialUpdateJob: Function,
-  deleteJob: Function,
   resetVisits: Function,
   responsive: Responsive
 };
@@ -129,7 +127,8 @@ export type Props = {
 type State = {
   showSidebarWhenSingle: boolean,
   showAddVisit: boolean,
-  showJobClose: boolean
+  showJobClose: boolean,
+  showJobRemove: boolean
 };
 
 class JobDetail extends Component<Props & { intl: intlShape }, State> {
@@ -139,7 +138,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
     showSidebarWhenSingle: false,
     showAddVisit: false,
-    showJobClose: false
+    showJobClose: false,
+    showJobRemove: false
   };
 
   constructor(props: Props & { intl: intlShape }) {
@@ -204,7 +204,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
         onClose={onSidebarClose}
         onEdit={this.onEdit}
         onToggleCloseJob={this.onToggleCloseJob}
-        onRemove={this.onRemove}
       />
     );
 
@@ -433,20 +432,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     if (job) {
       push(`/${business.id}/jobs/${job.id}/edit`);
     };
-  };
-
-  onRemove = () => {
-    const { job, token, deleteJob, intl } = this.props;
-    if (job) {
-      deleteJob(job, token).then(
-        (responseJob: Job) => {
-          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-          history.push(`/${job.business}/jobs`);
-        }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})});
-        }
-      );
-    }
   };
 
   _onToggleSidebar = () => {
