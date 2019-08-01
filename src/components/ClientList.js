@@ -14,7 +14,6 @@ import NavControl from './NavControl';
 import ClientListItem from './ClientListItem';
 import type {Business} from '../actions/businesses';
 import type {Client} from '../actions/clients';
-import type { ThunkAction } from "../types/Store";
 
 const intlTitle = (
   <FormattedMessage

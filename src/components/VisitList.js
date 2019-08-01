@@ -21,7 +21,7 @@ const intlEmpytMessage = (
 )
 
 type Props = {
-  visits: { [key: Date]: Array<Visit> },
+  visits: { [key: string]: Array<Visit> },
   job?: Job,
   isFetching: boolean,
   onMore: () => void

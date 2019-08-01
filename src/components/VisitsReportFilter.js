@@ -113,7 +113,7 @@ class VisitsReportFilter extends Component<Props & { intl: intlShape }, State> {
     employees: []
   };
 
-  constructor(props: Props) {
+  constructor(props: Props & { intl: intlShape }) {
     super(props);
     this.dateFormat = moment()
       .creationData()
