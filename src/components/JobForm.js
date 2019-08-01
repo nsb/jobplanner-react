@@ -421,7 +421,8 @@ type JobFormProps = {
   onClientSearch: Function,
   onSelectClient?: Function,
   token?: string,
-  employees: Array<Employee>
+  employees: Array<Employee>,
+  isFetching: boolean
 };
 
 type JobFormState = {
@@ -439,7 +440,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
     employees: []
   };
 
-  constructor(props: JobFormProps) {
+  constructor(props: JobFormProps & { intl: intlShape }) {
     super(props);
 
     this.dateFormat = moment()

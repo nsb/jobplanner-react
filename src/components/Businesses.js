@@ -57,15 +57,14 @@ const intlEmptyMessage = (
 type Props = {
   businesses: Array<Business>,
   push: string => void,
-  isFetching: boolean,
-  intl: intlShape
+  isFetching: boolean
 };
 
 type State = {
   searchText: string
 };
 
-class Businesses extends Component<Props, State> {
+class Businesses extends Component<Props & { intl: intlShape }, State> {
 
   constructor() {
     super();

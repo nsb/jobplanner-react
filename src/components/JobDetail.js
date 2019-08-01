@@ -142,7 +142,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     showJobClose: false
   };
 
-  constructor(props: Props) {
+  constructor(props: Props & { intl: intlShape }) {
     super(props);
 
     this.dateFormat = moment()
@@ -164,12 +164,12 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     const { job, resetVisits } = this.props;
 
-    if (prevProps.job && prevProps.job.closed !== job.closed) {
+    if (job && (prevProps.job && prevProps.job.closed !== job.closed)) {
       // if job status has changed we should reload visits
       resetVisits();
     }
 
-    if (prevProps.job && prevProps.job.incomplete_visit_count && !job.incomplete_visit_count) {
+    if (job && (prevProps.job && prevProps.job.incomplete_visit_count && !job.incomplete_visit_count)) {
       // if job has no incomplete visits ask to close job
       this.setState({showJobClose: true})
     }
@@ -414,31 +414,39 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
 
   onToggleCloseJob = (e: SyntheticEvent<HTMLButtonElement>) => {
     const { job, token, partialUpdateJob, intl } = this.props;
-    partialUpdateJob({ id: job.id, closed: !job.closed }, token || "").then(
-      (responseJob: Job) => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})});
-      }
-    );
+
+    if (job) {
+      partialUpdateJob({ id: job.id, closed: !job.closed }, token || "").then(
+        (responseJob: Job) => {
+          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+        }).catch(() => {
+          addError({text: intl.formatMessage({id: "flash.error"})});
+        }
+      );
+    }
     e.preventDefault();
   };
 
   onEdit = () => {
     const { business, job, push } = this.props;
-    push(`/${business.id}/jobs/${job.id}/edit`);
+
+    if (job) {
+      push(`/${business.id}/jobs/${job.id}/edit`);
+    };
   };
 
   onRemove = () => {
     const { job, token, deleteJob, intl } = this.props;
-    deleteJob(job, token).then(
-      (responseJob: Job) => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-        history.push(`/${job.business}/jobs`);
-      }).catch(() => {
-      addError({text: intl.formatMessage({id: "flash.error"})});
-      }
-    );
+    if (job) {
+      deleteJob(job, token).then(
+        (responseJob: Job) => {
+          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+          history.push(`/${job.business}/jobs`);
+        }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})});
+        }
+      );
+    }
   };
 
   _onToggleSidebar = () => {

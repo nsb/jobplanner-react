@@ -14,6 +14,7 @@ import NavControl from './NavControl';
 import ClientListItem from './ClientListItem';
 import type {Business} from '../actions/businesses';
 import type {Client} from '../actions/clients';
+import type { ThunkAction } from "../types/Store";
 
 const intlTitle = (
   <FormattedMessage
@@ -53,7 +54,8 @@ export type Props = {
   isFetching: boolean,
   push: Function,
   totalCount: number,
-  token: String
+  token: ?string,
+  fetchClients: (string, Object) => Promise<any>
 };
 
 type State = {
@@ -64,7 +66,7 @@ type State = {
 };
 
 class ClientList extends Component<Props & { intl: intlShape }, State> {
-  searchTimeout: number = null;
+  searchTimeout: ?TimeoutID = null;
   state: State = {
     searchText: "",
     searchResults: [],

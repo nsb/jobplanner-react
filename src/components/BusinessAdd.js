@@ -55,7 +55,8 @@ const mapStateToProps = (
   ownProps: { history: { push: string => void } }
 ) => ({
   token: auth.token,
-  push: ownProps.history.push
+  push: ownProps.history.push,
+  createBusiness: ownProps.createBusiness
 });
 
 const mapDispatchToProps = (dispatch: *) =>

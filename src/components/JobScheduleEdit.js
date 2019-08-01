@@ -245,7 +245,7 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     byMonthDaySplashed: []
   };
 
-  constructor(props: Props) {
+  constructor(props: Props & { intl: intlShape }) {
     super(props);
 
     byMonthWeekDays.forEach((days, index) => {

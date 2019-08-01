@@ -9,9 +9,9 @@ import JobStatusTag from "./JobStatusTag";
 import type { Job } from "../actions/jobs";
 import type { Client } from "../actions/clients";
 
-type Props = {
+export type Props = {
   job: Job,
-  client: ?Client,
+  client?: Client,
   index: number,
   onClick: Function
 };

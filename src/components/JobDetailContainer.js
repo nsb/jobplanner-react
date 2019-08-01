@@ -60,6 +60,4 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-export default injectIntl(
-  connect(mapStateToProps, mapDispatchToProps)(JobDetail)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(JobDetail));

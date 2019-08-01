@@ -60,7 +60,8 @@ type Props = {
   token: string,
   isFetching: boolean,
   push: Function,
-  fetchJobs: Function
+  fetchJobs: Function,
+  totalCount: number
 };
 
 type State = {
@@ -71,7 +72,7 @@ type State = {
 };
 
 class JobList extends Component<Props & { intl: intlShape }, State> {
-  searchTimeout: number = null;
+  searchTimeout: ?TimeoutID = null;
   state: State = {
     searchText: "",
     searchResults: [],

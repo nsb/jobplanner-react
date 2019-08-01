@@ -25,7 +25,8 @@ type Props = {
   fields: Array<Field>,
   properties: PropertiesMap,
   push: string => void,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  isFetching: boolean
 };
 
 class ClientEdit extends Component<Props & { intl: intlShape }> {

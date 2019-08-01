@@ -11,7 +11,7 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     job: Job,
-    onclick: Function,
+    onClick: Function,
     index: number
   }
 ): Props => {

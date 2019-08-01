@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { connect } from "react-redux";
 import { addSuccess, addError } from "redux-flash-messages";
 import { partialUpdateJob } from '../actions/jobs';
@@ -68,7 +68,7 @@ type Props = {
   token: string
 };
 
-class JobClose extends Component<Props> {
+class JobClose extends Component<Props & { intl: intlShape }> {
 
   _onClose = () => {
     const { job, token, dispatch, intl, onClose } = this.props;
