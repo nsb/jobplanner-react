@@ -29,9 +29,7 @@ const intlOneOffJob = (id: number) => (
   />
 );
 
-export type JobSelection = {
-  [key: string]: { selected: boolean, visits: VisitSelection }
-}
+export type JobSelection = Map<number, { selected: boolean, visits: VisitSelection }>;
 
 export type Props = {
   job: Job,
@@ -44,6 +42,7 @@ class InvoiceBatchClient extends Component<Props> {
 
   render() {
     const { job, visits, selected } = this.props;
+    const jobSelection = selected.get(job.id);
 
     return (
       <ListItem
@@ -55,17 +54,17 @@ class InvoiceBatchClient extends Component<Props> {
         <Box full="horizontal">
           <Box direction="row">
             <CheckBox
-              checked={selected[job.id.toString()].selected}
+              checked={jobSelection && jobSelection.selected}
               onChange={this.onJobChanged} />
             {job.recurrences ? intlRecurringJob(job.id) : intlOneOffJob(job.id)}
           </Box>
           <List onMore={undefined}>
-            {(selected[job.id.toString()].selected ? visits : []).map((visit, index) => {
+            {(jobSelection && jobSelection.selected ? visits : []).map((visit, index) => {
               return (
                 <InvoiceBatchVisitContainer
                   visit={visit}
                   key={index}
-                  selected={{ [visit.id]: selected[job.id.toString()].visits[visit.id.toString()] }}
+                  selected={new Map([[visit.id, jobSelection && jobSelection.visits.get(visit.id)]])}
                   onChange={this.onVisitChanged}
                 />
               )
@@ -78,24 +77,26 @@ class InvoiceBatchClient extends Component<Props> {
 
   onJobChanged = () => {
     const { onChange, job, selected } = this.props;
+    const jobSelection = selected.get(job.id);
 
-    onChange({
-      [job.id]: {
-        ...selected[job.id.toString()],
-        ...{ selected: !selected[job.id.toString()].selected}
-      }
-    });
+    onChange(new Map(
+      [[job.id, {
+        ...jobSelection,
+        ...{ selected: !(jobSelection && jobSelection.selected) || false}
+      }]]
+    ));
   }
 
   onVisitChanged = (selection: VisitSelection): void => {
     const { onChange, selected, job } = this.props;
+    const jobSelection = selected.get(job.id);
 
-    const newSelected = {
-      [job.id]: {
-        selected: selected[job.id.toString()].selected,
-        visits: { ...selected[job.id.toString()].visits, ...selection}
-      }
-    };
+    const newSelected = new Map(
+      [[job.id, {
+        selected: jobSelection && jobSelection.selected || false,
+        visits: new Map([...(jobSelection && jobSelection.visits || new Map()), ...selection])
+      }]]
+    );
 
     onChange(newSelected);
   }

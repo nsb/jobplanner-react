@@ -8,7 +8,7 @@ import Timestamp from "grommet/components/Timestamp";
 import Value from 'grommet/components/Value';
 import type { Visit } from "../actions/visits";
 
-export type VisitSelection = { [key: string]: boolean }
+export type VisitSelection = Map<number, boolean>;
 
 export type Props = {
   visit: Visit,
@@ -28,7 +28,7 @@ class InvoiceBatchVisit extends Component<Props> {
         <Box full="horizontal" direction="row">
           <Box direction="row" flex="grow">
             <CheckBox
-              checked={selected[visit.id.toString()]}
+              checked={selected.get(visit.id)}
               onChange={this.onChanged} />
             <Timestamp fields={["date", "year"]} value={visit.begins} />
           </Box>
@@ -49,8 +49,7 @@ class InvoiceBatchVisit extends Component<Props> {
 
   onChanged = () => {
     const { onChange, visit, selected } = this.props;
-
-    onChange({ [visit.id]: !selected[visit.id.toString()] });
+    onChange(new Map([[visit.id, !selected.get(visit.id)]]));
   }
 };
 

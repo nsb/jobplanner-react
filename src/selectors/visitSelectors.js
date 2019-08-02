@@ -40,7 +40,7 @@ export const getVisits = (state: ReduxState): Array<Visit> => {
   );
 };
 
-export const getVisitsGroupedByDay: Function = createSelector(
+export const getVisitsGroupedByDay: (ReduxState) => { [date: string]: Array<Visit> } = createSelector(
   [getVisits],
   groupVisitsByDay
 )

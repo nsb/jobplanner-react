@@ -422,6 +422,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
             <FieldArray
               name="properties"
               label="Properties"
+              // $FlowFixMe
               component={renderProperties}
             />
             <Field

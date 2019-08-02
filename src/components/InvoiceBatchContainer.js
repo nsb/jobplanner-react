@@ -24,9 +24,9 @@ const mapStateToProps = (
   const { invoices, auth } = state;
 
   return {
-    clients: jobs.reduce((acc, job) => ({ ...acc, [job.client]: getClientById(state, { id: job.client }) }), {}),
-    jobs: jobs.reduce((acc, job) => ({ ...acc, [job.id]: job }), {}),
-    visits: jobs.flatMap((job) => { return job.visits.map((visit) => { return getVisitById(state, { id: visit }) }) }).reduce((acc, visit) => ({ ...acc, [visit.id]: visit }), {}),
+    clients: jobs.reduce((acc, job) => { acc.set(job.client, getClientById(state, { id: job.client })); return acc; }, new Map()),
+    jobs: jobs.reduce((acc, job) => { acc.set(job.id, job); return acc; }, new Map()),
+    visits: jobs.flatMap((job) => { return job.visits.map((visit) => { return getVisitById(state, { id: visit }) }) }).reduce((acc, visit) => { acc.set(visit.id, visit); return acc;}, new Map()),
     createInvoiceAndLoadJobs: ownProps.createInvoiceAndLoadJobs,
     token: auth.token,
     business: ownProps.business,

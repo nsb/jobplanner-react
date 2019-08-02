@@ -14,6 +14,7 @@ import VisitLayerContainer from "./VisitLayerContainer";
 import { getVisitsGroupedByDay } from "../selectors/visitSelectors";
 import Calendar from "./Calendar";
 import JobClose from "./JobClose";
+import type { Element } from "react";
 
 const intlVisitCount = (count: number) => (
   <FormattedMessage
@@ -26,7 +27,7 @@ const intlVisitCount = (count: number) => (
 
 type Props = {
   business: Business,
-  visits: Array<Visit | { begins: string, ends: string, anytime: boolean, title: string }>,
+  visits: Array<Visit | { begins: string, ends: string, anytime: boolean, title: string | Element<*> }>,
   token: ?string,
   getJobById: Function,
   dispatch: Dispatch
@@ -205,7 +206,8 @@ const mapStateToProps = (
   const { entities, auth, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
-  const visits = Object.entries(getVisitsGroupedByDay(state)).map(([date, visits]) => {
+  const visits = Object.entries(getVisitsGroupedByDay(state)).map(([date: string, visits: Array<Visit>]) => {
+    // $FlowFixMe
     return [{begins: date, ends: date, anytime: true, title: intlVisitCount(visits.length)}, ...visits]
   }).flatMap(arr => arr)
 

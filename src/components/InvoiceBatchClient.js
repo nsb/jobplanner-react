@@ -10,9 +10,7 @@ import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { JobSelection } from "./InvoiceBatchJob";
 
-export type ClientSelection = {
-  [key: string]: { selected: Boolean, jobs: JobSelection }
-}
+export type ClientSelection = Map<number, { selected: boolean, jobs: JobSelection }>;
 
 export type Props = {
   client: Client,
@@ -25,6 +23,7 @@ class InvoiceBatchClient extends Component<Props> {
 
   render() {
     const { client, jobs, selected } = this.props;
+    const clientSelection = selected.get(client.id);
 
     return (
       <ListItem
@@ -42,17 +41,17 @@ class InvoiceBatchClient extends Component<Props> {
             direction="row"
           >
             <CheckBox
-              checked={selected[client.id.toString()].selected}
+              checked={clientSelection && clientSelection.selected}
               onChange={this.onClientChanged}
             />
             {client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}
           </Box>
           <List onMore={undefined}>
-            {(selected[client.id.toString()].selected ? jobs : []).map((job, index) => {
+            {(clientSelection && clientSelection.selected ? jobs : []).map((job, index) => {
               return (
                 <InvoiceBatchJobContainer
                   job={job}
-                  selected={{ [job.id]: selected[client.id.toString()].jobs[job.id.toString()] }}
+                  selected={new Map([[job.id, clientSelection && clientSelection.jobs.get(job.id)]])}
                   onChange={this.onJobChanged} key={index}
                 />
               )
@@ -65,24 +64,26 @@ class InvoiceBatchClient extends Component<Props> {
 
   onClientChanged = () => {
     const { onChange, client, selected } = this.props;
+    const clientSelection = selected.get(client.id);
 
-    onChange({
-      [client.id]: {
-        ...selected[client.id.toString()],
-        ...{ selected: !selected[client.id.toString()].selected}
-      }
-    });
+    onChange( new Map(
+      [[client.id, {
+        ...clientSelection,
+        ...{ selected: !(clientSelection && clientSelection.selected) || false}
+      }]]
+    ));
   }
 
   onJobChanged = (selection: JobSelection) => {
     const { onChange, selected, client } = this.props;
+    const clientSelection = selected.get(client.id);
 
-    const newSelected = {
-      [client.id]: {
-        selected: selected[client.id.toString()].selected,
-        jobs: { ...selected[client.id.toString()].jobs, ...selection}
-      }
-    };
+    const newSelected = new Map(
+      [[client.id, {
+        selected: clientSelection && clientSelection.selected || false,
+        jobs: new Map([...(clientSelection && clientSelection.jobs || new Map()), ...selection])
+      }]]
+    );
 
     onChange(newSelected);
   }

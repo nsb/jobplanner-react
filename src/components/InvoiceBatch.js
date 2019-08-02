@@ -64,9 +64,9 @@ const intlCreateButton = (
 
 export type Props = {
   business: Business,
-  clients: { [key: string]: Client },
-  jobs: { [key: string]: Job },
-  visits: { [key: string]: Visit },
+  clients: Map<number, Client>,
+  jobs: Map<number, Job>,
+  visits: Map<number, Visit>,
   createInvoiceAndLoadJobs: (Array<{ client: number, visits: Array<number> }>, string, Object) => ThunkAction,
   token: ?string,
   isFetching: boolean
@@ -81,44 +81,45 @@ class InvoiceBatch extends Component<Props, State> {
     super(props);
 
     const { clients } = this.props;
-    this.state = { selected: {} };
+    this.state = { selected: new Map() };
 
-    this.state.selected = Object.keys(clients).reduce((acc, clientId) => { return { ...acc, ...this._clientState(clients[clientId]) } }, {})
+    this.state.selected = Array.from(clients.keys()).reduce(
+      (acc, clientId) => new Map([...acc, ...this._clientState(clients.get(clientId))]),
+      new Map()
+    );
   }
 
-  _visitState = (visit: Visit): VisitSelection => {
-    return { [visit.id]: visit.completed }
-  }
+  _visitState = (visit: ?Visit): VisitSelection => visit ? new Map([[visit.id, visit.completed]]) : new Map();
 
   _jobState = (job: Job): JobSelection => {
     const { visits } = this.props;
-    const visitsForJob = job.visits.map((visitId) => { return visits[visitId.toString()] });
-    return {
-      [job.id]: {
-        selected: visitsForJob.some((visit) => visit.completed),
-        visits: visitsForJob.reduce((acc, visit) => { return { ...acc, ...this._visitState(visit) } }, {})
-      }
-    }
+    const visitsForJob = job.visits.map((visitId) => visits.get(visitId));
+    return new Map(
+      [[job.id, {
+        selected: visitsForJob.some(visit => visit && visit.completed),
+        visits: visitsForJob.reduce((acc, visit) => new Map([...acc, ...this._visitState(visit)]), new Map())
+      }]]
+    )
   }
 
-  _clientState = (client: Client): ClientSelection => {
+  _clientState = (client: ?Client): ClientSelection => {
     const { jobs } = this.props;
-    return {
-      [client.id]: {
+    return client ? new Map(
+      [[client.id, {
         selected: false,
-        jobs: Object.keys(jobs).filter(
-          (jobId) => { return jobs[jobId].client === client.id }).map(
-            (jobId) => { return jobs[jobId] }).reduce(
-              (acc, job) => { return { ...acc, ...this._jobState(job) } }, {})
-      }
-    }
+        jobs: Array.from(jobs.keys()).filter(
+          (jobId) => { const job = jobs.get(jobId); return job && job.client === client.id }).map(
+            (jobId) => { return jobs.get(jobId) }).reduce(
+              (acc, job) => job ? new Map([...acc, ...this._jobState(job)]) : acc, new Map())
+      }]]
+    ) : new Map();
   }
 
   render() {
     const { clients, isFetching } = this.props;
     const { selected } = this.state;
-    const clientCount = Object.entries(clients).length
-    const hasSelected = Object.keys(selected).some(clientId => selected[clientId].selected)
+    const clientCount = clients.size
+    const hasSelected = Array.from(selected.keys()).some(clientId => {const selection = selected.get(clientId); return selection && selection.selected})
 
     let submitForm;
     if (clientCount) {
@@ -151,13 +152,13 @@ class InvoiceBatch extends Component<Props, State> {
           </Box>
         </Header>
         <List onMore={undefined}>
-          {Object.keys(clients).map((id, index) => {
+          {Array.from(clients.keys()).map((id, index) => {
             return (
               <InvoiceBatchClientContainer
-                client={clients[id]}
+                client={clients.get(id)}
                 key={index}
                 onChange={this.onChange}
-                selected={{ [id]: this.state.selected[id] }} />
+                selected={new Map([[id,  this.state.selected.get(id)]])} />
             );
           })}
         </List>
@@ -172,16 +173,18 @@ class InvoiceBatch extends Component<Props, State> {
   }
 
   onChange = (selection: ClientSelection) => {
-    this.setState({ selected: { ...this.state.selected, ...selection } });
+    this.setState({ selected: new Map([...this.state.selected, ...selection]) });
   }
 
   onAllOrNone = (selection: boolean) => {
     const { selected } = this.state;
 
-    const newSelected = Object.keys(selected).reduce((acc, clientId) => {
-      acc[clientId].selected = selection;
+    const newSelected = Array.from(selected.keys()).reduce((acc, clientId) => {
+      if (clientId) {
+        acc.set(clientId, { ...selected.get(clientId), selected: selection });
+      }
       return acc;
-    }, { ...selected })
+    }, new Map())
 
     this.setState({ selected: newSelected });
   }
@@ -192,15 +195,17 @@ class InvoiceBatch extends Component<Props, State> {
     const { selected } = this.state;
 
     let invoices: Array<{ client: number, visits: Array<number> }> = [];
-    let selectedClientIds = Object.keys(selected).filter((clientId) => { return selected[clientId].selected });
+    let selectedClientIds = Array.from(selected.keys()).filter((clientId) => { const selection = selected.get(clientId); return selection && selection.selected});
 
     for (let clientId of selectedClientIds) {
       let visitIds = [];
-      let jobs = selected[clientId].jobs;
-      let selectedJobIds = Object.keys(jobs).filter((jobId) => { return jobs[jobId].selected })
+      const clientSelection = selected.get(clientId);
+      let jobs = clientSelection && clientSelection.jobs || new Map();
+      let selectedJobIds = Array.from(jobs.keys()).filter((jobId) => { const job = jobs.get(jobId); return job && job.selected })
       for (let jobId of selectedJobIds) {
-        let visits = selected[clientId].jobs[jobId].visits;
-        let selectedVisitIds = Object.keys(visits).filter((visitId) => { return visits[visitId] });
+        const jobSelection = clientSelection && clientSelection.jobs.get(jobId);
+        let visits = jobSelection && jobSelection.visits || new Map();
+        let selectedVisitIds = Array.from(visits.keys()).filter((visitId) => visits.get(visitId));
         visitIds.push(...selectedVisitIds);
       }
       invoices.push({ client: parseInt(clientId, 10), visits: visitIds.map((id) => parseInt(id, 10)) });
