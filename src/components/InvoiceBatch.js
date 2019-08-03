@@ -200,11 +200,11 @@ class InvoiceBatch extends Component<Props, State> {
     for (let clientId of selectedClientIds) {
       let visitIds = [];
       const clientSelection = selected.get(clientId);
-      let jobs = clientSelection && clientSelection.jobs || new Map();
+      let jobs = (clientSelection && clientSelection.jobs) || new Map();
       let selectedJobIds = Array.from(jobs.keys()).filter((jobId) => { const job = jobs.get(jobId); return job && job.selected })
       for (let jobId of selectedJobIds) {
         const jobSelection = clientSelection && clientSelection.jobs.get(jobId);
-        let visits = jobSelection && jobSelection.visits || new Map();
+        let visits = (jobSelection && jobSelection.visits) || new Map();
         let selectedVisitIds = Array.from(visits.keys()).filter((visitId) => visits.get(visitId));
         visitIds.push(...selectedVisitIds);
       }

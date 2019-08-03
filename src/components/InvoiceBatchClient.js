@@ -80,8 +80,8 @@ class InvoiceBatchClient extends Component<Props> {
 
     const newSelected = new Map(
       [[client.id, {
-        selected: clientSelection && clientSelection.selected || false,
-        jobs: new Map([...(clientSelection && clientSelection.jobs || new Map()), ...selection])
+        selected: (clientSelection && clientSelection.selected) || false,
+        jobs: new Map([...((clientSelection && clientSelection.jobs) || new Map()), ...selection])
       }]]
     );
 
