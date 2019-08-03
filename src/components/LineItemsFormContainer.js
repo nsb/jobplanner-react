@@ -11,7 +11,7 @@ import type { Dispatch } from "../types/Store";
 
 const mapStateToProps = (
   state: ReduxState,
-  ownProps: { formName: string }
+  ownProps: { formName: string, fields: any, meta: any }
 ): Props => {
   const { entities, services } = state;
 
@@ -21,7 +21,9 @@ const mapStateToProps = (
       let service = ensureState(entities).services[Id];
       return { label: service.name, value: service };
     }),
-    change
+    fields: ownProps.fields,
+    meta: ownProps.meta,
+    change,
   };
 };
 

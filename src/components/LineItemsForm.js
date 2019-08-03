@@ -86,15 +86,15 @@ export type LineItemProps = {
   formName: string,
   suggestions: Array<{ label: string, value: Service }>,
   fields: Object,
-  meta: { error: boolean, submitFailed: boolean }
+  meta: { error: boolean, submitFailed: boolean },
+  change: Function
 };
 
 type Suggestion = { label: string, value: Service };
 
 type LineItemState = {
   value: string,
-  suggestions: Array<Suggestion>,
-  change: Function
+  suggestions: Array<Suggestion>
 };
 
 class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineItemState> {
