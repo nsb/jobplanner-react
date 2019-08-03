@@ -203,7 +203,7 @@ const byMonthWeekDays = [
   [29, 30, -1]
 ];
 
-const rruleFrequency = [
+const rruleFrequency: Array<{label: string, value: number }> = [
   { label: "jobScheduleEdit.frequencyDaily", value: RRule.DAILY },
   { label: "jobScheduleEdit.frequencyWeekly", value: RRule.WEEKLY },
   { label: "jobScheduleEdit.frequencyMonthly", value: RRule.MONTHLY },
@@ -249,7 +249,8 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     super(props);
 
     byMonthWeekDays.forEach((days, index) => {
-      if (days.every(val => props.schedule.bymonthday.includes(val))) {
+      const { schedule } = this.props;
+      if (days.every(val => schedule.bymonthday && schedule.bymonthday.includes(val))) {
         this.state.byMonthDaySplashed.push(index + 1);
       }
     });
@@ -311,7 +312,7 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     }
 
     if (schedule.freq === RRule.MONTHLY) {
-      const monthDayOptions: Array<{ label: String, value: string }> = 
+      const monthDayOptions: Array<{ label: String, value: number }> = 
         rruleByMonthDay.map((option) => {
         return { label: intl.formatMessage({id: option.label}), value: option.value };
       });
@@ -363,15 +364,15 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
       );
     }
 
-    let freqOption = rruleFrequency.find(freq => {
+    let selectedFreqOption = rruleFrequency.find(freq => {
       return freq.value === this.state.schedule.freq;
     });
-    freqOption = { ...freqOption, label: intl.formatMessage({id: freqOption.label}) };
+    const freqOption = selectedFreqOption ? { ...selectedFreqOption, label: intl.formatMessage({ id: selectedFreqOption.label }) } : "";
 
-    const frequencyOptions: Array<{ label: String, value: string }> = 
+    const frequencyOptions: Array<{ label: String, value: number }> = 
       rruleFrequency.map((option) => {
-      return { label: intl.formatMessage({id: option.label}), value: option.value };
-    });
+        return { label: intl.formatMessage({id: option.label}), value: option.value };
+      });
 
     return (
       <LayerForm
@@ -406,15 +407,15 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     this.props.onSubmit(schedule);
   };
 
-  onFreqChange = (event: SyntheticEvent<>) => {
+  onFreqChange = (event: { option: { value: number }, target: { value: number }}) => {
     var schedule = { ...this.state.schedule };
     const value = event.option ? event.option.value : event.target.value;
     schedule.freq = value;
     this.setState({ schedule });
   };
 
-  onByWeekDayChange = (event: Object) => {
-    let schedule = Object.assign(this.state.schedule, {
+  onByWeekDayChange = (event: { option: { value: string } }) => {
+    const schedule = Object.assign(this.state.schedule, {
       byweekday: xor(this.state.schedule.byweekday, [event.option.value])
     });
     this.setState(schedule);
