@@ -418,10 +418,10 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
     const schedule = Object.assign(this.state.schedule, {
       byweekday: xor(this.state.schedule.byweekday, [event.option.value])
     });
-    this.setState(schedule);
+    this.setState({schedule});
   };
 
-  onByMonthDayChange = (event: Object) => {
+  onByMonthDayChange = (event: { option: { value: string }}) => {
     let byMonthDaySplashed = xor(this.state.byMonthDaySplashed, [
       event.option.value
     ]);

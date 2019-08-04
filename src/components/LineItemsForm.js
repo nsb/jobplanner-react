@@ -66,7 +66,7 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Element<*> => (
+}) => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
   </FormField>
@@ -76,7 +76,7 @@ const renderNumberField = ({
   input,
   label,
   meta: { touched, error, warning }
-}): Element<*> => (
+}) => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <NumberInput {...input} />
   </FormField>
