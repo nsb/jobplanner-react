@@ -32,7 +32,7 @@ let messages: Object;
 // configure drift
 if (window.drift) {
   window.drift.config({
-    locale: language
+    locale: languageWithoutRegionCode
   });
   window.drift.load('fk4gftg5k9zk');
 }
