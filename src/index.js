@@ -20,6 +20,7 @@ import "nielsbusch-grommet-css";
 import "./index.css";
 import localeEnData from "./locales/en.json";
 import localeDaData from "./locales/da.json";
+
 addLocaleData([...en, ...da]);
 
 const language =
@@ -27,6 +28,14 @@ const language =
 
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
 let messages: Object;
+
+// configure drift
+if (window.drift) {
+  window.drift.config({
+    locale: language
+  });
+  window.drift.load('fk4gftg5k9zk');
+}
 
 // configure moment locale, with Monday as 1st day of week
 moment.locale(language, {
