@@ -147,7 +147,7 @@ class InvoiceBatch extends Component<Props, State> {
               />
             </Footer>
           </Form>
-          <Box colorIndex='neutral-1' pad={{ horizontal: "medium" }}>
+          <Box pad={{ horizontal: "medium" }}>
             <Paragraph>
               {intlAccountingSystem}
             </Paragraph>
