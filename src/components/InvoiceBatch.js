@@ -10,6 +10,7 @@ import Footer from "grommet/components/Footer";
 import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from 'grommet/components/icons/Spinning';
+import Paragraph from 'grommet/components/Paragraph';
 import NavControl from './NavControl';
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import { intlFormSavingLabel } from "../i18n";
@@ -59,6 +60,14 @@ const intlCreateButton = (
     id="invoices.createButton"
     description="Invoices create button"
     defaultMessage="Create invoices"
+  />
+)
+
+const intlAccountingSystem = (
+  <FormattedMessage
+    id="invoices.createdAccounting"
+    description="Message about invoices in accounting system."
+    defaultMessage="Invoices will be created in your accounting system. Please make sure you have connected your accounting system via our add-ons."
   />
 )
 
@@ -138,6 +147,11 @@ class InvoiceBatch extends Component<Props, State> {
               />
             </Footer>
           </Form>
+          <Box colorIndex='neutral-1' pad={{ horizontal: "medium" }}>
+            <Paragraph>
+              {intlAccountingSystem}
+            </Paragraph>
+          </Box>
         </Box>
       )
     }
