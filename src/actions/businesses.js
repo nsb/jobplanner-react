@@ -31,7 +31,8 @@ export type Business = {
   id: number,
   name: string,
   timezone: string,
-  services: Array<number>
+  services: Array<number>,
+  ical_feed: string
 };
 
 export type BusinessesMap = { [id: number]: Business };
