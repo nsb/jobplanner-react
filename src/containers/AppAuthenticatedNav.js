@@ -97,7 +97,8 @@ class AppAuthenticatedNav extends Component<Props & { intl: intlShape }> {
     const priority = navActive && "single" === responsive ? "left" : "right";
 
     let businessCreatedTip;
-    if (businessCreated) {
+    let target = document.getElementById("integrations");
+    if (businessCreated && navActive && (responsive === "multiple") && target) {
       businessCreatedTip = (
         <Tip
           target='integrations'
