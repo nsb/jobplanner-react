@@ -5,7 +5,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Loadable from "react-loadable";
+import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import Split from "grommet/components/Split";
+import Tip from 'grommet/components/Tip';
 import Loading from "../components/Loading";
 import NavSidebar from "../components/NavSidebar";
 import CalendarContainer from "../components/CalendarContainer";
@@ -30,9 +32,19 @@ type Props = {
   match: { url: string },
   user: User,
   logout: () => ThunkAction,
+  closeTip: () => ThunkAction,
   navResponsive: (Responsive) => ThunkAction,
-  navToggle: () => ThunkAction
+  navToggle: () => ThunkAction,
+  businessCreated: boolean
 };
+
+const intlOnboardingTip = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="onboarding.tipMessage1"
+    description="Onboarding tip message"
+    defaultMessage="Get started by connecting your invoicing system via our Add-ons."
+  />
+)
 
 const Jobs = Loadable({
   loader: () => import("../components/Jobs"),
@@ -69,7 +81,7 @@ const Integrations = Loadable({
   loading: Loading
 })
 
-class AppAuthenticatedNav extends Component<Props> {
+class AppAuthenticatedNav extends Component<Props & { intl: intlShape }> {
   render() {
     const {
       navActive,
@@ -77,19 +89,37 @@ class AppAuthenticatedNav extends Component<Props> {
       user,
       logout,
       navToggle,
-      business
+      business,
+      businessCreated,
+      closeTip,
+      intl
     } = this.props;
     const priority = navActive && "single" === responsive ? "left" : "right";
+
+    let businessCreatedTip;
+    if (businessCreated) {
+      businessCreatedTip = (
+        <Tip
+          target='integrations'
+          onClose={closeTip}>
+          {intl.formatMessage({id: 'onboarding.tipMessage1'})}
+        </Tip>
+      )
+    }
+
 
     return (
       <Split priority={priority} flex="right" onResponsive={this.onResponsive}>
         {this.props.navActive ? (
-          <NavSidebar
-            toggleNav={navToggle}
-            business={business}
-            user={user}
-            logout={logout}
-          />
+          <div>
+            <NavSidebar
+              toggleNav={navToggle}
+              business={business}
+              user={user}
+              logout={logout}
+            />
+            {businessCreatedTip}
+          </div>
         ) : null}
         <Switch>
           <Route
@@ -134,32 +164,42 @@ class AppAuthenticatedNav extends Component<Props> {
 }
 
 const mapStateToProps = (
-  { nav, entities, users }: State,
+  { nav, entities, users, businesses }: State,
   ownProps: {
     match: { params: { businessId: number }, url: string },
     logout: () => ThunkAction,
     navResponsive: ("multiple") => ThunkAction,
-    navToggle: () => ThunkAction
+    navToggle: () => ThunkAction,
+    closeTip: () => ThunkAction
   }
 ) => {
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
+
     navActive: nav.active,
     responsive: nav.responsive,
     business: ensureState(entities).businesses[businessId],
     match: ownProps.match,
     user: users.me,
     logout: ownProps.logout,
+    closeTip: ownProps.closeTip,
     navResponsive: ownProps.navResponsive,
-    navToggle: ownProps.navToggle
+    navToggle: ownProps.navToggle,
+    businessCreated: businesses.isCreated
   };
 };
 
+function closeTip() {
+  return {
+    type: "CLOSE_TIP"
+  };
+}
+
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ logout, navResponsive, navToggle }, dispatch);
+  bindActionCreators({ logout, navResponsive, navToggle, closeTip }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AppAuthenticatedNav);
+)(injectIntl(AppAuthenticatedNav));

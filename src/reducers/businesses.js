@@ -3,6 +3,19 @@ import { combineReducers } from "redux";
 import { union } from "lodash/array";
 import type { Action } from "../actions/businesses";
 
+const isCreated = (state: boolean = false, action: Action): boolean => {
+  switch (action.type) {
+    case "CREATE_BUSINESS_SUCCESS":
+      return true;
+    
+    case "CLOSE_TIP":
+      return false;
+
+    default:
+      return state;
+  }
+};
+
 // initially set to true https://github.com/reactjs/react-redux/issues/210
 const isFetching = (state: boolean = true, action: Action): boolean => {
   switch (action.type) {
@@ -73,5 +86,6 @@ export default combineReducers({
   hasLoaded,
   count,
   next,
-  result
+  result,
+  isCreated
 });
