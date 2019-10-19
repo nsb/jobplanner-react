@@ -22,6 +22,14 @@ const intlUsernameLabel = (
   />
 )
 
+const intlPasswordLabel = (
+  <FormattedMessage
+    id="signup.passwordLabel"
+    description="Login form password label"
+    defaultMessage="Password"
+  />
+)
+
 const intlSubmitLabel = (
   <FormattedMessage
     id="signup.submitLabel"
@@ -115,6 +123,12 @@ export const SignupForm = ({
             label={intlUsernameLabel}
             component={renderField}
             type="email"
+          />
+          <Field
+            name="password"
+            label={intlPasswordLabel}
+            component={renderField}
+            type="password"
           />
         </fieldset>
       </FormFields>
