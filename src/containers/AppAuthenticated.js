@@ -32,16 +32,16 @@ class AppAuthenticated extends Component {
     dispatch(verifyAuthAndFetchBusinesses(token));
   }
 
-  componentDidMount() {
-    this.intervalId = setInterval(() => {
-      let state = store.getState()
-      store.dispatch(refresh(state.auth.token));
-    }, 1000000);
-  }
+  // componentDidMount() {
+  //   this.intervalId = setInterval(() => {
+  //     let state = store.getState()
+  //     store.dispatch(refresh(state.auth.token));
+  //   }, 1000000);
+  // }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.intervalId);
+  // }
 
   renderToast = message => {
     const status = {
