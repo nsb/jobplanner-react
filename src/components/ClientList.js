@@ -108,9 +108,9 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
             value={this.state.searchText}
             onDOMChange={this.onSearch}
           />
-          <Button label={intlAdd}
+          { clients.length ? <Button label={intlAdd}
             accent={true}
-            path={`/${business.id}/clients/add`} />
+            path={`/${business.id}/clients/add`} /> : undefined }
 
         </Header>
         <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
