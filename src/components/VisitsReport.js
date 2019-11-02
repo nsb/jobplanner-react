@@ -77,7 +77,7 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
     visits: [],
     filterActive: false,
     filterValues: {
-      begins: moment().subtract(1, "months"),
+      begins: moment().subtract(1, "months").toDate(),
       ends: new Date(),
       complete: true,
       incomplete: false,
