@@ -381,11 +381,11 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                           direction="row"
                           responsive={false}
                         >
-                          <Button label={intlVisitsAdd}
+                          { job.closed ? undefined : <Button label={intlVisitsAdd}
                             accent={true}
                             onClick={() =>
                             this.setState({ showAddVisit: true })
-                          } />
+                            } /> }
                         </Box>
                       </Header>
                     </Box>
