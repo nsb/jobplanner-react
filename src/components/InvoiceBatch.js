@@ -10,7 +10,7 @@ import Footer from "grommet/components/Footer";
 import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from 'grommet/components/icons/Spinning';
-import Paragraph from 'grommet/components/Paragraph';
+import Notification from 'grommet/components/Notification';
 import NavControl from './NavControl';
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import { intlFormSavingLabel } from "../i18n";
@@ -147,11 +147,6 @@ class InvoiceBatch extends Component<Props, State> {
               />
             </Footer>
           </Form>
-          <Box pad={{ horizontal: "medium" }}>
-            <Paragraph>
-              {intlAccountingSystem}
-            </Paragraph>
-          </Box>
         </Box>
       )
     }
@@ -165,6 +160,7 @@ class InvoiceBatch extends Component<Props, State> {
             <Button label={intlAll} onClick={() => this.onAllOrNone(true)} accent={true} />
           </Box>
         </Header>
+        <Notification message={intlAccountingSystem} status='warning' size="small" />
         <List onMore={undefined}>
           {Array.from(clients.keys()).map((id, index) => {
             return (
