@@ -160,7 +160,7 @@ class InvoiceBatch extends Component<Props, State> {
             <Button label={intlAll} onClick={() => this.onAllOrNone(true)} accent={true} />
           </Box>
         </Header>
-        <Notification message={intlAccountingSystem} status='warning' size="small" />
+        { clients.size ? <Notification message={intlAccountingSystem} status='warning' size="small" /> : undefined }
         <List onMore={undefined}>
           {Array.from(clients.keys()).map((id, index) => {
             return (
