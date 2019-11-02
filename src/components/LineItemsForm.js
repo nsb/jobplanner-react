@@ -57,7 +57,7 @@ const intlUnitCost = (
   <FormattedMessage
     id="lineItemsForm.unitCostLabel"
     description="Line items unit cost label"
-    defaultMessage="Unit cost"
+    defaultMessage="Unit cost ex. VAT"
   />
 )
 

@@ -33,7 +33,7 @@ const intlUnitCost = (
   <FormattedMessage
     id="settingsServiceForm.unitCostLabel"
     description="Settings service form unit cost label"
-    defaultMessage="Unit cost"
+    defaultMessage="Unit cost ex. VAT"
   />
 )
 
