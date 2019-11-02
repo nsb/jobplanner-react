@@ -99,7 +99,7 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
       filterLayer = (
         <VisitsReportFilter
           onClose={this._onToggleFilter}
-          employees={employees}
+          employees={employees.filter((employee) => employee.is_active)}
           onSubmit={this.onFilterSubmit}
           filterValues={filterValues}
         />
@@ -119,14 +119,15 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
           </Title>
           <FilterControl onClick={this._onToggleFilter} />
         </Header>
-        <Box>
-          <Timestamp fields={["date", "year"]} value={filterValues.begins} />
-          <Timestamp fields={["date", "year"]} value={filterValues.ends} />
+        <Box
+          pad={{ horizontal: "medium"}}>
+          <Box direction="row">
+            <Timestamp fields={["date", "year"]} value={filterValues.begins} />
+            <Timestamp fields={["date", "year"]} value={filterValues.ends} />
+          </Box>
           {filterValues.complete && intlCompleted}
           {filterValues.incomplete && intlIncomplete}
           {filterValues.assigned && filterValues.assigned.label}
-        </Box>
-        <Box>
           {intlCount(visits.length, count)}
         </Box>
         <List
