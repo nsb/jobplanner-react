@@ -41,7 +41,7 @@ const intlCount = (count: number, total: number) => (
     id="visitsReport.filterCount"
     description="Visits report filter count"
     defaultMessage="Showing {count} of {total} visits."
-    values={{count, total}}
+    values={{ count, total }}
   />
 )
 
@@ -120,10 +120,15 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
           <FilterControl onClick={this._onToggleFilter} />
         </Header>
         <Box
-          pad={{ horizontal: "medium"}}>
+          pad={{ horizontal: "medium" }}>
           <Box direction="row">
-            <Timestamp fields={["date", "year"]} value={filterValues.begins} />
-            <Timestamp fields={["date", "year"]} value={filterValues.ends} />
+            <Box margin={{ right: "small" }}>
+              <Timestamp fields={["date", "year"]} value={filterValues.begins} />
+            </Box>
+            -
+            <Box margin={{ left: "small"}}>
+              <Timestamp fields={["date", "year"]} value={filterValues.ends} />
+            </Box>
           </Box>
           {filterValues.complete && intlCompleted}
           {filterValues.incomplete && intlIncomplete}
