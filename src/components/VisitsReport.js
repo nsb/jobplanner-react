@@ -92,7 +92,7 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
 
   render() {
     const { employees } = this.props;
-    const { filterActive, filterValues, visits, count } = this.state;
+    const { filterActive, filterValues, visits, count, isFetching } = this.state;
 
     let filterLayer;
     if (filterActive) {
@@ -126,14 +126,14 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
               <Timestamp fields={["date", "year"]} value={filterValues.begins} />
             </Box>
             -
-            <Box margin={{ left: "small"}}>
+            <Box margin={{ left: "small" }}>
               <Timestamp fields={["date", "year"]} value={filterValues.ends} />
             </Box>
           </Box>
           {filterValues.complete && intlCompleted}
           {filterValues.incomplete && intlIncomplete}
           {filterValues.assigned && filterValues.assigned.label}
-          {intlCount(visits.length, count)}
+          {isFetching ? undefined : intlCount(visits.length, count)}
         </Box>
         <List
           onMore={this.state.offset < this.state.count ? this.onMore : null}
