@@ -20,7 +20,6 @@ import ListItem from "grommet/components/ListItem";
 import Spinning from "grommet/components/icons/Spinning";
 import Timestamp from "grommet/components/Timestamp";
 import MoreIcon from "grommet/components/icons/base/More";
-import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Status from "grommet/components/icons/Status";
 import { rrulestr } from "rrule";
@@ -382,13 +381,11 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                           direction="row"
                           responsive={false}
                         >
-                          <Anchor
-                            icon={<AddIcon />}
+                          <Button label={intlVisitsAdd}
+                            accent={true}
                             onClick={() =>
-                              this.setState({ showAddVisit: true })
-                            }
-                            a11yTitle={intlVisitsAdd}
-                          />
+                            this.setState({ showAddVisit: true })
+                          } />
                         </Box>
                       </Header>
                     </Box>

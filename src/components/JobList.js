@@ -7,7 +7,6 @@ import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Search from "grommet/components/Search";
-import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import AddIcon from "grommet/components/icons/base/Add";
 import List from "grommet/components/List";
@@ -105,11 +104,9 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
     });
 
     const addControl = (
-      <Anchor
-        icon={<AddIcon />}
-        path={`/${business.id}/jobs/add`}
-        a11yTitle={intlAdd}
-      />
+      <Button label={intlAdd}
+      accent={true}
+      path={`/${business.id}/jobs/add`} />
     );
 
     return (

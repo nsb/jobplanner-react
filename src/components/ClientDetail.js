@@ -101,7 +101,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
     } = this.props;
     if (!client && token) {
       fetchClient(token, clientId).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})})
+        addError({ text: intl.formatMessage({ id: "flash.error" }) })
       })
     }
     if (token) {
@@ -251,11 +251,9 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                       direction="row"
                       responsive={false}
                     >
-                      <Anchor
-                        icon={<AddIcon />}
-                        path={`/${business.id}/jobs/add?client=${client.id}`}
-                        a11yTitle={intlJobAdd}
-                      />
+                      {jobs.length ? <Button label={intlJobAdd}
+                        accent={true}
+                        path={`/${business.id}/jobs/add?client=${client.id}`} /> : undefined }
                     </Box>
                   </Header>
                 </Box>

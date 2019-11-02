@@ -1,19 +1,18 @@
 // @flow
 
 import React, { Component } from 'react';
-import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import Search from 'grommet/components/Search';
-import Anchor from 'grommet/components/Anchor';
 import Button from 'grommet/components/Button';
 import AddIcon from 'grommet/components/icons/base/Add';
 import List from 'grommet/components/List';
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import NavControl from './NavControl';
 import ClientListItem from './ClientListItem';
-import type {Business} from '../actions/businesses';
-import type {Client} from '../actions/clients';
+import type { Business } from '../actions/businesses';
+import type { Client } from '../actions/clients';
 
 const intlTitle = (
   <FormattedMessage
@@ -99,21 +98,19 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
 
     return (
       <Box>
-        <Header size="large" pad={{horizontal: 'medium'}}>
+        <Header size="large" pad={{ horizontal: 'medium' }}>
           <NavControl title={intlTitle} />
           <Search
             inline={true}
             fill={true}
             size="medium"
-            placeHolder={intl.formatMessage({id: 'clients.search'})}
+            placeHolder={intl.formatMessage({ id: 'clients.search' })}
             value={this.state.searchText}
             onDOMChange={this.onSearch}
           />
-          <Anchor
-            icon={<AddIcon />}
-            path={`/${business.id}/clients/add`}
-            a11yTitle={intlAdd}
-          />
+          <Button label={intlAdd}
+            accent={true}
+            path={`/${business.id}/clients/add`} />
 
         </Header>
         <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
