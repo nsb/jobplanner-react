@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Search from "grommet/components/Search";
@@ -103,12 +103,6 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
       }
     });
 
-    const addControl = (
-      <Button label={intlAdd}
-      accent={true}
-      path={`/${business.id}/jobs/add`} />
-    );
-
     return (
       <Box>
         <Header size="large" pad={{ horizontal: "medium" }}>
@@ -117,11 +111,15 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
             inline={true}
             fill={true}
             size="medium"
-            placeHolder={intl.formatMessage({id: "jobList.searchPlaceholder"})}
+            placeHolder={intl.formatMessage({ id: "jobList.searchPlaceholder" })}
             value={this.state.searchText}
             onDOMChange={this.onSearch}
           />
-          {addControl}
+          {
+            jobs.length ? <Button label={intlAdd}
+              accent={true}
+              path={`/${business.id}/jobs/add`} /> : undefined
+          }
         </Header>
         <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
           {filteredJobs.map((job, index) => {
@@ -155,7 +153,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
 
   onMore = () => {
     const { token, business, fetchJobs } = this.props;
-    if(token) {
+    if (token) {
       fetchJobs(token, {
         business: business.id,
         ordering: "status_order,next_visit",
@@ -186,7 +184,7 @@ const mapStateToProps = (
   ownProps: {
     businessId: number,
     push: string => void,
-    fetchJobs: Function
+  fetchJobs: Function
   }
 ): * => {
   const { entities, jobs, auth } = state;
