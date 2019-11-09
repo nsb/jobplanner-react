@@ -20,6 +20,7 @@ import ListItem from "grommet/components/ListItem";
 import Spinning from "grommet/components/icons/Spinning";
 import Timestamp from "grommet/components/Timestamp";
 import MoreIcon from "grommet/components/icons/base/More";
+import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Status from "grommet/components/icons/Status";
 import { rrulestr } from "rrule";
@@ -55,7 +56,7 @@ const intlDetailsStarted = (date: Date) => (
     id="jobDetail.detailsStarted"
     description="Job detail details started"
     defaultMessage="Started on {date}"
-    values={{date: <Timestamp value={date} fields="date" />}}
+    values={{ date: <Timestamp value={date} fields="date" /> }}
   />
 );
 
@@ -145,11 +146,11 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     super(props);
 
     this.dateFormat = moment()
-    .creationData()
-    .locale.longDateFormat("L");
-  this.timeFormat = moment()
-    .creationData()
-    .locale.longDateFormat("LT");
+      .creationData()
+      .locale.longDateFormat("L");
+    this.timeFormat = moment()
+      .creationData()
+      .locale.longDateFormat("LT");
 
   }
 
@@ -170,7 +171,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
 
     if (job && (prevProps.job && prevProps.job.incomplete_visit_count && !job.incomplete_visit_count)) {
       // if job has no incomplete visits ask to close job
-      this.setState({showJobClose: true})
+      this.setState({ showJobClose: true })
     }
   }
 
@@ -257,7 +258,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       jobCloseLayer = (
         <JobClose
           job={job}
-          onClose={() => {this.setState({showJobClose: false})}}
+          onClose={() => { this.setState({ showJobClose: false }) }}
           token={token}
         />
       )
@@ -322,8 +323,8 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                     <Heading tag="h3" margin="none">
                       <strong>{client && (client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`)}</strong>
                     </Heading>
-                    {jobDescription} 
-                    <Columns masonry={false} maxCount={2}>                      
+                    {jobDescription}
+                    <Columns masonry={false} maxCount={2}>
                       {propertyAddress}
                       {clientDetails}
                       <Box pad={{ horizontal: "none", vertical: "small" }}>
@@ -381,11 +382,18 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                           direction="row"
                           responsive={false}
                         >
-                          { job.closed ? undefined : <Button label={intlVisitsAdd}
-                            accent={true}
-                            onClick={() =>
-                            this.setState({ showAddVisit: true })
-                            } /> }
+                          {job.closed ?
+                            undefined :
+                            responsive === "single" ?
+                              <Anchor
+                                icon={<AddIcon />}
+                                onClick={() =>
+                                  this.setState({ showAddVisit: true })} /> :
+                              <Button label={intlVisitsAdd}
+                                accent={true}
+                                onClick={() =>
+                                  this.setState({ showAddVisit: true })
+                                } />}
                         </Box>
                       </Header>
                     </Box>
@@ -414,11 +422,11 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     if (job) {
       partialUpdateJob({ id: job.id, closed: !job.closed }, token || "").then(
         (responseJob: Job) => {
-          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
         }).catch(() => {
-          addError({text: intl.formatMessage({id: "flash.error"})});
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
         }
-      );
+        );
     }
     e.preventDefault();
   };

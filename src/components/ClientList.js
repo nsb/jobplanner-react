@@ -8,11 +8,13 @@ import Search from 'grommet/components/Search';
 import Button from 'grommet/components/Button';
 import AddIcon from 'grommet/components/icons/base/Add';
 import List from 'grommet/components/List';
+import Anchor from 'grommet/components/Anchor';
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import NavControl from './NavControl';
 import ClientListItem from './ClientListItem';
 import type { Business } from '../actions/businesses';
 import type { Client } from '../actions/clients';
+import type { Responsive } from "../actions/nav";
 
 const intlTitle = (
   <FormattedMessage
@@ -53,7 +55,8 @@ export type Props = {
   push: Function,
   totalCount: number,
   token: ?string,
-  fetchClients: (string, Object) => Promise<any>
+  fetchClients: (string, Object) => Promise<any>,
+  responsive: Responsive
 };
 
 type State = {
@@ -86,7 +89,7 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { business, clients, isFetching, intl, totalCount } = this.props;
+    const { business, clients, isFetching, intl, totalCount, responsive } = this.props;
 
     const filteredClients = clients.filter(client => {
       if (this.state.searchText) {
@@ -108,9 +111,14 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
             value={this.state.searchText}
             onDOMChange={this.onSearch}
           />
-          { clients.length ? <Button label={intlAdd}
-            accent={true}
-            path={`/${business.id}/clients/add`} /> : undefined }
+          {clients.length ? responsive === "single" ?
+            <Anchor
+              icon={<AddIcon />}
+              path={`/${business.id}/clients/add`}
+              a11yTitle={intlAdd}
+            /> : <Button label={intlAdd}
+              accent={true}
+              path={`/${business.id}/clients/add`} /> : undefined}
 
         </Header>
         <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>

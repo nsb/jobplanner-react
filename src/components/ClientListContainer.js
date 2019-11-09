@@ -16,7 +16,7 @@ const mapStateToProps = (
     fetchClients: (string, Object) => Promise<any>
   }
 ): Props => {
-  const { clients, entities, auth } = state;
+  const { clients, entities, auth, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
@@ -28,7 +28,8 @@ const mapStateToProps = (
     token: auth.token,
     push: ownProps.history.push,
     totalCount: clients.count,
-    fetchClients: ownProps.fetchClients
+    fetchClients: ownProps.fetchClients,
+    responsive: nav.responsive
   };
 };
 

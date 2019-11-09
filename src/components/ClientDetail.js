@@ -251,9 +251,17 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                       direction="row"
                       responsive={false}
                     >
-                      {jobs.length ? <Button label={intlJobAdd}
-                        accent={true}
-                        path={`/${business.id}/jobs/add?client=${client.id}`} /> : undefined }
+                      {jobs.length ?
+                        responsive === "single" ?
+                          <Anchor
+                            icon={<AddIcon />}
+                            path={`/${business.id}/jobs/add?client=${client.id}`}
+                            a11yTitle={intlJobAdd} /> :
+                          <Button
+                            label={intlJobAdd}
+                            accent={true}
+                            path={`/${business.id}/jobs/add?client=${client.id}`} /> :
+                        undefined}
                     </Box>
                   </Header>
                 </Box>

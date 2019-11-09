@@ -8,6 +8,7 @@ import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Search from "grommet/components/Search";
 import Button from "grommet/components/Button";
+import Anchor from "grommet/components/Anchor";
 import AddIcon from "grommet/components/icons/base/Add";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
@@ -20,6 +21,7 @@ import type { State as ReduxState } from "../types/State";
 import type { Job } from "../actions/jobs";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
+import type { Responsive } from "../actions/nav";
 
 const intlTitle = (
   <FormattedMessage
@@ -60,7 +62,8 @@ type Props = {
   isFetching: boolean,
   push: Function,
   fetchJobs: Function,
-  totalCount: number
+  totalCount: number,
+  responsive: Responsive
 };
 
 type State = {
@@ -93,7 +96,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { jobs, business, isFetching, totalCount, intl } = this.props;
+    const { jobs, business, isFetching, totalCount, intl, responsive } = this.props;
 
     const filteredJobs = jobs.filter(job => {
       if (this.state.searchText) {
@@ -116,9 +119,15 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
             onDOMChange={this.onSearch}
           />
           {
-            jobs.length ? <Button label={intlAdd}
-              accent={true}
-              path={`/${business.id}/jobs/add`} /> : undefined
+            jobs.length ?
+              responsive === "single" ?
+                <Anchor
+                  icon={<AddIcon />}
+                  path={`/${business.id}/jobs/add`}
+                  a11yTitle={intlAdd}
+                /> : <Button label={intlAdd}
+                  accent={true}
+                  path={`/${business.id}/jobs/add`} /> : undefined
           }
         </Header>
         <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
@@ -187,7 +196,7 @@ const mapStateToProps = (
   fetchJobs: Function
   }
 ): * => {
-  const { entities, jobs, auth } = state;
+  const { entities, jobs, auth, nav } = state;
 
   return {
     business: ensureState(entities).businesses[ownProps.businessId],
@@ -198,7 +207,8 @@ const mapStateToProps = (
     token: auth.token,
     push: ownProps.push,
     totalCount: jobs.count,
-    fetchJobs: ownProps.fetchJobs
+    fetchJobs: ownProps.fetchJobs,
+    responsive: nav.responsive
   };
 };
 
