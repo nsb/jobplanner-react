@@ -219,6 +219,27 @@ const validate = (values: {
   description: string
 }) => {
   const errors = {};
+  const lineItemsArrayErrors = [];
+  values.line_items && values.line_items.forEach((lineItem, lineItemIndex) => {
+    const lineItemErrors = {};
+    if (!lineItem || !lineItem.name) {
+      lineItemErrors.name = intlFormFieldRequired;
+      lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
+    }
+    if (!lineItem || !lineItem.quantity) {
+      lineItemErrors.quantity = intlFormFieldRequired;
+      lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
+    }
+    if (!lineItem || !lineItem.unit_cost) {
+      lineItemErrors.unit_cost = intlFormFieldRequired;
+      lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
+    }
+
+  })
+  if (lineItemsArrayErrors.length) {
+    errors.line_items = lineItemsArrayErrors
+  }
+
   if (!values.client) {
     errors.client = intlFormFieldRequired;
   }
