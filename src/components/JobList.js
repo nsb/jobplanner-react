@@ -106,18 +106,22 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
       }
     });
 
+    const search = jobs.length ? (
+      <Search
+      inline={true}
+      fill={true}
+      size="medium"
+      placeHolder={intl.formatMessage({ id: "jobList.searchPlaceholder" })}
+      value={this.state.searchText}
+      onDOMChange={this.onSearch}
+    />
+    ) : undefined
+
     return (
       <Box>
         <Header size="large" pad={{ horizontal: "medium" }}>
           <NavControl title={intlTitle} />
-          <Search
-            inline={true}
-            fill={true}
-            size="medium"
-            placeHolder={intl.formatMessage({ id: "jobList.searchPlaceholder" })}
-            value={this.state.searchText}
-            onDOMChange={this.onSearch}
-          />
+          {search}
           {
             jobs.length ?
               responsive === "single" ?
