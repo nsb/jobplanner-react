@@ -99,18 +99,22 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
       }
     });
 
+    const search = clients.length ? (
+      <Search
+        inline={true}
+        fill={true}
+        size="medium"
+        placeHolder={intl.formatMessage({ id: 'clients.search' })}
+        value={this.state.searchText}
+        onDOMChange={this.onSearch}
+      />
+    ) : undefined
+
     return (
       <Box>
         <Header size="large" pad={{ horizontal: 'medium' }}>
           <NavControl title={intlTitle} />
-          <Search
-            inline={true}
-            fill={true}
-            size="medium"
-            placeHolder={intl.formatMessage({ id: 'clients.search' })}
-            value={this.state.searchText}
-            onDOMChange={this.onSearch}
-          />
+          {search}
           {clients.length ? responsive === "single" ?
             <Anchor
               icon={<AddIcon />}
