@@ -40,14 +40,6 @@ const intlAdd = (
   />
 )
 
-// const intlEmptyMessage = ( // eslint-disable-line no-unused-vars
-//   <FormattedMessage
-//     id="clients.emptyMessage"
-//     description="Clients empty message"
-//     defaultMessage="Add a client or import clients from your invoicing system via our {link}."
-//   />
-// )
-
 const intlAddons = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
     id="clients.addons"
