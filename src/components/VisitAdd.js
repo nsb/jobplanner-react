@@ -35,7 +35,7 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
               description: "",
               begins: new Date(),
               ends: new Date(),
-              anytime: false,
+              anytime: true,
               assigned: [],
               line_items: lineItems,
               job: job.id
