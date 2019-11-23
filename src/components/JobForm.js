@@ -211,7 +211,7 @@ export const oneoffInvoicingReminderMap: { [key: string]: string } = {
 };
 
 const validate = (values: {
-  client: Object,
+  client: Client,
   anytime: boolean,
   begins: Date,
   ends: Date,
@@ -346,7 +346,8 @@ type ClientInputProps = {
   onClick?: Function,
   onClientSearch: Function,
   onSelectClient?: Function,
-  clients?: Array<Client>
+  clients?: Array<Client>,
+  error: ?string
 };
 
 class ClientInput extends Component<ClientInputProps> {
@@ -357,7 +358,8 @@ class ClientInput extends Component<ClientInputProps> {
       onClick,
       onClientSearch,
       onSelectClient,
-      clients
+      clients,
+      error
     } = this.props;
     return value ? (
       onClick ? (
@@ -378,7 +380,7 @@ class ClientInput extends Component<ClientInputProps> {
           </div>
         )
     ) : (
-        <FormField label={label}>
+        <FormField label={label} error={error}>
           <Select
             placeHolder="None"
             onSearch={onClientSearch}
@@ -417,6 +419,7 @@ const renderClient = ({
       onClientSearch={onClientSearch}
       onSelectClient={onSelectClient}
       clients={clients}
+      error={error}
     />
   );
 
