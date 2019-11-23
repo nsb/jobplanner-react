@@ -47,7 +47,7 @@ const intlJobsEmptyMessage = (
   <FormattedMessage
     id="clientDetail.jobsEmptyMessage"
     description="Client detail jobs empty message"
-    defaultMessage="No jobs."
+    defaultMessage="Schedule work for this client by adding a job."
   />
 );
 

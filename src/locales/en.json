@@ -20,7 +20,7 @@
   "clientActions.remove": "Remove",
   "clientDetail.contact": "Contact",
   "clientDetail.propertiesHeading": "Properties",
-  "clientDetail.jobsEmptyMessage": "No jobs.",
+  "clientDetail.jobsEmptyMessage": "Schedule work for this client by adding a job.",
   "clientDetail.jobAdd": "Add job",
   "clientDetail.jobTitle": "Jobs",
   "clientForm.editTitle": "Edit client",

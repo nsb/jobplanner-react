@@ -20,7 +20,7 @@
   "clientDetail.contact": "Kontakt",
   "clientDetail.jobAdd": "Tilføj job",
   "clientDetail.jobTitle": "Jobs",
-  "clientDetail.jobsEmptyMessage": "Ingen jobs.",
+  "clientDetail.jobsEmptyMessage": "Tilføj et job for at planlægge arbejde for denne kunde.",
   "clientDetail.propertiesHeading": "Ejendomme",
   "clientForm.CompanyNameLabel": "Firmanavn",
   "clientForm.FirstNameLabel": "Fornavn",
