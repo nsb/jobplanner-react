@@ -34,6 +34,7 @@ import type { Dispatch } from "../types/Store";
 import type { Schedule } from "../types/Schedule";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
+import type { LineItem } from "../actions/lineitems";
 import Notification from "grommet/components/Notification";
 
 const intlJobFormTitleEdit = (name: string) => (
@@ -216,7 +217,8 @@ const validate = (values: {
   ends: Date,
   start_time: Date,
   finish_time: Date,
-  description: string
+  description: string,
+  line_items: Array<LineItem>
 }) => {
   const errors = {};
   const lineItemsArrayErrors = [];
