@@ -105,7 +105,7 @@
   "jobForm.titleAdd": "Tilføj job",
   "jobForm.titleEdit": "Job for {name}",
   "jobList.addJob": "Tilføj job",
-  "jobList.emptyMessage": "Ingen jobs.",
+  "jobList.emptyMessage": "Tilføj et job for at planlægge arbejde for dine kunder.",
   "jobList.searchPlaceholder": "Søg",
   "jobList.title": "Jobs",
   "jobRemove.hasIncompleteVisitsParagraph1": "Er du sikker på du vil fjerne job {id}?",

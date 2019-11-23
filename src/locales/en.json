@@ -101,7 +101,7 @@
   "jobList.title": "Jobs",
   "jobList.searchPlaceholder": "Search",
   "jobList.addJob": "Add job",
-  "jobList.emptyMessage": "You do not have any jobs.",
+  "jobList.emptyMessage": "Add a job to get started scheduling work for your clients.",
   "jobRemove.title": "Remove job",
   "jobRemove.submitLabel": "Yes, remove",
   "jobRemove.hasIncompleteVisitsParagraph1": "Are you sure you want to remove job {id}?",

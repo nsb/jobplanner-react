@@ -51,7 +51,7 @@ const intlEmptyMessage = (
   <FormattedMessage
     id="jobList.emptyMessage"
     description="Job list empty message"
-    defaultMessage="You do not have any jobs."
+    defaultMessage="Add a job to get started scheduling work for your clients."
   />
 )
 
