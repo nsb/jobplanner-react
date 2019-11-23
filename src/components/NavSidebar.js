@@ -134,7 +134,6 @@ class NavSidebar extends Component<Props> {
             label={intlSettings}
           />
           <Anchor
-            id="integrations"
             key="integrations"
             path={`/${business.id}/integrations`}
             label={intlIntegrations}

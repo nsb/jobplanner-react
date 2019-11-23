@@ -27,8 +27,6 @@ export const UPDATE_BUSINESS_SUCCESS: "UPDATE_BUSINESS_SUCCESS" =
 export const UPDATE_BUSINESS_FAILURE: "UPDATE_BUSINESS_FAILURE" =
   "UPDATE_BUSINESS_FAILURE";
 
-export const CLOSE_TIP: "CLOSE_TIP" = "CLOSE_TIP";
-
 export type Business = {
   id: number,
   name: string,
@@ -97,10 +95,6 @@ type UpdateBusinessFailureAction = {
   error: string
 };
 
-type CloseTipAction = {
-  type: typeof CLOSE_TIP
-}
-
 export type Action =
   | FetchBusinessesAction
   | FetchBusinessesSuccessAction
@@ -110,8 +104,7 @@ export type Action =
   | CreateBusinessFailureAction
   | UpdateBusinessAction
   | UpdateBusinessSuccessAction
-  | UpdateBusinessFailureAction
-  | CloseTipAction;
+  | UpdateBusinessFailureAction;
 
 const parse = (business): Business => {
   return business;

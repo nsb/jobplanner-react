@@ -258,7 +258,6 @@
   "visitUpdateFutureVisits.title": "Update future visits?",
   "visitUpdateFutureVisits.paragraph1": "This will update the schedule for all future visits.",
   "visitUpdateFutureVisits.submitLabel": "Yes, update",
-  "onboarding.tipMessage1": "Get started by connecting your invoicing system via our Add-ons.",
   "form.required": "Required",
   "form.save": "Save",
   "form.saving": "Saving...",
