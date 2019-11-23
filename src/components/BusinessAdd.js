@@ -51,12 +51,13 @@ class BusinessAdd extends Component<Props & { intl: intlShape }, State> {
 }
 
 const mapStateToProps = (
-  { auth }: ReduxState,
+  { auth, businesses }: ReduxState,
   ownProps: { history: { push: string => void }, createBusiness: (Business, string) => Promise<any> }
 ) => ({
   token: auth.token,
   push: ownProps.history.push,
-  createBusiness: ownProps.createBusiness
+  createBusiness: ownProps.createBusiness,
+  isFetching: businesses.isFetching
 });
 
 const mapDispatchToProps = (dispatch: *) =>

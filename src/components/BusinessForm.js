@@ -3,6 +3,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { injectIntl, FormattedMessage } from "react-intl";
+import Box from "grommet/components/Box";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
@@ -12,7 +13,8 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
-import { intlFormSaveLabel } from "../i18n";
+import BusyIcon from 'grommet/components/icons/Spinning';
+import { intlFormFieldRequired, intlFormSaveLabel, intlFormSavingLabel } from "../i18n";
 import type { Element } from "react";
 
 const intlAddBusiness = (
@@ -42,7 +44,7 @@ const intlNameLabel = (
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.name) {
-    errors.name = "Required";
+    errors.name = intlFormFieldRequired;
   }
   return errors;
 };
@@ -62,7 +64,8 @@ type Props = {
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  onClose?: Function
+  onClose?: Function,
+  isFetching: boolean
 };
 
 export const BusinessForm = ({
@@ -70,8 +73,24 @@ export const BusinessForm = ({
   valid,
   dirty,
   submitting,
-  onClose
+  onClose,
+  isFetching
 }: Props) => {
+
+  const control = isFetching ? (
+    <Box direction="row" align="center"
+      pad={{ horizontal: 'medium', between: 'small' }}>
+      <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
+    </Box>
+  ) : (
+    <Button
+    type="submit"
+    primary={true}
+    label={intlFormSaveLabel}
+    onClick={valid && dirty && !submitting ? () => true : undefined}
+  />
+)
+
   return (
     <Form onSubmit={handleSubmit}>
 
@@ -99,12 +118,7 @@ export const BusinessForm = ({
 
       <Footer pad={{ vertical: "medium" }}>
         <span />
-        <Button
-          type="submit"
-          primary={true}
-          label={intlFormSaveLabel}
-          onClick={valid && dirty && !submitting ? () => true : undefined}
-        />
+        {control}
       </Footer>
     </Form>
   );
