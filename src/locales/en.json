@@ -226,7 +226,7 @@
   "visitForm.beginsLabel": "Begins",
   "visitForm.endsLabel": "Ends",
   "visitForm.anytimeLabel": "Anytime",
-  "visitForm.assignedLabel": "Team",
+  "visitForm.assignedLabel": "Assigned to",
   "visitForm.completedLabel": "Completed",
   "visitForm.lineitemsHeading": "Line Items",
   "visitList.emptyMessage": "You do not have any visits at the moment.",

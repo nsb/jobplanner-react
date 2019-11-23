@@ -84,7 +84,7 @@ const intlAssigned = (
   <FormattedMessage
     id="visitForm.assignedLabel"
     description="Visit form assigned label"
-    defaultMessage="Team"
+    defaultMessage="Assigned to"
   />
 )
 
