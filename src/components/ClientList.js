@@ -40,11 +40,19 @@ const intlAdd = (
   />
 )
 
-const intlEmptyMessage = (
+// const intlEmptyMessage = ( // eslint-disable-line no-unused-vars
+//   <FormattedMessage
+//     id="clients.emptyMessage"
+//     description="Clients empty message"
+//     defaultMessage="Add a client or import clients from your invoicing system via our {link}."
+//   />
+// )
+
+const intlAddons = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
-    id="clients.emptyMessage"
-    description="Clients empty message"
-    defaultMessage="You do not have any clients at the moment."
+    id="clients.addons"
+    descriptions="Add-ons"
+    defaultMessage="Add-ons"
   />
 )
 
@@ -136,7 +144,17 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
         <ListPlaceholder
           filteredTotal={isFetching ? null : filteredClients.length}
           unfilteredTotal={isFetching ? null : this.state.searchText ? clients.length : totalCount}
-          emptyMessage={intlEmptyMessage}
+          emptyMessage={
+            <FormattedMessage
+              id="clients.emptyMessage"
+              values={{
+                link: (
+                  <Anchor label={intl.formatMessage({ id: "clients.addons" })} path={`/${business.id}/integrations`} />
+                )
+              }}
+              defaultMessage="Add a client or import clients from your invoicing system via our {link}."
+            />
+          }
           addControl={
             <Button
               icon={<AddIcon />}
