@@ -15,6 +15,15 @@ const isFetching = (state: boolean = true, action: Action): boolean => {
     case "FETCH_BUSINESSES_FAILURE":
       return false;
 
+    case "CREATE_BUSINESS":
+      return true;
+
+    case "CREATE_BUSINESS_SUCCESS":
+      return false;
+
+    case "CREATE_BUSINESS_FAILURE":
+      return false;
+
     default:
       return state;
   }
