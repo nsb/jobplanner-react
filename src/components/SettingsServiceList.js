@@ -3,7 +3,7 @@
 import { merge } from "lodash/object";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { injectIntl, intlShape } from "react-intl";
+import { FormattedMessage, injectIntl, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
@@ -18,6 +18,21 @@ import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
 import ServiceForm from "./SettingsServiceForm";
+
+const intlHeading = (
+  <FormattedMessage
+    id="settingsServiceList.heading"
+    description="Settings service list heading"
+    defaultMessage="Services"
+  />
+)
+const intlAccordionHeading = (
+  <FormattedMessage
+    id="settingsServiceList.accordionHeading"
+    description="Settings service list accordion add label"
+    defaultMessage="Add service"
+  />
+)
 
 type Props = {
   business: Business,
@@ -43,7 +58,7 @@ class ServiceList extends Component<Props & { intl: intlShape }, State> {
       <Box>
         <Header size="large" justify="between" pad="none">
           <Heading tag="h2" margin="none" strong={true}>
-            Services
+            {intlHeading}
           </Heading>
         </Header>
         <Accordion onActive={this.onActive}>
@@ -60,7 +75,7 @@ class ServiceList extends Component<Props & { intl: intlShape }, State> {
               </AccordionPanel>
             );
           })}
-          <AccordionPanel heading="Add service" key="service-new">
+          <AccordionPanel heading={intlAccordionHeading} key="service-new">
             <Paragraph>
               <ServiceForm form={`serviceform-new`} onSubmit={this.onSubmit} />
             </Paragraph>

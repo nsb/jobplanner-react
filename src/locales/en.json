@@ -196,6 +196,8 @@
   "settingsServiceForm.unitCostLabel": "Unit cost ex. VAT",
   "settingsServiceForm.updateLabel": "Update service",
   "settingsServiceForm.addLabel": "Add service",
+  "settingsServiceList.heading": "Services",
+  "settingsServiceList.accordionHeading": "Add service",
   "settingsServicesSection.heading": "Services",
   "settingsServicesSection.details": "Services are the different types of work your company offers.",
   "settingsServicesSection.edit": "Edit services.",
