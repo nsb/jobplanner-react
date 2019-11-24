@@ -1,6 +1,6 @@
 import React from "react";
-import Search from 'grommet/components/Search';
 import FormField from "grommet/components/FormField";
+import TextDropInput from "./TextDropInput";
 
 const RenderTextField = ({
   input,
@@ -11,10 +11,10 @@ const RenderTextField = ({
   meta: { touched, error, warning }
 }): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <Search
+    <TextDropInput
       {...input}
       inline={true}
-      fill={true}
+      responsive={true}
       onDOMChange={onDomChange}
       onSelect={onSelect}
       suggestions={suggestions}
