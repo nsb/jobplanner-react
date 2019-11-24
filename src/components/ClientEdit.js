@@ -1,11 +1,11 @@
 // @flow
 
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { injectIntl, intlShape } from 'react-intl';
 import { addSuccess, addError } from "redux-flash-messages";
-import history from "../history";
 import { clientSchema } from "../schemas";
 import Article from "grommet/components/Article";
 import ClientForm from "./ClientForm";
@@ -24,20 +24,20 @@ type Props = {
   client: Client,
   fields: Array<Field>,
   properties: PropertiesMap,
-  push: string => void,
-  dispatch: Dispatch,
-  isFetching: boolean
+  isFetching: boolean,
+  updateClient: Function,
+  onClose: Function
 };
 
 class ClientEdit extends Component<Props & { intl: intlShape }> {
   render() {
-    const { client, fields, isFetching } = this.props;
+    const { client, fields, isFetching, onClose } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
         <ClientForm
           onSubmit={this.handleSubmit}
-          onClose={this.onClose}
+          onClose={onClose}
           fields={fields}
           initialValues={client}
           isFetching={isFetching}
@@ -47,46 +47,38 @@ class ClientEdit extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = (values: Client): void => {
-    const { token, client, dispatch, intl } = this.props;
-    dispatch(
-      updateClient(
-        {
-          ...client,
-          ...values
-        },
-        token || ""
-      )
-    ).then((responseClient: Client) => {
+    const { token, client, intl, updateClient, onClose } = this.props;
+    updateClient(
+      {
+        ...client,
+        ...values
+      },
+      token || ""
+    )
+    .then((responseClient: Client) => {
       addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-      history.push(`/${client.business}/clients/${responseClient.id}`);
+      onClose()
     }).catch(() => {
       addError({text: intl.formatMessage({id: "flash.error"})})
     });
-  };
-
-  onClose = () => {
-    const { business, client, push } = this.props;
-    push(`/${business.id}/clients/${client.id}`);
   };
 }
 
 const mapStateToProps = (
   state: State,
   ownProps: {
-    match: { params: { businessId: number, clientId: number } },
-    history: { push: string => void },
-    dispatch: Dispatch
+    updateClient: Function,
+    onClose: Function,
+    client: Client
   }
 ): Props => {
   const { auth, fields, entities, clients } = state;
-  const businessId = parseInt(ownProps.match.params.businessId, 10);
-  const clientId = parseInt(ownProps.match.params.clientId, 10);
 
   return {
     token: auth.token,
-    business: ensureState(entities).businesses[businessId],
+    business: ensureState(entities).businesses[ownProps.client.business],
     client: denormalize(
-      ensureState(entities).clients[clientId],
+      ensureState(entities).clients[ownProps.client.id],
       clientSchema,
       ensureState(entities)
     ),
@@ -95,13 +87,22 @@ const mapStateToProps = (
         return ensureState(entities).fields[Id];
       })
       .filter(field => {
-        return field.business === businessId;
+        return field.business === ownProps.client.business;
       }),
     properties: ensureState(entities).properties,
-    push: ownProps.history.push,
-    dispatch: ownProps.dispatch,
-    isFetching: clients.isFetching
+    isFetching: clients.isFetching,
+    updateClient: ownProps.updateClient,
+    onClose: ownProps.onClose
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(ClientEdit));
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      updateClient
+    },
+    dispatch
+  );
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ClientEdit));
