@@ -12,6 +12,7 @@ import Anchor from 'grommet/components/Anchor';
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import NavControl from './NavControl';
 import ClientListItem from './ClientListItem';
+import ClientAdd from './ClientAdd';
 import type { Business } from '../actions/businesses';
 import type { Client } from '../actions/clients';
 import type { Responsive } from "../actions/nav";
@@ -63,7 +64,8 @@ type State = {
   searchText: string,
   searchResults: Array<number>,
   offset: number,
-  limit: number
+  limit: number,
+  add: boolean
 };
 
 class ClientList extends Component<Props & { intl: intlShape }, State> {
@@ -72,7 +74,8 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
     searchText: "",
     searchResults: [],
     offset: 0,
-    limit: 25
+    limit: 25,
+    add: false
   };
 
   componentDidMount() {
@@ -90,6 +93,11 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
 
   render() {
     const { business, clients, isFetching, intl, totalCount, responsive } = this.props;
+    const { add } = this.state;
+
+    if (add) {
+      return <ClientAdd business={business} onClose={this.onHideAdd} />
+    }
 
     const filteredClients = clients.filter(client => {
       if (this.state.searchText) {
@@ -118,11 +126,12 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
           {clients.length ? responsive === "single" ?
             <Anchor
               icon={<AddIcon />}
-              path={`/${business.id}/clients/add`}
+              onClick={this.onShowAdd}
               a11yTitle={intlAdd}
             /> : <Button label={intlAdd}
               accent={true}
-              path={`/${business.id}/clients/add`} /> : undefined}
+              onClick={this.onShowAdd}
+            /> : undefined}
 
         </Header>
         <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
@@ -157,7 +166,7 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
               label={intlAdd}
               primary={true}
               a11yTitle={intlAdd}
-              path={`/${business.id}/clients/add`}
+              onClick={this.onShowAdd}
             />
           }
         />
@@ -182,6 +191,9 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
       });
     }
   };
+
+  onShowAdd = () => this.setState({ add: true })
+  onHideAdd = () => this.setState({ add: false })
 
   onClick = (e: SyntheticInputEvent<*>, client: Client) => {
     const { push, business } = this.props;
