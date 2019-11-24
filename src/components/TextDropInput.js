@@ -229,7 +229,8 @@ export default class Search extends Component {
       event.initEvent('change', true, true);
     }
     const target = this._inputRef;
-    target.dispatchEvent(event);
+    // target.dispatchEvent(event);
+    target && target.dispatchEvent(event); // We got an error, target null
     onDOMChange(event);
   }
 
