@@ -14,7 +14,7 @@ const RenderTextField = ({
     <TextDropInput
       {...input}
       inline={true}
-      responsive={true}
+      responsive={false}
       onDOMChange={onDomChange}
       onSelect={onSelect}
       suggestions={suggestions}
