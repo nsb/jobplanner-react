@@ -1,6 +1,6 @@
 // @flow
-import React, { Component } from "react";
-import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import React from "react";
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { Calendar } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import localizer from 'react-big-calendar/lib/localizers/moment'
@@ -90,100 +90,97 @@ type Props = {
   onEventDrop: Function
 };
 
-class DnDCalendar extends Component<Props & { intl: intlShape }> {
-  render() {
-    const {
-      visits,
-      defaultView = "week",
-      onNavigate,
-      onView,
-      onSelectSlot,
-      onSelectEvent,
-      onEventDrop,
-      intl
-    } = this.props;
+const DnDCalendar = ({
+  visits,
+  defaultView = "week",
+  onNavigate,
+  onView,
+  onSelectSlot,
+  onSelectEvent,
+  onEventDrop,
+  intl
+}: Props & { intl: intlShape }) => {
 
-    let scrollToTime = new Date();
-    scrollToTime.setHours(6);
+  let scrollToTime = new Date();
+  scrollToTime.setHours(6);
 
-    const messages = {
-      next: intl.formatMessage({id: "calendar.nextLabel"}),
-      previous: intl.formatMessage({id: "calendar.previousLabel"}),
-      today: intl.formatMessage({id: "calendar.todayLabel"}),
-      month: intl.formatMessage({id: "calendar.monthLabel"}),
-      week: intl.formatMessage({id: "calendar.weekLabel"}),
-      day: intl.formatMessage({id: "calendar.dayLabel"}),
-      agenda: intl.formatMessage({id: "calendar.agendaLabel"})
-    };
-    
-    return (
-      <Box>
-        <NavControl title={title} />
-        <Box full={true} pad="medium">
-          <DragAndDropCalendar
-            messages={messages} 
-            localizer={momentLocalizer}
-            selectable={true}
-            popup={true}
-            defaultView={defaultView}
-            events={visits}
-            titleAccessor={visit => visit.title || visit.client_name}
-            startAccessor={visit => {
-              return new Date(visit.begins);
-            }}
-            endAccessor={visit => {
-              return new Date(visit.ends);
-            }}
-            allDayAccessor="anytime"
-            scrollToTime={scrollToTime}
-            onNavigate={onNavigate}
-            onView={onView}
-            onSelectSlot={onSelectSlot}
-            onSelectEvent={onSelectEvent}
-            onEventDrop={onEventDrop}
-            components={{
-              event: CalendarEvent,
-              agenda: {
-                event: CalendarEventAgenda
-              }
-            }}
-            eventPropGetter={(
-              event: Visit,
-              start: Date,
-              end: Date,
-              selected: boolean
-            ) => {
-              if (event.id) {
-                return {
-                  className: event.completed
-                    ? "jobplanner__completed"
-                    : "jobplanner__incomplete",
-                  style: event.completed
-                    ? {
-                        "background-color": "#bbb",
-                        "text-decoration": "line-through"
-                      }
-                    : {
-                        "background-color": "#0A64A0"
-                      }
-                }
-              } else {
-                  return {
-                    className: "jobplanner__counter",
-                    style: {
-                      "background-color": "#fff",
-                      "color": "#333",
-                      "font-weight": "bold"
-                    }
+  const messages = {
+    next: intl.formatMessage({ id: "calendar.nextLabel" }),
+    previous: intl.formatMessage({ id: "calendar.previousLabel" }),
+    today: intl.formatMessage({ id: "calendar.todayLabel" }),
+    month: intl.formatMessage({ id: "calendar.monthLabel" }),
+    week: intl.formatMessage({ id: "calendar.weekLabel" }),
+    day: intl.formatMessage({ id: "calendar.dayLabel" }),
+    agenda: intl.formatMessage({ id: "calendar.agendaLabel" })
+  };
+
+  return (
+    <Box>
+      <NavControl title={title} />
+      <Box full={true} pad="medium">
+        <DragAndDropCalendar
+          messages={messages}
+          localizer={momentLocalizer}
+          selectable={true}
+          popup={true}
+          defaultView={defaultView}
+          events={visits}
+          titleAccessor={visit => visit.title || visit.client_name}
+          startAccessor={visit => {
+            return new Date(visit.begins);
+          }}
+          endAccessor={visit => {
+            return new Date(visit.ends);
+          }}
+          allDayAccessor="anytime"
+          scrollToTime={scrollToTime}
+          onNavigate={onNavigate}
+          onView={onView}
+          onSelectSlot={onSelectSlot}
+          onSelectEvent={onSelectEvent}
+          onEventDrop={onEventDrop}
+          components={{
+            event: CalendarEvent,
+            agenda: {
+              event: CalendarEventAgenda
+            }
+          }}
+          eventPropGetter={(
+            event: Visit,
+            start: Date,
+            end: Date,
+            selected: boolean
+          ) => {
+            if (event.id) {
+              return {
+                className: event.completed
+                  ? "jobplanner__completed"
+                  : "jobplanner__incomplete",
+                style: event.completed
+                  ? {
+                    "background-color": "#bbb",
+                    "text-decoration": "line-through"
                   }
+                  : {
+                    "background-color": "#0A64A0"
+                  }
+              }
+            } else {
+              return {
+                className: "jobplanner__counter",
+                style: {
+                  "background-color": "#fff",
+                  "color": "#333",
+                  "font-weight": "bold"
                 }
               }
             }
-          />
-        </Box>
+          }
+          }
+        />
       </Box>
-    );
-  }
+    </Box>
+  );
 }
 
 export default injectIntl(DnDCalendar);
