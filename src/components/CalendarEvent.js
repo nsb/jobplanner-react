@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
+import React from "react";
 import type { Visit } from "../actions/visits";
 
 type Props = {
@@ -8,16 +8,7 @@ type Props = {
   title: string
 };
 
-class CalendarEvent extends Component<Props> {
-  render() {
-    const { title } = this.props;
-
-    return (
-      <div>
-        {title}
-      </div>
-    );
-  }
-}
-
-export default CalendarEvent;
+export default ({ title }: Props) =>
+  <div>
+    {title}
+  </div>
