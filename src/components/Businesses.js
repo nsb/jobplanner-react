@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withRouter, Redirect } from "react-router-dom";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
@@ -60,113 +60,99 @@ type Props = {
   isFetching: boolean
 };
 
-type State = {
-  searchText: string
-};
+const Businesses = ({ businesses, isFetching, push, intl }: Props & { intl: intlShape }) => {
+  const [searchText, setSearchText] = useState("")
 
-class Businesses extends Component<Props & { intl: intlShape }, State> {
+  const onClick = (e, business) => {
+    push(`/${business.id}`);
+  };
 
-  constructor() {
-    super();
-    this.state = { searchText: "" };
-  }
+  const onSearch = (e: SyntheticInputEvent<*>) => {
+    setSearchText(e.target.value);
+  };
 
-  render() {
-    const { businesses, isFetching, intl } = this.props;
+  if (isFetching) {
+    return (
+      <Article scrollStep={true} controls={true}>
+        <Section
+          full={true}
+          colorIndex="dark"
+          pad="large"
+          justify="center"
+          align="center"
+        >
+          <Spinning />
+        </Section>
+      </Article>
+    );
+  } else {
 
-    if (isFetching) {
-      return (
-        <Article scrollStep={true} controls={true}>
-          <Section
-            full={true}
-            colorIndex="dark"
-            pad="large"
-            justify="center"
-            align="center"
-          >
-            <Spinning />
-          </Section>
-        </Article>
-      );
-    } else {
-
-      const filteredBusinesses = businesses.filter(business => {
-        const searchText = this.state.searchText.toLowerCase();
-        if (searchText) {
-          return business.name.toLowerCase().includes(searchText);
-        } else {
-          return true;
-        }
-      });
-
-      const addControl = (
-        <Anchor icon={<AddIcon />} path="/add" a11yTitle={intlAddLabel} />
-      );
-
-      switch (businesses.length) {
-        case 0:
-          return (<Redirect to="/add" />)
-        case 1:
-          return (<Redirect to={`/${businesses[0].id}`} />)
-        default:
-          return (<Box>
-            <Header size="large" pad={{ horizontal: "medium" }}>
-              <Title responsive={false}>
-                <NavControl />
-                <span>
-                  {intlTitle}
-                </span>
-              </Title>
-              <Search
-                inline={true}
-                fill={true}
-                size="medium"
-                placeHolder={intl.formatMessage({id: 'businesses.search'})}
-                value={this.state.searchText}
-                onDOMChange={this.onSearch}
-              />
-              {addControl}
-            </Header>
-            <List onMore={undefined}>
-              {filteredBusinesses.map((business, index) => {
-                return (
-                  <BusinessListItem
-                    key={business.id}
-                    business={business}
-                    index={index}
-                    onClick={(e: SyntheticInputEvent<*>) =>
-                      this.onClick(e, business)}
-                  />
-                );
-              })}
-            </List>
-            <ListPlaceholder
-              filteredTotal={filteredBusinesses.length}
-              unfilteredTotal={businesses.length}
-              emptyMessage={intlEmptyMessage}
-              addControl={
-                <Button
-                  icon={<AddIcon />}
-                  label={intlAddLabel}
-                  primary={true}
-                  a11yTitle={intlAddLabel}
-                  path="/add"
-                />
-              }
-            />
-          </Box>);
+    const filteredBusinesses = businesses.filter(business => {
+      if (searchText) {
+        return business.name.toLowerCase().includes(searchText.toLowerCase());
+      } else {
+        return true;
       }
+    });
+
+    const addControl = (
+      <Anchor icon={<AddIcon />} path="/add" a11yTitle={intlAddLabel} />
+    );
+
+    switch (businesses.length) {
+      case 0:
+        return (<Redirect to="/add" />)
+      case 1:
+        return (<Redirect to={`/${businesses[0].id}`} />)
+      default:
+        return (<Box>
+          <Header size="large" pad={{ horizontal: "medium" }}>
+            <Title responsive={false}>
+              <NavControl />
+              <span>
+                {intlTitle}
+              </span>
+            </Title>
+            <Search
+              inline={true}
+              fill={true}
+              size="medium"
+              placeHolder={intl.formatMessage({ id: 'businesses.search' })}
+              value={searchText}
+              onDOMChange={onSearch}
+            />
+            {addControl}
+          </Header>
+          <List onMore={undefined}>
+            {filteredBusinesses.map((business, index) => {
+              return (
+                <BusinessListItem
+                  key={business.id}
+                  business={business}
+                  index={index}
+                  onClick={(e: SyntheticInputEvent<*>) =>
+                    onClick(e, business)}
+                />
+              );
+            })}
+          </List>
+          <ListPlaceholder
+            filteredTotal={filteredBusinesses.length}
+            unfilteredTotal={businesses.length}
+            emptyMessage={intlEmptyMessage}
+            addControl={
+              <Button
+                icon={<AddIcon />}
+                label={intlAddLabel}
+                primary={true}
+                a11yTitle={intlAddLabel}
+                path="/add"
+              />
+            }
+          />
+        </Box>);
     }
   }
-
-  onClick = (e, business) => {
-    this.props.push(`/${business.id}`);
-  };
-
-  onSearch = (e: SyntheticInputEvent<*>) => {
-    const searchText = e.target.value;
-    this.setState({ searchText });
-  };
 }
 
 const mapStateToProps = (
