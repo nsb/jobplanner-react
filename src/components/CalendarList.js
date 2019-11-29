@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import type { Business } from "../actions/businesses";
 import Box from "grommet/components/Box";
@@ -13,26 +13,19 @@ type Props = {
   intl: intlShape
 };
 
-class CalendarList extends Component<Props> {
-  render() {
-    const { business } = this.props;
-
-    return (
-      <Box>
-        <Header size="large" pad={{ horizontal: "medium" }}>
-          <Title responsive={false}>
-            <NavControl />
-            <FormattedMessage
-              id="calendarlist.title"
-              description="Calendarlist title"
-              defaultMessage="Calendar"
-            />
-          </Title>
-        </Header>
-        <VisitListContainer business={business} />
-      </Box>
-    );
-  }
-}
+const CalendarList = ({ business }: Props) =>
+  <Box>
+    <Header size="large" pad={{ horizontal: "medium" }}>
+      <Title responsive={false}>
+        <NavControl />
+        <FormattedMessage
+          id="calendarlist.title"
+          description="Calendarlist title"
+          defaultMessage="Calendar"
+        />
+      </Title>
+    </Header>
+    <VisitListContainer business={business} />
+  </Box>
 
 export default injectIntl(CalendarList);
