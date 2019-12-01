@@ -16,7 +16,7 @@ const intlRecurringJob = (id: number) => (
     id="invoiceBatch.recurringJob"
     description="invoice batch job type recurring"
     defaultMessage="#{id} - Recurring job"
-    values={{id}}
+    values={{ id }}
   />
 );
 
@@ -25,7 +25,7 @@ const intlOneOffJob = (id: number) => (
     id="invoiceBatch.oneOffJob"
     description="invoice batch job type one-off"
     defaultMessage="#{id} - One-off job"
-    values={{id}}
+    values={{ id }}
   />
 );
 
@@ -49,7 +49,7 @@ class InvoiceBatchClient extends Component<Props> {
         direction="column"
         align="start"
         separator="none"
-        // colorIndex="accent-1"
+      // colorIndex="accent-1"
       >
         <Box full="horizontal">
           <Box direction="row">
@@ -79,12 +79,14 @@ class InvoiceBatchClient extends Component<Props> {
     const { onChange, job, selected } = this.props;
     const jobSelection = selected.get(job.id);
 
-    onChange(new Map(
-      [[job.id, {
-        ...jobSelection,
-        ...{ selected: !(jobSelection && jobSelection.selected) || false}
-      }]]
-    ));
+    if (jobSelection) {
+      onChange(new Map(
+        [[job.id, {
+          ...jobSelection,
+          ...{ selected: !(jobSelection && jobSelection.selected) || false }
+        }]]
+      ));
+    }
   }
 
   onVisitChanged = (selection: VisitSelection): void => {
