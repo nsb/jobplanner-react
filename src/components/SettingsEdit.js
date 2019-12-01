@@ -18,7 +18,6 @@ import FieldsEdit from "./SettingsFieldsEdit";
 import EmployeesEdit from "./SettingsEmployeesEdit";
 import EmailsEdit from "./SettingsEmailsEdit";
 import CalendarSyncEdit from "./SettingsCalendarSyncEdit";
-import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 import type { Business } from "../actions/businesses";
@@ -40,9 +39,9 @@ const LAYERS: {} = {
   calendarSyncEdit: CalendarSyncEdit
 };
 
-type Props = {
+type Props = {|
   business: Business,
-};
+|};
 
 type State = {
   layer: string | null
@@ -116,19 +115,13 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     match: { params: { businessId: number } },
-    history: { push: Function },
-    dispatch: Dispatch
   }
 ): Props => {
-  const { businesses, entities, auth } = state;
+  const { entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
-    business: ensureState(entities).businesses[businessId],
-    isFetching: businesses.isFetching,
-    token: auth.token,
-    dispatch: ownProps.dispatch,
-    push: ownProps.history.push,
+    business: ensureState(entities).businesses[businessId]
   };
 };
 
