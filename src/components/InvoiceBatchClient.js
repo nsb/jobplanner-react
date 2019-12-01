@@ -30,7 +30,7 @@ class InvoiceBatchClient extends Component<Props> {
         direction="column"
         align="start"
         separator="none"
-        
+
       >
         <Box
           colorIndex="light-2"
@@ -66,12 +66,14 @@ class InvoiceBatchClient extends Component<Props> {
     const { onChange, client, selected } = this.props;
     const clientSelection = selected.get(client.id);
 
-    onChange( new Map(
-      [[client.id, {
-        ...clientSelection,
-        ...{ selected: !(clientSelection && clientSelection.selected) || false}
-      }]]
-    ));
+    if (clientSelection) {
+      onChange(new Map(
+        [[client.id, {
+          ...clientSelection,
+          ...{ selected: !(clientSelection && clientSelection.selected) || false }
+        }]]
+      ));
+    }
   }
 
   onJobChanged = (selection: JobSelection) => {
