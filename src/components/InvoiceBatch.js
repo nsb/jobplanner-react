@@ -213,7 +213,10 @@ class InvoiceBatch extends Component<Props, State> {
 
     const newSelected = Array.from(selected.keys()).reduce((acc, clientId: number) => {
       if (clientId) {
-        acc.set(clientId, { ...selected.get(clientId), selected: selection });
+        const selectedClient = selected.get(clientId);
+        if (selectedClient) {
+          acc.set(clientId, { ...selectedClient, selected: selection });
+        }
       }
       return acc;
     }, new Map())
