@@ -410,7 +410,7 @@ class JobScheduleEdit extends Component<Props & { intl: intlShape }, State> {
   onFreqChange = (event: { option: { value: number }, target: { value: number }}) => {
     var schedule = { ...this.state.schedule };
     const value = event.option ? event.option.value : event.target.value;
-    // Reset interval, week and month days when setting new frequency
+    // Reset schedule when setting new frequency
     schedule.byweekday = [];
     schedule.bymonthday = [];
     schedule.interval = 1;
