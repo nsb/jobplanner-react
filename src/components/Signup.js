@@ -43,7 +43,7 @@ type Props = {
 class Signup extends Component<Props & { intl: intlShape }> {
 
   onSubmit = (user: { username: string }) => {
-    this.props.dispatch(signup({ businesses: [], ...user }));
+    this.props.dispatch(signup({ ...user, businesses: [] }));
   };
 
   render() {
