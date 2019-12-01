@@ -150,7 +150,7 @@ class InvoiceBatch extends Component<Props, State> {
     const { clients, isFetching } = this.props;
     const { selected } = this.state;
     const clientCount = clients.size
-    const hasSelected = Array.from(selected.keys()).some(clientId => { const selection = selected.get(clientId); return selection && selection.selected })
+    const hasSelected = Array.from(selected.keys()).some((clientId: number) => { const selection = selected.get(clientId); return selection && selection.selected })
 
     let submitForm;
     if (clientCount) {
@@ -211,7 +211,7 @@ class InvoiceBatch extends Component<Props, State> {
   onAllOrNone = (selection: boolean) => {
     const { selected } = this.state;
 
-    const newSelected = Array.from(selected.keys()).reduce((acc, clientId) => {
+    const newSelected = Array.from(selected.keys()).reduce((acc, clientId: number) => {
       if (clientId) {
         acc.set(clientId, { ...selected.get(clientId), selected: selection });
       }
@@ -227,20 +227,22 @@ class InvoiceBatch extends Component<Props, State> {
     const { selected } = this.state;
 
     let invoices: Array<{ client: number, visits: Array<number> }> = [];
-    let selectedClientIds = Array.from(selected.keys()).filter((clientId) => { const selection = selected.get(clientId); return selection && selection.selected });
+    let selectedClientIds = Array.from(selected.keys()).filter((clientId: number) => { const selection = selected.get(clientId); return selection && selection.selected });
 
-    for (let clientId of selectedClientIds) {
+    for (let clientId: number of selectedClientIds) {
       let visitIds = [];
       const clientSelection = selected.get(clientId);
-      let jobs = (clientSelection && clientSelection.jobs) || new Map();
-      let selectedJobIds = Array.from(jobs.keys()).filter((jobId) => { const job = jobs.get(jobId); return job && job.selected })
-      for (let jobId of selectedJobIds) {
-        const jobSelection = clientSelection && clientSelection.jobs.get(jobId);
-        let visits = (jobSelection && jobSelection.visits) || new Map();
-        let selectedVisitIds = Array.from(visits.keys()).filter((visitId) => visits.get(visitId));
-        visitIds.push(...selectedVisitIds);
+      if (clientSelection) {
+        let jobs = (clientSelection && clientSelection.jobs) || new Map();
+        let selectedJobIds = Array.from(jobs.keys()).filter((jobId: number) => { const job = jobs.get(jobId); return job && job.selected })
+        for (let jobId: number of selectedJobIds) {
+          const jobSelection = clientSelection && clientSelection.jobs.get(jobId);
+          let visits = (jobSelection && jobSelection.visits) || new Map();
+          let selectedVisitIds = Array.from(visits.keys()).filter((visitId: number) => visits.get(visitId));
+          visitIds.push(...selectedVisitIds);
+        }
+        invoices.push({ client: parseInt(clientId, 10), visits: visitIds.map((id) => parseInt(id, 10)) });
       }
-      invoices.push({ client: parseInt(clientId, 10), visits: visitIds.map((id) => parseInt(id, 10)) });
 
     }
 
