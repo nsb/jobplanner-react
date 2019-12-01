@@ -77,8 +77,8 @@ export type Props = {
   jobs: Map<number, Job>,
   visits: Map<number, Visit>,
   createInvoiceAndLoadJobs: (Array<{ client: number, visits: Array<number> }>, string, Object) => ThunkAction,
-  token: ?string,
-  isFetching: boolean
+    token: ?string,
+      isFetching: boolean
 };
 
 type State = {
@@ -93,7 +93,7 @@ class InvoiceBatch extends Component<Props, State> {
     this.state = { selected: new Map() };
 
     this.state.selected = Array.from(clients.keys()).reduce(
-      (acc, clientId) => new Map([...acc, ...this._clientState(clients.get(clientId))]),
+      (acc, clientId: number) => new Map([...acc, ...this._clientState(clients.get(clientId))]),
       new Map()
     );
   }
@@ -102,33 +102,55 @@ class InvoiceBatch extends Component<Props, State> {
 
   _jobState = (job: Job): JobSelection => {
     const { visits } = this.props;
-    const visitsForJob = job.visits.map((visitId) => visits.get(visitId));
+    const visitsForJob: Array<Visit> = [];
+    job.visits.forEach(visitId => {
+      const visit = visits.get(visitId);
+      if (visit) {
+        visitsForJob.push(visit);
+      }
+    });
+
     return new Map(
       [[job.id, {
         selected: visitsForJob.some(visit => visit && visit.completed),
-        visits: visitsForJob.reduce((acc, visit) => new Map([...acc, ...this._visitState(visit)]), new Map())
+        visits: visitsForJob.reduce((acc, visit) => new Map(
+          [...acc, ...this._visitState(visit)]), new Map()
+        )
       }]]
     )
   }
 
   _clientState = (client: ?Client): ClientSelection => {
     const { jobs } = this.props;
-    return client ? new Map(
-      [[client.id, {
-        selected: false,
-        jobs: Array.from(jobs.keys()).filter(
-          (jobId) => { const job = jobs.get(jobId); return job && job.client === client.id }).map(
-            (jobId) => { return jobs.get(jobId) }).reduce(
-              (acc, job) => job ? new Map([...acc, ...this._jobState(job)]) : acc, new Map())
-      }]]
-    ) : new Map();
+
+    if (client) {
+      const jobSelections: Array<JobSelection> = []
+      Array.from(jobs.keys()).forEach((jobId: number) => {
+        const job = jobs.get(jobId);
+        if (job) {
+          jobSelections.push(this._jobState(job))
+        }
+      })
+
+      return new Map(
+        [[client.id, {
+          selected: false,
+          jobs: jobSelections.reduce(
+            (acc, jobSelection: JobSelection) => new Map([...acc, ...jobSelection]),
+            new Map()
+          )
+        }]]
+      )
+    } else {
+      return new Map();
+    }
   }
 
   render() {
     const { clients, isFetching } = this.props;
     const { selected } = this.state;
     const clientCount = clients.size
-    const hasSelected = Array.from(selected.keys()).some(clientId => {const selection = selected.get(clientId); return selection && selection.selected})
+    const hasSelected = Array.from(selected.keys()).some(clientId => { const selection = selected.get(clientId); return selection && selection.selected })
 
     let submitForm;
     if (clientCount) {
@@ -138,17 +160,17 @@ class InvoiceBatch extends Component<Props, State> {
           <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
         </Box>
       ) : (
-        <Box pad={{ horizontal: "medium" }}>
-          <Form onSubmit={this.onSubmit}>
-            <Footer pad={{ "vertical": "medium" }}>
-              <Button label={intlCreateButton}
-                type={(!hasSelected) ? undefined : 'submit'}
-                primary={true}
-              />
-            </Footer>
-          </Form>
-        </Box>
-      )
+          <Box pad={{ horizontal: "medium" }}>
+            <Form onSubmit={this.onSubmit}>
+              <Footer pad={{ "vertical": "medium" }}>
+                <Button label={intlCreateButton}
+                  type={(!hasSelected) ? undefined : 'submit'}
+                  primary={true}
+                />
+              </Footer>
+            </Form>
+          </Box>
+        )
     }
 
     return (
@@ -160,15 +182,15 @@ class InvoiceBatch extends Component<Props, State> {
             <Button label={intlAll} onClick={() => this.onAllOrNone(true)} accent={true} />
           </Box>
         </Header>
-        { clients.size ? <Notification message={intlAccountingSystem} status='warning' size="small" /> : undefined }
+        {clients.size ? <Notification message={intlAccountingSystem} status='warning' size="small" /> : undefined}
         <List onMore={undefined}>
-          {Array.from(clients.keys()).map((id, index) => {
+          {Array.from(clients.keys()).map((id: number, index) => {
             return (
               <InvoiceBatchClientContainer
                 client={clients.get(id)}
                 key={index}
                 onChange={this.onChange}
-                selected={new Map([[id,  this.state.selected.get(id)]])} />
+                selected={new Map([[id, this.state.selected.get(id)]])} />
             );
           })}
         </List>
@@ -205,7 +227,7 @@ class InvoiceBatch extends Component<Props, State> {
     const { selected } = this.state;
 
     let invoices: Array<{ client: number, visits: Array<number> }> = [];
-    let selectedClientIds = Array.from(selected.keys()).filter((clientId) => { const selection = selected.get(clientId); return selection && selection.selected});
+    let selectedClientIds = Array.from(selected.keys()).filter((clientId) => { const selection = selected.get(clientId); return selection && selection.selected });
 
     for (let clientId of selectedClientIds) {
       let visitIds = [];
