@@ -175,12 +175,14 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
         begins__gte: Date,
         ends__lte: Date,
         assigned?: number,
-        completed?: boolean
+        completed?: boolean,
+        ordering: string
       } = {
         limit: limit,
         offset: offset,
         begins__gte: filterValues.begins,
-        ends__lte: filterValues.ends
+        ends__lte: filterValues.ends,
+        ordering: "begins",
       };
       if (filterValues.complete !== filterValues.incomplete) {
         filters.completed = filterValues.complete && !filterValues.incomplete;
