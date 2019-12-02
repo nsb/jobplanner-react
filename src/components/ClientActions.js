@@ -37,8 +37,8 @@ const LAYERS = {
 
 type Props = {
   client: Client,
-  onClose?: Function,
-  onEdit: Function
+  onClose?: () => void,
+  onEdit: () => void
 };
 
 const ClientActions = ({ client, onEdit, onClose }: Props) => {
