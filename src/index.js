@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import moment from "moment";
 import "moment/locale/da";
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import { Router } from "react-router-dom";
 import { addLocaleData } from "react-intl";
 import { configureFlashMessages } from "redux-flash-messages";
@@ -34,15 +34,15 @@ if (window.drift) {
   window.drift.config({
     locale: languageWithoutRegionCode
   });
-  window.drift.load('fk4gftg5k9zk');
+  window.drift.load("fk4gftg5k9zk");
 }
 
 // configure moment locale, with Monday as 1st day of week
 moment.locale(language, {
   week: {
     dow: 1,
-    doy: 1,
-  },
+    doy: 1
+  }
 });
 
 if (languageWithoutRegionCode === "da") {
@@ -52,10 +52,12 @@ if (languageWithoutRegionCode === "da") {
 }
 
 if (process.env.REACT_APP_SENTRY_PUBLIC_DSN) {
-  Raven.config(process.env.REACT_APP_SENTRY_PUBLIC_DSN, {
-    release: process.env.COMMIT_REF || 'unknown',
-    environment: process.env.NODE_ENV || 'unknown',
-  }).install();
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_PUBLIC_DSN,
+    release: process.env.COMMIT_REF || "unknown",
+    environment: process.env.NODE_ENV || "unknown",
+    send_default_pii: true
+  });
 }
 
 // const NetworkListenerProvider = NetworkListener(Provider);
@@ -74,7 +76,7 @@ const root = document.getElementById("root");
 if (root) {
   ReactDOM.render(
     <Provider store={store}>
-      <IntlProvider locale={languageWithoutRegionCode} messages={messages} >
+      <IntlProvider locale={languageWithoutRegionCode} messages={messages}>
         <Router history={history}>
           <App />
         </Router>

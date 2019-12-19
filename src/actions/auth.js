@@ -1,6 +1,6 @@
 // @flow
 import fetch from "isomorphic-fetch";
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import history from "../history";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { User } from "./users";
@@ -194,9 +194,12 @@ export const login = (credentials: Credentials): ThunkAction => {
         if (json.token) {
           localStorage.setItem("token", json.token);
           dispatch(receiveLogin(json));
-          Raven.setUserContext({
-            email: json.user.email,
-            id: json.user.id.toString(10)
+          Sentry.configureScope(function(scope) {
+            scope.setUser({
+              username: json.user.username,
+              email: json.user.email,
+              id: json.user.id.toString(10)
+            });
           });
           // dispatch(push('/'));
         } else {
@@ -246,9 +249,10 @@ export const loginSocial = (socialAuthCode: SocialAuthCode): ThunkAction => {
         if (json.token) {
           localStorage.setItem("token", json.token);
           dispatch(receiveLoginSocial(json));
-          Raven.setUserContext({
-            email: json.email,
-            // id: json.user.id.toString(10)
+          Sentry.configureScope(function(scope) {
+            scope.setUser({
+              email: json.email,
+            });
           });
           // dispatch(push('/'));
         } else {
@@ -353,9 +357,12 @@ export const verify = (token: string): ThunkAction => {
       .then(response => response.json())
       .then((response: { token: string, user: User }) => {
         dispatch(receiveVerify(response));
-        Raven.setUserContext({
-          email: response.user.email,
-          id: response.user.id.toString(10)
+        Sentry.configureScope(function(scope) {
+          scope.setUser({
+            username: response.user.username,
+            email: response.user.email,
+            id: response.user.id.toString(10)
+          });
         });
       })
       .catch(error => {
@@ -418,7 +425,7 @@ export const refresh = (token: string): ThunkAction => {
 
 export const logout = (): LogoutAction => {
   localStorage.removeItem("token");
-  Raven.setUserContext();
+  Sentry.setUser((scope) => {})
   return {
     type: LOGOUT
   };
