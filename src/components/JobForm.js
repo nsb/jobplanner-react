@@ -27,9 +27,8 @@ import ScheduleInput from "./ScheduleInput";
 import LineItemsFormContainer from "./JobLineItemsFormContainer";
 import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import { RRule, rrulestr } from "rrule";
-import clientsApi from "../api";
 import type { Business } from "../actions/businesses";
-import type { Client, ClientsResponse } from "../actions/clients";
+import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
 import type { Schedule } from "../types/Schedule";
 import type { Element } from "react";
@@ -448,7 +447,8 @@ type JobFormProps = {
   onSelectClient?: Function,
   token?: string,
   employees: Array<Employee>,
-  isFetching: boolean
+  isFetching: boolean,
+  fetchClients: Function
 };
 
 type JobFormState = {
@@ -816,18 +816,15 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
   };
 
   onClientSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    const { business, token } = this.props;
+    const { business, token, fetchClients } = this.props;
     const value = event.target.value;
 
     if (value && token) {
-      clientsApi
-        .getAll("clients", token, { business: business.id, search: event.target.value, limit: "10" })
-        .then((responseClients: ClientsResponse) => {
-          this.setState({ clients: responseClients.results });
-        })
-        .catch((error: string) => {
-          throw error;
-        });
+      fetchClients(token, {
+        business: business.id,
+        search: event.target.value,
+        limit: "10"
+      }).then(responseClients => this.setState({ clients: responseClients.results }));
     } else {
       this.setState({ clients: [] });
     }

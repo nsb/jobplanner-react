@@ -1,6 +1,7 @@
 // @flow
 import "url-search-params-polyfill";
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
@@ -8,6 +9,7 @@ import Article from "grommet/components/Article";
 import JobForm, { oneoffInvoicingReminderMap } from "./JobForm";
 import history from "../history";
 import { createJob } from "../actions/jobs";
+import { fetchClients } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { Employee } from "../actions/employees";
@@ -19,12 +21,12 @@ import { ensureState } from "redux-optimistic-ui";
 type Props = {
   token: ?string,
   business: Business,
-  clients: Array<Client>,
-  dispatch: Dispatch,
   push: string => void,
   employees: Array<Employee>,
   client: ?{ value: Client, label: string },
-  isFetching: boolean
+  isFetching: boolean,
+  fetchClients?: (string, Object) => Promise<any>,
+  createJob: (Business, Job, string) => Promise<any>
 };
 
 type State = {
@@ -37,7 +39,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
   };
 
   render() {
-    const { token, employees, client, business, intl, isFetching } = this.props;
+    const { token, employees, client, business, intl, isFetching, fetchClients } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -58,6 +60,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
             }
           }}
           token={token}
+          fetchClients={fetchClients}
         />
       </Article>
     );
@@ -65,10 +68,10 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
 
   handleSubmit = values => {
     const { client: { value: client } } = values;
-    const { token, business, dispatch, intl } = this.props;
+    const { token, business, intl, createJob } = this.props;
 
     if (token) {
-      let action = createJob(
+      createJob(
         business,
         {
           ...values,
@@ -77,8 +80,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
           invoice_reminder: values.invoice_reminder.value
         },
         token
-      );
-      dispatch(action).then((responseJob: Job) => {
+      ).then((responseJob: Job) => {
         addSuccess({text: intl.formatMessage({id: "flash.saved"})})
         history.push(`/${business.id}/jobs/${responseJob.id}`);
       }).catch(() => {
@@ -101,7 +103,9 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     match: { params: { businessId: number } },
-    history: { push: string => void }
+    history: { push: string => void },
+    fetchClients: (string, Object) => Promise<any>,
+    createJob: (Business, Job, string) => Promise<any>
   }
 ): * => {
   const { auth, employees, entities, jobs } = state;
@@ -130,8 +134,20 @@ const mapStateToProps = (
     client: client
       ? { value: client, label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}` }
       : undefined,
-    isFetching: jobs.isFetching
+    isFetching: jobs.isFetching,
+    fetchClients: ownProps.fetchClients,
+    createJob: ownProps.createJob
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(JobsAdd));
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      createJob,
+      fetchClients
+    },
+    dispatch
+  );
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(JobsAdd));

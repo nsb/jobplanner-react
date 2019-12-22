@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import { injectIntl, intlShape } from "react-intl";
@@ -10,6 +11,7 @@ import { jobSchemaDenormalize } from "../schemas";
 import Article from "grommet/components/Article";
 import JobForm, { invoicingReminderMap } from "./JobForm";
 import { updateJob } from "../actions/jobs";
+import { fetchClients } from "../actions/clients";
 import type { State as ReduxState } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
 import type { Dispatch } from "../types/Store";
@@ -24,15 +26,23 @@ type Props = {
   clients: ClientsState,
   job: Job,
   push: string => void,
-  dispatch: Dispatch,
   employees: Array<Employee>,
   assigned: Array<Employee>,
-  isFetching: boolean
+  isFetching: boolean,
+  updateJob: Function
 };
 
 class JobEdit extends Component<Props & { intl: intlShape }> {
   render() {
-    const { job, employees, assigned, business, intl, isFetching } = this.props;
+    const {
+      job,
+      employees,
+      assigned,
+      business,
+      intl,
+      isFetching,
+      token
+    } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -53,9 +63,12 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
             }),
             invoice_reminder: {
               value: job.invoice_reminder,
-              label: intl.formatMessage({id: invoicingReminderMap[job.invoice_reminder]})
+              label: intl.formatMessage({
+                id: invoicingReminderMap[job.invoice_reminder]
+              })
             }
           }}
+          token={token}
         />
       </Article>
     );
@@ -63,26 +76,28 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
 
   handleSubmit = values => {
     // get client Id
-    const { client: { value: client } } = values;
+    const {
+      client: { value: client }
+    } = values;
 
-    const { token, business, dispatch, intl } = this.props;
-    dispatch(
-      updateJob(
-        {
-          ...values,
-          business: business.id,
-          property: client.properties[0].id,
-          assigned: values.assigned.map(v => v.value),
-          invoice_reminder: values.invoice_reminder.value
-        },
-        token || ""
-      )
-    ).then((responseJob: Job) => {
-      addSuccess({text: intl.formatMessage({id: "flash.saved"})})
-      history.push(`/${business.id}/jobs/${responseJob.id}`);
-    }).catch(() => {
-      addError({text: intl.formatMessage({id: "flash.error"})})
-    });
+    const { token, business, intl, updateJob } = this.props;
+    updateJob(
+      {
+        ...values,
+        business: business.id,
+        property: client.properties[0].id,
+        assigned: values.assigned.map(v => v.value),
+        invoice_reminder: values.invoice_reminder.value
+      },
+      token || ""
+    )
+      .then((responseJob: Job) => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+        history.push(`/${business.id}/jobs/${responseJob.id}`);
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      });
   };
 
   onClose = () => {
@@ -96,7 +111,8 @@ const mapStateToProps = (
   ownProps: {
     match: { params: { businessId: number, jobId: number } },
     history: { push: string => void },
-    dispatch: Dispatch
+    fetchClients: (string, Object) => Promise<any>,
+    updateJob: (Business, Object, string) => Promise<any>
   }
 ): Props => {
   const { auth, clients, employees, entities, jobs } = state;
@@ -108,7 +124,6 @@ const mapStateToProps = (
     token: auth.token,
     business: ensureState(entities).businesses[businessId],
     push: ownProps.history.push,
-    dispatch: ownProps.dispatch,
     employees: employees.result
       .map((Id: number) => {
         return ensureState(entities).employees[Id];
@@ -125,8 +140,20 @@ const mapStateToProps = (
       jobSchemaDenormalize,
       ensureState(entities)
     ),
-    isFetching: jobs.isFetching
+    isFetching: jobs.isFetching,
+    updateJob: ownProps.updateJob
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(JobEdit));
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      updateJob
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(JobEdit));
