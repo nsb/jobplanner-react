@@ -242,7 +242,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                       >
                         <div>{property.address1}</div>
                         <div>{property.address2}</div>
-                        <div>{property.zip_code}</div>
+                        <div>{property.zip_code} {property.city}</div>
                         <div>{property.country}</div>
                       </Box>
                     );

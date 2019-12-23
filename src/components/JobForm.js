@@ -17,11 +17,11 @@ import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
-import Tabs from 'grommet/components/Tabs';
-import Tab from 'grommet/components/Tab';
+import Tabs from "grommet/components/Tabs";
+import Tab from "grommet/components/Tab";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
-import BusyIcon from 'grommet/components/icons/Spinning';
+import BusyIcon from "grommet/components/icons/Spinning";
 import JobScheduleEdit from "./JobScheduleEdit";
 import ScheduleInput from "./ScheduleInput";
 import LineItemsFormContainer from "./JobLineItemsFormContainer";
@@ -43,7 +43,7 @@ const intlJobFormTitleEdit = (name: string) => (
     id="jobForm.titleEdit"
     description="Job form edit title"
     defaultMessage="Job for {name}"
-    values={{name}}
+    values={{ name }}
   />
 );
 
@@ -53,7 +53,7 @@ const intlJobFormTitleAdd = (
     description="Job form add title"
     defaultMessage="Add job"
   />
-)
+);
 
 const intlJobFormClientHeading = (
   <FormattedMessage
@@ -61,7 +61,7 @@ const intlJobFormClientHeading = (
     description="Job form client heading"
     defaultMessage="Client"
   />
-)
+);
 
 const intlJobFormDetailsHeading = (
   <FormattedMessage
@@ -69,7 +69,7 @@ const intlJobFormDetailsHeading = (
     description="Job form details heading"
     defaultMessage="Details"
   />
-)
+);
 
 const intlJobFormDetailsTitle = (
   <FormattedMessage
@@ -77,7 +77,7 @@ const intlJobFormDetailsTitle = (
     description="Job form details title"
     defaultMessage="Title"
   />
-)
+);
 
 const intlJobFormDetailsInstructions = (
   <FormattedMessage
@@ -85,7 +85,7 @@ const intlJobFormDetailsInstructions = (
     description="Job form details instructions"
     defaultMessage="Instructions"
   />
-)
+);
 
 const intlJobFormScheduleTabOneOff = (
   <FormattedMessage
@@ -93,7 +93,7 @@ const intlJobFormScheduleTabOneOff = (
     description="Job form schedule tab one off"
     defaultMessage="One-Off job"
   />
-)
+);
 
 const intlJobFormScheduleTabRecurring = (
   <FormattedMessage
@@ -101,7 +101,7 @@ const intlJobFormScheduleTabRecurring = (
     description="Job form schedule tab recurring"
     defaultMessage="Recurring job"
   />
-)
+);
 
 const intlJobFormScheduleHeading = (
   <FormattedMessage
@@ -109,7 +109,7 @@ const intlJobFormScheduleHeading = (
     description="Job form schedule heading"
     defaultMessage="Schedule"
   />
-)
+);
 
 const intlJobFormScheduleBegins = (
   <FormattedMessage
@@ -117,7 +117,7 @@ const intlJobFormScheduleBegins = (
     description="Job form schedule begins"
     defaultMessage="Begins"
   />
-)
+);
 
 const intlJobFormScheduleEnds = (
   <FormattedMessage
@@ -125,7 +125,7 @@ const intlJobFormScheduleEnds = (
     description="Job form schedule ends"
     defaultMessage="Ends"
   />
-)
+);
 
 const intlJobFormScheduleAnytime = (
   <FormattedMessage
@@ -133,7 +133,7 @@ const intlJobFormScheduleAnytime = (
     description="Job form schedule anytime"
     defaultMessage="Anytime"
   />
-)
+);
 
 const intlJobFormScheduleNotification = (
   <FormattedMessage
@@ -141,7 +141,7 @@ const intlJobFormScheduleNotification = (
     description="Job form schedule notifiaction"
     defaultMessage="Editing this schedule will clear all incomplete visits from this job and new visits will be created using the updated information."
   />
-)
+);
 
 const intlJobFormInvoicingHeading = (
   <FormattedMessage
@@ -149,7 +149,7 @@ const intlJobFormInvoicingHeading = (
     description="Job form invoicing heading"
     defaultMessage="Invoicing"
   />
-)
+);
 
 const intlJobFormInvoicingReminderMapNever = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -157,7 +157,7 @@ const intlJobFormInvoicingReminderMapNever = ( // eslint-disable-line no-unused-
     description="Job form invoicing never"
     defaultMessage="As needed - we won't prompt you"
   />
-)
+);
 
 const intlJobFormInvoicingReminderMapVisit = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -165,7 +165,7 @@ const intlJobFormInvoicingReminderMapVisit = ( // eslint-disable-line no-unused-
     description="Job form invoicing visit"
     defaultMessage="After each visit"
   />
-)
+);
 
 const intlJobFormInvoicingReminderMapClosed = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -173,7 +173,7 @@ const intlJobFormInvoicingReminderMapClosed = ( // eslint-disable-line no-unused
     description="Job form invoicing closed"
     defaultMessage="When the job is closed"
   />
-)
+);
 
 const intlJobFormInvoicingReminderMapMonthly = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -181,7 +181,7 @@ const intlJobFormInvoicingReminderMapMonthly = ( // eslint-disable-line no-unuse
     description="Job form invoicing monthly"
     defaultMessage="Monthly on the last day of the month"
   />
-)
+);
 
 const intlJobFormTeamHeading = (
   <FormattedMessage
@@ -189,7 +189,7 @@ const intlJobFormTeamHeading = (
     description="Job form team heading"
     defaultMessage="Team"
   />
-)
+);
 
 const intlJobFormAssignedLabel = (
   <FormattedMessage
@@ -197,7 +197,7 @@ const intlJobFormAssignedLabel = (
     description="Job form team assigned label"
     defaultMessage="Assigned team members"
   />
-)
+);
 
 export const invoicingReminderMap: { [key: string]: string } = {
   never: "jobForm.invoicingNever",
@@ -223,24 +223,24 @@ const validate = (values: {
 }) => {
   const errors = {};
   const lineItemsArrayErrors = [];
-  values.line_items && values.line_items.forEach((lineItem, lineItemIndex) => {
-    const lineItemErrors = {};
-    if (!lineItem || !lineItem.name) {
-      lineItemErrors.name = intlFormFieldRequired;
-      lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
-    }
-    if (!lineItem || !lineItem.quantity) {
-      lineItemErrors.quantity = intlFormFieldRequired;
-      lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
-    }
-    if (!lineItem || !lineItem.unit_cost) {
-      lineItemErrors.unit_cost = intlFormFieldRequired;
-      lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
-    }
-
-  })
+  values.line_items &&
+    values.line_items.forEach((lineItem, lineItemIndex) => {
+      const lineItemErrors = {};
+      if (!lineItem || !lineItem.name) {
+        lineItemErrors.name = intlFormFieldRequired;
+        lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
+      }
+      if (!lineItem || !lineItem.quantity) {
+        lineItemErrors.quantity = intlFormFieldRequired;
+        lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
+      }
+      if (!lineItem || !lineItem.unit_cost) {
+        lineItemErrors.unit_cost = intlFormFieldRequired;
+        lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
+      }
+    });
   if (lineItemsArrayErrors.length) {
-    errors.line_items = lineItemsArrayErrors
+    errors.line_items = lineItemsArrayErrors;
   }
 
   if (!values.client) {
@@ -272,10 +272,10 @@ const renderField = ({
   type,
   meta: { touched, error, warning }
 }): Element<*> => (
-    <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-      <input {...input} type={type} />
-    </FormField>
-  );
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <input {...input} type={type} />
+  </FormField>
+);
 
 const renderSelect = ({
   input,
@@ -302,10 +302,10 @@ const renderCheckBox = ({
   label,
   meta: { touched, error, warning }
 }): Element<*> => (
-    <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-      <CheckBox {...input} checked={!!input.value} />
-    </FormField>
-  );
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <CheckBox {...input} checked={!!input.value} />
+  </FormField>
+);
 
 const renderDateTime = ({
   input,
@@ -375,24 +375,24 @@ class ClientInput extends Component<ClientInputProps> {
           {value.label}
         </Anchor>
       ) : (
-          <div>
-            <Heading tag="h3">{intlJobFormClientHeading}</Heading>
-            {value.label}
-          </div>
-        )
+        <div>
+          <Heading tag="h3">{intlJobFormClientHeading}</Heading>
+          {value.label}
+        </div>
+      )
     ) : (
-        <FormField label={label} error={error}>
-          <Select
-            placeHolder="None"
-            onSearch={onClientSearch}
-            inline={true}
-            multiple={false}
-            options={clients}
-            value="first"
-            onChange={onSelectClient}
-          />
-        </FormField>
-      );
+      <FormField label={label} error={error}>
+        <Select
+          placeHolder="None"
+          onSearch={onClientSearch}
+          inline={true}
+          multiple={false}
+          options={clients}
+          value="first"
+          onChange={onSelectClient}
+        />
+      </FormField>
+    );
   }
 }
 
@@ -413,16 +413,16 @@ const renderClient = ({
   clients: Array<Client>,
   meta: { touched: boolean, error: string, warning: string }
 }): Element<*> => (
-    <ClientInput
-      {...input}
-      label={label}
-      onClick={onClick}
-      onClientSearch={onClientSearch}
-      onSelectClient={onSelectClient}
-      clients={clients}
-      error={error}
-    />
-  );
+  <ClientInput
+    {...input}
+    label={label}
+    onClick={onClick}
+    onClientSearch={onClientSearch}
+    onSelectClient={onSelectClient}
+    clients={clients}
+    error={error}
+  />
+);
 
 const rruleToSchedule = (rrule): Schedule => {
   return {
@@ -430,8 +430,8 @@ const rruleToSchedule = (rrule): Schedule => {
     interval: rrule.options.interval,
     byweekday: rrule.options.byweekday,
     bymonthday: rrule.options.bymonthday
-  }
-}
+  };
+};
 
 type JobFormProps = {
   business: Business,
@@ -462,7 +462,10 @@ type JobFormState = {
   visitsWillBeRegenerated: boolean
 };
 
-class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState> {
+class JobForm extends Component<
+  JobFormProps & { intl: intlShape },
+  JobFormState
+> {
   dateFormat: string;
   timeFormat: string;
   static defaultProps = {
@@ -545,7 +548,9 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
     const mappedClients = this.state.clients.map(client => {
       return {
         value: client,
-        label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`
+        label: client.is_business
+          ? client.business_name
+          : `${client.first_name} ${client.last_name}`
       };
     });
 
@@ -580,7 +585,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
     const invoicingReminderOptions: Array<Object> = Object.entries(
       invoicingReminderMap
     ).map(([key, value]) => {
-      return { label: intl.formatMessage({id: value}), value: key };
+      return { label: intl.formatMessage({ id: value }), value: key };
     });
 
     const recurringSchedule = (
@@ -592,7 +597,9 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
             label={intlJobFormScheduleBegins}
             component={renderDateTime}
             dateFormat={this.dateFormat}
-            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            normalize={(value: string) =>
+              moment(value, this.dateFormat).toDate()
+            }
             onChange={this.onChangeSchedule}
           />
           <Field
@@ -600,7 +607,9 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
             label={intlJobFormScheduleEnds}
             component={renderDateTime}
             dateFormat={this.dateFormat}
-            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            normalize={(value: string) =>
+              moment(value, this.dateFormat).toDate()
+            }
             onChange={this.onChangeSchedule}
           />
           {start_time}
@@ -630,12 +639,12 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
           />
         </fieldset>
       </div>
-    )
+    );
 
     const oneoffInvoicingReminderOptions: Array<Object> = Object.entries(
       oneoffInvoicingReminderMap
     ).map(([key, value]) => {
-      return { label: intl.formatMessage({id: value}), value: key };
+      return { label: intl.formatMessage({ id: value }), value: key };
     });
 
     const oneoffSchedule = (
@@ -647,7 +656,9 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
             label={intlJobFormScheduleBegins}
             component={renderDateTime}
             dateFormat={this.dateFormat}
-            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            normalize={(value: string) =>
+              moment(value, this.dateFormat).toDate()
+            }
             onChange={this.onChangeSchedule}
           />
           <Field
@@ -655,7 +666,9 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
             label={intlJobFormScheduleEnds}
             component={renderDateTime}
             dateFormat={this.dateFormat}
-            normalize={(value: string) => moment(value, this.dateFormat).toDate()}
+            normalize={(value: string) =>
+              moment(value, this.dateFormat).toDate()
+            }
             onChange={this.onChangeSchedule}
           />
           {start_time}
@@ -681,39 +694,51 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
           />
         </fieldset>
       </div>
-    )
+    );
 
-    const schedule = initialValues.id ? initialValues.recurrences ? recurringSchedule : oneoffSchedule : (
-      <Tabs onActive={(tabIndex: number) => { tabIndex ? this.onRecurringTab() : this.onOneoffTab() }}>
-        <Tab title={intlJobFormScheduleTabOneOff}>
-          {oneoffSchedule}
-        </Tab>
-        <Tab title={intlJobFormScheduleTabRecurring}>
-          {recurringSchedule}
-        </Tab>
+    const schedule = initialValues.id ? (
+      initialValues.recurrences ? (
+        recurringSchedule
+      ) : (
+        oneoffSchedule
+      )
+    ) : (
+      <Tabs
+        onActive={(tabIndex: number) => {
+          tabIndex ? this.onRecurringTab() : this.onOneoffTab();
+        }}
+      >
+        <Tab title={intlJobFormScheduleTabOneOff}>{oneoffSchedule}</Tab>
+        <Tab title={intlJobFormScheduleTabRecurring}>{recurringSchedule}</Tab>
       </Tabs>
-    )
+    );
 
     const control = isFetching ? (
-      <Box direction="row" align="center"
-        pad={{ horizontal: 'medium', between: 'small' }}>
-        <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
+      <Box
+        direction="row"
+        align="center"
+        pad={{ horizontal: "medium", between: "small" }}
+      >
+        <BusyIcon />
+        <span className="secondary">{intlFormSavingLabel}</span>
       </Box>
     ) : (
-        <Button
-          type="submit"
-          primary={true}
-          label={intl.formatMessage({id: 'form.save'})}
-          onClick={valid && dirty && !submitting ? () => true : undefined}
-        />
-      )
+      <Button
+        type="submit"
+        primary={true}
+        label={intl.formatMessage({ id: "form.save" })}
+        onClick={valid && dirty && !submitting ? () => true : undefined}
+      />
+    );
 
     return (
       <Form onSubmit={handleSubmit}>
         <Header size="large" justify="between" pad="none">
           <Heading tag="h3" margin="none" strong={true}>
             {initialValues.id
-              ? intlJobFormTitleEdit(`${initialValues.client_firstname} ${initialValues.client_lastname}`)
+              ? intlJobFormTitleEdit(
+                  `${initialValues.client_firstname} ${initialValues.client_lastname}`
+                )
               : intlJobFormTitleAdd}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
@@ -722,10 +747,22 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
         <FormFields>
           {clientField}
 
-          <PropertySelectContainer
-            client={client && client.value}
-            onSelect={this.onSelectProperty}
-          />
+          {initialValues.id ? (
+            <Box margin={{ horizontal: "none", vertical: "small" }}>
+            <div>{initialValues.property.value.address1}</div>
+            <div>{initialValues.property.value.address2}</div>
+            <div>
+              {initialValues.property.value.zip_code}{" "}
+              {initialValues.property.value.city}
+            </div>
+            <div>{initialValues.property.value.country}</div>
+          </Box>
+        ) : (
+            <PropertySelectContainer
+              client={client && client.value}
+              onSelect={this.onSelectProperty}
+            />
+          )}
 
           <fieldset>
             <Heading tag="h3">{intlJobFormDetailsHeading}</Heading>
@@ -752,9 +789,11 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
               name="assigned"
               label={intlJobFormAssignedLabel}
               component={renderSelect}
-              options={employees.filter((employee) => employee.is_active).map(employee => {
-                return { value: employee.id, label: employee.username };
-              })}
+              options={employees
+                .filter(employee => employee.is_active)
+                .map(employee => {
+                  return { value: employee.id, label: employee.username };
+                })}
               multiple={true}
               normalize={selected => selected.value}
             />
@@ -833,7 +872,9 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
         business: business.id,
         search: event.target.value,
         limit: "10"
-      }).then(responseClients => this.setState({ clients: responseClients.results }));
+      }).then(responseClients =>
+        this.setState({ clients: responseClients.results })
+      );
     } else {
       this.setState({ clients: [] });
     }
@@ -849,7 +890,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
     console.log(selection);
     dispatch(change("property", selection));
   };
-  
+
   onScheduleAdd = (e: SyntheticInputEvent<*>) => {
     this.setState({ scheduleLayer: true });
     e.preventDefault();
@@ -861,9 +902,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
 
   onScheduleSubmit = (schedule: Schedule) => {
     const { dispatch, change, initialValues } = this.props;
-    dispatch(
-      change("recurrences", new RRule({ ...schedule }).toString())
-    );
+    dispatch(change("recurrences", new RRule({ ...schedule }).toString()));
     this.setState({
       scheduleLayer: false,
       visitsWillBeRegenerated: !!initialValues.id,
@@ -879,23 +918,26 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
       interval: 1,
       byweekday: RRule.MO
     });
-    this.onScheduleSubmit(rruleToSchedule(rrule))
-    dispatch(change("invoice_reminder", {
-      value: "monthly",
-      label: intl.formatMessage({id: invoicingReminderMap["monthly"]})
-    }))
-  }
+    this.onScheduleSubmit(rruleToSchedule(rrule));
+    dispatch(
+      change("invoice_reminder", {
+        value: "monthly",
+        label: intl.formatMessage({ id: invoicingReminderMap["monthly"] })
+      })
+    );
+  };
 
   onOneoffTab = () => {
     const { dispatch, change, intl } = this.props;
 
-    dispatch(change("recurrences", ''));
-    dispatch(change("invoice_reminder", {
-      value: "closed",
-      label: intl.formatMessage({id: oneoffInvoicingReminderMap["closed"]})
-    }))
-  }
-
+    dispatch(change("recurrences", ""));
+    dispatch(
+      change("invoice_reminder", {
+        value: "closed",
+        label: intl.formatMessage({ id: oneoffInvoicingReminderMap["closed"] })
+      })
+    );
+  };
 }
 
 let SelectingFormValuesJobForm = reduxForm({
@@ -905,11 +947,9 @@ let SelectingFormValuesJobForm = reduxForm({
 
 // Decorate with connect to read form values
 const selector = formValueSelector("job"); // <-- same as form name
-SelectingFormValuesJobForm = connect(
-  (state): * => {
-    // can select values individually
-    return selector(state, "anytime", "client");
-  }
-)(SelectingFormValuesJobForm);
+SelectingFormValuesJobForm = connect((state): * => {
+  // can select values individually
+  return selector(state, "anytime", "client");
+})(SelectingFormValuesJobForm);
 
 export default SelectingFormValuesJobForm;

@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
+import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
 import Select from "grommet/components/Select";
 import type { Property } from "../actions/properties";
@@ -35,7 +36,14 @@ const PropertySelect = ({ properties, onSelect }: Props) => {
     case 0:
       return null;
     case 1:
-      return <div>{properties[0].address1}</div>;
+      return                       <Box
+      margin={{ horizontal: "none", vertical: "small" }}
+    >
+      <div>{properties[0].address1}</div>
+      <div>{properties[0].address2}</div>
+      <div>{properties[0].zip_code} {properties[0].city}</div>
+      <div>{properties[0].country}</div>
+    </Box>;
     default:
       return (
         <FormField label={"Select a property for the job"} error={undefined}>

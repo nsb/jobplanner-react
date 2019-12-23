@@ -15,6 +15,7 @@ import type { State as ReduxState } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
+import type { Property } from "../actions/properties";
 import type { Job } from "../actions/jobs";
 import type { Employee } from "../actions/employees";
 import { ensureState } from "redux-optimistic-ui";
@@ -22,6 +23,7 @@ import { ensureState } from "redux-optimistic-ui";
 type Props = {
   token: ?string,
   business: Business,
+  property: Property,
   clients: ClientsState,
   job: Job,
   push: string => void,
@@ -38,6 +40,7 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
       employees,
       assigned,
       business,
+      property,
       intl,
       isFetching,
       token
@@ -56,6 +59,10 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
             client: {
               label: `${job.client_firstname} ${job.client_lastname}`,
               value: job.client
+            },
+            property: {
+              label: `${property.address1}`,
+              value: property
             },
             assigned: assigned.map(employee => {
               return { value: employee.id, label: employee.username };
@@ -117,6 +124,7 @@ const mapStateToProps = (
   return {
     token: auth.token,
     business: ensureState(entities).businesses[businessId],
+    property: ensureState(entities).properties[job.property],
     push: ownProps.history.push,
     employees: employees.result
       .map((Id: number) => {

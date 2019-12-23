@@ -223,12 +223,12 @@ const renderProperties = ({
         <Box margin={{ bottom: "medium" }}>
           <div key={index}>
             Property #{index + 1}
-            <Button icon={<CloseIcon />}
+            {index ? <Button icon={<CloseIcon />}
               onClick={() => fields.remove(index)}
               href='#'
               primary={false}
               accent={false}
-              plain={true} />
+              plain={true} /> : null }
             <Field
               name={`${property}.id`}
               type="hidden"

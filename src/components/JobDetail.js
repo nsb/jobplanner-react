@@ -151,7 +151,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     this.timeFormat = moment()
       .creationData()
       .locale.longDateFormat("LT");
-
   }
 
   componentDidMount() {
@@ -164,14 +163,19 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     const { job, resetVisits } = this.props;
 
-    if (job && (prevProps.job && prevProps.job.closed !== job.closed)) {
+    if (job && prevProps.job && prevProps.job.closed !== job.closed) {
       // if job status has changed we should reload visits
       resetVisits();
     }
 
-    if (job && (prevProps.job && prevProps.job.incomplete_visit_count && !job.incomplete_visit_count)) {
+    if (
+      job &&
+      prevProps.job &&
+        prevProps.job.incomplete_visit_count &&
+        !job.incomplete_visit_count
+    ) {
       // if job has no incomplete visits ask to close job
-      this.setState({ showJobClose: true })
+      this.setState({ showJobClose: true });
     }
   }
 
@@ -223,8 +227,14 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
           <Heading tag="h4" margin="none">
             {intlAddress}
           </Heading>
-          <div>{property.address1}</div>
-          {property.address2}
+          <Box margin="none">
+            <div>{property.address1}</div>
+            <div>{property.address2}</div>
+            <div>
+              {property.zip_code} {property.city}
+            </div>
+            <div>{property.country}</div>
+          </Box>
         </Box>
       );
     }
@@ -258,10 +268,12 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       jobCloseLayer = (
         <JobClose
           job={job}
-          onClose={() => { this.setState({ showJobClose: false }) }}
+          onClose={() => {
+            this.setState({ showJobClose: false });
+          }}
           token={token}
         />
-      )
+      );
     }
 
     if (isFetching || !job) {
@@ -321,7 +333,12 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                 <Box full="horizontal">
                   <Section pad="medium" full="horizontal">
                     <Heading tag="h3" margin="none">
-                      <strong>{client && (client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`)}</strong>
+                      <strong>
+                        {client &&
+                          (client.is_business
+                            ? client.business_name
+                            : `${client.first_name} ${client.last_name}`)}
+                      </strong>
                     </Heading>
                     {jobDescription}
                     <Columns masonry={false} maxCount={2}>
@@ -333,7 +350,9 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                         </Heading>
                         {intlDetailsStarted(job.begins)}
                         <br />
-                        {job.recurrences ? rrulestr(job.recurrences).toText() : intlDetailsOneOff}
+                        {job.recurrences
+                          ? rrulestr(job.recurrences).toText()
+                          : intlDetailsOneOff}
                       </Box>
                     </Columns>
                   </Section>
@@ -382,18 +401,24 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                           direction="row"
                           responsive={false}
                         >
-                          {job.closed ?
-                            undefined :
-                            responsive === "single" ?
-                              <Anchor
-                                icon={<AddIcon />}
-                                onClick={() =>
-                                  this.setState({ showAddVisit: true })} /> :
-                              <Button label={intlVisitsAdd}
-                                accent={true}
-                                onClick={() =>
-                                  this.setState({ showAddVisit: true })
-                                } />}
+                          {job.closed ? (
+                            undefined
+                          ) : responsive === "single" ? (
+                            <Anchor
+                              icon={<AddIcon />}
+                              onClick={() =>
+                                this.setState({ showAddVisit: true })
+                              }
+                            />
+                          ) : (
+                            <Button
+                              label={intlVisitsAdd}
+                              accent={true}
+                              onClick={() =>
+                                this.setState({ showAddVisit: true })
+                              }
+                            />
+                          )}
                         </Box>
                       </Header>
                     </Box>
@@ -420,13 +445,13 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     const { job, token, partialUpdateJob, intl } = this.props;
 
     if (job) {
-      partialUpdateJob({ id: job.id, closed: !job.closed }, token || "").then(
-        (responseJob: Job) => {
+      partialUpdateJob({ id: job.id, closed: !job.closed }, token || "")
+        .then((responseJob: Job) => {
           addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-        }).catch(() => {
+        })
+        .catch(() => {
           addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        }
-        );
+        });
     }
     e.preventDefault();
   };
@@ -436,7 +461,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
 
     if (job) {
       push(`/${business.id}/jobs/${job.id}/edit`);
-    };
+    }
   };
 
   _onToggleSidebar = () => {
