@@ -79,7 +79,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
   handleSubmit = values => {
     const {
       client: { value: client },
-      property: { value: property }
+      property
     } = values;
     const { token, business, intl, createJob } = this.props;
 
@@ -89,7 +89,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
         {
           ...values,
           property:
-            (property && property.id) ||
+            (property && property.value && property.value.id) ||
             (client.properties[0].id
               ? client.properties[0].id
               : client.properties[0]), // client may not be normalized
