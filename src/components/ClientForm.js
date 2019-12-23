@@ -436,7 +436,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
 
           {billingAddress}
 
-          <fieldset>
+          {/* <fieldset>
             <Heading tag="h3">Additional client details</Heading>
             {fields.map((field, index) => (
               <Field
@@ -446,7 +446,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
                 type={field.type}
               />
             ))}
-          </fieldset>
+          </fieldset> */}
         </FormFields>
 
         <Footer pad={{ vertical: "medium" }}>
