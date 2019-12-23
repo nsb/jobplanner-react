@@ -222,13 +222,13 @@ const renderProperties = ({
       {fields.map((property, index) => (
         <Box margin={{ bottom: "medium" }}>
           <div key={index}>
-            {/* Property #{index + 1}
+            Property #{index + 1}
             <Button icon={<CloseIcon />}
               onClick={() => fields.remove(index)}
               href='#'
               primary={false}
               accent={false}
-              plain={true} /> */}
+              plain={true} />
             <Field
               name={`${property}.id`}
               type="hidden"
@@ -260,12 +260,12 @@ const renderProperties = ({
           </div>
         </Box>
       ))}
-      {/* <Box>
+      <Box>
         <button type="button" onClick={() => fields.push({})}>
           Add Property
         </button>
         {submitFailed && error && <span>{error}</span>}
-      </Box> */}
+      </Box>
     </Section>
   );
 
@@ -298,7 +298,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
       dirty,
       submitting,
       onClose,
-      // fields,
+      fields,
       initialValues,
       isFetching,
       intl
@@ -436,7 +436,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
 
           {billingAddress}
 
-          {/* <fieldset>
+          <fieldset>
             <Heading tag="h3">Additional client details</Heading>
             {fields.map((field, index) => (
               <Field
@@ -446,7 +446,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
                 type={field.type}
               />
             ))}
-          </fieldset> */}
+          </fieldset>
         </FormFields>
 
         <Footer pad={{ vertical: "medium" }}>

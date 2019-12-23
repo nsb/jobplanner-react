@@ -25,10 +25,12 @@ import BusyIcon from 'grommet/components/icons/Spinning';
 import JobScheduleEdit from "./JobScheduleEdit";
 import ScheduleInput from "./ScheduleInput";
 import LineItemsFormContainer from "./JobLineItemsFormContainer";
+import PropertySelectContainer from "./PropertySelectContainer";
 import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import { RRule, rrulestr } from "rrule";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
+import type { Property } from "../actions/properties";
 import type { Dispatch } from "../types/Store";
 import type { Schedule } from "../types/Schedule";
 import type { Element } from "react";
@@ -443,6 +445,7 @@ type JobFormProps = {
   dispatch: Dispatch,
   change: Function,
   anytime: boolean,
+  client: ?{ value: Client, label: string },
   onClientSearch: Function,
   onSelectClient?: Function,
   token?: string,
@@ -505,6 +508,7 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
       onClose,
       initialValues,
       anytime,
+      client,
       employees,
       intl,
       isFetching
@@ -718,6 +722,11 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
         <FormFields>
           {clientField}
 
+          <PropertySelectContainer
+            client={client && client.value}
+            onSelect={this.onSelectProperty}
+          />
+
           <fieldset>
             <Heading tag="h3">{intlJobFormDetailsHeading}</Heading>
             <Field
@@ -835,6 +844,12 @@ class JobForm extends Component<JobFormProps & { intl: intlShape }, JobFormState
     this.setState({ clientsSearchText });
   };
 
+  onSelectProperty = (selection: { value: Property, label: string }) => {
+    const { dispatch, change } = this.props;
+    console.log(selection);
+    dispatch(change("property", selection));
+  };
+  
   onScheduleAdd = (e: SyntheticInputEvent<*>) => {
     this.setState({ scheduleLayer: true });
     e.preventDefault();
@@ -893,10 +908,7 @@ const selector = formValueSelector("job"); // <-- same as form name
 SelectingFormValuesJobForm = connect(
   (state): * => {
     // can select values individually
-    const anytime: boolean = selector(state, "anytime");
-    return {
-      anytime
-    };
+    return selector(state, "anytime", "client");
   }
 )(SelectingFormValuesJobForm);
 

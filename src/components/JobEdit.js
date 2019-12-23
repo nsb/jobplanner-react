@@ -11,7 +11,6 @@ import { jobSchemaDenormalize } from "../schemas";
 import Article from "grommet/components/Article";
 import JobForm, { invoicingReminderMap } from "./JobForm";
 import { updateJob } from "../actions/jobs";
-import { fetchClients } from "../actions/clients";
 import type { State as ReduxState } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
 import type { Dispatch } from "../types/Store";
@@ -75,17 +74,12 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = values => {
-    // get client Id
-    const {
-      client: { value: client }
-    } = values;
-
-    const { token, business, intl, updateJob } = this.props;
+    const { token, business, intl, updateJob, job } = this.props;
     updateJob(
       {
         ...values,
         business: business.id,
-        property: client.properties[0].id,
+        property: job.property,
         assigned: values.assigned.map(v => v.value),
         invoice_reminder: values.invoice_reminder.value
       },

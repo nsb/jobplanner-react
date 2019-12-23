@@ -2,9 +2,8 @@
 import { combineReducers } from "redux";
 import { flatMap } from "lodash/collection";
 import { union } from "lodash/array";
-import type { Action } from "../actions/properties";
 
-const isFetching = (state: boolean = true, action: Action): boolean => {
+const isFetching = (state: boolean = true, action): boolean => {
   switch (action.type) {
     case "FETCH_PROPERTIES":
       return true;
@@ -38,7 +37,7 @@ const isFetching = (state: boolean = true, action: Action): boolean => {
   }
 };
 
-const count = (state: number = 0, action: Action): number => {
+const count = (state: number = 0, action): number => {
   switch (action.type) {
     case "FETCH_PROPERTIES_SUCCESS":
       return action.meta.count;
@@ -51,7 +50,7 @@ const count = (state: number = 0, action: Action): number => {
   }
 };
 
-const next = (state: ?string = null, action: Action): ?string => {
+const next = (state: ?string = null, action): ?string => {
   switch (action.type) {
     case "FETCH_PROPERTIES_SUCCESS":
       return action.meta.next;
@@ -61,7 +60,7 @@ const next = (state: ?string = null, action: Action): ?string => {
   }
 };
 
-const result = (state: Array<number> = [], action: Action): Array<number> => {
+const result = (state: Array<number> = [], action): Array<number> => {
   switch (action.type) {
     case "CREATE_PROPERTIES_SUCCESS":
       return [...state, action.payload.result];

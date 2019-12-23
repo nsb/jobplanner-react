@@ -1,3 +1,5 @@
+// @flow
+
 export type Property = {
   id: number,
   address1: string,

@@ -39,7 +39,15 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
   };
 
   render() {
-    const { token, employees, client, business, intl, isFetching, fetchClients } = this.props;
+    const {
+      token,
+      employees,
+      client,
+      business,
+      intl,
+      isFetching,
+      fetchClients
+    } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
@@ -50,13 +58,15 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
           employees={employees}
           isFetching={isFetching}
           initialValues={{
-            recurrences: '',
+            recurrences: "",
             begins: new Date(),
             anytime: true,
             client: client,
             invoice_reminder: {
               value: "closed",
-              label: intl.formatMessage({id: oneoffInvoicingReminderMap["closed"]})
+              label: intl.formatMessage({
+                id: oneoffInvoicingReminderMap["closed"]
+              })
             }
           }}
           token={token}
@@ -67,7 +77,10 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
   }
 
   handleSubmit = values => {
-    const { client: { value: client } } = values;
+    const {
+      client: { value: client },
+      property: { value: property }
+    } = values;
     const { token, business, intl, createJob } = this.props;
 
     if (token) {
@@ -75,17 +88,23 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
         business,
         {
           ...values,
-          property: client.properties[0].id ? client.properties[0].id : client.properties[0], // client may not be normalized
+          property:
+            (property && property.id) ||
+            (client.properties[0].id
+              ? client.properties[0].id
+              : client.properties[0]), // client may not be normalized
           assigned: values.assigned && values.assigned.map(v => v.value),
           invoice_reminder: values.invoice_reminder.value
         },
         token
-      ).then((responseJob: Job) => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})})
-        history.push(`/${business.id}/jobs/${responseJob.id}`);
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})})
-      });
+      )
+        .then((responseJob: Job) => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+          history.push(`/${business.id}/jobs/${responseJob.id}`);
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        });
     }
   };
 
@@ -132,7 +151,12 @@ const mapStateToProps = (
         return employee.businesses.indexOf(businessId) > -1 ? employee : false;
       }),
     client: client
-      ? { value: client, label: client.is_business ? client.business_name : `${client.first_name} ${client.last_name}` }
+      ? {
+          value: client,
+          label: client.is_business
+            ? client.business_name
+            : `${client.first_name} ${client.last_name}`
+        }
       : undefined,
     isFetching: jobs.isFetching,
     fetchClients: ownProps.fetchClients,
@@ -149,5 +173,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(JobsAdd));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(JobsAdd));
