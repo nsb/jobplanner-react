@@ -15,10 +15,7 @@ const mapStateToProps = (
     onSelect
   }: {
     client: ?Client,
-    onSelect: ({
-      option: { value: Property, label: string },
-      value: { value: Property, label: string }
-    }) => void
+    onSelect: (selection: { value: Property, label: string } | null) => void
   }
 ): Props => ({
   properties: client

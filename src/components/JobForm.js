@@ -885,9 +885,8 @@ class JobForm extends Component<
     this.setState({ clientsSearchText });
   };
 
-  onSelectProperty = (selection: { value: Property, label: string }) => {
+  onSelectProperty = (selection: { value: Property, label: string } | null) => {
     const { dispatch, change } = this.props;
-    console.log(selection);
     dispatch(change("property", selection));
   };
 

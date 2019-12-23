@@ -16,10 +16,7 @@ const useStateWithCallback = (initialState, callback) => {
 
 export type Props = {
   properties: Array<Property>,
-  onSelect: ({
-    option: { value: Property, label: string },
-    value: { value: Property, label: string }
-  }) => void
+  onSelect: (selection: { value: Property, label: string } | null) => void
 };
 
 const PropertySelect = ({ properties, onSelect }: Props) => {
