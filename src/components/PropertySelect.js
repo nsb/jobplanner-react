@@ -28,7 +28,7 @@ const PropertySelect = ({ properties, onSelect }: Props) => {
   const mappedProperties = properties.map(property => {
     return {
       value: property,
-      label: property.address1
+      label: `${property.address1}, ${property.zip_code} ${property.city}`
     };
   });
 
@@ -36,14 +36,16 @@ const PropertySelect = ({ properties, onSelect }: Props) => {
     case 0:
       return null;
     case 1:
-      return                       <Box
-      margin={{ horizontal: "none", vertical: "small" }}
-    >
-      <div>{properties[0].address1}</div>
-      <div>{properties[0].address2}</div>
-      <div>{properties[0].zip_code} {properties[0].city}</div>
-      <div>{properties[0].country}</div>
-    </Box>;
+      return (
+        <Box margin={{ horizontal: "none", vertical: "small" }}>
+          <div>{properties[0].address1}</div>
+          <div>{properties[0].address2}</div>
+          <div>
+            {properties[0].zip_code} {properties[0].city}
+          </div>
+          <div>{properties[0].country}</div>
+        </Box>
+      );
     default:
       return (
         <FormField label={"Select a property for the job"} error={undefined}>
@@ -53,7 +55,7 @@ const PropertySelect = ({ properties, onSelect }: Props) => {
             multiple={false}
             options={mappedProperties}
             value={selected}
-            onChange={({option}) => setSelected(option)}
+            onChange={({ option }) => setSelected(option)}
           />
         </FormField>
       );
