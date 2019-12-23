@@ -124,27 +124,17 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   onEventDrop = ({
     event,
     start,
-    end
+    end,
+    isAllDay = false
   }: {
     event: Visit,
     start: Date,
-    end: Date
+    end: Date,
+    isAllDay: boolean
   }) => {
     const { dispatch, token, intl } = this.props;
-    const origBegins: Date = new Date(event.begins);
 
-    const timeChanged = !(
-      `${origBegins.getHours()}:${origBegins.getMinutes()}` ===
-      `${start.getHours()}:${start.getMinutes()}`
-    );
-
-    const dateChanged = !(
-      `${origBegins.getDate()}-${origBegins.getMonth()}-${origBegins.getFullYear()}` ===
-      `${start.getDate()}-${start.getMonth()}-${start.getFullYear()}`
-    );
-
-    const anytime =
-      !!(!timeChanged && event.anytime) || (!timeChanged && !dateChanged);
+    const anytime = isAllDay;
 
     dispatch(
       updateVisit(
