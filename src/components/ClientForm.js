@@ -261,9 +261,12 @@ const renderProperties = ({
         </Box>
       ))}
       <Box>
-        <button type="button" onClick={() => fields.push({})}>
-          Add Property
-        </button>
+        <Button
+          label="Add Property"
+          secondary={true}
+          fill={false}
+          onClick={() => fields.push({})}
+        />          
         {submitFailed && error && <span>{error}</span>}
       </Box>
     </Section>
