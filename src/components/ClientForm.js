@@ -298,7 +298,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
       dirty,
       submitting,
       onClose,
-      fields,
+      // fields,
       initialValues,
       isFetching,
       intl
