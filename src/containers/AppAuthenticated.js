@@ -7,8 +7,8 @@ import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
 import Toast from "grommet/components/Toast";
-import store from "../store";
-import { refresh } from "../actions/auth";
+// import store from "../store";
+// import { refresh } from "../actions/auth";
 import { verifyAuthAndFetchBusinesses } from "../actions";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
@@ -32,16 +32,16 @@ class AppAuthenticated extends Component {
     dispatch(verifyAuthAndFetchBusinesses(token));
   }
 
-  componentDidMount() {
-    this.intervalId = setInterval(() => {
-      let state = store.getState()
-      store.dispatch(refresh(state.auth.token));
-    }, 1000000);
-  }
+  // componentDidMount() {
+  //   this.intervalId = setInterval(() => {
+  //     let state = store.getState()
+  //     store.dispatch(refresh(state.auth.token));
+  //   }, 1000000);
+  // }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.intervalId);
+  // }
 
   renderToast = message => {
     const status = {
