@@ -17,15 +17,16 @@ import AppAuthenticatedNav from "../containers/AppAuthenticatedNav";
 import Businesses from "../components/Businesses";
 import BusinessAdd from "../components/BusinessAdd";
 
-class AppAuthenticated extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  isFetching: boolean,
+  token: string,
+  dispatch: Dispatch,
+  messages: Array<FlashMessageShape>
+}
+
+class AppAuthenticated extends Component<Props> {
   intervalId: number = -1;
-  props: {
-    isAuthenticated: boolean,
-    isFetching: boolean,
-    token: string,
-    dispatch: Dispatch,
-    messages: Array<FlashMessageShape>
-  };
 
   componentWillMount() {
     const { token, dispatch } = this.props;
