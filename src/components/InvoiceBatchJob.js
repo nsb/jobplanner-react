@@ -47,7 +47,7 @@ class InvoiceBatchClient extends Component<Props> {
         direction="column"
         align="start"
         separator="none"
-      // colorIndex="accent-1"
+        colorIndex="light-2"
       >
         <Box full="horizontal">
           <Box direction="row">

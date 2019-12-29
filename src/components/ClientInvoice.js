@@ -85,26 +85,28 @@ class ClientInvoice extends Component<Props, State> {
 
     return (
       <Box>
-        {client.is_business
-          ? client.business_name
-          : `${client.first_name} ${client.last_name}`}
-        <List onMore={undefined}>
-          {Array.from(jobSelection.keys()).map((id: number, index) => {
-            return (
-              <InvoiceBatchJobContainer
-                job={jobSelection.get(id)}
-                selected={new Map([[id, this.state.selected.get(id)]])}
-                onChange={this.onChange}
-                key={index}
-              />
-            );
-          })}
-        </List>
-        <ListPlaceholder
-          filteredTotal={jobCount}
-          unfilteredTotal={jobCount}
-          emptyMessage={intlEmptyMessage}
-        />
+        <Box pad="medium" full={"horizontal"}>
+          {client.is_business
+            ? client.business_name
+            : `${client.first_name} ${client.last_name}`}
+          <List onMore={undefined}>
+            {Array.from(jobSelection.keys()).map((id: number, index) => {
+              return (
+                <InvoiceBatchJobContainer
+                  job={jobSelection.get(id)}
+                  selected={new Map([[id, this.state.selected.get(id)]])}
+                  onChange={this.onChange}
+                  key={index}
+                />
+              );
+            })}
+          </List>
+          <ListPlaceholder
+            filteredTotal={jobCount}
+            unfilteredTotal={jobCount}
+            emptyMessage={intlEmptyMessage}
+          />
+        </Box>
         {submitForm}
       </Box>
     );
