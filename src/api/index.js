@@ -89,7 +89,7 @@ class Api {
       });
   }
 
-  static create(resource: string, item: {} | Array<any>, token: ?string) {
+  static create<T>(resource: string, item: T | Array<T>, token: ?string) {
     const request = new Request(`${API_ENDPOINT}/${API_VERSION}/${resource}/`, {
       method: "POST",
       headers: new Headers({

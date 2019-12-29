@@ -19,6 +19,7 @@ import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
+import type { Invoice } from "../actions/invoices";
 import type { ClientSelection } from "../utils/invoices";
 import type { ThunkAction } from "../types/Store";
 
@@ -68,7 +69,7 @@ export type Props = {
   jobs: Map<number, Job>,
   visits: Map<number, Visit>,
   createInvoiceAndLoadJobs: (
-    Array<{ client: number, visits: Array<number> }>,
+    Invoice | { client: number, visits: Array<number> } | Array<{ client: number, visits: Array<number> }>,
     string,
     Object
   ) => ThunkAction,

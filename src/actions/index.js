@@ -32,10 +32,16 @@ export const createVisitAndLoadJob = (
       return dispatch(fetchJob(token, visit.job));
     });
   };
-}
+};
 
 export const updateVisitAndLoadJob = (
-  visit: { id: number, begins: Date, ends: Date, anytime: boolean, job: number },
+  visit: {
+    id: number,
+    begins: Date,
+    ends: Date,
+    anytime: boolean,
+    job: number
+  },
   token: string,
   optimistic: boolean = false,
   patch: boolean = false
@@ -59,14 +65,22 @@ export const partialUpdateVisitAndLoadJob = (
 };
 
 export const createInvoiceAndLoadJobs = (
-  invoice: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
+  invoice:
+    | Invoice
+    | { client: number, visits: Array<number> }
+    | Array<Invoice>
+    | Array<{ client: number, visits: Array<number> }>,
   token: string,
   queryParams: Object = {}
 ): ThunkAction => {
   return (dispatch: Dispatch, getState: GetState) => {
-    return dispatch(createInvoice(invoice, token)).then((invoices) => {
-      const jobIds = [...new Set(invoices.flatMap(invoice => invoice.jobs))];
-      return dispatch(fetchJobs(token, {...queryParams, id__in: jobIds.join() }));
+    return dispatch(createInvoice(invoice, token)).then(invoices => {
+      const jobIds = invoices.length
+        ? [...new Set(invoices.flatMap(invoice => invoice.jobs))]
+        : invoices.jobs;
+      return dispatch(
+        fetchJobs(token, { ...queryParams, id__in: jobIds.join() })
+      );
     });
   };
 };

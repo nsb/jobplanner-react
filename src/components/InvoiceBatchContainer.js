@@ -8,6 +8,7 @@ import { jobsWithRequiresInvoicing } from "../selectors/jobSelectors";
 import { getClientById } from "../selectors/clientSelectors";
 import { getVisitById } from "../selectors/visitSelectors";
 import type { Business } from "../actions/businesses";
+import type { Invoice } from "../actions/invoices";
 import type { Props } from "./InvoiceBatch";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -15,7 +16,7 @@ import type { State as ReduxState } from "../types/State";
 const mapStateToProps = (
   state: ReduxState,
   ownProps: {
-    createInvoiceAndLoadJobs: (Array<{client: number, visits: Array<number>}>, string, Object) => ThunkAction,
+    createInvoiceAndLoadJobs: (Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>, string, Object) => ThunkAction,
     business: Business
   }
 ): Props => {
