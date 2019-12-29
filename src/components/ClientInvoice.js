@@ -8,20 +8,20 @@ import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
 import { ensureState } from "redux-optimistic-ui";
-import { clientState } from "../utils/invoices";
+import { jobStates } from "../utils/invoices";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
-import type { ClientSelection, JobSelection } from "../utils/invoices";
+import type { JobSelection } from "../utils/invoices";
 
 type Props = {
   token: ?string,
   onClose: Function,
   client: Client,
   jobs: Array<Job>,
-  selected: ClientSelection
+  selected: JobSelection
 };
 
 type State = {
@@ -31,11 +31,8 @@ type State = {
 class ClientInvoice extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const { client, selected } = props;
-    const clientSelection = selected.get(client.id);
-    this.state = {
-      selected: (clientSelection && clientSelection.jobs) || new Map()
-    };
+    const { selected } = props;
+    this.state = { selected };
   }
 
   render() {
@@ -51,14 +48,7 @@ class ClientInvoice extends Component<Props, State> {
             return (
               <InvoiceBatchJobContainer
                 job={job}
-                selected={
-                  new Map([
-                    [
-                      job.id,
-                      this.state.selected && this.state.selected.get(job.id)
-                    ]
-                  ])
-                }
+                selected={new Map([[job.id, this.state.selected.get(job.id)]])}
                 onChange={this.onChange}
                 key={index}
               />
@@ -115,7 +105,7 @@ const mapStateToProps = (
 
   return {
     token: auth.token,
-    selected: clientState(client, jobSelection, visitSelection),
+    selected: jobStates(jobSelection, visitSelection),
     jobs: jobsForClient,
     onClose,
     client

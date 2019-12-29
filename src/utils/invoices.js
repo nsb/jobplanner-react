@@ -43,6 +43,24 @@ export const jobState = (
   ]);
 };
 
+export const jobStates = (
+  jobs: Map<number, Job>,
+  visits: Map<number, Visit>
+): JobSelection => {
+  const jobSelections: Array<JobSelection> = [];
+  Array.from(jobs.keys()).forEach((jobId: number) => {
+    const job = jobs.get(jobId);
+    if (job) {
+      jobSelections.push(jobState(job, visits));
+    }
+  });
+
+  return jobSelections.reduce(
+    (acc, jobSelection: JobSelection) => new Map([...acc, ...jobSelection]),
+    new Map()
+  );
+};
+
 export const clientState = (
   client: ?Client,
   jobs: Map<number, Job>,
