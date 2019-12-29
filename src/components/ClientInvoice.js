@@ -32,8 +32,8 @@ type Props = {
   token: ?string,
   onClose: () => void,
   client: Client,
-  jobs: Array<Job>,
-  selected: JobSelection,
+  jobSelection: Map<number, Job>,
+  visitSelection: Map<number, Visit>,
   isFetching: boolean,
   createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction
 };
@@ -45,14 +45,15 @@ type State = {
 class ClientInvoice extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const { selected } = props;
-    this.state = { selected };
+    const { jobSelection, visitSelection } = props;
+    this.state = { selected: jobStates(jobSelection, visitSelection) };
   }
 
   render() {
-    const { client, jobs, selected, isFetching } = this.props;
+    const { client, jobSelection, isFetching } = this.props;
 
-    const jobCount = selected.size;
+    const jobCount = jobSelection.size;
+    const { selected } = this.state;
     const hasSelected = Array.from(selected.keys()).some((jobId: number) => {
       const selection = selected.get(jobId);
       return selection && selection.selected;
@@ -88,11 +89,11 @@ class ClientInvoice extends Component<Props, State> {
           ? client.business_name
           : `${client.first_name} ${client.last_name}`}
         <List onMore={undefined}>
-          {jobs.map((job: Job, index) => {
+          {Array.from(jobSelection.keys()).map((id: number, index) => {
             return (
               <InvoiceBatchJobContainer
-                job={job}
-                selected={new Map([[job.id, this.state.selected.get(job.id)]])}
+                job={jobSelection.get(id)}
+                selected={new Map([[id, this.state.selected.get(id)]])}
                 onChange={this.onChange}
                 key={index}
               />
@@ -148,7 +149,7 @@ const mapStateToProps = (
     .map((Id: number): Array<Job> => {
       return ensureState(entities).jobs[Id];
     })
-    .filter(job => job.client === client.id);
+    .filter(job => job.client === client.id && job.visits.length);
 
   const jobSelection: Map<number, Job> = jobsForClient.reduce(
     (acc: Map<number, Job>, job: Job) => {
@@ -171,9 +172,9 @@ const mapStateToProps = (
 
   return {
     token: auth.token,
-    selected: jobStates(jobSelection, visitSelection),
-    jobs: jobsForClient,
     isFetching: invoices.isFetching,
+    jobSelection,
+    visitSelection,
     createInvoiceAndLoadJobs,
     onClose,
     client
