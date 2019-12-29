@@ -7,8 +7,7 @@ import CheckBox from 'grommet/components/CheckBox';
 import Timestamp from "grommet/components/Timestamp";
 import Value from 'grommet/components/Value';
 import type { Visit } from "../actions/visits";
-
-export type VisitSelection = Map<number, boolean>;
+import type { VisitSelection } from "../utils/invoices";
 
 export type Props = {
   visit: Visit,

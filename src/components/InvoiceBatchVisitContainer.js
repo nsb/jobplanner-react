@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import InvoiceBatchVisit from "./InvoiceBatchVisit";
 import type { Props } from "./InvoiceBatchVisit";
 import type { Visit } from "../actions/visits";
-import type { VisitSelection } from "./InvoiceBatchVisit";
+import type { VisitSelection } from "../utils/invoices";
 import type { State as ReduxState } from "../types/State";
 
 const mapStateToProps = (

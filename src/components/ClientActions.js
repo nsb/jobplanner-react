@@ -10,6 +10,7 @@ import Button from "grommet/components/Button";
 import SkipLinkAnchor from "grommet/components/SkipLinkAnchor";
 import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
+import MoneyIcon from "grommet/components/icons/base/Money";
 import TrashIcon from "grommet/components/icons/base/Trash";
 import ClientRemove from "./ClientRemove";
 import type { Client } from "../actions/clients";
@@ -19,6 +20,14 @@ const intlEdit = (
     id="clientActions.edit"
     description="Client actions edit"
     defaultMessage="Edit"
+  />
+);
+
+const intlInvoice = (
+  <FormattedMessage
+    id="clientActions.invoice"
+    description="Client actions invoice"
+    defaultMessage="Invoice"
   />
 );
 
@@ -38,10 +47,11 @@ const LAYERS = {
 type Props = {
   client: Client,
   onClose?: () => void,
-  onEdit: () => void
+  onEdit: () => void,
+  onInvoice: () => void
 };
 
-const ClientActions = ({ client, onEdit, onClose }: Props) => {
+const ClientActions = ({ client, onEdit, onInvoice, onClose }: Props) => {
   const [layerName, setLayerName] = useState(undefined)
 
   useEffect(() => {
@@ -86,6 +96,14 @@ const ClientActions = ({ client, onEdit, onClose }: Props) => {
             label={intlEdit}
             onClick={onEdit}
             a11yTitle={intlEdit}
+          />
+          <Button
+            align="start"
+            plain={true}
+            icon={<MoneyIcon />}
+            label={intlInvoice}
+            onClick={onInvoice}
+            a11yTitle={intlInvoice}
           />
           <Button
             align="start"

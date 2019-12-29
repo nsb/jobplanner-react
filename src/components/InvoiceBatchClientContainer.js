@@ -6,7 +6,7 @@ import { jobsWithRequiresInvoicing } from "../selectors/jobSelectors";
 import type { Props } from "./InvoiceBatchClient";
 import type { Client } from "../actions/clients";
 import type { State as ReduxState } from "../types/State";
-import type { ClientSelection } from "./InvoiceBatchClient";
+import type { ClientSelection } from "../utils/invoices";
 
 const mapStateToProps = (
   state: ReduxState,

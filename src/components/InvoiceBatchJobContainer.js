@@ -1,29 +1,30 @@
 // @flow
 
 import { connect } from "react-redux";
+import { ensureState } from "redux-optimistic-ui";
 import InvoiceBatchJob from "./InvoiceBatchJob";
-import { getVisitById } from "../selectors/visitSelectors";
 import type { Props } from "./InvoiceBatchJob";
 import type { Job } from "../actions/jobs";
-import type { Visit } from "../actions/visits";
 import type { State as ReduxState } from "../types/State";
-import type { JobSelection } from "./InvoiceBatchJob";
+import type { JobSelection } from "../utils/invoices";
 
 const mapStateToProps = (
-  state: ReduxState,
-  ownProps: {
+  { entities }: ReduxState,
+  {
+    job,
+    selected,
+    onChange
+  }: {
     job: Job,
-    visits: Array<Visit>,
     selected: JobSelection,
-    onChange: (JobSelection) => void
+    onChange: JobSelection => void
   }
 ): Props => {
-
   return {
-    job: ownProps.job,
-    visits: ownProps.job.visits.map((visit) => getVisitById(state, { id: visit })),
-    selected: ownProps.selected,
-    onChange: ownProps.onChange
+    visits: job.visits.map(visitId => ensureState(entities).visits[visitId]),
+    job,
+    selected,
+    onChange
   };
 };
 

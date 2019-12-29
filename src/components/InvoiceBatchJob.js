@@ -9,7 +9,7 @@ import CheckBox from 'grommet/components/CheckBox';
 import InvoiceBatchVisitContainer from "./InvoiceBatchVisitContainer";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
-import type { VisitSelection } from "./InvoiceBatchVisit";
+import type { JobSelection, VisitSelection } from "../utils/invoices";
 
 const intlRecurringJob = (id: number) => (
   <FormattedMessage
@@ -28,8 +28,6 @@ const intlOneOffJob = (id: number) => (
     values={{ id }}
   />
 );
-
-export type JobSelection = Map<number, { selected: boolean, visits: VisitSelection }>;
 
 export type Props = {
   job: Job,

@@ -19,6 +19,7 @@ import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Spinning from "grommet/components/icons/Spinning";
 import ClientActions from "./ClientActions";
 import ClientEdit from "./ClientEdit"
+import ClientInvoice from "./ClientInvoice";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import JobListItem from "./JobListItem";
@@ -84,13 +85,13 @@ export type Props = {
 
 type State = {
   showSidebarWhenSingle: boolean,
-  edit: boolean
+  view: "edit" | "invoice" | null
 };
 
 class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
     showSidebarWhenSingle: false,
-    edit: false
+    view: null
   };
 
   componentDidMount() {
@@ -122,13 +123,17 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
       isFetching
     } = this.props;
 
-    const { edit } = this.state;
+    const { view } = this.state;
 
     let onSidebarClose;
     let sidebarControl;
 
-    if ( edit ) {
+    if ( view === "edit" ) {
       return <ClientEdit client={client} onClose={this.onClose} />
+    }
+    
+    if ( view === "invoice" ) {
+      return <ClientInvoice client={client} onClose={this.onClose} />
     }
 
     if ("single" === responsive) {
@@ -144,6 +149,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
         client={client}
         onClose={onSidebarClose}
         onEdit={this.onEdit}
+        onInvoice={this.onInvoice}
       />
     );
 
@@ -310,12 +316,16 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   }
 
   onClose = () => {
-    this.setState({ edit: false })
+    this.setState({ view: null });
   };
 
   onEdit = () => {
-    this.setState({ edit: true })
+    this.setState({ view: "edit" });
   };
+
+  onInvoice = () => {
+    this.setState({ view: "invoice" });
+  }
 
   onClick = (e: SyntheticEvent<>, job: Job) => {
     const { push, business } = this.props;
