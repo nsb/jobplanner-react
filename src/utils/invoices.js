@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
-import type { Invoice } from "../actions/invoices";
+import type { InvoiceRequest } from "../actions/invoices";
 
 export const intlCreateButton = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -22,10 +22,6 @@ export const intlEmptyMessage = ( // eslint-disable-line no-unused-vars
     defaultMessage="Nothing to invoice"
   />
 );
-
-export type InvoiceRequest =
-  | Invoice
-  | { client: number, visits: Array<number> };
 
 export type VisitSelection = Map<number, boolean>;
 export type JobSelection = Map<

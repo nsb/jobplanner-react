@@ -23,7 +23,8 @@ import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
-import type { ClientSelection, InvoiceRequest } from "../utils/invoices";
+import type { InvoiceRequest } from "../actions/invoices";
+import type { ClientSelection } from "../utils/invoices";
 import type { ThunkAction } from "../types/Store";
 
 const intlTitle = (

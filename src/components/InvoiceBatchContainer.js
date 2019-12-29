@@ -9,7 +9,7 @@ import { getClientById } from "../selectors/clientSelectors";
 import { getVisitById } from "../selectors/visitSelectors";
 import type { Business } from "../actions/businesses";
 import type { Props } from "./InvoiceBatch";
-import type { InvoiceRequest } from "../utils/invoices";
+import type { InvoiceRequest } from "../actions/invoices";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 

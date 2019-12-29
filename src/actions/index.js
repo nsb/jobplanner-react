@@ -8,7 +8,7 @@ import { createInvoice } from "./invoices";
 import type { Dispatch, GetState, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
 import type { Visit } from "./visits";
-import type { InvoiceRequest } from "../utils/invoices";
+import type { InvoiceRequest } from "./invoices";
 
 export const verifyAuthAndFetchBusinesses = (
   token: string

@@ -54,7 +54,11 @@ export type Invoice = {
   paid: boolean
 };
 
-export type InvoicesMap = { [id: number]: Invoice | {client: number, visits: Array<number>} };
+export type InvoiceRequest =
+  | Invoice
+  | { client: number, visits: Array<number> };
+
+export type InvoicesMap = { [id: number]: InvoiceRequest };
 
 export type InvoicesResponse = {
   results: Array<Invoice>,
@@ -94,7 +98,7 @@ type FetchInvoiceFailureAction = {
 
 type CreateInvoiceAction = {
   type: typeof CREATE_INVOICE,
-  payload: Invoice | Array<Invoice> | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>
+  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>
 };
 
 type CreateInvoiceSuccessAction = {
@@ -104,13 +108,13 @@ type CreateInvoiceSuccessAction = {
 
 type CreateInvoiceFailureAction = {
   type: typeof CREATE_INVOICE_FAILURE,
-  payload: Invoice | Array<Invoice> | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
+  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>,
   error: string
 };
 
 type UpdateInvoiceAction = {
   type: typeof UPDATE_INVOICE,
-  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}> | { id: number }
+  payload: InvoiceRequest | Array<{client: number, visits: Array<number>}> | { id: number }
 };
 
 type UpdateInvoiceSuccessAction = {
@@ -255,7 +259,7 @@ export const fetchInvoice = (token: string, id: number): ThunkAction => {
   };
 };
 
-export const createInvoiceRequest = (payload: Invoice | Array<Invoice> | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>): CreateInvoiceAction => {
+export const createInvoiceRequest = (payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>): CreateInvoiceAction => {
   return {
     type: CREATE_INVOICE,
     payload
@@ -263,7 +267,7 @@ export const createInvoiceRequest = (payload: Invoice | Array<Invoice> | {client
 };
 
 export const createInvoiceSuccess = (
-  payload: Invoice | Array<Invoice> | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>
+  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>
 ): CreateInvoiceSuccessAction => {
   return {
     type: CREATE_INVOICE_SUCCESS,
@@ -273,7 +277,7 @@ export const createInvoiceSuccess = (
 };
 
 export const createInvoiceError = (
-  payload: Invoice | Array<Invoice> | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
+  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>,
   error: string
 ): CreateInvoiceFailureAction => {
   return {
@@ -284,7 +288,7 @@ export const createInvoiceError = (
 };
 
 export const createInvoice = (
-  invoice: Invoice | Array<Invoice> | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}>,
+  invoice: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>,
   token: string
 ): ThunkAction => {
   return (dispatch: Dispatch): Promise<Invoice | Array<Invoice> | string> => {
@@ -310,7 +314,7 @@ export const createInvoice = (
 };
 
 export const updateInvoiceRequest = (
-  payload: Invoice | {client: number, visits: Array<number>} | Array<{client: number, visits: Array<number>}> | { id: number }
+  payload: InvoiceRequest | Array<{client: number, visits: Array<number>}> | { id: number }
 ): UpdateInvoiceAction => {
   return {
     type: UPDATE_INVOICE,

@@ -26,7 +26,8 @@ import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
-import type { JobSelection, InvoiceRequest } from "../utils/invoices";
+import type { JobSelection } from "../utils/invoices";
+import type { InvoiceRequest } from "../actions/invoices";
 
 type Props = {
   token: ?string,
