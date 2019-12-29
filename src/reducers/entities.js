@@ -1,13 +1,14 @@
+// @flow
+
 import { merge } from "lodash/object";
+import { combineReducers } from "redux";
+import { FETCH_JOBS_SUCCESS } from "../actions/jobs";
 import type {
   Action as BusinessesAction,
   BusinessesMap
 } from "../actions/businesses";
 import type { Action as ClientsAction, ClientsMap } from "../actions/clients";
-import type {
-  Action as PropertiesAction,
-  PropertiesMap
-} from "../actions/properties";
+import type { PropertiesMap } from "../actions/properties";
 import type { Action as JobsAction, JobsMap } from "../actions/jobs";
 import type { Action as VisitsAction, VisitsMap } from "../actions/visits";
 import type {
@@ -58,7 +59,6 @@ export type State = {
 type Action =
   | BusinessesAction
   | ClientsAction
-  | PropertiesAction
   | JobsAction
   | VisitsAction
   | ServicesAction
@@ -66,6 +66,22 @@ type Action =
   | EmployeesAction
   | AsyncTasksAction
   | InvoicesAction;
+
+const jobsReducer: (JobsMap, Action) => JobsMap = (
+  state: JobsMap = {},
+  action: Action
+): JobsMap => {
+  let newState = { ...state };
+  if (action.type === FETCH_JOBS_SUCCESS) {
+    for (let [jobId, job] of Object.entries(action.payload.entities.jobs)) {
+      // $FlowFixMe Flow bug see https://github.com/facebook/flow/issues/5838
+      newState[jobId].visits = job.visits;
+    }
+  }
+  return state;
+};
+
+const identityReducer = (state = {}, action) => state;
 
 // Updates an entity cache in response to any action with entities.
 const entities: (State, Action) => State = (
@@ -84,11 +100,24 @@ const entities: (State, Action) => State = (
   },
   action: Action
 ): State => {
+  let newState = state;
   if (action.payload && action.payload.entities) {
-    return merge({}, state, action.payload.entities);
+    newState = merge({}, state, action.payload.entities);
   }
 
-  return state;
+  return combineReducers({
+    businesses: identityReducer,
+    clients: identityReducer,
+    properties: identityReducer,
+    jobs: jobsReducer,
+    visits: identityReducer,
+    services: identityReducer,
+    fields: identityReducer,
+    employees: identityReducer,
+    lineItems: identityReducer,
+    asyncTasks: identityReducer,
+    invoices: identityReducer
+  })(newState, action);
 };
 
 export default entities;

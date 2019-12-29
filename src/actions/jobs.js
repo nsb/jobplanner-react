@@ -6,7 +6,7 @@ import { jobListSchema, jobSchema } from "../schemas";
 import jobsApi from "../api";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
-import type { Property } from "../actions/properties";
+import type { PropertiesMap } from "../actions/properties";
 
 //Create new job
 export const CREATE_JOB: "CREATE_JOB" = "CREATE_JOB";
@@ -67,11 +67,10 @@ export type Job = {
   completed_visit_count: number,
   has_late_visit: boolean,
   status: JobStatus,
-  // next_visit: Date,
   visits: Array<number>
 };
 
-export type JobsMap = { [id: number]: Job };
+export type JobsMap = { [id: string]: Job };
 
 export type JobsResponse = {
   results: Array<Job>,
@@ -118,8 +117,8 @@ type FetchJobSuccessAction = {
   type: typeof FETCH_JOB_SUCCESS,
   payload: {
     entities: {
-      properties: { [id: number]: Property },
-      jobs: { [id: number]: Job }
+      properties: PropertiesMap,
+      jobs: JobsMap
     },
     result: number
   }
