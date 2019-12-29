@@ -104,3 +104,27 @@ export const batchState = (
     new Map()
   );
 };
+
+export const getInvoiceForJobSelection = (
+  clientId: number,
+  jobs: JobSelection
+): { client: number, visits: Array<number> } => {
+  let visitIds = [];
+
+  let selectedJobIds = Array.from(jobs.keys()).filter((jobId: number) => {
+    const job = jobs.get(jobId);
+    return job && job.selected;
+  });
+  for (let jobId: number of selectedJobIds) {
+    const jobSelection = jobs.get(jobId);
+    let visits = (jobSelection && jobSelection.visits) || new Map();
+    let selectedVisitIds = Array.from(visits.keys()).filter((visitId: number) =>
+      visits.get(visitId)
+    );
+    visitIds.push(...selectedVisitIds);
+  }
+  return {
+    client: clientId,
+    visits: visitIds.map((id: number) => parseInt(id, 10))
+  };
+};

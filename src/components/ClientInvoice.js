@@ -18,7 +18,7 @@ import type { JobSelection } from "../utils/invoices";
 
 type Props = {
   token: ?string,
-  onClose: Function,
+  onClose: () => void,
   client: Client,
   jobs: Array<Job>,
   selected: JobSelection
@@ -67,7 +67,7 @@ class ClientInvoice extends Component<Props, State> {
 }
 
 const mapStateToProps = (
-  state: ReduxState,
+  { auth, entities, jobs }: ReduxState,
   {
     onClose,
     client
@@ -76,8 +76,6 @@ const mapStateToProps = (
     client: Client
   }
 ): Props => {
-  const { auth, entities, jobs } = state;
-
   const jobsForClient: Array<Job> = jobs.result
     .map((Id: number): Array<Job> => {
       return ensureState(entities).jobs[Id];

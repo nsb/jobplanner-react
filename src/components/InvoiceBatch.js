@@ -14,7 +14,7 @@ import Notification from "grommet/components/Notification";
 import NavControl from "./NavControl";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import { intlFormSavingLabel } from "../i18n";
-import { batchState } from "../utils/invoices";
+import { batchState, getInvoiceForJobSelection } from "../utils/invoices";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
@@ -219,27 +219,10 @@ class InvoiceBatch extends Component<Props, State> {
     );
 
     for (let clientId: number of selectedClientIds) {
-      let visitIds = [];
       const clientSelection = selected.get(clientId);
       if (clientSelection) {
         let jobs = (clientSelection && clientSelection.jobs) || new Map();
-        let selectedJobIds = Array.from(jobs.keys()).filter((jobId: number) => {
-          const job = jobs.get(jobId);
-          return job && job.selected;
-        });
-        for (let jobId: number of selectedJobIds) {
-          const jobSelection =
-            clientSelection && clientSelection.jobs.get(jobId);
-          let visits = (jobSelection && jobSelection.visits) || new Map();
-          let selectedVisitIds = Array.from(
-            visits.keys()
-          ).filter((visitId: number) => visits.get(visitId));
-          visitIds.push(...selectedVisitIds);
-        }
-        invoices.push({
-          client: parseInt(clientId, 10),
-          visits: visitIds.map(id => parseInt(id, 10))
-        });
+        invoices.push(getInvoiceForJobSelection(clientId, jobs));
       }
     }
 
