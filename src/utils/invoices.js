@@ -1,8 +1,26 @@
 // @flow
 
+import React from "react";
+import { FormattedMessage } from "react-intl";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
+
+export const intlCreateButton = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="invoices.createButton"
+    description="Invoices create button"
+    defaultMessage="Create invoices"
+  />
+);
+
+export const intlEmptyMessage = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="invoices.emptyMessage"
+    description="Invoices empty message"
+    defaultMessage="Nothing to invoice"
+  />
+);
 
 export type VisitSelection = Map<number, boolean>;
 export type JobSelection = Map<

@@ -6,14 +6,26 @@ import { connect } from "react-redux";
 // import { addSuccess, addError } from "redux-flash-messages";
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
+import Form from "grommet/components/Form";
+import Footer from "grommet/components/Footer";
+import Button from "grommet/components/Button";
+import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import BusyIcon from "grommet/components/icons/Spinning";
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
+import { createInvoiceAndLoadJobs } from "../actions/index";
+import { intlFormSavingLabel } from "../i18n";
 import { ensureState } from "redux-optimistic-ui";
-import { jobStates } from "../utils/invoices";
+import {
+  jobStates,
+  getInvoiceForJobSelection,
+  intlCreateButton,
+  intlEmptyMessage
+} from "../utils/invoices";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
 import type { State as ReduxState } from "../types/State";
-import type { Dispatch } from "../types/Store";
+import type { Dispatch, ThunkAction } from "../types/Store";
 import type { JobSelection } from "../utils/invoices";
 
 type Props = {
@@ -21,7 +33,13 @@ type Props = {
   onClose: () => void,
   client: Client,
   jobs: Array<Job>,
-  selected: JobSelection
+  selected: JobSelection,
+  isFetching: boolean,
+  createInvoiceAndLoadJobs: (
+    Array<{ client: number, visits: Array<number> }>,
+    string,
+    Object
+  ) => ThunkAction
 };
 
 type State = {
@@ -36,7 +54,37 @@ class ClientInvoice extends Component<Props, State> {
   }
 
   render() {
-    const { client, jobs } = this.props;
+    const { client, jobs, selected, isFetching } = this.props;
+
+    const jobCount = selected.size;
+    const hasSelected = Array.from(selected.keys()).some((jobId: number) => {
+      const selection = selected.get(jobId);
+      return selection && selection.selected;
+    });
+
+    let submitForm;
+    submitForm = isFetching ? (
+      <Box
+        direction="row"
+        align="center"
+        pad={{ horizontal: "medium", between: "small" }}
+      >
+        <BusyIcon />
+        <span className="secondary">{intlFormSavingLabel}</span>
+      </Box>
+    ) : (
+      <Box pad={{ horizontal: "medium" }}>
+        <Form onSubmit={this.onSubmit}>
+          <Footer pad={{ vertical: "medium" }}>
+            <Button
+              label={intlCreateButton}
+              type={!hasSelected ? undefined : "submit"}
+              primary={true}
+            />
+          </Footer>
+        </Form>
+      </Box>
+    );
 
     return (
       <Box>
@@ -55,6 +103,12 @@ class ClientInvoice extends Component<Props, State> {
             );
           })}
         </List>
+        <ListPlaceholder
+          filteredTotal={jobCount}
+          unfilteredTotal={jobCount}
+          emptyMessage={intlEmptyMessage}
+        />
+        {submitForm}
       </Box>
     );
   }
@@ -64,16 +118,38 @@ class ClientInvoice extends Component<Props, State> {
       selected: new Map([...this.state.selected, ...selection])
     });
   };
+
+  onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const { client, token, createInvoiceAndLoadJobs } = this.props;
+    const { selected } = this.state;
+
+    const invoice = getInvoiceForJobSelection(client.id, selected);
+
+    if (token) {
+      createInvoiceAndLoadJobs(invoice, token, {
+        business: client.business,
+        limit: 200
+      });
+    }
+  };
 }
 
 const mapStateToProps = (
-  { auth, entities, jobs }: ReduxState,
+  { auth, entities, jobs, invoices }: ReduxState,
   {
     onClose,
-    client
+    client,
+    createInvoiceAndLoadJobs
   }: {
     onClose: Function,
-    client: Client
+    client: Client,
+    createInvoiceAndLoadJobs: (
+      Array<{ client: number, visits: Array<number> }>,
+      string,
+      Object
+    ) => ThunkAction
   }
 ): Props => {
   const jobsForClient: Array<Job> = jobs.result
@@ -105,12 +181,19 @@ const mapStateToProps = (
     token: auth.token,
     selected: jobStates(jobSelection, visitSelection),
     jobs: jobsForClient,
+    isFetching: invoices.isFetching,
+    createInvoiceAndLoadJobs,
     onClose,
     client
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({}, dispatch);
+  bindActionCreators(
+    {
+      createInvoiceAndLoadJobs
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClientInvoice);

@@ -14,7 +14,7 @@ import Notification from "grommet/components/Notification";
 import NavControl from "./NavControl";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import { intlFormSavingLabel } from "../i18n";
-import { batchState, getInvoiceForJobSelection } from "../utils/invoices";
+import { batchState, getInvoiceForJobSelection, intlCreateButton } from "../utils/invoices";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
@@ -51,14 +51,6 @@ const intlEmptyMessage = (
     id="invoices.emptyMessage"
     description="Invoices empty message"
     defaultMessage="Nothing to invoice"
-  />
-);
-
-const intlCreateButton = (
-  <FormattedMessage
-    id="invoices.createButton"
-    description="Invoices create button"
-    defaultMessage="Create invoices"
   />
 );
 
