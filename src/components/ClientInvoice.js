@@ -27,7 +27,7 @@ import type { Visit } from "../actions/visits";
 import type { Invoice } from "../actions/invoices";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
-import type { JobSelection } from "../utils/invoices";
+import type { JobSelection, InvoiceRequest } from "../utils/invoices";
 
 type Props = {
   token: ?string,
@@ -36,11 +36,7 @@ type Props = {
   jobs: Array<Job>,
   selected: JobSelection,
   isFetching: boolean,
-  createInvoiceAndLoadJobs: (
-    Invoice | { client: number, visits: Array<number> },
-    string,
-    Object
-  ) => ThunkAction
+  createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction
 };
 
 type State = {
@@ -146,11 +142,7 @@ const mapStateToProps = (
   }: {
     onClose: Function,
     client: Client,
-    createInvoiceAndLoadJobs: (
-      Invoice | { client: number, visits: Array<number> },
-      string,
-      Object
-    ) => ThunkAction
+    createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction
   }
 ): Props => {
   const jobsForClient: Array<Job> = jobs.result

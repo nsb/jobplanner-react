@@ -14,13 +14,17 @@ import Notification from "grommet/components/Notification";
 import NavControl from "./NavControl";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import { intlFormSavingLabel } from "../i18n";
-import { batchState, getInvoiceForJobSelection, intlCreateButton } from "../utils/invoices";
+import {
+  batchState,
+  getInvoiceForJobSelection,
+  intlCreateButton
+} from "../utils/invoices";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
 import type { Invoice } from "../actions/invoices";
-import type { ClientSelection } from "../utils/invoices";
+import type { ClientSelection, InvoiceRequest } from "../utils/invoices";
 import type { ThunkAction } from "../types/Store";
 
 const intlTitle = (
@@ -69,7 +73,7 @@ export type Props = {
   jobs: Map<number, Job>,
   visits: Map<number, Visit>,
   createInvoiceAndLoadJobs: (
-    Invoice | { client: number, visits: Array<number> } | Array<{ client: number, visits: Array<number> }>,
+    InvoiceRequest | Array<InvoiceRequest>,
     string,
     Object
   ) => ThunkAction,
@@ -203,7 +207,7 @@ class InvoiceBatch extends Component<Props, State> {
 
     const { selected } = this.state;
 
-    let invoices: Array<{ client: number, visits: Array<number> }> = [];
+    let invoices: Array<InvoiceRequest> = [];
     let selectedClientIds = Array.from(selected.keys()).filter(
       (clientId: number) => {
         const selection = selected.get(clientId);

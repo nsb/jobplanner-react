@@ -9,6 +9,7 @@ import type { Dispatch, GetState, ThunkAction } from "../types/Store";
 import type { Business } from "./businesses";
 import type { Visit } from "./visits";
 import type { Invoice } from "./invoices";
+import type { InvoiceRequest } from "../utils/invoices";
 
 export const verifyAuthAndFetchBusinesses = (
   token: string
@@ -65,11 +66,7 @@ export const partialUpdateVisitAndLoadJob = (
 };
 
 export const createInvoiceAndLoadJobs = (
-  invoice:
-    | Invoice
-    | { client: number, visits: Array<number> }
-    | Array<Invoice>
-    | Array<{ client: number, visits: Array<number> }>,
+  invoice: InvoiceRequest | Array<InvoiceRequest>,
   token: string,
   queryParams: Object = {}
 ): ThunkAction => {
