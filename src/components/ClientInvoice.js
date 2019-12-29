@@ -24,7 +24,6 @@ import {
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
-import type { Invoice } from "../actions/invoices";
 import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { JobSelection, InvoiceRequest } from "../utils/invoices";
