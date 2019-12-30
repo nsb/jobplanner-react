@@ -4,13 +4,18 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 // import { addSuccess, addError } from "redux-flash-messages";
+import Article from "grommet/components/Article";
 import Box from "grommet/components/Box";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
+import Anchor from "grommet/components/Anchor";
 import List from "grommet/components/List";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from "grommet/components/icons/Spinning";
+import CloseIcon from "grommet/components/icons/base/Close";
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
 import { createInvoiceAndLoadJobs } from "../actions/index";
 import { intlFormSavingLabel } from "../i18n";
@@ -28,6 +33,7 @@ import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { JobSelection } from "../utils/invoices";
 import type { InvoiceRequest } from "../actions/invoices";
+import type { Responsive } from "../actions/nav";
 
 type Props = {
   token: ?string,
@@ -36,7 +42,8 @@ type Props = {
   jobSelection: Map<number, Job>,
   visitSelection: Map<number, Visit>,
   isFetching: boolean,
-  createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction
+  createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction,
+  responsive: Responsive
 };
 
 type State = {
@@ -51,7 +58,7 @@ class ClientInvoice extends Component<Props, State> {
   }
 
   render() {
-    const { client, jobSelection, isFetching } = this.props;
+    const { jobSelection, isFetching, onClose } = this.props;
 
     const jobCount = jobSelection.size;
     const { selected } = this.state;
@@ -85,11 +92,15 @@ class ClientInvoice extends Component<Props, State> {
     );
 
     return (
-      <Box>
+      <Article pad={{ horizontal: "medium" }} primary={true}>
+        <Header size="large" justify="between" pad="medium">
+          <Heading tag="h2" margin="none" strong={true}>
+            Invoice
+          </Heading>
+          <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
+        </Header>
         <Box pad="medium" full={"horizontal"}>
-          {client.is_business
-            ? client.business_name
-            : `${client.first_name} ${client.last_name}`}
+          <Heading tag="h3">Select the jobs you want to invoice</Heading>
           <List onMore={undefined}>
             {Array.from(jobSelection.keys()).map((id: number, index) => {
               return (
@@ -109,7 +120,7 @@ class ClientInvoice extends Component<Props, State> {
           />
         </Box>
         {submitForm}
-      </Box>
+      </Article>
     );
   }
 
@@ -137,7 +148,7 @@ class ClientInvoice extends Component<Props, State> {
 }
 
 const mapStateToProps = (
-  { auth, entities, jobs, invoices }: ReduxState,
+  { auth, entities, jobs, invoices, nav }: ReduxState,
   {
     onClose,
     client,
@@ -176,6 +187,7 @@ const mapStateToProps = (
   return {
     token: auth.token,
     isFetching: invoices.isFetching,
+    responsive: nav.responsive,
     jobSelection,
     visitSelection,
     createInvoiceAndLoadJobs,
