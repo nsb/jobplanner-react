@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 // import { addSuccess, addError } from "redux-flash-messages";
 import Article from "grommet/components/Article";
 import Box from "grommet/components/Box";
@@ -13,12 +14,16 @@ import List from "grommet/components/List";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
 import Button from "grommet/components/Button";
+import Notification from "grommet/components/Notification";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from "grommet/components/icons/Spinning";
 import CloseIcon from "grommet/components/icons/base/Close";
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
 import { createInvoiceAndLoadJobs } from "../actions/index";
-import { intlFormSavingLabel } from "../i18n";
+import {
+  intlFormSavingLabel,
+  intlInvoiceAccountingSystemNotification
+} from "../i18n";
 import { ensureState } from "redux-optimistic-ui";
 import {
   jobStates,
@@ -35,6 +40,27 @@ import type { JobSelection } from "../utils/invoices";
 import type { InvoiceRequest } from "../actions/invoices";
 import type { Responsive } from "../actions/nav";
 
+const intlHeaderText = (client: Client) => (
+  <FormattedMessage
+    id="clientInvoice.headerText"
+    description="Client invoice header text"
+    defaultMessage="New invoice for {name}"
+    values={{
+      name: client.is_business
+        ? client.business_name
+        : `${client.first_name} ${client.last_name}`
+    }}
+  />
+);
+
+const intlHeadingText = (
+  <FormattedMessage
+    id="clientInvoice.headingText"
+    description="Client invoice heading text"
+    defaultMessage="Select the jobs you want to invoice"
+  />
+);
+
 type Props = {
   token: ?string,
   onClose: () => void,
@@ -50,15 +76,15 @@ type State = {
   selected: JobSelection
 };
 
-class ClientInvoice extends Component<Props, State> {
-  constructor(props: Props) {
+class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
+  constructor(props: Props & { intl: intlShape }) {
     super(props);
     const { jobSelection, visitSelection } = props;
     this.state = { selected: jobStates(jobSelection, visitSelection) };
   }
 
   render() {
-    const { jobSelection, isFetching, onClose } = this.props;
+    const { client, jobSelection, isFetching, onClose } = this.props;
 
     const jobCount = jobSelection.size;
     const { selected } = this.state;
@@ -92,15 +118,26 @@ class ClientInvoice extends Component<Props, State> {
     );
 
     return (
-      <Article pad={{ horizontal: "medium" }} primary={true}>
-        <Header size="large" justify="between" pad="medium">
-          <Heading tag="h2" margin="none" strong={true}>
-            Invoice
+      <Article primary={true}>
+        <Header size="medium" justify="between" pad={{ horizontal: "medium"}}>
+          <Heading tag="h3" margin="none" strong={true}>
+            {intlHeaderText(client)}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
+        {jobSelection.size ? (
+          <Box margin={{horizontal: "medium"}}>
+            <Notification
+              message={intlInvoiceAccountingSystemNotification}
+              status="warning"
+              size="small"
+            />
+          </Box>
+        ) : (
+          undefined
+        )}
         <Box pad="medium" full={"horizontal"}>
-          <Heading tag="h3">Select the jobs you want to invoice</Heading>
+          <Heading tag="h3">{intlHeadingText}</Heading>
           <List onMore={undefined}>
             {Array.from(jobSelection.keys()).map((id: number, index) => {
               return (
@@ -204,4 +241,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClientInvoice);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(ClientInvoice));

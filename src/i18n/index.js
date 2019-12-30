@@ -48,3 +48,11 @@ export const intlFlashDeleted = ( // eslint-disable-line no-unused-vars
     defaultMessage="Removed"
   />
 );
+
+export const intlInvoiceAccountingSystemNotification = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="invoices.createdAccounting"
+    description="Message about invoices in accounting system."
+    defaultMessage="Invoices will be created in your accounting system. Please make sure you have connected your accounting system via our add-ons."
+  />
+);

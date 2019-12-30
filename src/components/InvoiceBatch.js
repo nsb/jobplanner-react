@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { injectIntl, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
 import List from "grommet/components/List";
 import Form from "grommet/components/Form";
 import Footer from "grommet/components/Footer";
@@ -13,7 +14,7 @@ import BusyIcon from "grommet/components/icons/Spinning";
 import Notification from "grommet/components/Notification";
 import NavControl from "./NavControl";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
-import { intlFormSavingLabel } from "../i18n";
+import { intlFormSavingLabel, intlInvoiceAccountingSystemNotification } from "../i18n";
 import {
   batchState,
   getInvoiceForJobSelection,
@@ -59,11 +60,11 @@ const intlEmptyMessage = (
   />
 );
 
-const intlAccountingSystem = (
+const intlSelectClients = (
   <FormattedMessage
-    id="invoices.createdAccounting"
-    description="Message about invoices in accounting system."
-    defaultMessage="Invoices will be created in your accounting system. Please make sure you have connected your accounting system via our add-ons."
+    id="invoices.selectClients"
+    description="Message about selecting clients for invoicing."
+    defaultMessage="Select the clients you want to invoice."
   />
 );
 
@@ -131,30 +132,35 @@ class InvoiceBatch extends Component<Props, State> {
 
     return (
       <Box>
-        <Header size="large" pad={{ horizontal: "medium" }}>
-          <NavControl title={intlTitle} />
-          <Box direction="row">
-            <Button
-              label={intlNone}
-              onClick={() => this.onAllOrNone(false)}
-              accent={true}
-            />
-            <Button
-              label={intlAll}
-              onClick={() => this.onAllOrNone(true)}
-              accent={true}
+        {clients.size ? (
+          <Box margin="medium">
+            <Notification
+              message={intlInvoiceAccountingSystemNotification}
+              status="warning"
+              size="small"
             />
           </Box>
-        </Header>
-        {clients.size ? (
-          <Notification
-            message={intlAccountingSystem}
-            status="warning"
-            size="small"
-          />
         ) : (
           undefined
         )}
+        <Header size="large" pad={{ horizontal: "medium" }}>
+          <NavControl title={intlTitle} />
+          <Box direction="column">
+            <Heading tag="h3">{intlSelectClients}</Heading>
+            <Box direction="row">
+              <Button
+                label={intlNone}
+                onClick={() => this.onAllOrNone(false)}
+                accent={true}
+              />
+              <Button
+                label={intlAll}
+                onClick={() => this.onAllOrNone(true)}
+                accent={true}
+              />
+            </Box>
+          </Box>
+        </Header>
         <List onMore={undefined}>
           {Array.from(clients.keys()).map((id: number, index) => {
             return (
