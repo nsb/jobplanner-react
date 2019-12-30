@@ -71,11 +71,12 @@ const jobsReducer: (JobsMap, Action) => JobsMap = (
   state: JobsMap = {},
   action: Action
 ): JobsMap => {
-  let newState = { ...state };
   if (action.type === FETCH_JOBS_SUCCESS) {
-    for (let [jobId, job] of Object.entries(action.payload.entities.jobs)) {
+    for (let [jobId, job] of Object.entries(
+      action.payload.entities.jobs || {}
+    )) {
       // $FlowFixMe Flow bug see https://github.com/facebook/flow/issues/5838
-      newState[jobId].visits = job.visits;
+      state[jobId].visits = job.visits;
     }
   }
   return state;
