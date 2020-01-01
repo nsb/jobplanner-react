@@ -89,7 +89,7 @@ export const clientState = (
     const jobSelections: Array<JobSelection> = [];
     Array.from(jobs.keys()).forEach((jobId: number) => {
       const job = jobs.get(jobId);
-      if (job) {
+      if (job && job.client === client.id) {
         jobSelections.push(jobState(job, visits));
       }
     });
