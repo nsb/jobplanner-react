@@ -80,7 +80,7 @@ class Signup extends Component<Props & { intl: intlShape }> {
             size="small"
             pad={{ horizontal: "medium", vertical: "small", between: "small" }}
           >
-            <span className="secondary">© 2019 myJobPlanner</span>
+            <span className="secondary">© 2020 myJobPlanner</span>
           </Footer>
         </Sidebar>
       </Split>
