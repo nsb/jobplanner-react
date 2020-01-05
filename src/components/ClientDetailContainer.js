@@ -6,6 +6,7 @@ import { fetchJobs } from "../actions/jobs";
 import { navResponsive } from "../actions/nav";
 import ClientDetail from "./ClientDetail";
 import type { Props } from "./ClientDetail";
+import { jobsSorted as jobsSelector } from "../selectors/jobSelectors";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
@@ -33,11 +34,7 @@ const mapStateToProps = (
           return ensureState(entities).properties[propertyId];
         })
       : [],
-    jobs: jobs.result
-      .map(Id => {
-        return ensureState(entities).jobs[Id];
-      })
-      .filter(job => job.client === clientId),
+    jobs: jobsSelector(state).filter(job => job.client === clientId),
     clientId: clientId,
     isFetching: clients.isFetching || jobs.isFetching,
     token: auth.token,

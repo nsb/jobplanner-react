@@ -15,6 +15,7 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import { fetchJobs } from "../actions/jobs";
 import JobListItemContainer from "./JobListItemContainer";
 import NavControl from "./NavControl";
+import { jobsSorted as jobsSelector } from "../selectors/jobSelectors";
 import { ensureState } from "redux-optimistic-ui";
 
 import type { State as ReduxState } from "../types/State";
@@ -204,9 +205,7 @@ const mapStateToProps = (
 
   return {
     business: ensureState(entities).businesses[ownProps.businessId],
-    jobs: jobs.result.map(Id => {
-      return ensureState(entities).jobs[Id];
-    }),
+    jobs: jobsSelector(state),
     isFetching: jobs.isFetching,
     token: auth.token,
     push: ownProps.push,
