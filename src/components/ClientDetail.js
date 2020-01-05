@@ -18,7 +18,7 @@ import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Spinning from "grommet/components/icons/Spinning";
 import ClientActions from "./ClientActions";
-import ClientEdit from "./ClientEdit"
+import ClientEdit from "./ClientEdit";
 import ClientInvoice from "./ClientInvoice";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
@@ -105,11 +105,11 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
     } = this.props;
     if (!client && token) {
       fetchClient(token, clientId).catch(() => {
-        addError({ text: intl.formatMessage({ id: "flash.error" }) })
-      })
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      });
     }
     if (token) {
-      fetchJobs(token, { client: clientId, ordering: "closed,next_visit" });
+      fetchJobs(token, { client: clientId, ordering: "status_order,-begins" });
     }
   }
 
@@ -128,12 +128,12 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
     let onSidebarClose;
     let sidebarControl;
 
-    if ( view === "edit" ) {
-      return <ClientEdit client={client} onClose={this.onClose} />
+    if (view === "edit") {
+      return <ClientEdit client={client} onClose={this.onClose} />;
     }
-    
-    if ( view === "invoice" ) {
-      return <ClientInvoice client={client} onClose={this.onClose} />
+
+    if (view === "invoice") {
+      return <ClientInvoice client={client} onClose={this.onClose} />;
     }
 
     if ("single" === responsive) {
@@ -164,13 +164,15 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
             <Box margin={{ horizontal: "none", vertical: "small" }}>
               <div>{client.address1}</div>
               <div>{client.address2}</div>
-              <div>{client.zip_code} {client.city}</div>
+              <div>
+                {client.zip_code} {client.city}
+              </div>
 
               <div>{client.country}</div>
             </Box>
           </Columns>
         </Section>
-      )
+      );
     }
 
     if (isFetching) {
@@ -213,7 +215,11 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                   a11yTitle="Return"
                 />
                 <Heading tag="h3" margin="none">
-                  <strong>{client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`}</strong>
+                  <strong>
+                    {client.is_business
+                      ? client.business_name
+                      : `${client.first_name} ${client.last_name}`}
+                  </strong>
                 </Heading>
               </Box>
               {sidebarControl}
@@ -248,7 +254,9 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                       >
                         <div>{property.address1}</div>
                         <div>{property.address2}</div>
-                        <div>{property.zip_code} {property.city}</div>
+                        <div>
+                          {property.zip_code} {property.city}
+                        </div>
                         <div>{property.country}</div>
                       </Box>
                     );
@@ -266,17 +274,23 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                       direction="row"
                       responsive={false}
                     >
-                      {jobs.length ?
-                        responsive === "single" ?
+                      {jobs.length ? (
+                        responsive === "single" ? (
                           <Anchor
                             icon={<AddIcon />}
                             path={`/${business.id}/jobs/add?client=${client.id}`}
-                            a11yTitle={intlJobAdd} /> :
+                            a11yTitle={intlJobAdd}
+                          />
+                        ) : (
                           <Button
                             label={intlJobAdd}
                             accent={true}
-                            path={`/${business.id}/jobs/add?client=${client.id}`} /> :
-                        undefined}
+                            path={`/${business.id}/jobs/add?client=${client.id}`}
+                          />
+                        )
+                      ) : (
+                        undefined
+                      )}
                     </Box>
                   </Header>
                 </Box>
@@ -325,7 +339,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
 
   onInvoice = () => {
     this.setState({ view: "invoice" });
-  }
+  };
 
   onClick = (e: SyntheticEvent<>, job: Job) => {
     const { push, business } = this.props;
