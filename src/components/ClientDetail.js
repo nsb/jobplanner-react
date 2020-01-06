@@ -78,20 +78,21 @@ export type Props = {
   token: ?string,
   isFetching: boolean,
   push: string => void,
-  responsive: Responsive,
   fetchClient: Function,
   fetchJobs: Function
 };
 
 type State = {
   showSidebarWhenSingle: boolean,
-  view: "edit" | "invoice" | null
+  view: "edit" | "invoice" | null,
+  responsive: Responsive
 };
 
 class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
     showSidebarWhenSingle: false,
-    view: null
+    view: null,
+    responsive: "multiple"
   };
 
   componentDidMount() {
@@ -119,7 +120,6 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
       client,
       properties,
       jobs,
-      responsive,
       isFetching
     } = this.props;
 
@@ -136,7 +136,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
       return <ClientInvoice client={client} onClose={this.onClose} />;
     }
 
-    if ("single" === responsive) {
+    if ("single" === this.state.responsive) {
       sidebarControl = (
         <Button icon={<MoreIcon />} onClick={this._onToggleSidebar} />
       );
@@ -195,6 +195,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
           flex="left"
           separator={true}
           priority={this.state.showSidebarWhenSingle ? "right" : "left"}
+          onResponsive={this.onResponsive}
         >
           <div>
             <Header
@@ -275,7 +276,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                       responsive={false}
                     >
                       {jobs.length ? (
-                        responsive === "single" ? (
+                        this.state.responsive === "single" ? (
                           <Anchor
                             icon={<AddIcon />}
                             path={`/${business.id}/jobs/add?client=${client.id}`}
@@ -327,6 +328,10 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
         </Split>
       );
     }
+  }
+ 
+  onResponsive = (responsive: Responsive) => {
+    this.setState({ responsive })
   }
 
   onClose = () => {

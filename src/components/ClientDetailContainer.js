@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchClient } from "../actions/clients";
 import { fetchJobs } from "../actions/jobs";
-import { navResponsive } from "../actions/nav";
 import ClientDetail from "./ClientDetail";
 import type { Props } from "./ClientDetail";
 import { jobsSorted as jobsSelector } from "../selectors/jobSelectors";
@@ -21,7 +20,7 @@ const mapStateToProps = (
     navResponsive: Function
   }
 ): Props => {
-  const { clients, jobs, entities, auth, nav } = state;
+  const { clients, jobs, entities, auth } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
   const client = ensureState(entities).clients[clientId];
@@ -39,10 +38,8 @@ const mapStateToProps = (
     isFetching: clients.isFetching || jobs.isFetching,
     token: auth.token,
     push: ownProps.history.push,
-    responsive: nav.responsive,
     fetchClient: ownProps.fetchClient,
     fetchJobs: ownProps.fetchJobs,
-    navResponsive: ownProps.navResponsive
   };
 };
 
@@ -50,8 +47,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       fetchClient,
-      fetchJobs,
-      navResponsive
+      fetchJobs
     },
     dispatch
   );

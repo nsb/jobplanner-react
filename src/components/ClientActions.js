@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { injectIntl, FormattedMessage } from "react-intl";
 import Header from "grommet/components/Header";
 import Box from "grommet/components/Box";
@@ -53,12 +53,6 @@ type Props = {
 
 const ClientActions = ({ client, onEdit, onInvoice, onClose }: Props) => {
   const [layerName, setLayerName] = useState(undefined)
-
-  useEffect(() => {
-    if (layerName === undefined && onClose) {
-      onClose();
-    }
-  }, [layerName, onClose])
 
   let closeControl;
   if (onClose) {
