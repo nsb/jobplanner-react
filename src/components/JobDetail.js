@@ -120,15 +120,16 @@ export type Props = {
   push: string => void,
   fetchJob: Function,
   partialUpdateJob: Function,
-  resetVisits: Function,
-  responsive: Responsive
+  resetVisits: Function
 };
 
 type State = {
   showSidebarWhenSingle: boolean,
   showAddVisit: boolean,
   showJobClose: boolean,
-  showJobRemove: boolean
+  showJobRemove: boolean,
+  responsive: Responsive,
+  showSidebarWhenSingle: boolean
 };
 
 class JobDetail extends Component<Props & { intl: intlShape }, State> {
@@ -137,6 +138,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
 
   state = {
     showSidebarWhenSingle: false,
+    responsive: "multiple",
     showAddVisit: false,
     showJobClose: false,
     showJobRemove: false
@@ -186,7 +188,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       client,
       lineItems,
       property,
-      responsive,
       isFetching,
       token
     } = this.props;
@@ -194,7 +195,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     let onSidebarClose;
     let sidebarControl;
 
-    if ("single" === responsive) {
+    if ("single" === this.state.responsive) {
       sidebarControl = (
         <Button icon={<MoreIcon />} onClick={this._onToggleSidebar} />
       );
@@ -298,6 +299,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
             flex="left"
             separator={true}
             priority={this.state.showSidebarWhenSingle ? "right" : "left"}
+            onResponsive={this.onResponsive}
           >
             <div>
               <Header
@@ -403,7 +405,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                         >
                           {job.closed ? (
                             undefined
-                          ) : responsive === "single" ? (
+                          ) : this.state.responsive === "single" ? (
                             <Anchor
                               icon={<AddIcon />}
                               onClick={() =>
@@ -434,6 +436,10 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
         </div>
       );
     }
+  }
+
+  onResponsive = (responsive: Responsive) => {
+    this.setState({ responsive });
   }
 
   onClose = () => {

@@ -23,7 +23,7 @@ const mapStateToProps = (
     resetVisits: () => ThunkAction
   }
 ): Props => {
-  const { auth, entities, jobs, nav } = state;
+  const { auth, entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
@@ -40,7 +40,6 @@ const mapStateToProps = (
       job.line_items.map(lineItem => ensureState(entities).lineItems[lineItem]),
     fetchJob: ownProps.fetchJob,
     partialUpdateJob: ownProps.partialUpdateJob,
-    responsive: nav.responsive,
     resetVisits: ownProps.resetVisits,
     job,
     jobId,

@@ -331,7 +331,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   }
  
   onResponsive = (responsive: Responsive) => {
-    this.setState({ responsive })
+    this.setState({ responsive });
   }
 
   onClose = () => {
