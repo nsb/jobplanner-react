@@ -26,7 +26,7 @@ const intlTitle = (
     description="Visit detail title"
     defaultMessage="Visit"
   />
-)
+);
 
 const intlDirections = (
   <FormattedMessage
@@ -34,7 +34,7 @@ const intlDirections = (
     description="Visit detail directions"
     defaultMessage="Directions"
   />
-)
+);
 
 const intlActions = (
   <FormattedMessage
@@ -42,7 +42,7 @@ const intlActions = (
     description="Visit detail actions heading"
     defaultMessage="Actions"
   />
-)
+);
 
 const intlEdit = (
   <FormattedMessage
@@ -50,7 +50,7 @@ const intlEdit = (
     description="Visit detail actions edit"
     defaultMessage="Edit"
   />
-)
+);
 
 const intlUpdateFuture = (
   <FormattedMessage
@@ -58,7 +58,7 @@ const intlUpdateFuture = (
     description="Visit detail actions update future visits"
     defaultMessage="Update future visits"
   />
-)
+);
 
 const intlDelete = (
   <FormattedMessage
@@ -66,7 +66,7 @@ const intlDelete = (
     description="Visit detail actions delete"
     defaultMessage="Delete"
   />
-)
+);
 
 const intlMarkCompleted = (
   <FormattedMessage
@@ -74,7 +74,7 @@ const intlMarkCompleted = (
     description="Visit detail actions mark completed"
     defaultMessage="Mark completed"
   />
-)
+);
 
 const intlMarkIncomplete = (
   <FormattedMessage
@@ -82,16 +82,16 @@ const intlMarkIncomplete = (
     description="Visit detail actions mark incomplete"
     defaultMessage="Mark incomplete"
   />
-)
+);
 
-const intlJob = (id) => (
+const intlJob = id => (
   <FormattedMessage
     id="visitDetail.jobHeading"
     description="Visit detail job heading"
     defaultMessage="Job #{id}"
-    values={{id}}
+    values={{ id }}
   />
-)
+);
 
 const intlTeam = (
   <FormattedMessage
@@ -99,7 +99,7 @@ const intlTeam = (
     description="Visit detail team heading"
     defaultMessage="Team"
   />
-)
+);
 
 const intlUnassigned = (
   <FormattedMessage
@@ -107,7 +107,7 @@ const intlUnassigned = (
     description="Visit detail team unassigned"
     defaultMessage="Unassigned"
   />
-)
+);
 
 const intlLineItems = (
   <FormattedMessage
@@ -115,7 +115,7 @@ const intlLineItems = (
     description="Visit detail line items heading"
     defaultMessage="Line Items"
   />
-)
+);
 
 export type Props = {
   visit: Visit,
@@ -132,32 +132,47 @@ export type Props = {
 
 class VisitDetail extends Component<Props & { intl: intlShape }> {
   static contextType = AuthContext;
-  
+
   render() {
-    const { visit, job, property, assigned, lineItems, onEdit, onUpdateFutureVisits, onDelete } = this.props;
+    const {
+      visit,
+      job,
+      property,
+      assigned,
+      lineItems,
+      onEdit,
+      onUpdateFutureVisits,
+      onDelete
+    } = this.props;
 
     let schedule;
     schedule = (
-      <Anchor icon={<ScheduleIcon />}
+      <Anchor
+        icon={<ScheduleIcon />}
         label={
           <Timestamp
             fields={visit.anytime ? "date" : ["date", "time"]}
             value={visit.begins}
-          />}
-      />)
+          />
+        }
+      />
+    );
 
     let directions;
-    if(property) {
+    if (property) {
       let directionsParams = new URLSearchParams({
         q: `${property.address1}, ${property.city}, ${property.zip_code}, ${property.country}`
       });
       directions = (
-        <Anchor icon={<DirectionsIcon />}
+        <Anchor
+          icon={<DirectionsIcon />}
           href={`https://maps.google.com/?${directionsParams.toString()}`}
-          target='_blank'
-          primary={true} >
+          target="_blank"
+          primary={true}
+        >
           {intlDirections}
-        </Anchor >)
+        </Anchor>
+      );
     }
 
     return (
@@ -199,7 +214,8 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
                 primary={false}
                 label={intlActions}
                 icon={<ActionsIcon />}
-                Directions >
+                Directions
+              >
                 <Anchor href="#" onClick={onEdit}>
                   {intlEdit}
                 </Anchor>
@@ -214,18 +230,23 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
                 </Anchor>
               </Menu>
             </Box>
-            <Box colorIndex="light-2" pad={{ horizontal: "medium", vertical: "small" }}>
+            <Box
+              colorIndex="light-2"
+              pad={{ horizontal: "medium", vertical: "small" }}
+            >
               <Heading tag="h4" strong={true}>
                 <Box direction="row">
-                  <Anchor
-                    path={`/${visit.business}/jobs/${visit.job}`}>
+                  <Anchor path={`/${visit.business}/jobs/${visit.job}`}>
                     {intlJob(visit.job)}
                   </Anchor>
                 </Box>
               </Heading>
               {job && job.description}
             </Box>
-            <Box colorIndex="light-2" pad={{ horizontal: "medium", vertical: "small" }}>
+            <Box
+              colorIndex="light-2"
+              pad={{ horizontal: "medium", vertical: "small" }}
+            >
               <Heading tag="h4" strong={true}>
                 <Box direction="row">{intlTeam}</Box>
               </Heading>
@@ -234,8 +255,8 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
                   return <div>{employee.username}</div>;
                 })
               ) : (
-                  <div>{intlUnassigned}</div>
-                )}
+                <div>{intlUnassigned}</div>
+              )}
             </Box>
           </Columns>
           <Box pad={{ horizontal: "none", vertical: "small" }}>
@@ -254,15 +275,20 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
   toggleCompleted = () => {
     const { visit, partialUpdateVisitAndLoadJob, onClose, intl } = this.props;
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {
-      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, access_token).then(
-        () => {
-          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-        }).catch(() => {
-          addError({text: intl.formatMessage({id: "flash.error"})});
-        }
-      ).finally(onClose);;
-    });
+    getUser()
+      .then(({ access_token }) => {
+        return partialUpdateVisitAndLoadJob(
+          { id: visit.id, job: visit.job, completed: !visit.completed },
+          access_token
+        );
+      })
+      .then(() => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      })
+      .finally(onClose);
   };
 }
 

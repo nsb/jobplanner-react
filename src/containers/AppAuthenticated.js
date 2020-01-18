@@ -22,43 +22,27 @@ type Props = {
   isFetching: boolean,
   dispatch: Dispatch,
   messages: Array<FlashMessageShape>
-}
+};
 
 class AppAuthenticated extends Component<Props> {
-  intervalId: number = -1;
   static contextType = AuthContext;
 
   componentDidMount() {
     const { dispatch } = this.props;
 
     const { getUser } = this.context;
-    getUser().then(({access_token}) => {
+    getUser().then(({ access_token }) => {
       dispatch(verifyAuthAndFetchBusinesses(access_token));
-    })
+    });
   }
-
-  // componentDidMount() {
-  //   this.intervalId = setInterval(() => {
-  //     let state = store.getState()
-  //     store.dispatch(refresh(state.auth.token));
-  //   }, 1000000);
-  // }
-
-  // componentWillUnmount() {
-  //   clearInterval(this.intervalId);
-  // }
 
   renderToast = message => {
     const status = {
       SUCCESS: "ok",
       ERROR: "critical"
-    }
+    };
 
-    return (
-      <Toast status={status[message.type]}>
-        {message.text}
-      </Toast>
-    );
+    return <Toast status={status[message.type]}>{message.text}</Toast>;
   };
 
   render() {
@@ -66,9 +50,7 @@ class AppAuthenticated extends Component<Props> {
 
     if (!isFetching) {
       let toasts = (
-        <div>
-          {messages.map(message => this.renderToast(message))}
-        </div>
+        <div>{messages.map(message => this.renderToast(message))}</div>
       );
 
       let routes = (
@@ -82,9 +64,7 @@ class AppAuthenticated extends Component<Props> {
       return (
         <div>
           {toasts}
-          <Route
-            render={() => routes}
-          />
+          <Route render={() => routes} />
         </div>
       );
     } else {
@@ -98,7 +78,7 @@ class AppAuthenticated extends Component<Props> {
             justify="center"
             align="center"
           >
-            <Spinning size="large"/>
+            <Spinning size="large" />
           </Section>
         </Article>
       );

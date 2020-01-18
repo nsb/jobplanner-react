@@ -455,13 +455,12 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     if (job) {
       const { getUser } = this.context;
       getUser().then(({ access_token }) => {  
-        partialUpdateJob({ id: job.id, closed: !job.closed }, access_token || "")
-          .then((responseJob: Job) => {
-            addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-          })
-          .catch(() => {
-            addError({ text: intl.formatMessage({ id: "flash.error" }) });
-          });
+        return partialUpdateJob({ id: job.id, closed: !job.closed }, access_token || "")
+      }).then((responseJob: Job) => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
       });
     }
     e.preventDefault();

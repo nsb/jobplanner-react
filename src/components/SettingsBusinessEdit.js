@@ -42,15 +42,14 @@ class BusinessEdit extends Component<Props & { intl: intlShape }> {
     const { dispatch, onClose, intl } = this.props;
     const { getUser } = this.context;
     getUser().then(({ access_token }) => {
-      dispatch(updateBusiness(business, access_token))
-        .then(() => {
-          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-        })
-        .catch(() => {
-          addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        })
-        .finally(onClose);
-    });
+      return dispatch(updateBusiness(business, access_token))
+    }).then(() => {
+      addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+    })
+    .catch(() => {
+      addError({ text: intl.formatMessage({ id: "flash.error" }) });
+    })
+    .finally(onClose);
   };
 }
 

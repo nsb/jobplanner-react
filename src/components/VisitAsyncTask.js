@@ -36,15 +36,16 @@ class VisitAsyncTask extends Component<Props, State> {
   componentDidMount() {
     const { job } = this.props;
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {
-      this.intervalId = setInterval(() => {
-        this.fetchAsyncTask(job.schedule_visits_task, access_token).then(
-          (responseAsyncTask: AsyncTask) => {
-            this.setState({ taskState: responseAsyncTask.state });
-          }
-        );
-      }, 1000);
-    })
+
+    this.intervalId = setInterval(() => {
+      getUser().then(({ access_token }) => {
+        return this.fetchAsyncTask(job.schedule_visits_task, access_token)
+      }).then(
+        (responseAsyncTask: AsyncTask) => {
+          this.setState({ taskState: responseAsyncTask.state });
+        }
+      );
+    }, 1000);
   }
 
   componentWillUnmount() {

@@ -871,14 +871,14 @@ class JobForm extends Component<
     if (value) {
       const { getUser } = this.context;
       getUser().then(({ access_token }) => {  
-        fetchClients(access_token, {
+        return fetchClients(access_token, {
           business: business.id,
           search: event.target.value,
           limit: "10"
-        }).then(responseClients =>
-          this.setState({ clients: responseClients.results })
-        );
-      });
+        })
+      }).then(responseClients =>
+        this.setState({ clients: responseClients.results })
+      );
     } else {
       this.setState({ clients: [] });
     }

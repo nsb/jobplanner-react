@@ -55,7 +55,7 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
     const { business, job, createVisitAndLoadJob, onClose, intl } = this.props;
     const { getUser } = this.context;
     getUser().then(({ access_token }) => {
-      createVisitAndLoadJob(
+      return createVisitAndLoadJob(
         business,
         {
           ...values,
@@ -63,14 +63,14 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
           assigned: values.assigned && values.assigned.map(v => v.value)
         },
         access_token || ""
-      ).then(
-        () => {
-          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-        }).catch(() => {
-          addError({text: intl.formatMessage({id: "flash.error"})});
-        }
-      ).finally(onClose);
-    });
+      )
+    }).then(
+      () => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})});
+      }
+    ).finally(onClose);
   };
 }
 

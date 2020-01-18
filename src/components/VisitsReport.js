@@ -203,21 +203,24 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
 
     this.setState({ isFetching: true }, () => {
       const { getUser } = this.context;
-      getUser().then(({ access_token }) => {
-        visitsApi
-          .getAll("visits", access_token, { ...filters, business: business.id })
-          .then((responseVisits: VisitsResponse) => {
-            this.setState({
-              visits: union(this.state.visits, responseVisits.results),
-              count: responseVisits.count,
-              offset: this.state.offset + this.state.limit,
-              isFetching: false
-            });
-          })
-          .catch((error: string) => {
-            throw error;
+      getUser()
+        .then(({ access_token }) => {
+          return visitsApi.getAll("visits", access_token, {
+            ...filters,
+            business: business.id
           });
-      });
+        })
+        .then((responseVisits: VisitsResponse) => {
+          this.setState({
+            visits: union(this.state.visits, responseVisits.results),
+            count: responseVisits.count,
+            offset: this.state.offset + this.state.limit,
+            isFetching: false
+          });
+        })
+        .catch((error: string) => {
+          throw error;
+        });
     });
   };
 

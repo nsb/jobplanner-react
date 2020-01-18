@@ -55,23 +55,31 @@ class VisitListContainer extends Component<Props, State> {
 
   onMore = () => {
     const { business, job, dispatch } = this.props;
-    const data = job && job.closed ? {
-        business: business.id,
-        ordering: "begins",
-        limit: 20,
-        offset: this.state.offset
-      } : {
-          business: business.id,
-          ordering: "begins",
-          completed: false,
-          limit: 20,
-          offset: this.state.offset
-        };
-      const { getUser } = this.context;
-      getUser().then(({ access_token }) => {  
-            dispatch(fetchVisits(access_token, job ? { ...data, job: job.id } : data));
-      this.setState({ offset: this.state.offset + this.state.limit });
-    });
+    const data =
+      job && job.closed
+        ? {
+            business: business.id,
+            ordering: "begins",
+            limit: 20,
+            offset: this.state.offset
+          }
+        : {
+            business: business.id,
+            ordering: "begins",
+            completed: false,
+            limit: 20,
+            offset: this.state.offset
+          };
+    const { getUser } = this.context;
+    getUser()
+      .then(({ access_token }) => {
+        return dispatch(
+          fetchVisits(access_token, job ? { ...data, job: job.id } : data)
+        );
+      })
+      .then(() =>
+        this.setState({ offset: this.state.offset + this.state.limit })
+      );
   };
 }
 

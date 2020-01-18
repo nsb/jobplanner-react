@@ -170,17 +170,17 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
     const { business, fetchJobs } = this.props;
     const { getUser } = this.context;
     getUser().then(({ access_token }) => {
-      fetchJobs(access_token, {
+      return fetchJobs(access_token, {
         business: business.id,
         ordering: "status_order,next_visit",
         limit: this.state.limit,
         offset: this.state.offset,
         search: this.state.searchText
-      }).then((resultJobs) => {
-        return this.setState({
-          offset: this.state.offset + this.state.limit,
-          searchResults: resultJobs.results.map(job => job.id)
-        });
+      })
+    }).then((resultJobs) => {
+      return this.setState({
+        offset: this.state.offset + this.state.limit,
+        searchResults: resultJobs.results.map(job => job.id)
       });
     });
   };
