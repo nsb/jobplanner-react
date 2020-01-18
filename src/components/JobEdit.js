@@ -3,13 +3,14 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { denormalize } from "normalizr";
 import { injectIntl, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
-import history from "../history";
 import { jobSchemaDenormalize } from "../schemas";
 import Article from "grommet/components/Article";
 import JobForm, { invoicingReminderMap } from "./JobForm";
+import { AuthContext } from "../providers/authProvider";
 import { updateJob } from "../actions/jobs";
 import type { State as ReduxState } from "../types/State";
 import type { State as ClientsState } from "../reducers/clients";
@@ -29,10 +30,13 @@ type Props = {
   employees: Array<Employee>,
   assigned: Array<Employee>,
   isFetching: boolean,
-  updateJob: Function
+  updateJob: Function,
+  history: { push: string => void }
 };
 
 class JobEdit extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   render() {
     const {
       job,
@@ -41,7 +45,7 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
       business,
       property,
       intl,
-      isFetching,
+      isFetching
     } = this.props;
 
     return (
@@ -78,28 +82,29 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = values => {
-    const { business, intl, updateJob, job } = this.props;
+    const { business, intl, updateJob, job, history } = this.props;
 
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {  
-      updateJob(
-        {
-          ...values,
-          business: business.id,
-          property: job.property,
-          assigned: values.assigned.map(v => v.value),
-          invoice_reminder: values.invoice_reminder.value
-        },
-        access_token
-      )
-        .then((responseJob: Job) => {
-          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-          history.push(`/${business.id}/jobs/${responseJob.id}`);
-        })
-        .catch(() => {
-          addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        });
-    });
+    getUser()
+      .then(({ access_token }) => {
+        return updateJob(
+          {
+            ...values,
+            business: business.id,
+            property: job.property,
+            assigned: values.assigned.map(v => v.value),
+            invoice_reminder: values.invoice_reminder.value
+          },
+          access_token
+        );
+      })
+      .then((responseJob: Job) => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+        history.push(`/${business.id}/jobs/${responseJob.id}`);
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      });
   };
 
   onClose = () => {
@@ -143,7 +148,8 @@ const mapStateToProps = (
       ensureState(entities)
     ),
     isFetching: jobs.isFetching,
-    updateJob: ownProps.updateJob
+    updateJob: ownProps.updateJob,
+    history: ownProps.history
   };
 };
 
@@ -155,7 +161,6 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectIntl(JobEdit));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(injectIntl(JobEdit))
+);
