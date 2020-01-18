@@ -21,7 +21,7 @@ export const METADATA_OIDC = {
   authorization_endpoint: process.env.REACT_APP_AUTH_URL + "/o/authorize/",
   token_endpoint: process.env.REACT_APP_AUTH_URL + "/o/token",
   userinfo_endpoint: process.env.REACT_APP_AUTH_URL + "/o/userinfo",
-  end_session_endpoint: process.env.REACT_APP_AUTH_URL + "/o/endsession",
+  end_session_endpoint: process.env.REACT_APP_AUTH_URL + "/auth/logout/",
   check_session_iframe:
     process.env.REACT_APP_AUTH_URL + "/o/checksession",
   revocation_endpoint: process.env.REACT_APP_AUTH_URL + "/o/revocation",

@@ -6,7 +6,7 @@ import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import UserIcon from "grommet/components/icons/base/User";
-import history from "../history";
+import { AuthContext } from "../providers/authProvider";
 import type { User } from "../actions/users";
 
 const intlSession = (
@@ -33,6 +33,8 @@ type Props = {
 };
 
 class SessionMenu extends Component<Props> {
+  static contextType = AuthContext;
+
   render() {
     const { user, dropAlign, colorIndex } = this.props;
 
@@ -54,9 +56,9 @@ class SessionMenu extends Component<Props> {
   }
 
   onLogout = (e: SyntheticEvent<>) => {
-    this.props.logout();
-    history.push("/login");
     e.preventDefault();
+    const { logout } = this.context;
+    logout();
   };
 }
 
