@@ -13,6 +13,7 @@ import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import NavControl from './NavControl';
 import ClientListItem from './ClientListItem';
 import ClientAdd from './ClientAdd';
+import { AuthContext } from "../providers/authProvider";
 import type { Business } from '../actions/businesses';
 import type { Client } from '../actions/clients';
 import type { Responsive } from "../actions/nav";
@@ -55,7 +56,6 @@ export type Props = {
   isFetching: boolean,
   push: Function,
   totalCount: number,
-  token: ?string,
   fetchClients: (string, Object) => Promise<any>,
   responsive: Responsive
 };
@@ -77,6 +77,7 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
     limit: 25,
     add: false
   };
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.onMore();
@@ -175,9 +176,11 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
   }
 
   onMore = () => {
-    const { business, token, fetchClients } = this.props;
-    if (token) {
-      fetchClients(token, {
+    const { business, fetchClients } = this.props;
+
+    const { getUser } = this.context;
+    getUser().then(({access_token}) => {
+      fetchClients(access_token, {
         business: business.id,
         ordering: "first_name,last_name",
         limit: this.state.limit,
@@ -189,7 +192,7 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
           searchResults: resultClients.results.map(client => client.id)
         });
       });
-    }
+    })
   };
 
   onShowAdd = () => this.setState({ add: true })

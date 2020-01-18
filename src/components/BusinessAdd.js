@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useContext } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl, intlShape } from 'react-intl';
@@ -11,25 +11,26 @@ import type { Business } from "../actions/businesses";
 import Article from "grommet/components/Article";
 import BusinessForm from "./BusinessForm";
 import { createBusiness } from "../actions/businesses";
+import { AuthContext } from "../providers/authProvider";
 import type { PromiseAction } from "../types/Store";
 
 type Props = {
-  token: ?string,
   push: string => void,
   createBusiness: (Business, string) => PromiseAction
 }
 
-const BusinessAdd = ({ token, push, createBusiness, intl }: Props & { intl: intlShape }) => {
+const BusinessAdd = ({ push, createBusiness, intl }: Props & { intl: intlShape }) => {
+  const { getUser } = useContext(AuthContext);
 
   const handleSubmit = (business: Business) => {
-    if (token) {
-      createBusiness(business, token).then((responseBusiness: Business) => {
+    getUser().then(({access_token}) => {
+      createBusiness(business, access_token).then((responseBusiness: Business) => {
         addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) })
         history.push(`/${responseBusiness.id}`);
       }).catch(() => {
         addError({ text: intl.formatMessage({ id: "flash.error" }) })
       });
-    };
+    });
   };
 
   const onClose = () => {
@@ -46,10 +47,9 @@ const BusinessAdd = ({ token, push, createBusiness, intl }: Props & { intl: intl
 }
 
 const mapStateToProps = (
-  { auth, businesses }: ReduxState,
+  { businesses }: ReduxState,
   ownProps: { history: { push: string => void }, createBusiness: (Business, string) => Promise<Business> }
   ) => ({
-    token: auth.token,
     push: ownProps.history.push,
     createBusiness: ownProps.createBusiness,
     isFetching: businesses.isFetching

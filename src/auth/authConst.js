@@ -18,7 +18,7 @@ export const METADATA_OIDC = {
   issuer: "http://localhost:8000",
   jwks_uri:
     process.env.REACT_APP_AUTH_URL + "/.well-known/openid-configuration/jwks",
-  authorization_endpoint: process.env.REACT_APP_AUTH_URL + "/o/authorize",
+  authorization_endpoint: process.env.REACT_APP_AUTH_URL + "/o/authorize/",
   token_endpoint: process.env.REACT_APP_AUTH_URL + "/o/token",
   userinfo_endpoint: process.env.REACT_APP_AUTH_URL + "/o/userinfo",
   end_session_endpoint: process.env.REACT_APP_AUTH_URL + "/o/endsession",

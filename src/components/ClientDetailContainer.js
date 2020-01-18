@@ -20,7 +20,7 @@ const mapStateToProps = (
     navResponsive: Function
   }
 ): Props => {
-  const { clients, jobs, entities, auth } = state;
+  const { clients, jobs, entities } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const clientId = parseInt(ownProps.match.params.clientId, 10);
   const client = ensureState(entities).clients[clientId];
@@ -36,7 +36,6 @@ const mapStateToProps = (
     jobs: jobsSelector(state).filter(job => job.client === clientId),
     clientId: clientId,
     isFetching: clients.isFetching || jobs.isFetching,
-    token: auth.token,
     push: ownProps.history.push,
     fetchClient: ownProps.fetchClient,
     fetchJobs: ownProps.fetchJobs,

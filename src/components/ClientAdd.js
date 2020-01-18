@@ -8,6 +8,7 @@ import history from "../history";
 import Article from "grommet/components/Article";
 import ClientForm from "./ClientForm";
 import { createClient } from "../actions/clients";
+import { AuthContext } from "../providers/authProvider";
 import type { Client } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Field } from "../actions/fields";
@@ -16,7 +17,6 @@ import type { State as ReduxState } from "../types/State";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token: ?string,
   business: Business,
   fields: Array<Field>,
   isFetching: boolean,
@@ -45,15 +45,16 @@ class ClientAdd extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = (values: Client): void => {
-    const { token, business, createClient, intl } = this.props;
-    if (token) {
+    const { business, createClient, intl } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({access_token}) => {
       let action = createClient(
         business,
         {
           ...values,
           business: business.id
         },
-        token
+        access_token
       );
       action.then((responseClient: Client) => {
         addSuccess({text: intl.formatMessage({id: "flash.saved"})});
@@ -61,7 +62,7 @@ class ClientAdd extends Component<Props & { intl: intlShape }> {
       }).catch(() => {
         addError({text: intl.formatMessage({id: "flash.error"})})
       });
-    }
+    });
   };
 }
 
@@ -72,10 +73,9 @@ type OwnProps = {
 };
 
 const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
-  const { auth, clients, fields, entities } = state;
+  const { clients, fields, entities } = state;
 
   return {
-    token: auth.token,
     business: ownProps.business,
     fields: fields.result
       .map((Id: number) => {

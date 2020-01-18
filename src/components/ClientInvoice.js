@@ -19,6 +19,7 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from "grommet/components/icons/Spinning";
 import CloseIcon from "grommet/components/icons/base/Close";
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
+import { AuthContext } from "../providers/authProvider";
 import { createInvoiceAndLoadJobs } from "../actions/index";
 import {
   intlFormSavingLabel,
@@ -62,7 +63,6 @@ const intlHeadingText = (
 );
 
 type Props = {
-  token: ?string,
   onClose: () => void,
   client: Client,
   jobSelection: Map<number, Job>,
@@ -119,14 +119,14 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
 
     return (
       <Article primary={true}>
-        <Header size="medium" justify="between" pad={{ horizontal: "medium"}}>
+        <Header size="medium" justify="between" pad={{ horizontal: "medium" }}>
           <Heading tag="h3" margin="none" strong={true}>
             {intlHeaderText(client)}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
         {jobSelection.size ? (
-          <Box margin={{horizontal: "medium"}}>
+          <Box margin={{ horizontal: "medium" }}>
             <Notification
               message={intlInvoiceAccountingSystemNotification}
               status="warning"
@@ -170,22 +170,23 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
   onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const { client, token, createInvoiceAndLoadJobs } = this.props;
+    const { client, createInvoiceAndLoadJobs } = this.props;
     const { selected } = this.state;
 
     const invoice = getInvoiceForJobSelection(client.id, selected);
 
-    if (token) {
-      createInvoiceAndLoadJobs(invoice, token, {
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
+      createInvoiceAndLoadJobs(invoice, access_token, {
         business: client.business,
         limit: 200
       });
-    }
+    });
   };
 }
 
 const mapStateToProps = (
-  { auth, entities, jobs, invoices, nav }: ReduxState,
+  { entities, jobs, invoices, nav }: ReduxState,
   {
     onClose,
     client,
@@ -222,7 +223,6 @@ const mapStateToProps = (
     }, new Map());
 
   return {
-    token: auth.token,
     isFetching: invoices.isFetching,
     responsive: nav.responsive,
     jobSelection,

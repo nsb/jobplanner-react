@@ -56,7 +56,7 @@ export default class AuthService {
   };
 
   navigateToScreen = () => {
-    window.location.replace("/en/dashboard");
+    window.location.replace("/");
   };
 
   isAuthenticated = () => {

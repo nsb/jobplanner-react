@@ -14,6 +14,7 @@ import VisitLayerContainer from "./VisitLayerContainer";
 import { getVisitsGroupedByDay } from "../selectors/visitSelectors";
 import Calendar from "./Calendar";
 import JobClose from "./JobClose";
+import { AuthContext } from "../providers/authProvider";
 import type { Element } from "react";
 
 const intlVisitCount = (count: number) => (
@@ -28,7 +29,6 @@ const intlVisitCount = (count: number) => (
 type Props = {
   business: Business,
   visits: Array<Visit | { begins: string, ends: string, anytime: boolean, title: string | Element<*> }>,
-  token: ?string,
   getJobById: Function,
   dispatch: Dispatch
 };
@@ -44,6 +44,7 @@ type State = {
 
 class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   state: State = { view: "week", date: new Date(), selected: undefined, showJobClose: 0 };
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.loadVisits(
@@ -70,7 +71,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { visits, token, getJobById } = this.props;
+    const { visits, getJobById } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
@@ -88,7 +89,6 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
         <JobClose
           job={getJobById(this.state.showJobClose)}
           onClose={() => {this.setState({showJobClose: 0})}}
-          token={token}
         />
       )
     }
@@ -132,21 +132,24 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
     end: Date,
     isAllDay: boolean
   }) => {
-    const { dispatch, token, intl } = this.props;
+    const { dispatch, intl } = this.props;
 
     const anytime = isAllDay;
 
-    dispatch(
-      updateVisit(
-        { id: event.id, begins: start, ends: end, anytime: anytime },
-        token || "",
-        true,
-        true
-      )
-    ).then(() => {
-      addSuccess({text: intl.formatMessage({id: "flash.saved"})})
-    }).catch(() => {
-      addError({text: intl.formatMessage({id: "flash.error"})})
+    const { getUser } = this.context;
+    getUser().then(({access_token}) => {
+      dispatch(
+        updateVisit(
+          { id: event.id, begins: start, ends: end, anytime: anytime },
+          access_token,
+          true,
+          true
+        )
+      ).then(() => {
+        addSuccess({text: intl.formatMessage({id: "flash.saved"})})
+      }).catch(() => {
+        addError({text: intl.formatMessage({id: "flash.error"})})
+      });
     });
   };
 
@@ -159,10 +162,11 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   };
 
   loadVisits = (begins = null, ends = null) => {
-    const { business, token, dispatch, intl } = this.props;
-    if (token) {
+    const { business, dispatch, intl } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({access_token}) => {
       dispatch(
-        fetchVisits(token, {
+        fetchVisits(access_token, {
           business: business.id,
           ordering: "begins",
           begins__gte:
@@ -181,7 +185,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
       ).catch(() => {
         addError({text: intl.formatMessage({id: "flash.error"})})
       });
-    }
+    });
   };
 }
 
@@ -193,7 +197,7 @@ const mapStateToProps = (
     dispatch: Dispatch
   }
 ): Props => {
-  const { entities, auth, nav } = state;
+  const { entities, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   const visits = Object.entries(getVisitsGroupedByDay(state)).map(([date: string, visits: Array<Visit>]) => {
@@ -204,7 +208,6 @@ const mapStateToProps = (
   return {
     business: ensureState(entities).businesses[businessId],
     visits: visits,
-    token: auth.token,
     dispatch: ownProps.dispatch,
     responsive: nav.responsive,
     getJobById: (id) => ensureState(entities).jobs[id]

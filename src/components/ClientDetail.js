@@ -23,6 +23,7 @@ import ClientInvoice from "./ClientInvoice";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import JobListItem from "./JobListItem";
+import { AuthContext } from "../providers/authProvider";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Property } from "../actions/properties";
@@ -75,7 +76,6 @@ export type Props = {
   properties: Array<Property>,
   jobs: Array<Job>,
   clientId: number,
-  token: ?string,
   isFetching: boolean,
   push: string => void,
   fetchClient: Function,
@@ -94,24 +94,29 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
     view: null,
     responsive: "multiple"
   };
+  static contextType = AuthContext;
 
   componentDidMount() {
     const {
       client,
       clientId,
-      token,
       fetchClient,
       fetchJobs,
       intl
     } = this.props;
-    if (!client && token) {
-      fetchClient(token, clientId).catch(() => {
-        addError({ text: intl.formatMessage({ id: "flash.error" }) });
-      });
+    const { getUser } = this.context;
+
+    if (!client) {      
+      getUser().then(({access_token}) => {
+        fetchClient(access_token, clientId).catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        });
+      })
     }
-    if (token) {
-      fetchJobs(token, { client: clientId, ordering: "status_order,-begins" });
-    }
+
+    getUser().then(({access_token}) => {
+      fetchJobs(access_token, { client: clientId, ordering: "status_order,-begins" });
+    })
   }
 
   render() {

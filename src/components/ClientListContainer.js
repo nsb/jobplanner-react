@@ -16,7 +16,7 @@ const mapStateToProps = (
     fetchClients: (string, Object) => Promise<any>
   }
 ): Props => {
-  const { clients, entities, auth, nav } = state;
+  const { clients, entities, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
@@ -25,7 +25,6 @@ const mapStateToProps = (
       return ensureState(entities).clients[Id];
     }),
     isFetching: clients.isFetching,
-    token: auth.token,
     push: ownProps.history.push,
     totalCount: clients.count,
     fetchClients: ownProps.fetchClients,

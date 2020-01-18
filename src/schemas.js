@@ -18,8 +18,8 @@ export const reminderScheduleListSchema = new schema.Array(
 export const businessSchema = new schema.Entity("businesses", {
   services: [serviceSchema],
   employees: [employeeSchema],
-  fields: [fieldSchema],
-  reminder_schedules: [reminderScheduleSchema]
+  fields: [fieldSchema]
+  // reminder_schedules: [reminderScheduleSchema]
 });
 export const businessListSchema = new schema.Array(businessSchema);
 

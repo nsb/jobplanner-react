@@ -4,11 +4,12 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { clientSchema } from "../schemas";
 import Article from "grommet/components/Article";
 import ClientForm from "./ClientForm";
+import { AuthContext } from "../providers/authProvider";
 import { updateClient } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
@@ -19,7 +20,6 @@ import type { PropertiesMap } from "../actions/properties";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token: ?string,
   business: Business,
   client: Client,
   fields: Array<Field>,
@@ -30,6 +30,8 @@ type Props = {
 };
 
 class ClientEdit extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   render() {
     const { client, fields, isFetching, onClose } = this.props;
 
@@ -47,19 +49,24 @@ class ClientEdit extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = (values: Client): void => {
-    const { token, client, intl, updateClient, onClose } = this.props;
-    updateClient(
-      {
-        ...client,
-        ...values
-      },
-      token || ""
-    )
-    .then((responseClient: Client) => {
-      addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-      onClose()
-    }).catch(() => {
-      addError({text: intl.formatMessage({id: "flash.error"})})
+    const { client, intl, updateClient, onClose } = this.props;
+
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
+      updateClient(
+        {
+          ...client,
+          ...values
+        },
+        access_token || ""
+      )
+        .then((responseClient: Client) => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+          onClose();
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        });
     });
   };
 }
@@ -72,10 +79,9 @@ const mapStateToProps = (
     client: Client
   }
 ): Props => {
-  const { auth, fields, entities, clients } = state;
+  const { fields, entities, clients } = state;
 
   return {
-    token: auth.token,
     business: ensureState(entities).businesses[ownProps.client.business],
     client: denormalize(
       ensureState(entities).clients[ownProps.client.id],
@@ -104,5 +110,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ClientEdit));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(ClientEdit));
