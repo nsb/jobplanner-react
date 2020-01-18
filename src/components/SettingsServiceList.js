@@ -20,21 +20,20 @@ import Paragraph from "grommet/components/Paragraph";
 import ServiceForm from "./SettingsServiceForm";
 import { AuthContext } from "../providers/authProvider";
 
-
 const intlHeading = (
   <FormattedMessage
     id="settingsServiceList.heading"
     description="Settings service list heading"
     defaultMessage="Services"
   />
-)
+);
 const intlAccordionHeading = (
   <FormattedMessage
     id="settingsServiceList.accordionHeading"
     description="Settings service list accordion add label"
     defaultMessage="Add service"
   />
-)
+);
 
 type Props = {
   business: Business,
@@ -98,27 +97,36 @@ class ServiceList extends Component<Props & { intl: intlShape }, State> {
   onSubmit = (service: Service) => {
     const { business, dispatch, intl } = this.props;
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {  
-      if (service.id) {
-        dispatch(updateService(service, access_token)).then(
-          (responseService: Service) => {
-            addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-          }).catch(() => {
-            addError({text: intl.formatMessage({id: "flash.error"})});
-          }
-        );
-      } else {
-        dispatch(
-          createService(merge({}, { business: business.id }, service), access_token)
-        ).then(
-          (responseService: Service) => {
-            addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-          }).catch(() => {
-            addError({text: intl.formatMessage({id: "flash.error"})});
-          }
-        ).finally(this.onActive);
-      }
-    });
+
+    if (service.id) {
+      getUser()
+        .then(({ access_token }) => {
+          return dispatch(updateService(service, access_token));
+        })
+        .then((responseService: Service) => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        });
+    } else {
+      getUser()
+        .then(({ access_token }) => {
+          return dispatch(
+            createService(
+              merge({}, { business: business.id }, service),
+              access_token
+            )
+          );
+        })
+        .then((responseService: Service) => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        })
+        .finally(this.onActive);
+    }
   };
 }
 

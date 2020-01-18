@@ -103,31 +103,35 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
     const { business, dispatch, intl } = this.props;
 
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {
-      if (employee.id) {
-        dispatch(updateEmployee(employee, access_token))
-          .then(() => {
-            addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-          })
-          .catch(() => {
-            addError({ text: intl.formatMessage({ id: "flash.error" }) });
-          });
-      } else {
-        dispatch(
-          createEmployee(
-            merge({}, { businesses: [business.id] }, employee),
-            access_token
-          )
-        )
-          .then(() => {
-            addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-          })
-          .catch(() => {
-            addError({ text: intl.formatMessage({ id: "flash.error" }) });
-          })
-          .finally(this.onActive);
-      }
-    });
+    if (employee.id) {
+      getUser()
+        .then(({ access_token }) => {
+          return dispatch(updateEmployee(employee, access_token));
+        })
+        .then(() => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        });
+    } else {
+      getUser()
+        .then(({ access_token }) => {
+          return dispatch(
+            createEmployee(
+              merge({}, { businesses: [business.id] }, employee),
+              access_token
+            )
+          );
+        })
+        .then(() => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        })
+        .finally(this.onActive);
+    }
   };
 }
 

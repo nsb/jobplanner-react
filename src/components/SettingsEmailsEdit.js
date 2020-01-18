@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
+import { AuthProvider } from "../providers/authProvider";
 import Layer from "grommet/components/Layer";
 import store from "../store";
 import EmailsList from "./SettingsEmailsList";
@@ -22,7 +23,9 @@ class EmailsEdit extends Component<Props> {
     return (
       <Layer align="right" closer={true} onClose={onClose}>
         <Provider store={store}>
-          <EmailsList business={business} dispatch={dispatch} onClose={onClose} />
+          <AuthProvider>
+            <EmailsList business={business} dispatch={dispatch} onClose={onClose} />
+          </AuthProvider>
         </Provider>
       </Layer>
     );

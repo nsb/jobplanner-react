@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
+import { AuthProvider } from "../providers/authProvider";
 import Layer from "grommet/components/Layer";
 import store from "../store";
 import type { Business } from "../actions/businesses";
@@ -22,7 +23,9 @@ class EmployeesEdit extends Component<Props> {
     return (
       <Layer align="right" closer={true} onClose={onClose}>
         <Provider store={store}>
-          <EmployeeList business={business} />
+          <AuthProvider>
+            <EmployeeList business={business} />
+          </AuthProvider>
         </Provider>
       </Layer>
     );

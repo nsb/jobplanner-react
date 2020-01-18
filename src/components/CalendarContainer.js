@@ -138,18 +138,18 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
 
     const { getUser } = this.context;
     getUser().then(({access_token}) => {
-      dispatch(
+      return dispatch(
         updateVisit(
           { id: event.id, begins: start, ends: end, anytime: anytime },
           access_token,
           true,
           true
         )
-      ).then(() => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})})
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})})
-      });
+      )
+    }).then(() => {
+      addSuccess({text: intl.formatMessage({id: "flash.saved"})})
+    }).catch(() => {
+      addError({text: intl.formatMessage({id: "flash.error"})})
     });
   };
 
@@ -165,7 +165,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
     const { business, dispatch, intl } = this.props;
     const { getUser } = this.context;
     getUser().then(({access_token}) => {
-      dispatch(
+      return dispatch(
         fetchVisits(access_token, {
           business: business.id,
           ordering: "begins",
@@ -182,9 +182,9 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
           limit: 200,
           offset: 0
         })
-      ).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})})
-      });
+      )
+    }).catch(() => {
+      addError({text: intl.formatMessage({id: "flash.error"})})
     });
   };
 }

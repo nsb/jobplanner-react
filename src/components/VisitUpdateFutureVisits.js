@@ -146,14 +146,13 @@ class VisitUpdateFutureVisits extends Component<
         },
         access_token || ""
       )
-        .then(() => {
-          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-        })
-        .catch(() => {
-          addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        })
-        .finally(onClose);
-    });
+    }).then(() => {
+      addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+    })
+    .catch(() => {
+      addError({ text: intl.formatMessage({ id: "flash.error" }) });
+    })
+    .finally(onClose);
   };
 }
 

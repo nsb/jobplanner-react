@@ -33,9 +33,8 @@ class EmailsEdit extends Component<Props> {
     const { dispatch, onClose } = this.props;
     const { getUser } = this.context;
     getUser().then(({ access_token }) => {
-      dispatch(updateBusiness(business, access_token));
-      onClose();
-    });
+      return dispatch(updateBusiness(business, access_token));
+    }).finally(onClose);
   };
 }
 
