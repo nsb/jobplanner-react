@@ -48,25 +48,27 @@ class VisitEdit extends Component<Props & { intl: intlShape }> {
 
   handleSubmit = values => {
     const { dispatch, onClose, intl } = this.props;
-
     const { getUser } = this.context;
-    return getUser().then(({ access_token }) => {
-    return dispatch(
-      updateVisitAndLoadJob(
-        {
-          ...values,
-          assigned: values.assigned.map(v => v.value)
-        },
-        access_token || ""
-      )
-    ).then(
-      () => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})});
-      }
-    ).finally(onClose);
-    })
+
+    return getUser()
+      .then(({ access_token }) => {
+        return dispatch(
+          updateVisitAndLoadJob(
+            {
+              ...values,
+              assigned: values.assigned.map(v => v.value)
+            },
+            access_token || ""
+          )
+        );
+      })
+      .then(() => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      })
+      .finally(onClose);
   };
 }
 
@@ -89,9 +91,11 @@ const mapStateToProps = (
           ? employee
           : false;
       }),
-    assigned: ownProps.visit.assigned.map((Id: number) => {
-      return ensureState(entities).employees[Id];
-    }).filter(employee => employee),
+    assigned: ownProps.visit.assigned
+      .map((Id: number) => {
+        return ensureState(entities).employees[Id];
+      })
+      .filter(employee => employee),
     visit: denormalize(
       ensureState(entities).visits[ownProps.visit.id],
       visitSchemaDenormalize,

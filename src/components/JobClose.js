@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { partialUpdateJob } from '../actions/jobs';
@@ -9,6 +10,7 @@ import Paragraph from "grommet/components/Paragraph";
 import { AuthContext } from "../providers/authProvider";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
+import type {State} from '../types/State';
 
 const intlTitle = (
   <FormattedMessage
@@ -120,4 +122,11 @@ class JobClose extends Component<Props & { intl: intlShape }> {
   }
 }
 
-export default injectIntl(JobClose);
+const mapStateToProps = (
+  state: State,
+): * => ({
+
+});
+
+
+export default connect(mapStateToProps)(injectIntl(JobClose));

@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { Provider } from "react-redux";
+import { AuthProvider } from "../providers/authProvider";
 import Layer from "grommet/components/Layer";
 import VisitDetailContainer from "./VisitDetailContainer";
 import VisitEdit from "./VisitEdit";
@@ -54,7 +55,9 @@ class VisitLayer extends Component<Props, State> {
     return (
       <Layer align="right" closer={true} onClose={onClose}>
         <Provider store={store}>
-          {visitView}
+          <AuthProvider>
+            {visitView}
+          </AuthProvider>
         </Provider>
       </Layer>
     );

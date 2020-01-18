@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { deleteVisit } from "../actions/visits";
@@ -9,6 +10,7 @@ import Paragraph from "grommet/components/Paragraph";
 import { AuthContext } from "../providers/authProvider";
 import type { Visit } from "../actions/visits";
 import type { Dispatch } from "../types/Store";
+import type {State} from '../types/State';
 
 const intlTitle = (
   <FormattedMessage
@@ -48,16 +50,17 @@ class VisitRemove extends Component<Props & { intl: intlShape }> {
   _onRemove = () => {
     const { visit, dispatch, onRemove, intl } = this.props;
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {
-      dispatch(deleteVisit(visit, access_token))
-        .then(() => {
-          addSuccess({ text: intl.formatMessage({ id: "flash.deleted" }) });
-        })
-        .catch(() => {
-          addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        })
-        .finally(onRemove);
-    });
+    getUser()
+      .then(({ access_token }) => {
+        return dispatch(deleteVisit(visit, access_token));
+      })
+      .then(() => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.deleted" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      })
+      .finally(onRemove);
   };
 
   render() {
@@ -78,4 +81,10 @@ class VisitRemove extends Component<Props & { intl: intlShape }> {
   }
 }
 
-export default injectIntl(VisitRemove);
+const mapStateToProps = (
+  state: State,
+): * => ({
+
+});
+
+export default connect(mapStateToProps)(injectIntl(VisitRemove));

@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { withRouter } from "react-router-dom";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { connect } from "react-redux";
 import { addSuccess, addError } from "redux-flash-messages";
@@ -9,7 +10,6 @@ import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
 import { AuthContext } from "../providers/authProvider";
 import { deleteJob } from "../actions/jobs";
-import history from "../history";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
 import type { State } from "../types/State";
@@ -51,25 +51,25 @@ type Props = {
   job: Job,
   onClose: Function,
   dispatch: Dispatch,
-  deleteJob: Function
+  deleteJob: Function,
+  history: { push: string => void }
 };
 
 class JobRemove extends Component<Props & { intl: intlShape }> {
   static contextType = AuthContext;
 
   onRemove = () => {
-    const { job, deleteJob, intl } = this.props;
+    const { job, deleteJob, intl, history } = this.props;
     if (job) {
       const { getUser } = this.context;
       getUser().then(({ access_token }) => {
-        deleteJob(job, access_token)
-          .then((responseJob: Job) => {
-            addSuccess({ text: intl.formatMessage({ id: "flash.deleted" }) });
-            history.push(`/${job.business}/jobs`);
-          })
-          .catch(() => {
-            addError({ text: intl.formatMessage({ id: "flash.error" }) });
-          });
+        return deleteJob(job, access_token)
+      }).then((responseJob: Job) => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.deleted" }) });
+        history.push(`/${job.business}/jobs`);
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
       });
     }
   };
@@ -100,9 +100,10 @@ class JobRemove extends Component<Props & { intl: intlShape }> {
 
 const mapStateToProps = (
   state: State,
-  ownProps: { deleteJob: Function }
+  ownProps: { deleteJob: Function, history: { push: string => void }}
 ): * => ({
-  deleteJob: ownProps.deleteJob
+  deleteJob: ownProps.deleteJob,
+  history: ownProps.history
 });
 
 const mapDispatchToProps = (dispatch: *) =>
@@ -113,7 +114,7 @@ const mapDispatchToProps = (dispatch: *) =>
     dispatch
   );
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(JobRemove));
+)(injectIntl(JobRemove)));
