@@ -23,6 +23,7 @@ import MoreIcon from "grommet/components/icons/base/More";
 import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Status from "grommet/components/icons/Status";
+import { AuthContext } from "../providers/authProvider";
 import { rrulestr } from "rrule";
 import JobActions from "../components/JobActions";
 import VisitAsyncTask from "../components/VisitAsyncTask";
@@ -115,7 +116,6 @@ export type Props = {
   lineItems: Array<Object>,
   jobId: number,
   property: ?Property,
-  token: ?string,
   isFetching: boolean,
   push: string => void,
   fetchJob: Function,
@@ -135,6 +135,7 @@ type State = {
 class JobDetail extends Component<Props & { intl: intlShape }, State> {
   dateFormat = undefined;
   timeFormat = undefined;
+  static contextType = AuthContext;
 
   state = {
     showSidebarWhenSingle: false,
@@ -156,9 +157,12 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   }
 
   componentDidMount() {
-    const { job, jobId, token, fetchJob } = this.props;
-    if (!job && token) {
-      fetchJob(token, jobId);
+    const { job, jobId, fetchJob } = this.props;
+    if (!job) {
+      const { getUser } = this.context;
+      getUser().then(({ access_token }) => {
+        fetchJob(access_token, jobId);
+      });
     }
   }
 
@@ -189,7 +193,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
       lineItems,
       property,
       isFetching,
-      token
     } = this.props;
 
     let onSidebarClose;
@@ -272,7 +275,6 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
           onClose={() => {
             this.setState({ showJobClose: false });
           }}
-          token={token}
         />
       );
     }
@@ -448,16 +450,19 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
   };
 
   onToggleCloseJob = (e: SyntheticEvent<HTMLButtonElement>) => {
-    const { job, token, partialUpdateJob, intl } = this.props;
+    const { job, partialUpdateJob, intl } = this.props;
 
     if (job) {
-      partialUpdateJob({ id: job.id, closed: !job.closed }, token || "")
-        .then((responseJob: Job) => {
-          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-        })
-        .catch(() => {
-          addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        });
+      const { getUser } = this.context;
+      getUser().then(({ access_token }) => {  
+        partialUpdateJob({ id: job.id, closed: !job.closed }, access_token || "")
+          .then((responseJob: Job) => {
+            addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+          })
+          .catch(() => {
+            addError({ text: intl.formatMessage({ id: "flash.error" }) });
+          });
+      });
     }
     e.preventDefault();
   };

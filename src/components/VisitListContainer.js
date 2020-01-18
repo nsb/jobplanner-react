@@ -7,6 +7,7 @@ import {
   getVisitsByJobGrouped,
   getVisitsGrouped
 } from "../selectors/visitSelectors";
+import { AuthContext } from "../providers/authProvider";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Visit } from "../actions/visits";
@@ -18,7 +19,6 @@ type Props = {
   visitsGrouped: { [key: Date]: Array<Visit> },
   job?: Job,
   business: Business,
-  token: ?string,
   isFetching: boolean,
   dispatch: Dispatch,
   totalCount: number
@@ -35,6 +35,7 @@ class VisitListContainer extends Component<Props, State> {
     offset: 0,
     limit: 20
   };
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.onMore();
@@ -53,9 +54,8 @@ class VisitListContainer extends Component<Props, State> {
   }
 
   onMore = () => {
-    const { business, job, token, dispatch } = this.props;
-    if (token) {
-      const data = job && job.closed ? {
+    const { business, job, dispatch } = this.props;
+    const data = job && job.closed ? {
         business: business.id,
         ordering: "begins",
         limit: 20,
@@ -67,9 +67,11 @@ class VisitListContainer extends Component<Props, State> {
           limit: 20,
           offset: this.state.offset
         };
-      dispatch(fetchVisits(token, job ? { ...data, job: job.id } : data));
+      const { getUser } = this.context;
+      getUser().then(({ access_token }) => {  
+            dispatch(fetchVisits(access_token, job ? { ...data, job: job.id } : data));
       this.setState({ offset: this.state.offset + this.state.limit });
-    }
+    });
   };
 }
 
@@ -80,7 +82,7 @@ const mapStateToProps = (
     business: Business
   }
 ): * => {
-  const { auth, visits } = state;
+  const { visits } = state;
 
   return {
     business: ownProps.business,
@@ -89,8 +91,7 @@ const mapStateToProps = (
       ? getVisitsByJobGrouped(state, ownProps)
       : getVisitsGrouped(state),
     totalCount: ensureState(visits).count,
-    isFetching: ensureState(visits).isFetching,
-    token: auth.token
+    isFetching: ensureState(visits).isFetching
   };
 };
 

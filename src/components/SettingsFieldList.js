@@ -16,12 +16,12 @@ import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
 import FieldForm from "./SettingsFieldForm";
+import { AuthContext } from "../providers/authProvider";
 
 type Props = {
   business: Business,
   fields: Array<Field>,
-  dispatch: Dispatch,
-  token: ?string
+  dispatch: Dispatch
 };
 
 type State = {
@@ -76,28 +76,28 @@ class FieldList extends Component<Props, State> {
   };
 
   onSubmit = (field: Field) => {
-    const { business, dispatch, token } = this.props;
-    if (token) {
+    const { business, dispatch } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {  
       if (field.id) {
-        dispatch(updateField(field, token));
+        dispatch(updateField(field, access_token));
       } else {
         dispatch(
-          createField(merge({}, { business: business.id }, field), token)
+          createField(merge({}, { business: business.id }, field), access_token)
         );
         this.onActive();
       }
-    }
+    });
   };
 }
 
 const mapStateToProps = (
-  { auth, fields, entities }: ReduxState,
+  { fields, entities }: ReduxState,
   ownProps: {
     business: Business,
     dispatch: Dispatch
   }
 ): Props => ({
-  token: auth.token,
   business: ownProps.business,
   fields: fields.result
     .map((Id: number) => {

@@ -25,6 +25,8 @@ type Props = {
 };
 
 class ClientAdd extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   render() {
     const { fields, isFetching, onClose } = this.props;
     return (

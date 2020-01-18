@@ -7,6 +7,7 @@ import { addSuccess, addError } from "redux-flash-messages";
 import { partialUpdateJob } from '../actions/jobs';
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
+import { AuthContext } from "../providers/authProvider";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
 import type { State } from '../types/State';
@@ -64,21 +65,26 @@ const intlNoIncompleteVisitsParagraph2 = (
 type Props = {
   job: Job,
   onClose: Function,
-  dispatch: Dispatch,
-  token: string
+  dispatch: Dispatch
 };
 
 class JobClose extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
 
   _onClose = () => {
-    const { job, token, dispatch, intl, onClose } = this.props;
-    dispatch(
-      partialUpdateJob({ id: job.id, closed: true }, token)).then(
-        (responseJob: Job) => {
-          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})});
-      }).finally(onClose);
+    const { job, dispatch, intl, onClose } = this.props;
+
+    const { getUser } = this.context;
+
+    getUser().then(({ access_token }) => {
+      dispatch(
+        partialUpdateJob({ id: job.id, closed: true }, access_token)).then(
+          (responseJob: Job) => {
+            addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+        }).catch(() => {
+          addError({text: intl.formatMessage({id: "flash.error"})});
+        }).finally(onClose);
+    })
   }
 
   render() {
@@ -116,18 +122,4 @@ class JobClose extends Component<Props & { intl: intlShape }> {
   }
 }
 
-const mapStateToProps = (
-  { auth }: State,
-): * => ({
-  token: auth.token
-});
-
-// const mapDispatchToProps = (dispatch: *) =>
-//   bindActionCreators(
-//     {
-//       partialUpdateJob,
-//     },
-//     dispatch
-//   );
-
-export default connect(mapStateToProps)(injectIntl(JobClose));
+export default injectIntl(JobClose);

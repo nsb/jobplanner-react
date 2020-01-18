@@ -26,7 +26,7 @@ class FieldsEdit extends Component<Props> {
 }
 
 const mapStateToProps = (
-  { auth }: ReduxState,
+  state: ReduxState,
   ownProps: {
     business: Business,
     dispatch: Dispatch,

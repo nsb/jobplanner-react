@@ -18,6 +18,8 @@ import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
 import ServiceForm from "./SettingsServiceForm";
+import { AuthContext } from "../providers/authProvider";
+
 
 const intlHeading = (
   <FormattedMessage
@@ -37,8 +39,7 @@ const intlAccordionHeading = (
 type Props = {
   business: Business,
   services: Array<Service>,
-  dispatch: Dispatch,
-  token: ?string
+  dispatch: Dispatch
 };
 
 type State = {
@@ -93,10 +94,11 @@ class ServiceList extends Component<Props & { intl: intlShape }, State> {
   };
 
   onSubmit = (service: Service) => {
-    const { business, dispatch, token, intl } = this.props;
-    if(token) {
+    const { business, dispatch, intl } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {  
       if (service.id) {
-        dispatch(updateService(service, token)).then(
+        dispatch(updateService(service, access_token)).then(
           (responseService: Service) => {
             addSuccess({text: intl.formatMessage({id: "flash.saved"})});
           }).catch(() => {
@@ -105,7 +107,7 @@ class ServiceList extends Component<Props & { intl: intlShape }, State> {
         );
       } else {
         dispatch(
-          createService(merge({}, { business: business.id }, service), token)
+          createService(merge({}, { business: business.id }, service), access_token)
         ).then(
           (responseService: Service) => {
             addSuccess({text: intl.formatMessage({id: "flash.saved"})});
@@ -114,18 +116,17 @@ class ServiceList extends Component<Props & { intl: intlShape }, State> {
           }
         ).finally(this.onActive);
       }
-    }
+    });
   };
 }
 
 const mapStateToProps = (
-  { auth, services, entities }: ReduxState,
+  { services, entities }: ReduxState,
   ownProps: {
     business: Business,
     dispatch: Dispatch
   }
 ): Props => ({
-  token: auth.token,
   business: ownProps.business,
   services: services.result
     .map((Id: number) => {

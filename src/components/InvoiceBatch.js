@@ -15,6 +15,7 @@ import Notification from "grommet/components/Notification";
 import NavControl from "./NavControl";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import { intlFormSavingLabel, intlInvoiceAccountingSystemNotification } from "../i18n";
+import { AuthContext } from "../providers/authProvider";
 import {
   batchState,
   getInvoiceForJobSelection,
@@ -78,7 +79,6 @@ export type Props = {
     string,
     Object
   ) => ThunkAction,
-  token: ?string,
   isFetching: boolean
 };
 
@@ -229,14 +229,15 @@ class InvoiceBatch extends Component<Props, State> {
       }
     }
 
-    const { createInvoiceAndLoadJobs, token, business } = this.props;
+    const { createInvoiceAndLoadJobs, business } = this.props;
 
-    if (token) {
-      createInvoiceAndLoadJobs(invoices, token, {
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
+      createInvoiceAndLoadJobs(invoices, access_token, {
         business: business.id,
         limit: 200
       });
-    }
+    });
   };
 }
 

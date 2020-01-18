@@ -13,9 +13,8 @@ const mapStateToProps = (
     onClose: Function
   }
 ): Props => {
-  const { auth, entities } = state;
+  const { entities } = state;
   return {
-    token: auth.token,
     visit: ownProps.visit,
     job: ensureState(entities).jobs[ownProps.visit.job],
     onClose: ownProps.onClose

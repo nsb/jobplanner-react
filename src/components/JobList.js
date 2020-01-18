@@ -12,6 +12,7 @@ import Anchor from "grommet/components/Anchor";
 import AddIcon from "grommet/components/icons/base/Add";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import { AuthContext } from "../providers/authProvider";
 import { fetchJobs } from "../actions/jobs";
 import JobListItemContainer from "./JobListItemContainer";
 import NavControl from "./NavControl";
@@ -59,7 +60,6 @@ const intlEmptyMessage = (
 type Props = {
   business: Business,
   jobs: Array<Job>,
-  token: string,
   isFetching: boolean,
   push: Function,
   fetchJobs: Function,
@@ -82,6 +82,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
     offset: 0,
     limit: 15
   };
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.onMore();
@@ -166,9 +167,10 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
   }
 
   onMore = () => {
-    const { token, business, fetchJobs } = this.props;
-    if (token) {
-      fetchJobs(token, {
+    const { business, fetchJobs } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
+      fetchJobs(access_token, {
         business: business.id,
         ordering: "status_order,next_visit",
         limit: this.state.limit,
@@ -180,7 +182,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
           searchResults: resultJobs.results.map(job => job.id)
         });
       });
-    }
+    });
   };
 
   onClick = (e: SyntheticEvent<>, job: Job) => {
@@ -201,13 +203,12 @@ const mapStateToProps = (
   fetchJobs: Function
   }
 ): * => {
-  const { entities, jobs, auth, nav } = state;
+  const { entities, jobs, nav } = state;
 
   return {
     business: ensureState(entities).businesses[ownProps.businessId],
     jobs: jobsSelector(state),
     isFetching: jobs.isFetching,
-    token: auth.token,
     push: ownProps.push,
     totalCount: jobs.count,
     fetchJobs: ownProps.fetchJobs,

@@ -5,6 +5,7 @@ import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
 import VisitListContainer from "../components/VisitListContainer";
+import { AuthContext } from "../providers/authProvider";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Business } from "../actions/businesses";
@@ -17,7 +18,6 @@ type Props = {
   business: Business,
   job: Job,
   task: ?AsyncTask,
-  token: ?string,
   isFetching: boolean,
   dispatch: Dispatch
 };
@@ -31,18 +31,20 @@ class VisitAsyncTask extends Component<Props, State> {
   state = {
     taskState: null
   };
+  static contextType = AuthContext;
 
   componentDidMount() {
-    const { token, job } = this.props;
-    if (token) {
+    const { job } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
       this.intervalId = setInterval(() => {
-        this.fetchAsyncTask(job.schedule_visits_task, token).then(
+        this.fetchAsyncTask(job.schedule_visits_task, access_token).then(
           (responseAsyncTask: AsyncTask) => {
             this.setState({ taskState: responseAsyncTask.state });
           }
         );
       }, 1000);
-    }
+    })
   }
 
   componentWillUnmount() {
@@ -95,14 +97,13 @@ const mapStateToProps = (
     job: Job
   }
 ): * => {
-  const { auth, asyncTasks, entities } = state;
+  const { asyncTasks, entities } = state;
 
   return {
     task: ensureState(entities).asyncTasks[ownProps.job.schedule_visits_task],
     business: ensureState(entities).businesses[ownProps.job.business],
     job: ownProps.job,
-    isFetching: asyncTasks.isFetching,
-    token: auth.token
+    isFetching: asyncTasks.isFetching
   };
 };
 

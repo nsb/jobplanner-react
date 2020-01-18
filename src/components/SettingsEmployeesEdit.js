@@ -30,7 +30,7 @@ class EmployeesEdit extends Component<Props> {
 }
 
 const mapStateToProps = (
-  { auth }: ReduxState,
+  state: ReduxState,
   ownProps: {
     history: { push: string => void },
     business: Business,

@@ -26,6 +26,7 @@ import JobScheduleEdit from "./JobScheduleEdit";
 import ScheduleInput from "./ScheduleInput";
 import LineItemsFormContainer from "./JobLineItemsFormContainer";
 import PropertySelectContainer from "./PropertySelectContainer";
+import { AuthContext } from "../providers/authProvider";
 import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import { RRule, rrulestr } from "rrule";
 import type { Business } from "../actions/businesses";
@@ -448,7 +449,6 @@ type JobFormProps = {
   client: ?{ value: Client, label: string },
   onClientSearch: Function,
   onSelectClient?: Function,
-  token?: string,
   employees: Array<Employee>,
   isFetching: boolean,
   fetchClients: Function
@@ -864,17 +864,20 @@ class JobForm extends Component<
   };
 
   onClientSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    const { business, token, fetchClients } = this.props;
+    const { business, fetchClients } = this.props;
     const value = event.target.value;
 
-    if (value && token) {
-      fetchClients(token, {
-        business: business.id,
-        search: event.target.value,
-        limit: "10"
-      }).then(responseClients =>
-        this.setState({ clients: responseClients.results })
-      );
+    if (value) {
+      const { getUser } = this.context;
+      getUser().then(({ access_token }) => {  
+        fetchClients(access_token, {
+          business: business.id,
+          search: event.target.value,
+          limit: "10"
+        }).then(responseClients =>
+          this.setState({ clients: responseClients.results })
+        );
+      });
     } else {
       this.setState({ clients: [] });
     }

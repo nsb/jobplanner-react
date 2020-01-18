@@ -21,10 +21,9 @@ const mapStateToProps = (
     onClose: Function
   }
 ): Props => {
-  const { auth, employees, entities, visits } = state;
+  const { employees, entities, visits } = state;
 
   return {
-    token: auth.token,
     employees: employees.result
       .map((Id: number) => {
         return ensureState(entities).employees[Id];

@@ -15,6 +15,7 @@ import visitsApi from "../api";
 import NavControl from "./NavControl";
 import VisitsReportFilter from "./VisitsReportFilter";
 import VisitsReportListItem from "./VisitsReportListItem";
+import { AuthContext } from "../providers/authProvider";
 import type { FilterValues } from "./VisitsReportFilter";
 import type { Business } from "../actions/businesses";
 import type { Visit, VisitsResponse } from "../actions/visits";
@@ -26,7 +27,7 @@ const intlCompleted = (
     description="Visits report filter completed"
     defaultMessage="Completed"
   />
-)
+);
 
 const intlIncomplete = (
   <FormattedMessage
@@ -34,7 +35,7 @@ const intlIncomplete = (
     description="Visits report filter incomplete"
     defaultMessage="Incomplete"
   />
-)
+);
 
 const intlCount = (count: number, total: number) => (
   <FormattedMessage
@@ -43,7 +44,7 @@ const intlCount = (count: number, total: number) => (
     defaultMessage="Showing {count} of {total} visits."
     values={{ count, total }}
   />
-)
+);
 
 const intlEmptyMessage = (
   <FormattedMessage
@@ -51,12 +52,11 @@ const intlEmptyMessage = (
     description="Visits report empty message"
     defaultMessage="No visits found."
   />
-)
+);
 
-type Props = {
+export type Props = {
   business: Business,
-  employees: Array<Employee>,
-  token: ?string
+  employees: Array<Employee>
 };
 
 type State = {
@@ -77,7 +77,9 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
     visits: [],
     filterActive: false,
     filterValues: {
-      begins: moment().subtract(1, "months").toDate(),
+      begins: moment()
+        .subtract(1, "months")
+        .toDate(),
       ends: new Date(),
       complete: true,
       incomplete: false,
@@ -85,6 +87,7 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
     },
     isFetching: false
   };
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.onMore();
@@ -92,14 +95,20 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
 
   render() {
     const { employees } = this.props;
-    const { filterActive, filterValues, visits, count, isFetching } = this.state;
+    const {
+      filterActive,
+      filterValues,
+      visits,
+      count,
+      isFetching
+    } = this.state;
 
     let filterLayer;
     if (filterActive) {
       filterLayer = (
         <VisitsReportFilter
           onClose={this._onToggleFilter}
-          employees={employees.filter((employee) => employee.is_active)}
+          employees={employees.filter(employee => employee.is_active)}
           onSubmit={this.onFilterSubmit}
           filterValues={filterValues}
         />
@@ -119,11 +128,13 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
           </Title>
           <FilterControl onClick={this._onToggleFilter} />
         </Header>
-        <Box
-          pad={{ horizontal: "medium" }}>
+        <Box pad={{ horizontal: "medium" }}>
           <Box direction="row">
             <Box margin={{ right: "small" }}>
-              <Timestamp fields={["date", "year"]} value={filterValues.begins} />
+              <Timestamp
+                fields={["date", "year"]}
+                value={filterValues.begins}
+              />
             </Box>
             -
             <Box margin={{ left: "small" }}>
@@ -166,34 +177,35 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
   }
 
   onMore = () => {
-    const { business, token } = this.props;
+    const { business } = this.props;
     const { limit, offset, filterValues } = this.state;
-    if (token) {
-      let filters: {
-        limit: number,
-        offset: number,
-        begins__gte: Date,
-        ends__lte: Date,
-        assigned?: number,
-        completed?: boolean,
-        ordering: string
-      } = {
-        limit: limit,
-        offset: offset,
-        begins__gte: filterValues.begins,
-        ends__lte: filterValues.ends,
-        ordering: "begins",
-      };
-      if (filterValues.complete !== filterValues.incomplete) {
-        filters.completed = filterValues.complete && !filterValues.incomplete;
-      }
-      if (filterValues.assigned) {
-        filters.assigned = filterValues.assigned.value;
-      }
+    let filters: {
+      limit: number,
+      offset: number,
+      begins__gte: Date,
+      ends__lte: Date,
+      assigned?: number,
+      completed?: boolean,
+      ordering: string
+    } = {
+      limit: limit,
+      offset: offset,
+      begins__gte: filterValues.begins,
+      ends__lte: filterValues.ends,
+      ordering: "begins"
+    };
+    if (filterValues.complete !== filterValues.incomplete) {
+      filters.completed = filterValues.complete && !filterValues.incomplete;
+    }
+    if (filterValues.assigned) {
+      filters.assigned = filterValues.assigned.value;
+    }
 
-      this.setState({ isFetching: true }, () => {
+    this.setState({ isFetching: true }, () => {
+      const { getUser } = this.context;
+      getUser().then(({ access_token }) => {
         visitsApi
-          .getAll("visits", token, { ...filters, business: business.id })
+          .getAll("visits", access_token, { ...filters, business: business.id })
           .then((responseVisits: VisitsResponse) => {
             this.setState({
               visits: union(this.state.visits, responseVisits.results),
@@ -206,7 +218,7 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
             throw error;
           });
       });
-    }
+    });
   };
 
   _onToggleFilter = () => {

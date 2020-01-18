@@ -23,13 +23,12 @@ const mapStateToProps = (
     resetVisits: () => ThunkAction
   }
 ): Props => {
-  const { auth, entities, jobs } = state;
+  const { entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
 
   return {
-    token: auth.token,
     business: ensureState(entities).businesses[businessId],
     isFetching: jobs.isFetching,
     push: ownProps.history.push,

@@ -6,15 +6,16 @@ import { connect } from "react-redux";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { RRule, rrulestr } from "rrule";
-import { partialUpdateVisit } from '../actions/visits';
+import { partialUpdateVisit } from "../actions/visits";
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
 import ScheduleInput from "./ScheduleInput";
 import JobScheduleEdit from "./JobScheduleEdit";
+import { AuthContext } from "../providers/authProvider";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Schedule } from "../types/Schedule";
-import type { State as ReduxState } from '../types/State';
+import type { State as ReduxState } from "../types/State";
 
 const intlTitle = (
   <FormattedMessage
@@ -22,7 +23,7 @@ const intlTitle = (
     description="Visit update future visits title"
     defaultMessage="Update future visits?"
   />
-)
+);
 
 const intlParagraph = (
   <FormattedMessage
@@ -30,7 +31,7 @@ const intlParagraph = (
     description="Visit update future visits paragraph 1"
     defaultMessage="This will update the schedule for all future visits."
   />
-)
+);
 
 const intlSubmitLabel = (
   <FormattedMessage
@@ -38,7 +39,7 @@ const intlSubmitLabel = (
     description="Visit update future visits submit label"
     defaultMessage="Yes, update"
   />
-)
+);
 
 const rruleToSchedule = (rrule): Schedule => {
   return {
@@ -46,7 +47,7 @@ const rruleToSchedule = (rrule): Schedule => {
     interval: rrule.options.interval,
     byweekday: rrule.options.byweekday,
     bymonthday: rrule.options.bymonthday
-  }
+  };
 };
 
 type Props = {
@@ -54,7 +55,6 @@ type Props = {
   job: ?Job,
   onClose: Function,
   onUpdateFutureVisits: Function,
-  token: ?string,
   partialUpdateVisit: Function
 };
 
@@ -63,7 +63,12 @@ type State = {
   schedule: Schedule
 };
 
-class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, State> {
+class VisitUpdateFutureVisits extends Component<
+  Props & { intl: intlShape },
+  State
+> {
+  static contextType = AuthContext;
+
   constructor(props: Props) {
     super();
 
@@ -73,18 +78,15 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
     const rrule = recurrences
       ? rrulestr(recurrences)
       : new RRule({
-        freq: RRule.WEEKLY,
-        interval: 1,
-        byweekday: RRule.MO
-      });
+          freq: RRule.WEEKLY,
+          interval: 1,
+          byweekday: RRule.MO
+        });
 
     this.state = { scheduleLayer: false, schedule: rruleToSchedule(rrule) };
   }
 
-  _onUpdateFutureVisits = () => {
-    const { token } = this.props;
-    if (token) { }
-  }
+  _onUpdateFutureVisits = () => {};
 
   render() {
     const { onClose } = this.props;
@@ -97,7 +99,7 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
           onSubmit={this.onScheduleSubmit}
           schedule={this.state.schedule}
         />
-      )
+      );
     } else {
       return (
         <LayerForm
@@ -108,10 +110,11 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
           onSubmit={this.handleSubmit}
         >
           <fieldset>
-            <ScheduleInput value={new RRule({ ...schedule }).toString()} onClick={this.onScheduleEdit} />
-            <Paragraph>
-              {intlParagraph}
-            </Paragraph>
+            <ScheduleInput
+              value={new RRule({ ...schedule }).toString()}
+              onClick={this.onScheduleEdit}
+            />
+            <Paragraph>{intlParagraph}</Paragraph>
           </fieldset>
         </LayerForm>
       );
@@ -131,27 +134,31 @@ class VisitUpdateFutureVisits extends Component<Props & { intl: intlShape }, Sta
   };
 
   handleSubmit = values => {
-    const { visit, token, onClose, partialUpdateVisit, intl } = this.props;
+    const { visit, onClose, partialUpdateVisit, intl } = this.props;
     const { schedule } = this.state;
 
-    return partialUpdateVisit(
+    const { getUser } = this.context;
+    return getUser().then(({ access_token }) => {
+      return partialUpdateVisit(
         {
           id: visit.id,
           recurrences: new RRule({ ...schedule }).toString()
         },
-        token || ""
-      ).then(
-        () => {
-          addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-        }).catch(() => {
-          addError({text: intl.formatMessage({id: "flash.error"})});
-        }
-      ).finally(onClose);
+        access_token || ""
+      )
+        .then(() => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        })
+        .finally(onClose);
+    });
   };
 }
 
 const mapStateToProps = (
-  { auth }: ReduxState,
+  state: ReduxState,
   ownProps: {
     visit: Visit,
     job: Job,
@@ -160,7 +167,6 @@ const mapStateToProps = (
     partialUpdateVisit: Function
   }
 ): Props => ({
-  token: auth.token,
   visit: ownProps.visit,
   job: ownProps.job,
   onClose: ownProps.onClose,
@@ -171,9 +177,12 @@ const mapStateToProps = (
 const mapDispatchToProps = (dispatch: *) =>
   bindActionCreators(
     {
-      partialUpdateVisit,
+      partialUpdateVisit
     },
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(VisitUpdateFutureVisits));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(VisitUpdateFutureVisits));

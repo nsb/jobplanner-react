@@ -21,7 +21,6 @@ import type { Employee } from "../actions/employees";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token: ?string,
   business: Business,
   property: Property,
   clients: ClientsState,
@@ -43,7 +42,6 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
       property,
       intl,
       isFetching,
-      token
     } = this.props;
 
     return (
@@ -74,31 +72,34 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
               })
             }
           }}
-          token={token}
         />
       </Article>
     );
   }
 
   handleSubmit = values => {
-    const { token, business, intl, updateJob, job } = this.props;
-    updateJob(
-      {
-        ...values,
-        business: business.id,
-        property: job.property,
-        assigned: values.assigned.map(v => v.value),
-        invoice_reminder: values.invoice_reminder.value
-      },
-      token || ""
-    )
-      .then((responseJob: Job) => {
-        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-        history.push(`/${business.id}/jobs/${responseJob.id}`);
-      })
-      .catch(() => {
-        addError({ text: intl.formatMessage({ id: "flash.error" }) });
-      });
+    const { business, intl, updateJob, job } = this.props;
+
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {  
+      updateJob(
+        {
+          ...values,
+          business: business.id,
+          property: job.property,
+          assigned: values.assigned.map(v => v.value),
+          invoice_reminder: values.invoice_reminder.value
+        },
+        access_token
+      )
+        .then((responseJob: Job) => {
+          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+          history.push(`/${business.id}/jobs/${responseJob.id}`);
+        })
+        .catch(() => {
+          addError({ text: intl.formatMessage({ id: "flash.error" }) });
+        });
+    });
   };
 
   onClose = () => {
@@ -116,13 +117,12 @@ const mapStateToProps = (
     updateJob: (Business, Object, string) => Promise<any>
   }
 ): Props => {
-  const { auth, clients, employees, entities, jobs } = state;
+  const { clients, employees, entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
 
   return {
-    token: auth.token,
     business: ensureState(entities).businesses[businessId],
     property: ensureState(entities).properties[job.property],
     push: ownProps.history.push,

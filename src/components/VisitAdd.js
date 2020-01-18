@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { addSuccess, addError } from "redux-flash-messages";
 import store from "../store";
 import VisitForm from "./VisitForm";
+import { AuthContext } from "../providers/authProvider";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
 import type { LineItem } from "../actions/lineitems";
@@ -14,7 +15,6 @@ import type { Employee } from "../actions/employees";
 
 export type Props = {
   employees: Array<Employee>,
-  token: ?string,
   business: Business,
   job: Job,
   lineItems: Array<LineItem>,
@@ -50,8 +50,9 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = (values: Object) => {
-    const { business, job, token, createVisitAndLoadJob, onClose, intl } = this.props;
-    if(token) {
+    const { business, job, createVisitAndLoadJob, onClose, intl } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
       createVisitAndLoadJob(
         business,
         {
@@ -59,7 +60,7 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
           job: job.id,
           assigned: values.assigned && values.assigned.map(v => v.value)
         },
-        token || ""
+        access_token || ""
       ).then(
         () => {
           addSuccess({text: intl.formatMessage({id: "flash.saved"})});
@@ -67,7 +68,7 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
           addError({text: intl.formatMessage({id: "flash.error"})});
         }
       ).finally(onClose);
-    }
+    });
   };
 }
 

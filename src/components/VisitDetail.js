@@ -14,6 +14,7 @@ import Menu from "grommet/components/Menu";
 import ScheduleIcon from "grommet/components/icons/base/Schedule";
 import ActionsIcon from "grommet/components/icons/base/Actions";
 import DirectionsIcon from "grommet/components/icons/base/Directions";
+import { AuthContext } from "../providers/authProvider";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
@@ -119,7 +120,6 @@ const intlLineItems = (
 export type Props = {
   visit: Visit,
   job: ?Job,
-  token: ?string,
   property: Property,
   assigned: Array<Object>,
   lineItems: Array<LineItem>,
@@ -131,6 +131,8 @@ export type Props = {
 };
 
 class VisitDetail extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+  
   render() {
     const { visit, job, property, assigned, lineItems, onEdit, onUpdateFutureVisits, onDelete } = this.props;
 
@@ -250,16 +252,17 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
   }
 
   toggleCompleted = () => {
-    const { visit, token, partialUpdateVisitAndLoadJob, onClose, intl } = this.props;
-    if (token) {
-      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, token).then(
+    const { visit, partialUpdateVisitAndLoadJob, onClose, intl } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
+      partialUpdateVisitAndLoadJob({ id: visit.id, job: visit.job, completed: !visit.completed }, access_token).then(
         () => {
           addSuccess({text: intl.formatMessage({id: "flash.saved"})});
         }).catch(() => {
           addError({text: intl.formatMessage({id: "flash.error"})});
         }
       ).finally(onClose);;
-    }
+    });
   };
 }
 

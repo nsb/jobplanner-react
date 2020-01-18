@@ -12,7 +12,6 @@ import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 
 export type Props = {
-  token: ?string,
   visit: Visit,
   job: ?Job,
   onClose: Function
@@ -28,16 +27,16 @@ class VisitLayer extends Component<Props, State> {
   };
 
   render() {
-    const { visit, job, onClose, token } = this.props;
+    const { visit, job, onClose } = this.props;
 
     const visitView = (view => {
       switch (view) {
         case "delete":
-          return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} token={token} />;
+          return <VisitRemove visit={visit} onClose={this.onRemoveClose} onRemove={onClose} />;
         case "edit":
           return <VisitEdit visit={visit} onClose={onClose} toggleEdit={this.toggleEdit} />;
         case "updateFutureVisits":
-          return <VisitUpdateFutureVisits visit={visit} job={job} onClose={onClose} token={token} />
+          return <VisitUpdateFutureVisits visit={visit} job={job} onClose={onClose} />
         default:
           return (
             <VisitDetailContainer

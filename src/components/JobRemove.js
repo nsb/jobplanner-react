@@ -7,11 +7,12 @@ import { connect } from "react-redux";
 import { addSuccess, addError } from "redux-flash-messages";
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
+import { AuthContext } from "../providers/authProvider";
 import { deleteJob } from "../actions/jobs";
 import history from "../history";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
-import type { State } from '../types/State';
+import type { State } from "../types/State";
 
 const intlTitle = (
   <FormattedMessage
@@ -34,7 +35,7 @@ const intlParagraph1 = (id: number) => (
     id="jobRemove.hasIncompleteVisitsParagraph1"
     description="Job remove has incomplete visits paragraph 1"
     defaultMessage="Are you sure you want to remove job {id}?"
-    values={{id: <strong>#{id}</strong>}}
+    values={{ id: <strong>#{id}</strong> }}
   />
 );
 
@@ -50,38 +51,36 @@ type Props = {
   job: Job,
   onClose: Function,
   dispatch: Dispatch,
-  token: string,
   deleteJob: Function
 };
 
 class JobRemove extends Component<Props & { intl: intlShape }> {
-
   onRemove = () => {
-    const { job, token, deleteJob, intl } = this.props;
+    const { job, deleteJob, intl } = this.props;
     if (job) {
-      deleteJob(job, token).then(
-        (responseJob: Job) => {
-          addSuccess({text: intl.formatMessage({id: "flash.deleted"})});
-          history.push(`/${job.business}/jobs`);
-        }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})});
-        }
-      );
+      const { getUser } = this.context;
+      getUser().then(({ access_token }) => {
+        deleteJob(job, access_token)
+          .then((responseJob: Job) => {
+            addSuccess({ text: intl.formatMessage({ id: "flash.deleted" }) });
+            history.push(`/${job.business}/jobs`);
+          })
+          .catch(() => {
+            addError({ text: intl.formatMessage({ id: "flash.error" }) });
+          });
+      });
     }
   };
 
   render() {
     const { job, onClose } = this.props;
 
-    let formContent =
+    let formContent = (
       <fieldset>
-        <Paragraph>
-          {intlParagraph1(job.id)}
-        </Paragraph>
-        <Paragraph>
-          {intlParagraph2}
-        </Paragraph>
+        <Paragraph>{intlParagraph1(job.id)}</Paragraph>
+        <Paragraph>{intlParagraph2}</Paragraph>
       </fieldset>
+    );
 
     return (
       <LayerForm
@@ -98,19 +97,21 @@ class JobRemove extends Component<Props & { intl: intlShape }> {
 }
 
 const mapStateToProps = (
-  { auth }: State,
+  state: State,
   ownProps: { deleteJob: Function }
 ): * => ({
-  token: auth.token,
   deleteJob: ownProps.deleteJob
 });
 
 const mapDispatchToProps = (dispatch: *) =>
   bindActionCreators(
     {
-      deleteJob,
+      deleteJob
     },
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(JobRemove));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(JobRemove));

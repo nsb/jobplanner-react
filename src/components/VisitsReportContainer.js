@@ -5,16 +5,11 @@ import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
 import type { Business } from "../actions/businesses";
 import type { Employee } from "../actions/employees";
+import type { Props } from "./VisitsReport";
 import { ensureState } from "redux-optimistic-ui";
 
-type Props = {
-  business: Business,
-  token: ?string,
-  employees: Array<Employee>
-};
-
 const mapStateToProps = (
-  { entities, employees, auth }: ReduxState,
+  { entities, employees }: ReduxState,
   ownProps: {
     match: { params: { businessId: number } },
     history: { push: Function },
@@ -25,7 +20,6 @@ const mapStateToProps = (
 
   return {
     business: ensureState(entities).businesses[businessId],
-    token: auth.token,
     employees: employees.result
       .map((Id: number) => {
         return ensureState(entities).employees[Id];

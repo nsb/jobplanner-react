@@ -10,7 +10,7 @@ import Layer from "grommet/components/Layer";
 import InvoiceBatchJob from "./InvoiceBatchJob";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
-import type { State } from '../types/State';
+import type { State } from "../types/State";
 
 // const intlTitle = (
 //   <FormattedMessage
@@ -65,35 +65,19 @@ import type { State } from '../types/State';
 type Props = {
   job: Job,
   onClose: Function,
-  dispatch: Dispatch,
-  token: string
+  dispatch: Dispatch
 };
 
 class JobInvoice extends Component<Props> {
-
   render() {
     const { job, onClose } = this.props;
 
     return (
-      <Layer  align="right" closer={true} onClose={onClose}>
+      <Layer align="right" closer={true} onClose={onClose}>
         <InvoiceBatchJob job={job} visits={[]} selected={{}} />
       </Layer>
     );
   }
 }
 
-const mapStateToProps = (
-  { auth }: State,
-): * => ({
-  token: auth.token
-});
-
-// const mapDispatchToProps = (dispatch: *) =>
-//   bindActionCreators(
-//     {
-//       partialUpdateJob,
-//     },
-//     dispatch
-//   );
-
-export default connect(mapStateToProps)(injectIntl(JobInvoice));
+export default injectIntl(JobInvoice);

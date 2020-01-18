@@ -7,6 +7,7 @@ import { visitSchemaDenormalize } from "../schemas";
 import { injectIntl, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { updateVisitAndLoadJob } from "../actions/index";
+import { AuthContext } from "../providers/authProvider";
 import VisitForm from "./VisitForm";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
@@ -19,13 +20,14 @@ export type Props = {
   visit: Visit,
   employees: Array<Employee>,
   assigned: Array<Employee>,
-  token: string,
   toggleEdit: Function,
   onClose: Function,
   isFetching: boolean
 };
 
 class VisitEdit extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   render() {
     const { visit, employees, assigned, isFetching } = this.props;
 
@@ -45,14 +47,17 @@ class VisitEdit extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = values => {
-    const { token, dispatch, onClose, intl } = this.props;
+    const { dispatch, onClose, intl } = this.props;
+
+    const { getUser } = this.context;
+    return getUser().then(({ access_token }) => {
     return dispatch(
       updateVisitAndLoadJob(
         {
           ...values,
           assigned: values.assigned.map(v => v.value)
         },
-        token || ""
+        access_token || ""
       )
     ).then(
       () => {
@@ -61,6 +66,7 @@ class VisitEdit extends Component<Props & { intl: intlShape }> {
         addError({text: intl.formatMessage({id: "flash.error"})});
       }
     ).finally(onClose);
+    })
   };
 }
 
@@ -71,10 +77,9 @@ const mapStateToProps = (
     toggleEdit: Function
   }
 ): * => {
-  const { auth, employees, entities, visits, jobs } = state;
+  const { employees, entities, visits, jobs } = state;
 
   return {
-    token: auth.token,
     employees: employees.result
       .map((Id: number) => {
         return ensureState(entities).employees[Id];

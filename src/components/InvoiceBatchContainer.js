@@ -25,7 +25,7 @@ const mapStateToProps = (
   }
 ): Props => {
   const jobs = jobsWithRequiresInvoicing(state);
-  const { invoices, auth } = state;
+  const { invoices } = state;
 
   return {
     clients: jobs.reduce((acc, job) => {
@@ -47,7 +47,6 @@ const mapStateToProps = (
         return acc;
       }, new Map()),
     createInvoiceAndLoadJobs: ownProps.createInvoiceAndLoadJobs,
-    token: auth.token,
     business: ownProps.business,
     isFetching: invoices.isFetching
   };

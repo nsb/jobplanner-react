@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateBusiness } from "../actions/businesses";
 import EmailsForm from "./SettingsEmailsForm";
+import { AuthContext } from "../providers/authProvider";
 import type { Business } from "../actions/businesses";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
@@ -11,8 +12,7 @@ import type { State as ReduxState } from "../types/State";
 type Props = {
   business: Business,
   onClose: Function,
-  dispatch: Dispatch,
-  token: ?string
+  dispatch: Dispatch
 };
 
 class EmailsEdit extends Component<Props> {
@@ -28,22 +28,22 @@ class EmailsEdit extends Component<Props> {
   }
 
   handleSubmit = (business: Business) => {
-    const { token, dispatch, onClose } = this.props;
-    if (token) {
-      dispatch(updateBusiness(business, token));
+    const { dispatch, onClose } = this.props;
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
+      dispatch(updateBusiness(business, access_token));
       onClose();
-    }
+    });
   };
 }
 
 const mapStateToProps = (
-  { auth }: ReduxState,
+  state: ReduxState,
   ownProps: {
     business: Business,
     dispatch: Dispatch
   }
 ): * => ({
-  token: auth.token,
   business: ownProps.business,
   dispatch: ownProps.dispatch
 });

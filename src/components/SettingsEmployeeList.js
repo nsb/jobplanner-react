@@ -18,6 +18,7 @@ import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
 import EmployeeForm from "./SettingsEmployeeForm";
+import { AuthContext } from "../providers/authProvider";
 
 const intlTitle = (
   <FormattedMessage
@@ -25,7 +26,7 @@ const intlTitle = (
     description="Settings employee list title"
     defaultMessage="Employees"
   />
-)
+);
 
 const intlAdd = (
   <FormattedMessage
@@ -33,13 +34,12 @@ const intlAdd = (
     description="Settings employee list add"
     defaultMessage="Add employee"
   />
-)
+);
 
 type Props = {
   business: Business,
   employees: Array<Employee>,
-  dispatch: Dispatch,
-  token: string
+  dispatch: Dispatch
 };
 
 type State = {
@@ -80,7 +80,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
             <Paragraph>
               <EmployeeForm
                 form={`employeeform-new`}
-                initialValues={{is_active: true}}
+                initialValues={{ is_active: true }}
                 onSubmit={this.onSubmit}
               />
             </Paragraph>
@@ -98,34 +98,43 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
   };
 
   onSubmit = (employee: Employee) => {
-    const { business, dispatch, token, intl } = this.props;
-    if (employee.id) {
-      dispatch(
-        updateEmployee(employee, token)
-      ).then(() => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})})
-      });
-    } else {
-      dispatch(
-        createEmployee(merge({}, { businesses: [business.id] }, employee), token)
-      ).then(() => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})})
-      }).finally(this.onActive);
-    }
+    const { business, dispatch, intl } = this.props;
+
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
+      if (employee.id) {
+        dispatch(updateEmployee(employee, access_token))
+          .then(() => {
+            addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+          })
+          .catch(() => {
+            addError({ text: intl.formatMessage({ id: "flash.error" }) });
+          });
+      } else {
+        dispatch(
+          createEmployee(
+            merge({}, { businesses: [business.id] }, employee),
+            access_token
+          )
+        )
+          .then(() => {
+            addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+          })
+          .catch(() => {
+            addError({ text: intl.formatMessage({ id: "flash.error" }) });
+          })
+          .finally(this.onActive);
+      }
+    });
   };
 }
 
 const mapStateToProps = (
-  { auth, employees, entities }: ReduxState,
+  { employees, entities }: ReduxState,
   ownProps: {
-    business: Business,
+    business: Business
   }
 ): * => ({
-  token: auth.token,
   business: ownProps.business,
   employees: employees.result
     .map((Id: number) => {
@@ -135,7 +144,7 @@ const mapStateToProps = (
       return employee.businesses.indexOf(ownProps.business.id) > -1
         ? employee
         : false;
-    }),
+    })
 });
 
 export default connect(mapStateToProps)(injectIntl(EmployeeList));

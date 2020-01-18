@@ -23,10 +23,9 @@ const mapStateToProps = (
     partialUpdateVisitAndLoadJob: Function
   }
 ): Props => {
-  const { auth, entities, visits } = state;
+  const { entities, visits } = state;
 
   return {
-    token: auth.token,
     isFetching: visits.isFetching,
     visit: ownProps.visit,
     job: ownProps.job,

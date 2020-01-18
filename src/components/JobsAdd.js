@@ -8,6 +8,7 @@ import { addSuccess, addError } from "redux-flash-messages";
 import Article from "grommet/components/Article";
 import JobForm, { oneoffInvoicingReminderMap } from "./JobForm";
 import history from "../history";
+import { AuthContext } from "../providers/authProvider";
 import { createJob } from "../actions/jobs";
 import { fetchClients } from "../actions/clients";
 import type { Business } from "../actions/businesses";
@@ -19,7 +20,6 @@ import type { Client } from "../actions/clients";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
-  token: ?string,
   business: Business,
   push: string => void,
   employees: Array<Employee>,
@@ -40,7 +40,6 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
 
   render() {
     const {
-      token,
       employees,
       client,
       business,
@@ -69,7 +68,6 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
               })
             }
           }}
-          token={token}
           fetchClients={fetchClients}
         />
       </Article>
@@ -81,9 +79,10 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
       client: { value: client },
       property
     } = values;
-    const { token, business, intl, createJob } = this.props;
+    const { business, intl, createJob } = this.props;
 
-    if (token) {
+    const { getUser } = this.context;
+    getUser().then(({ access_token }) => {
       createJob(
         business,
         {
@@ -96,7 +95,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
           assigned: values.assigned && values.assigned.map(v => v.value),
           invoice_reminder: values.invoice_reminder.value
         },
-        token
+        access_token
       )
         .then((responseJob: Job) => {
           addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
@@ -105,7 +104,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
         .catch(() => {
           addError({ text: intl.formatMessage({ id: "flash.error" }) });
         });
-    }
+    });
   };
 
   onClose = () => {
@@ -127,7 +126,7 @@ const mapStateToProps = (
     createJob: (Business, Job, string) => Promise<any>
   }
 ): * => {
-  const { auth, employees, entities, jobs } = state;
+  const { employees, entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const searchParams: URLSearchParams = new URLSearchParams(
     document.location.search
@@ -140,7 +139,6 @@ const mapStateToProps = (
   }
 
   return {
-    token: auth.token,
     business: ensureState(entities).businesses[businessId],
     push: ownProps.history.push,
     employees: employees.result
