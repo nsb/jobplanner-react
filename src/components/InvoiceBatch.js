@@ -14,7 +14,10 @@ import BusyIcon from "grommet/components/icons/Spinning";
 import Notification from "grommet/components/Notification";
 import NavControl from "./NavControl";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
-import { intlFormSavingLabel, intlInvoiceAccountingSystemNotification } from "../i18n";
+import {
+  intlFormSavingLabel,
+  intlInvoiceAccountingSystemNotification
+} from "../i18n";
 import { AuthContext } from "../providers/authProvider";
 import {
   batchState,
@@ -235,7 +238,7 @@ class InvoiceBatch extends Component<Props, State> {
 
     const { getUser } = this.context;
     getUser().then(({ access_token }) => {
-      createInvoiceAndLoadJobs(invoices, access_token, {
+      return createInvoiceAndLoadJobs(invoices, access_token, {
         business: business.id,
         limit: 200
       });
