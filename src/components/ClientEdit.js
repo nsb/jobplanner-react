@@ -53,20 +53,19 @@ class ClientEdit extends Component<Props & { intl: intlShape }> {
 
     const { getUser } = this.context;
     getUser().then(({ access_token }) => {
-      updateClient(
+      return updateClient(
         {
           ...client,
           ...values
         },
         access_token || ""
       )
-        .then((responseClient: Client) => {
-          addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
-          onClose();
-        })
-        .catch(() => {
-          addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        });
+    }).then((responseClient: Client) => {
+      addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      onClose();
+    })
+    .catch(() => {
+      addError({ text: intl.formatMessage({ id: "flash.error" }) });
     });
   };
 }

@@ -4,13 +4,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
-import { partialUpdateJob } from '../actions/jobs';
+import { partialUpdateJob } from "../actions/jobs";
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
 import { AuthContext } from "../providers/authProvider";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
-import type {State} from '../types/State';
+import type { State } from "../types/State";
 
 const intlTitle = (
   <FormattedMessage
@@ -33,7 +33,7 @@ const intlHasIncompleteVisitsParagraph1 = (id: number) => (
     id="jobClose.hasIncompleteVisitsParagraph1"
     description="Job close has incomplete visits paragraph 1"
     defaultMessage="Are you sure you want to close job {id}?"
-    values={{id: <strong>#{id}</strong>}}
+    values={{ id: <strong>#{id}</strong> }}
   />
 );
 
@@ -50,7 +50,7 @@ const intlNoIncompleteVisitsParagraph1 = (id: number) => (
     id="jobClose.noIncompleteVisitsParagraph1"
     description="Job close no incomplete visits paragraph 1"
     defaultMessage="Job {id} has no upcoming visits."
-    values={{id: <strong>#{id}</strong>}}
+    values={{ id: <strong>#{id}</strong> }}
   />
 );
 
@@ -76,37 +76,35 @@ class JobClose extends Component<Props & { intl: intlShape }> {
 
     const { getUser } = this.context;
 
-    getUser().then(({ access_token }) => {
-      dispatch(
-        partialUpdateJob({ id: job.id, closed: true }, access_token)).then(
-          (responseJob: Job) => {
-            addSuccess({text: intl.formatMessage({id: "flash.saved"})});
-        }).catch(() => {
-          addError({text: intl.formatMessage({id: "flash.error"})});
-        }).finally(onClose);
-    })
-  }
+    getUser()
+      .then(({ access_token }) => {
+        return dispatch(
+          partialUpdateJob({ id: job.id, closed: true }, access_token)
+        );
+      })
+      .then((responseJob: Job) => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      })
+      .finally(onClose);
+  };
 
   render() {
     const { job, onClose } = this.props;
 
-    let formContent = job.incomplete_visit_count ?
+    let formContent = job.incomplete_visit_count ? (
       <fieldset>
-        <Paragraph>
-          {intlHasIncompleteVisitsParagraph1(job.id)}
-        </Paragraph>
-        <Paragraph>
-          {intlHasIncompleteVisitsParagraph2}
-        </Paragraph>
-      </fieldset> :
-      <fieldset>
-        <Paragraph>
-          {intlNoIncompleteVisitsParagraph1(job.id)}
-        </Paragraph>
-        <Paragraph>
-          {intlNoIncompleteVisitsParagraph2}
-        </Paragraph>
+        <Paragraph>{intlHasIncompleteVisitsParagraph1(job.id)}</Paragraph>
+        <Paragraph>{intlHasIncompleteVisitsParagraph2}</Paragraph>
       </fieldset>
+    ) : (
+      <fieldset>
+        <Paragraph>{intlNoIncompleteVisitsParagraph1(job.id)}</Paragraph>
+        <Paragraph>{intlNoIncompleteVisitsParagraph2}</Paragraph>
+      </fieldset>
+    );
 
     return (
       <LayerForm
@@ -122,11 +120,6 @@ class JobClose extends Component<Props & { intl: intlShape }> {
   }
 }
 
-const mapStateToProps = (
-  state: State,
-): * => ({
-
-});
-
+const mapStateToProps = (state: State): * => ({});
 
 export default connect(mapStateToProps)(injectIntl(JobClose));

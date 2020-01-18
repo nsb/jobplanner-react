@@ -179,7 +179,7 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
 
     const { getUser } = this.context;
     getUser().then(({ access_token }) => {
-      createInvoiceAndLoadJobs(invoice, access_token, {
+      return createInvoiceAndLoadJobs(invoice, access_token, {
         business: client.business,
         limit: 200
       });

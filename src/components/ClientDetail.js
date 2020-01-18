@@ -97,36 +97,31 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   static contextType = AuthContext;
 
   componentDidMount() {
-    const {
-      client,
-      clientId,
-      fetchClient,
-      fetchJobs,
-      intl
-    } = this.props;
+    const { client, clientId, fetchClient, fetchJobs, intl } = this.props;
     const { getUser } = this.context;
 
-    if (!client) {      
-      getUser().then(({access_token}) => {
-        fetchClient(access_token, clientId).catch(() => {
+    if (!client) {
+      getUser()
+        .then(({ access_token }) => {
+          return fetchClient(access_token, clientId);
+        })
+        .catch(() => {
           addError({ text: intl.formatMessage({ id: "flash.error" }) });
         });
-      })
     }
 
-    getUser().then(({access_token}) => {
-      fetchJobs(access_token, { client: clientId, ordering: "status_order,-begins" });
-    })
+    getUser().then(({ access_token }) => {
+      fetchJobs(access_token, {
+        client: clientId,
+        ordering: "status_order,-begins"
+      });
+    }).catch(() => {
+      addError({ text: intl.formatMessage({ id: "flash.error" }) });
+    });
   }
 
   render() {
-    const {
-      business,
-      client,
-      properties,
-      jobs,
-      isFetching
-    } = this.props;
+    const { business, client, properties, jobs, isFetching } = this.props;
 
     const { view } = this.state;
 
@@ -334,10 +329,10 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
       );
     }
   }
- 
+
   onResponsive = (responsive: Responsive) => {
     this.setState({ responsive });
-  }
+  };
 
   onClose = () => {
     this.setState({ view: null });

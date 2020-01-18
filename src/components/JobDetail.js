@@ -161,7 +161,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
     if (!job) {
       const { getUser } = this.context;
       getUser().then(({ access_token }) => {
-        fetchJob(access_token, jobId);
+        return fetchJob(access_token, jobId);
       });
     }
   }

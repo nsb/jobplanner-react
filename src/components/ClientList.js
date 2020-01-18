@@ -180,19 +180,19 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
 
     const { getUser } = this.context;
     getUser().then(({access_token}) => {
-      fetchClients(access_token, {
+      return fetchClients(access_token, {
         business: business.id,
         ordering: "first_name,last_name",
         limit: this.state.limit,
         offset: this.state.offset,
         search: this.state.searchText
-      }).then(resultClients => {
-        this.setState({
-          offset: this.state.offset + this.state.limit,
-          searchResults: resultClients.results.map(client => client.id)
-        });
+      })
+    }).then(resultClients => {
+      this.setState({
+        offset: this.state.offset + this.state.limit,
+        searchResults: resultClients.results.map(client => client.id)
       });
-    })
+    });
   };
 
   onShowAdd = () => this.setState({ add: true })
