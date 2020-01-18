@@ -471,6 +471,7 @@ class JobForm extends Component<
   static defaultProps = {
     employees: []
   };
+  static contextType = AuthContext;
 
   constructor(props: JobFormProps & { intl: intlShape }) {
     super(props);

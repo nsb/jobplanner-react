@@ -23,6 +23,8 @@ export type State = {
 };
 
 class InvoiceBatchLoader extends Component<Props> {
+  static contextType = AuthContext;
+
   componentDidMount() {
     const { fetchJobs, business } = this.props;
     const { getUser } = this.context;

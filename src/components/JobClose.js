@@ -2,7 +2,6 @@
 
 import React, { Component } from "react";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
-import { connect } from "react-redux";
 import { addSuccess, addError } from "redux-flash-messages";
 import { partialUpdateJob } from '../actions/jobs';
 import LayerForm from "grommet-templates/components/LayerForm";
@@ -10,7 +9,6 @@ import Paragraph from "grommet/components/Paragraph";
 import { AuthContext } from "../providers/authProvider";
 import type { Job } from "../actions/jobs";
 import type { Dispatch } from "../types/Store";
-import type { State } from '../types/State';
 
 const intlTitle = (
   <FormattedMessage

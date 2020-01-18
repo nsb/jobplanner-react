@@ -16,6 +16,8 @@ type Props = {
 };
 
 class EmailsEdit extends Component<Props> {
+  static contextType = AuthContext;
+
   render() {
     const { business, onClose } = this.props;
     return (

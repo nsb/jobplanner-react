@@ -21,6 +21,8 @@ type Props = {
 };
 
 class BusinessEdit extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   render() {
     const { business, onClose } = this.props;
     return (

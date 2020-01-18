@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import VisitsReport from "./VisitsReport";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
-import type { Business } from "../actions/businesses";
-import type { Employee } from "../actions/employees";
 import type { Props } from "./VisitsReport";
 import { ensureState } from "redux-optimistic-ui";
 

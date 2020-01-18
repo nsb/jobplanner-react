@@ -24,6 +24,8 @@ export type Props = {
 };
 
 class VisitAdd extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   render() {
     const { employees, onClose, job, lineItems, isFetching } = this.props;
 

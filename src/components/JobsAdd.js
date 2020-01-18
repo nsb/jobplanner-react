@@ -34,6 +34,7 @@ type State = {
 };
 
 class JobsAdd extends Component<Props & { intl: intlShape }, State> {
+  static contextType = AuthContext;
   state = {
     scheduleLayer: false
   };

@@ -29,6 +29,8 @@ type State = {
 };
 
 class FieldList extends Component<Props, State> {
+  static contextType = AuthContext;
+
   constructor(props: Props) {
     super(props);
     const { fields } = props;

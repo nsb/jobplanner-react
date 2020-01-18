@@ -87,6 +87,8 @@ type State = {
 };
 
 class InvoiceBatch extends Component<Props, State> {
+  static contextType = AuthContext;
+
   constructor(props: Props) {
     super(props);
 

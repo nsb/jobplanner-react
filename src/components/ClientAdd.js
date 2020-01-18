@@ -2,9 +2,9 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { injectIntl, intlShape } from 'react-intl';
+import { withRouter } from "react-router-dom";
+import { injectIntl, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
-import history from "../history";
 import Article from "grommet/components/Article";
 import ClientForm from "./ClientForm";
 import { createClient } from "../actions/clients";
@@ -21,7 +21,8 @@ type Props = {
   fields: Array<Field>,
   isFetching: boolean,
   createClient: Function,
-  onClose: Function
+  onClose: Function,
+  history: { push: Function }
 };
 
 class ClientAdd extends Component<Props & { intl: intlShape }> {
@@ -47,31 +48,35 @@ class ClientAdd extends Component<Props & { intl: intlShape }> {
   }
 
   handleSubmit = (values: Client): void => {
-    const { business, createClient, intl } = this.props;
+    const { business, createClient, intl, history } = this.props;
     const { getUser } = this.context;
-    getUser().then(({access_token}) => {
-      let action = createClient(
-        business,
-        {
-          ...values,
-          business: business.id
-        },
-        access_token
-      );
-      action.then((responseClient: Client) => {
-        addSuccess({text: intl.formatMessage({id: "flash.saved"})});
+    getUser()
+      .then(({ access_token }) => {
+        return createClient(
+          business,
+          {
+            ...values,
+            business: business.id
+          },
+          access_token
+        );
+      })
+      .then((responseClient: Client) => {
+        console.log(responseClient);
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
         history.push(`/${business.id}/clients/${responseClient.id}`);
-      }).catch(() => {
-        addError({text: intl.formatMessage({id: "flash.error"})})
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
       });
-    });
   };
 }
 
 type OwnProps = {
   business: Business,
   createClient: Function,
-  onClose: Function
+  onClose: Function,
+  history: { push: Function }
 };
 
 const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
@@ -88,7 +93,8 @@ const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
       }),
     isFetching: clients.isFetching,
     createClient: ownProps.createClient,
-    onClose: ownProps.onClose
+    onClose: ownProps.onClose,
+    history: ownProps.history
   };
 };
 
@@ -100,4 +106,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ClientAdd));
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(ClientAdd)));

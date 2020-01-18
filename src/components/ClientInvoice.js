@@ -77,6 +77,8 @@ type State = {
 };
 
 class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
+  static contextType = AuthContext;
+
   constructor(props: Props & { intl: intlShape }) {
     super(props);
     const { jobSelection, visitSelection } = props;

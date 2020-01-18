@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { deleteVisit } from "../actions/visits";
@@ -10,7 +9,6 @@ import Paragraph from "grommet/components/Paragraph";
 import { AuthContext } from "../providers/authProvider";
 import type { Visit } from "../actions/visits";
 import type { Dispatch } from "../types/Store";
-import type { State } from "../types/State";
 
 const intlTitle = (
   <FormattedMessage

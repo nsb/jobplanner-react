@@ -1,17 +1,14 @@
 // @flow
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import history from "../history";
 import { deleteClient } from "../actions/clients";
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
-import { AuthContext } from "../providers/authProvider";
 import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
-import type { State } from "../types/State";
 
 const intlTitle = (
   <FormattedMessage

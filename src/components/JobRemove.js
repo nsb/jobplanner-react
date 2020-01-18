@@ -55,6 +55,8 @@ type Props = {
 };
 
 class JobRemove extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   onRemove = () => {
     const { job, deleteJob, intl } = this.props;
     if (job) {

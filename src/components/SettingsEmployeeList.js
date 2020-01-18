@@ -47,6 +47,8 @@ type State = {
 };
 
 class EmployeeList extends Component<Props & { intl: intlShape }, State> {
+  static contextType = AuthContext;
+
   constructor(props: Props & { intl: intlShape }) {
     super(props);
     const { employees } = props;
