@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Switch, Redirect, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
 import Spinning from "grommet/components/icons/Spinning";
@@ -16,21 +16,25 @@ import type { FlashMessage as FlashMessageShape } from "redux-flash-messages";
 import AppAuthenticatedNav from "../containers/AppAuthenticatedNav";
 import Businesses from "../components/Businesses";
 import BusinessAdd from "../components/BusinessAdd";
+import { AuthContext } from "../providers/authProvider";
 
 type Props = {
-  isAuthenticated: boolean,
   isFetching: boolean,
-  token: string,
   dispatch: Dispatch,
   messages: Array<FlashMessageShape>
 }
 
 class AppAuthenticated extends Component<Props> {
   intervalId: number = -1;
+  static contextType = AuthContext;
 
-  componentWillMount() {
-    const { token, dispatch } = this.props;
-    dispatch(verifyAuthAndFetchBusinesses(token));
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    const { getUser } = this.context;
+    getUser().then(({access_token}) => {
+      dispatch(verifyAuthAndFetchBusinesses(access_token));
+    })
   }
 
   // componentDidMount() {
@@ -58,7 +62,7 @@ class AppAuthenticated extends Component<Props> {
   };
 
   render() {
-    const { isAuthenticated, isFetching, messages } = this.props;
+    const { isFetching, messages } = this.props;
 
     if (!isFetching) {
       let toasts = (
@@ -79,7 +83,7 @@ class AppAuthenticated extends Component<Props> {
         <div>
           {toasts}
           <Route
-            render={() => (isAuthenticated ? routes : <Redirect to="/login" />)}
+            render={() => routes}
           />
         </div>
       );
@@ -103,12 +107,10 @@ class AppAuthenticated extends Component<Props> {
 }
 
 const mapStateToProps = (state: State) => {
-  const { users, auth, businesses, flashMessage } = state;
+  const { users, businesses, flashMessage } = state;
 
   return {
-    isAuthenticated: auth.isAuthenticated,
-    isFetching: users.isFetching || businesses.isFetching || auth.busy,
-    token: auth.token,
+    isFetching: users.isFetching || businesses.isFetching,
     messages: flashMessage.messages
   };
 };

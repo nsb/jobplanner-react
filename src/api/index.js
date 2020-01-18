@@ -24,7 +24,7 @@ class Api {
     const options = {
       method: "GET",
       headers: new Headers({
-        Authorization: `Jwt ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
       })
     };
@@ -42,7 +42,7 @@ class Api {
     const request = new Request(url, {
       method: "GET",
       headers: new Headers({
-        Authorization: `Jwt ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
       })
     });
@@ -70,7 +70,7 @@ class Api {
       {
         method: patch ? "PATCH" : "PUT",
         headers: new Headers({
-          Authorization: `Jwt ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
         }),
         body: JSON.stringify(item)
@@ -93,7 +93,7 @@ class Api {
     const request = new Request(`${API_ENDPOINT}/${API_VERSION}/${resource}/`, {
       method: "POST",
       headers: new Headers({
-        Authorization: `Jwt ${token || ""}`,
+        Authorization: `Bearer ${token || ""}`,
         "Content-Type": "application/json"
       }),
       body: JSON.stringify(item)
@@ -117,7 +117,7 @@ class Api {
       {
         method: "DELETE",
         headers: new Headers({
-          Authorization: `Jwt ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
         })
       }

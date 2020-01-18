@@ -13,6 +13,7 @@ import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
 import store from "./store";
+import { AuthProvider } from "./providers/authProvider";
 import App from "./containers/App";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -76,11 +77,13 @@ const root = document.getElementById("root");
 if (root) {
   ReactDOM.render(
     <Provider store={store}>
-      <IntlProvider locale={languageWithoutRegionCode} messages={messages}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </IntlProvider>
+      <AuthProvider>
+        <IntlProvider locale={languageWithoutRegionCode} messages={messages}>
+          <Router history={history}>
+            <App />
+          </Router>
+        </IntlProvider>
+      </AuthProvider>
     </Provider>,
     root
   );
