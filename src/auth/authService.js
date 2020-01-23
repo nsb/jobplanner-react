@@ -14,7 +14,11 @@ export default class AuthService {
     });
     // Logger
     Log.logger = console;
-    Log.level = Log.DEBUG;
+    if (process.env.NODE_ENV === 'development') {
+      Log.level = Log.INFO;
+    } else {
+      Log.logger = Log.NONE;
+    }
     this.UserManager.events.addUserLoaded(user => {
       if (window.location.href.indexOf("signin-oidc") !== -1) {
         this.navigateToScreen();
