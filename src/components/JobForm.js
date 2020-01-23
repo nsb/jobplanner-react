@@ -372,12 +372,10 @@ class ClientInput extends Component<ClientInputProps> {
           reverse={true}
           onClick={onClick}
         >
-          <Heading tag="h3">{intlJobFormClientHeading}</Heading>
           {value.label}
         </Anchor>
       ) : (
         <div>
-          <Heading tag="h3">{intlJobFormClientHeading}</Heading>
           {value.label}
         </div>
       )
