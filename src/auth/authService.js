@@ -1,5 +1,5 @@
 import { IDENTITY_CONFIG, METADATA_OIDC } from "./authConst";
-import { UserManager, WebStorageStateStore, Log } from "oidc-client";
+import { UserManager, WebStorageStateStore } from "oidc-client";
 
 export default class AuthService {
   UserManager;
@@ -12,9 +12,6 @@ export default class AuthService {
         ...METADATA_OIDC
       }
     });
-    // Logger
-    Log.logger = console;
-    Log.level = Log.DEBUG;
     this.UserManager.events.addUserLoaded(user => {
       if (window.location.href.indexOf("signin-oidc") !== -1) {
         this.navigateToScreen();
