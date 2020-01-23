@@ -1,14 +1,17 @@
 // @flow
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
-import history from "../history";
 import { deleteClient } from "../actions/clients";
 import LayerForm from "grommet-templates/components/LayerForm";
 import Paragraph from "grommet/components/Paragraph";
+import { AuthContext } from "../providers/authProvider";
 import type { Client } from "../actions/clients";
 import type { Dispatch } from "../types/Store";
+import type { State } from "../types/State";
 
 const intlTitle = (
   <FormattedMessage
@@ -42,25 +45,29 @@ const intlParagraph = (client: Client) => (
 type Props = {
   client: Client,
   onClose: Function,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  history: { push: string => void}
 };
 
 class ClientRemove extends Component<Props & { intl: intlShape }> {
+  static contextType = AuthContext;
+
   _onRemove = () => {
-    const { client, onClose, intl, dispatch } = this.props;
+    const { client, onClose, intl, dispatch, history } = this.props;
     const { getUser } = this.context;
 
-    getUser().then(({ access_token }) => {
-      dispatch(deleteClient(client, access_token))
-        .then((responseClient: Client) => {
-          addSuccess({ text: intl.formatMessage({ id: "flash.deleted" }) });
-          history.push(`/${client.business}/clients`);
-        })
-        .catch(() => {
-          addError({ text: intl.formatMessage({ id: "flash.error" }) });
-        })
-        .finally(onClose);
-    });
+    getUser()
+      .then(({ access_token }) => {
+        dispatch(deleteClient(client, access_token));
+      })
+      .then((responseClient: Client) => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.deleted" }) });
+        history.push(`/${client.business}/clients`);
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      })
+      .finally(onClose);
   };
 
   render() {
@@ -81,4 +88,17 @@ class ClientRemove extends Component<Props & { intl: intlShape }> {
   }
 }
 
-export default injectIntl(ClientRemove);
+const mapStateToProps = (
+  state: State,
+  ownProps: { dispatch: Dispatch, history: { push: (string => void)} }
+): * => ({ dispatch: ownProps.dispatch, history: ownProps.history });
+
+// const mapDispatchToProps = (dispatch: *) =>
+//   bindActionCreators(
+//     {
+//       deleteClient,
+//     },
+//     dispatch
+//   );
+
+export default withRouter(connect(mapStateToProps)(injectIntl(ClientRemove)));

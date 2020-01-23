@@ -358,4 +358,4 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   };
 }
 
-export default injectIntl(injectIntl(ClientDetail));
+export default injectIntl(ClientDetail);
