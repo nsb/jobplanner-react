@@ -235,15 +235,7 @@ const mapStateToProps = (
   const visits = Object.entries(getVisitsGroupedByDay(state))
     .map(([date: string, visits: Array<Visit>]) => {
       // $FlowFixMe
-      return [
-        {
-          begins: date,
-          ends: date,
-          anytime: true,
-          title: intlVisitCount(visits.length)
-        },
-        ...visits
-      ];
+      return [{begins: date, ends: date, anytime: true, title: intlVisitCount(visits.length)}, ...visits];
     })
     .flatMap(arr => arr);
 
