@@ -8,7 +8,6 @@ import Loadable from "react-loadable";
 import Split from "grommet/components/Split";
 import Loading from "../components/Loading";
 import NavSidebar from "../components/NavSidebar";
-import CalendarContainer from "../components/CalendarContainer";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
@@ -39,13 +38,8 @@ const Jobs = Loadable({
   loading: Loading
 });
 
-// const CalendarContainer = Loadable({
-//   loader: () => import("../components/CalendarContainer"),
-//   loading: Loading
-// });
-
-const CalendarListContainer = Loadable({
-  loader: () => import("../components/CalendarListContainer"),
+const CalendarContainer = Loadable({
+  loader: () => import("../components/CalendarContainer"),
   loading: Loading
 });
 
@@ -95,11 +89,7 @@ class AppAuthenticatedNav extends Component<Props> {
           <Route
             exact
             path="/:businessId/calendar"
-            component={
-              responsive === "multiple"
-                ? CalendarContainer
-                : CalendarListContainer
-            }
+            component={CalendarContainer}
           />
           <Route exact path="/:businessId/clients/add" component={ClientAdd} />
           <Route

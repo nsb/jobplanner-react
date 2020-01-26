@@ -1,15 +1,16 @@
 // @flow
 import React from "react";
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import { Calendar } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import localizer from 'react-big-calendar/lib/localizers/moment'
+import localizer from "react-big-calendar/lib/localizers/moment";
 import moment from "moment";
 import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
 import CalendarEvent from "./CalendarEvent";
 import CalendarEventAgenda from "./CalendarEventAgenda";
 import type { Visit } from "../actions/visits";
+import type { Responsive } from "../actions/nav";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const momentLocalizer = localizer(moment);
@@ -20,7 +21,7 @@ const title = (
     description="Calendar title"
     defaultMessage="Calendar"
   />
-)
+);
 
 const intlPrevious = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -28,7 +29,7 @@ const intlPrevious = ( // eslint-disable-line no-unused-vars
     description="Calendar previous label"
     defaultMessage="previous"
   />
-)
+);
 
 const intlToday = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -36,7 +37,7 @@ const intlToday = ( // eslint-disable-line no-unused-vars
     description="Calendar today label"
     defaultMessage="today"
   />
-)
+);
 
 const intlNext = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -44,7 +45,7 @@ const intlNext = ( // eslint-disable-line no-unused-vars
     description="Calendar next label"
     defaultMessage="next"
   />
-)
+);
 
 const intlMonth = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -52,7 +53,7 @@ const intlMonth = ( // eslint-disable-line no-unused-vars
     description="Calendar month label"
     defaultMessage="month"
   />
-)
+);
 
 const intlWeek = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -60,7 +61,7 @@ const intlWeek = ( // eslint-disable-line no-unused-vars
     description="Calendar week label"
     defaultMessage="week"
   />
-)
+);
 
 const intlDay = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -68,7 +69,7 @@ const intlDay = ( // eslint-disable-line no-unused-vars
     description="Calendar day label"
     defaultMessage="day"
   />
-)
+);
 
 const intlAgenda = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -76,13 +77,15 @@ const intlAgenda = ( // eslint-disable-line no-unused-vars
     description="Calendar agenda label"
     defaultMessage="agenda"
   />
-)
+);
 
 type Props = {
   visits: Array<Visit>,
   // visitsGroupedByDay: { [key: string]: Array<Visit> },
+  views: Array<"day" | "week" | "month" | "agenda">,
   defaultView: "day" | "week" | "month" | "agenda",
   defaultDate: Date,
+  responsive: Responsive,
   onNavigate: Function,
   onView: Function,
   onSelectSlot: Function,
@@ -92,15 +95,16 @@ type Props = {
 
 const DnDCalendar = ({
   visits,
+  views = ["month", "week", "day", "agenda"],
   defaultView = "week",
   onNavigate,
   onView,
   onSelectSlot,
   onSelectEvent,
   onEventDrop,
-  intl
+  intl,
+  responsive
 }: Props & { intl: intlShape }) => {
-
   let scrollToTime = new Date();
   scrollToTime.setHours(6);
 
@@ -123,6 +127,7 @@ const DnDCalendar = ({
           localizer={momentLocalizer}
           selectable={true}
           popup={true}
+          views={views}
           defaultView={defaultView}
           events={visits}
           titleAccessor={visit => visit.title || visit.client_name}
@@ -158,29 +163,28 @@ const DnDCalendar = ({
                   : "jobplanner__incomplete",
                 style: event.completed
                   ? {
-                    "background-color": "#bbb",
-                    "text-decoration": "line-through"
-                  }
+                      "background-color": "#bbb",
+                      "text-decoration": "line-through"
+                    }
                   : {
-                    "background-color": "#0A64A0"
-                  }
-              }
+                      "background-color": "#0A64A0"
+                    }
+              };
             } else {
               return {
                 className: "jobplanner__counter",
                 style: {
                   "background-color": "#fff",
-                  "color": "#333",
+                  color: "#333",
                   "font-weight": "bold"
                 }
-              }
+              };
             }
-          }
-          }
+          }}
         />
       </Box>
     </Box>
   );
-}
+};
 
 export default injectIntl(DnDCalendar);

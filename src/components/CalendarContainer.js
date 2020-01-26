@@ -9,6 +9,7 @@ import type { State as ReduxState } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { Visit } from "../actions/visits";
+import type { Responsive } from "../actions/nav";
 import { fetchVisits, updateVisit } from "../actions/visits";
 import VisitLayerContainer from "./VisitLayerContainer";
 import { getVisitsGroupedByDay } from "../selectors/visitSelectors";
@@ -22,20 +23,30 @@ const intlVisitCount = (count: number) => (
     id="calendar.visitCount"
     description="Calendar visit count"
     defaultMessage={`{count, number} {count, plural, one {visit} other {visits}}`}
-    values={{count}}
+    values={{ count }}
   />
-)
+);
 
 type Props = {
   business: Business,
-  visits: Array<Visit | { begins: string, ends: string, anytime: boolean, title: string | Element<*> }>,
+  visits: Array<
+    | Visit
+    | {
+        begins: string,
+        ends: string,
+        anytime: boolean,
+        title: string | Element<*>
+      }
+  >,
   getJobById: Function,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  responsive: Responsive
 };
 
 type CalendarView = "day" | "week" | "month" | "agenda";
 
 type State = {
+  views: Array<CalendarView>,
   view: CalendarView,
   date: Date,
   selected: ?Visit,
@@ -43,8 +54,19 @@ type State = {
 };
 
 class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
-  state: State = { view: "week", date: new Date(), selected: undefined, showJobClose: 0 };
+  // state: State = { view: "week", date: new Date(), selected: undefined, showJobClose: 0 };
   static contextType = AuthContext;
+
+  constructor({ responsive }: Props) {
+    super();
+    this.state = {
+      views: responsive === "single" ? ["day"] : ["month", "week", "day", "agenda"],
+      view: responsive === "single" ? "day" : "week",
+      date: new Date(),
+      selected: undefined,
+      showJobClose: 0
+    };
+  }
 
   componentDidMount() {
     this.loadVisits(
@@ -65,13 +87,13 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
 
       if (job && job.incomplete_visit_count === 0) {
         // ask to close job if it has no upcoming visits
-        this.setState({showJobClose: job.id})
+        this.setState({ showJobClose: job.id });
       }
     }
   }
 
   render() {
-    const { visits, getJobById } = this.props;
+    const { visits, getJobById, responsive } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
@@ -88,14 +110,17 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
       jobCloseLayer = (
         <JobClose
           job={getJobById(this.state.showJobClose)}
-          onClose={() => {this.setState({showJobClose: 0})}}
+          onClose={() => {
+            this.setState({ showJobClose: 0 });
+          }}
         />
-      )
+      );
     }
 
     const calendar = (
       <Calendar
         visits={visits}
+        views={this.state.views}
         defaultView={this.state.view}
         defaultDate={this.state.date}
         onNavigate={(date: Date) => {
@@ -109,6 +134,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
         }}
         onSelectEvent={this.onClick}
         onEventDrop={this.onEventDrop}
+        responsive={responsive}
       />
     );
 
@@ -137,20 +163,23 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
     const anytime = isAllDay;
 
     const { getUser } = this.context;
-    getUser().then(({access_token}) => {
-      return dispatch(
-        updateVisit(
-          { id: event.id, begins: start, ends: end, anytime: anytime },
-          access_token,
-          true,
-          true
-        )
-      )
-    }).then(() => {
-      addSuccess({text: intl.formatMessage({id: "flash.saved"})})
-    }).catch(() => {
-      addError({text: intl.formatMessage({id: "flash.error"})})
-    });
+    getUser()
+      .then(({ access_token }) => {
+        return dispatch(
+          updateVisit(
+            { id: event.id, begins: start, ends: end, anytime: anytime },
+            access_token,
+            true,
+            true
+          )
+        );
+      })
+      .then(() => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      });
   };
 
   onClick = (visit: Visit) => {
@@ -164,28 +193,30 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   loadVisits = (begins = null, ends = null) => {
     const { business, dispatch, intl } = this.props;
     const { getUser } = this.context;
-    getUser().then(({access_token}) => {
-      return dispatch(
-        fetchVisits(access_token, {
-          business: business.id,
-          ordering: "begins",
-          begins__gte:
-            begins ||
-            moment(this.state.date)
-              .startOf(this.state.view)
-              .toDate(),
-          ends__lte:
-            ends ||
-            moment(this.state.date)
-              .endOf(this.state.view)
-              .toDate(),
-          limit: 200,
-          offset: 0
-        })
-      )
-    }).catch(() => {
-      addError({text: intl.formatMessage({id: "flash.error"})})
-    });
+    getUser()
+      .then(({ access_token }) => {
+        return dispatch(
+          fetchVisits(access_token, {
+            business: business.id,
+            ordering: "begins",
+            begins__gte:
+              begins ||
+              moment(this.state.date)
+                .startOf(this.state.view)
+                .toDate(),
+            ends__lte:
+              ends ||
+              moment(this.state.date)
+                .endOf(this.state.view)
+                .toDate(),
+            limit: 200,
+            offset: 0
+          })
+        );
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
+      });
   };
 }
 
@@ -194,23 +225,34 @@ const mapStateToProps = (
   ownProps: {
     match: { params: { businessId: number } },
     history: { push: Function },
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    responsive: Responsive
   }
 ): Props => {
   const { entities, nav } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
-  const visits = Object.entries(getVisitsGroupedByDay(state)).map(([date: string, visits: Array<Visit>]) => {
-    // $FlowFixMe
-    return [{begins: date, ends: date, anytime: true, title: intlVisitCount(visits.length)}, ...visits]
-  }).flatMap(arr => arr)
+  const visits = Object.entries(getVisitsGroupedByDay(state))
+    .map(([date: string, visits: Array<Visit>]) => {
+      // $FlowFixMe
+      return [
+        {
+          begins: date,
+          ends: date,
+          anytime: true,
+          title: intlVisitCount(visits.length)
+        },
+        ...visits
+      ];
+    })
+    .flatMap(arr => arr);
 
   return {
     business: ensureState(entities).businesses[businessId],
     visits: visits,
     dispatch: ownProps.dispatch,
     responsive: nav.responsive,
-    getJobById: (id) => ensureState(entities).jobs[id]
+    getJobById: id => ensureState(entities).jobs[id]
   };
 };
 
