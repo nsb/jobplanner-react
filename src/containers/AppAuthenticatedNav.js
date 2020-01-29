@@ -12,7 +12,6 @@ import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
 import ClientEdit from "../components/ClientEdit";
-import { logout } from "../actions/auth";
 import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
@@ -28,7 +27,6 @@ type Props = {
   dispatch: Dispatch,
   match: { url: string },
   user: User,
-  logout: () => ThunkAction,
   navResponsive: (Responsive) => ThunkAction,
   navToggle: () => ThunkAction
 };
@@ -69,7 +67,6 @@ class AppAuthenticatedNav extends Component<Props> {
       navActive,
       responsive,
       user,
-      logout,
       navToggle,
       business
     } = this.props;
@@ -82,7 +79,6 @@ class AppAuthenticatedNav extends Component<Props> {
             toggleNav={navToggle}
             business={business}
             user={user}
-            logout={logout}
           />
         ) : null}
         <Switch>
@@ -127,7 +123,6 @@ const mapStateToProps = (
   { nav, entities, users }: State,
   ownProps: {
     match: { params: { businessId: number }, url: string },
-    logout: () => ThunkAction,
     navResponsive: ("multiple") => ThunkAction,
     navToggle: () => ThunkAction
   }
@@ -141,14 +136,13 @@ const mapStateToProps = (
     business: ensureState(entities).businesses[businessId],
     match: ownProps.match,
     user: users.me,
-    logout: ownProps.logout,
     navResponsive: ownProps.navResponsive,
     navToggle: ownProps.navToggle
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ logout, navResponsive, navToggle }, dispatch);
+  bindActionCreators({ navResponsive, navToggle }, dispatch);
 
 export default connect(
   mapStateToProps,
