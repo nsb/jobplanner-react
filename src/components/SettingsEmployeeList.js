@@ -119,7 +119,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
         .then(({ access_token }) => {
           return dispatch(
             createEmployee(
-              merge({}, { businesses: [business.id] }, employee),
+              merge({}, { business: business.id }, employee),
               access_token
             )
           );
