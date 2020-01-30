@@ -13,14 +13,6 @@ import { intlFormFieldRequired } from "../i18n";
 import type { Element } from "react";
 import type { Employee } from "../actions/employees";
 
-const intlUsername = (
-  <FormattedMessage
-    id="settingsEmployeeForm.usernameLabel"
-    description="Settings employee form username label"
-    defaultMessage="Username"
-  />
-)
-
 const intlFirstName = (
   <FormattedMessage
     id="settingsEmployeeForm.firstNameLabel"
@@ -71,8 +63,8 @@ const intlIsActive = (
 
 const validate = (values: Object): Object => {
   const errors = {};
-  if (!values.username) {
-    errors.username = intlFormFieldRequired;
+  if (!values.first_name) {
+    errors.first_name = intlFormFieldRequired;
   }
   return errors;
 };
@@ -119,12 +111,6 @@ export const EmployeeForm = ({
 
       <FormFields>
         <fieldset>
-          <Field
-            name="username"
-            label={intlUsername}
-            component={renderField}
-            type="text"
-          />
           <Field
             name="first_name"
             label={intlFirstName}

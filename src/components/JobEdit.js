@@ -67,7 +67,7 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
               value: property
             },
             assigned: assigned.map(employee => {
-              return { value: employee.id, label: employee.username };
+              return { value: employee.id, label: [employee.first_name, employee.last_name].join(' ') };
             }),
             invoice_reminder: {
               value: job.invoice_reminder,

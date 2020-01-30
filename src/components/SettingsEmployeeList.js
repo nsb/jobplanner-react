@@ -67,7 +67,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
         <Accordion onActive={this.onActive}>
           {employees.map((employee, index: number) => {
             return (
-              <AccordionPanel heading={employee.username} key={employee.id}>
+              <AccordionPanel heading={`${employee.first_name} ${employee.last_name}`} key={employee.id}>
                 <Paragraph>
                   <EmployeeForm
                     form={`employeeform-${employee.id}`}
@@ -143,14 +143,8 @@ const mapStateToProps = (
 ): * => ({
   business: ownProps.business,
   employees: employees.result
-    .map((Id: number) => {
-      return ensureState(entities).employees[Id];
-    })
-    .filter(employee => {
-      return employee.businesses.indexOf(ownProps.business.id) > -1
-        ? employee
-        : false;
-    })
+    .map((Id: number) => ensureState(entities).employees[Id])
+    .filter(employee => employee.business === ownProps.business.id)
 });
 
 export default connect(mapStateToProps)(injectIntl(EmployeeList));

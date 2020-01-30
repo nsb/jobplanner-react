@@ -37,7 +37,10 @@ class VisitEdit extends Component<Props & { intl: intlShape }> {
         initialValues={{
           ...visit,
           assigned: assigned.map(employee => {
-            return { value: employee.id, label: employee.username };
+            return {
+              value: employee.id,
+              label: `${employee.first_name} ${employee.last_name}`
+            };
           })
         }}
         employees={employees}

@@ -791,7 +791,7 @@ class JobForm extends Component<
               options={employees
                 .filter(employee => employee.is_active)
                 .map(employee => {
-                  return { value: employee.id, label: employee.username };
+                  return { value: employee.id, label: `${employee.first_name} ${employee.last_name}` };
                 })}
               multiple={true}
               normalize={selected => selected.value}

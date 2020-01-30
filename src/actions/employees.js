@@ -40,11 +40,11 @@ export const DELETE_EMPLOYEE_FAILURE: "DELETE_EMPLOYEE_FAILURE" =
 
 export type Employee = {
   id: number,
-  username: string,
+  email: string,
   first_name: string,
   last_name: string,
-  businesses: Array<number>,
-  is_active: boolean
+  is_active: boolean,
+  business: number
 };
 
 export type EmployeesMap = { [id: number]: Employee };
@@ -188,7 +188,7 @@ export const fetchEmployees = (
     dispatch(fetchEmployeesRequest());
 
     return employeesApi
-      .getAll("users", token, queryParams)
+      .getAll("employees", token, queryParams)
       .then((responseEmployees: EmployeesResponse) => {
         dispatch(fetchEmployeesSuccess(responseEmployees));
         return responseEmployees;
@@ -229,7 +229,7 @@ export const fetchEmployee = (token: string, id: number): ThunkAction => {
     dispatch(fetchEmployeesRequest());
 
     return employeesApi
-      .getOne("users", id, token)
+      .getOne("employees", id, token)
       .then((responseEmployee: Employee) => {
         dispatch(fetchEmployeeSuccess(responseEmployee));
         return responseEmployee;
@@ -278,7 +278,7 @@ export const createEmployee = (
     dispatch(createEmployeeRequest(employee));
 
     return employeesApi
-      .create("users", employee, token)
+      .create("employees", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(createEmployeeSuccess(responseEmployee));
         return responseEmployee;
@@ -328,7 +328,7 @@ export const updateEmployee = (
     dispatch(updateEmployeeRequest(employee));
 
     return employeesApi
-      .update("users", employee, token)
+      .update("employees", employee, token)
       .then((responseEmployee: Employee) => {
         dispatch(updateEmployeeSuccess(responseEmployee));
         return responseEmployee;
@@ -378,7 +378,7 @@ export const deleteEmployee = (
     dispatch(deleteEmployeeRequest(employee));
 
     return employeesApi
-      .delete("users", employee, token)
+      .delete("employees", employee, token)
       .then(() => {
         dispatch(deleteEmployeeSuccess(employee));
       })
