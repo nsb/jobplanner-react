@@ -85,7 +85,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
     if (prevState.selected && !this.state.selected) {
       let job = getJobById(prevState.selected.job);
 
-      if (job && job.incomplete_visit_count === 0) {
+      if (job && !job.closed && job.incomplete_visit_count === 0) {
         // ask to close job if it has no upcoming visits
         this.setState({ showJobClose: job.id });
       }
