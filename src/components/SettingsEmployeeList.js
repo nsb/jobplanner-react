@@ -67,7 +67,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
         <Accordion onActive={this.onActive}>
           {employees.map((employee, index: number) => {
             return (
-              <AccordionPanel heading={`${employee.first_name} ${employee.last_name}`} key={employee.id}>
+              <AccordionPanel heading={[employee.first_name, employee.last_name].join(' ')} key={employee.id}>
                 <Paragraph>
                   <EmployeeForm
                     form={`employeeform-${employee.id}`}

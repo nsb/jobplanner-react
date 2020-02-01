@@ -39,7 +39,7 @@ class VisitEdit extends Component<Props & { intl: intlShape }> {
           assigned: assigned.map(employee => {
             return {
               value: employee.id,
-              label: `${employee.first_name} ${employee.last_name}`
+              label: [employee.first_name, employee.last_name].join(' ')
             };
           })
         }}

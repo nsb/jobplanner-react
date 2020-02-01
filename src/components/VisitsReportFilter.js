@@ -187,7 +187,7 @@ class VisitsReportFilter extends Component<Props & { intl: intlShape }, State> {
                     name="assigned"
                     placeHolder={intl.formatMessage({id: "visitsReportFilter.assignedPlaceholder"})}
                     options={employees.map(employee => {
-                      return { value: employee.id, label: ((employee.first_name || employee.last_name) && `${employee.first_name} ${employee.last_name}`)};
+                      return { value: employee.id, label: [employee.first_name, employee.last_name].join(' ')};
                     })}
                     inline={false}
                     multiple={false}

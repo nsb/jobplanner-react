@@ -81,7 +81,7 @@ class VisitListItem extends Component<Props & { intl: intlShape }> {
         <span>
           {assigned.length
             ? assigned
-                .map((a: Employee) => `${a.first_name} ${a.last_name}`)
+                .map((employee: Employee) => [employee.first_name, employee.last_name].join(' '))
                 .join(", ")
             : intlAssigned}
         </span>
