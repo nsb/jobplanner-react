@@ -129,7 +129,7 @@ export const EmployeeForm = ({
             component={renderField}
             type="text"
           />
-          {initialValues && initialValues.id && initialValues.email ? (
+          {initialValues && initialValues.id ? (
             <Field
               name="is_active"
               label={intlIsActive}
