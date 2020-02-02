@@ -28,11 +28,7 @@ const mapStateToProps = (
       .map((Id: number) => {
         return ensureState(entities).employees[Id];
       })
-      .filter(employee => {
-        return employee.businesses.indexOf(ownProps.business.id) > -1
-          ? employee
-          : false;
-      }),
+      .filter(employee => employee.business === ownProps.business.id),
     business: ownProps.business,
     job: ownProps.job,
     lineItems: ownProps.job.line_items.map((Id: number) => {

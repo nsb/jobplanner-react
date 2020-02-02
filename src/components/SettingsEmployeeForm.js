@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import {injectIntl, FormattedMessage} from 'react-intl';
+import { injectIntl, FormattedMessage } from "react-intl";
 import { Field, reduxForm } from "redux-form";
 import Button from "grommet/components/Button";
 import Form from "grommet/components/Form";
@@ -19,7 +19,7 @@ const intlFirstName = (
     description="Settings employee form first name label"
     defaultMessage="First name"
   />
-)
+);
 
 const intlLastName = (
   <FormattedMessage
@@ -27,7 +27,7 @@ const intlLastName = (
     description="Settings employee form last name label"
     defaultMessage="Last name"
   />
-)
+);
 
 const intlUpdate = (
   <FormattedMessage
@@ -35,7 +35,7 @@ const intlUpdate = (
     description="Settings employee form update label"
     defaultMessage="Update employee"
   />
-)
+);
 
 const intlAdd = (
   <FormattedMessage
@@ -43,7 +43,7 @@ const intlAdd = (
     description="Settings employee form add label"
     defaultMessage="Add employee"
   />
-)
+);
 
 const intlEmail = (
   <FormattedMessage
@@ -51,7 +51,7 @@ const intlEmail = (
     description="Settings employee form email label"
     defaultMessage="E-mail"
   />
-)
+);
 
 const intlIsActive = (
   <FormattedMessage
@@ -59,7 +59,7 @@ const intlIsActive = (
     description="Settings employee form is active label"
     defaultMessage="Active"
   />
-)
+);
 
 const validate = (values: Object): Object => {
   const errors = {};
@@ -74,10 +74,11 @@ const renderField = ({
   label,
   type,
   meta: { touched, error, warning }
-}): Element<*> =>
+}): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
-  </FormField>;
+  </FormField>
+);
 
 const renderCheckBox = ({
   input,
@@ -108,7 +109,6 @@ export const EmployeeForm = ({
 }: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
-
       <FormFields>
         <fieldset>
           <Field
@@ -129,12 +129,16 @@ export const EmployeeForm = ({
             component={renderField}
             type="text"
           />
-          <Field
-            name="is_active"
-            label={intlIsActive}
-            component={renderCheckBox}
-            parse={(value: boolean | string) => !!value}
-          />
+          {initialValues && initialValues.id && initialValues.email ? (
+            <Field
+              name="is_active"
+              label={intlIsActive}
+              component={renderCheckBox}
+              parse={(value: boolean | string) => !!value}
+            />
+          ) : (
+            undefined
+          )}
         </fieldset>
       </FormFields>
 
@@ -143,9 +147,7 @@ export const EmployeeForm = ({
         <Button
           type="submit"
           primary={true}
-          label={
-            initialValues && initialValues.id ? intlUpdate : intlAdd
-          }
+          label={initialValues && initialValues.id ? intlUpdate : intlAdd}
           onClick={valid && dirty && !submitting ? () => true : undefined}
         />
       </Footer>
