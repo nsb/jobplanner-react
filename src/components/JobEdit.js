@@ -135,9 +135,7 @@ const mapStateToProps = (
       .map((Id: number) => {
         return ensureState(entities).employees[Id];
       })
-      .filter(employee => {
-        return employee.businesses.indexOf(businessId) > -1 ? employee : false;
-      }),
+      .filter(employee => employee.business === businessId),
     assigned: job.assigned.map((Id: number) => {
       return ensureState(entities).employees[Id];
     }),
