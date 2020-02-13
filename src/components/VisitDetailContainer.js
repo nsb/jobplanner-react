@@ -30,12 +30,10 @@ const mapStateToProps = (
     visit: ownProps.visit,
     job: ownProps.job,
     property: ensureState(entities).properties[ownProps.visit.property],
-    assigned: ownProps.visit.assigned.map((Id: number) => {
+    assigned: ownProps.visit.assigned.map(Id => {
       return ensureState(entities).employees[Id];
-    }).filter(employee => employee),
-    lineItems: ownProps.visit.line_items.map((Id) => {
-      return ensureState(entities).lineItems[Id]
     }),
+    lineItems: ownProps.visit.line_items.map(Id => ensureState(entities).lineItems[Id]),
     onEdit: ownProps.onEdit,
     onUpdateFutureVisits: ownProps.onUpdateFutureVisits,
     partialUpdateVisitAndLoadJob: ownProps.partialUpdateVisitAndLoadJob,

@@ -251,9 +251,8 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
                 <Box direction="row">{intlTeam}</Box>
               </Heading>
               {assigned.length ? (
-                assigned.map(employee => {
-                  return <div>{employee.username}</div>;
-                })
+                assigned.map(employee => [employee.first_name, employee.last_name].join(' '))
+                .join(", ")
               ) : (
                 <div>{intlUnassigned}</div>
               )}
