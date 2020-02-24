@@ -46,7 +46,7 @@ export type Visit = {
   job: number,
   property: number,
   client: number,
-  line_items: [Object],
+  overrides: Array<number>,
   completed: boolean,
   begins: Date,
   ends: Date,

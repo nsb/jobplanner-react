@@ -54,7 +54,7 @@ export type Job = {
   recurrences: string,
   title: string,
   description: string,
-  line_items: [number],
+  line_items: Array<number>,
   begins: Date,
   ends: ?Date,
   start_time: Date,

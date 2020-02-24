@@ -172,7 +172,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
     getUser().then(({ access_token }) => {
       return fetchJobs(access_token, {
         business: business.id,
-        ordering: "status_order,next_visit",
+        ordering: "status_order",
         limit: this.state.limit,
         offset: this.state.offset,
         search: this.state.searchText

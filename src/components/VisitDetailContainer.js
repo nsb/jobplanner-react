@@ -25,6 +25,19 @@ const mapStateToProps = (
 ): Props => {
   const { entities, visits } = state;
 
+  const lineItems = ownProps.job
+    ? ownProps.job.line_items.map(Id => ensureState(entities).lineItems[Id])
+    : [];
+
+  const overrides = ownProps.visit.overrides.map(
+    Id => ensureState(entities).lineItemOverrides[Id]
+  );
+
+  const lineItemsWithOverrides = lineItems.map(
+    lineItem =>
+      overrides.find(override => override.line_item === lineItem.id) || lineItem
+  );
+
   return {
     isFetching: visits.isFetching,
     visit: ownProps.visit,
@@ -33,7 +46,7 @@ const mapStateToProps = (
     assigned: ownProps.visit.assigned.map(Id => {
       return ensureState(entities).employees[Id];
     }),
-    lineItems: ownProps.visit.line_items.map(Id => ensureState(entities).lineItems[Id]),
+    lineItems: lineItemsWithOverrides,
     onEdit: ownProps.onEdit,
     onUpdateFutureVisits: ownProps.onUpdateFutureVisits,
     partialUpdateVisitAndLoadJob: ownProps.partialUpdateVisitAndLoadJob,

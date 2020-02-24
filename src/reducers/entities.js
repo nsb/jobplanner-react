@@ -21,6 +21,7 @@ import type {
   EmployeesMap
 } from "../actions/employees";
 import type { LineItemsMap } from "../actions/lineitems";
+import type { LineItemOverridesMap } from "../actions/lineitemoverrides";
 import type {
   Action as AsyncTasksAction,
   AsyncTasksMap
@@ -39,6 +40,7 @@ type ServicesState = ServicesMap;
 type FieldsState = FieldsMap;
 type EmployeesState = EmployeesMap;
 type LineItemsState = LineItemsMap;
+type LineItemOverridesState = LineItemOverridesMap;
 type AsyncTaskState = AsyncTasksMap;
 type InvoicesState = InvoicesMap;
 
@@ -52,6 +54,7 @@ export type State = {
   fields: FieldsState,
   employees: EmployeesState,
   lineItems: LineItemsState,
+  lineItemOverrides: LineItemOverridesState,
   asyncTasks: AsyncTaskState,
   invoices: InvoicesState
 };
@@ -96,6 +99,7 @@ const entities: (State, Action) => State = (
     fields: {},
     employees: {},
     lineItems: {},
+    lineItemOverrides: {},
     asyncTasks: {},
     invoices: {}
   },

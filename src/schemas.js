@@ -32,10 +32,14 @@ export const clientSchema = new schema.Entity("clients", {
 });
 export const clientListSchema = new schema.Array(clientSchema);
 
-const lineItem = new schema.Entity("lineItems");
+const lineItemOverride = new schema.Entity("lineItemOverrides")
+
+const lineItem = new schema.Entity("lineItems", {
+  overrides: [lineItemOverride]
+});
 
 export const visitSchema = new schema.Entity("visits", {
-  line_items: [lineItem],
+  overrides: [lineItemOverride],
   assigned: [employeeSchema],
   property: property,
   client: clientSchema

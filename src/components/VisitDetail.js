@@ -11,6 +11,8 @@ import Columns from "grommet/components/Columns";
 import Timestamp from "grommet/components/Timestamp";
 import Anchor from "grommet/components/Anchor";
 import Menu from "grommet/components/Menu";
+import Table from 'grommet/components/Table';
+import TableRow from 'grommet/components/TableRow';
 import ScheduleIcon from "grommet/components/icons/base/Schedule";
 import ActionsIcon from "grommet/components/icons/base/Actions";
 import DirectionsIcon from "grommet/components/icons/base/Directions";
@@ -19,6 +21,7 @@ import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
 import type { LineItem } from "../actions/lineitems";
+import type { LineItemOverride } from "../actions/lineitemoverrides";
 
 const intlTitle = (
   <FormattedMessage
@@ -122,7 +125,7 @@ export type Props = {
   job: ?Job,
   property: Property,
   assigned: Array<Object>,
-  lineItems: Array<LineItem>,
+  lineItems: Array<LineItem | LineItemOverride>,
   onEdit: Function,
   onUpdateFutureVisits: Function,
   partialUpdateVisitAndLoadJob: Function,
@@ -262,9 +265,24 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
             <Heading tag="h4" strong={true}>
               <Box direction="row">{intlLineItems}</Box>
             </Heading>
+            <Table>
+              <thead>
+                <tr>
+                  <th>
+                    Service
+                  </th>
+                  <th>
+                    Qty
+                  </th>
+                </tr>
+              </thead>
             {lineItems.map(item => {
-              return <div>{item.name}</div>;
-            })}
+              return <TableRow>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                </TableRow>
+              })}
+            </Table>
           </Box>
         </Section>
       </Box>
