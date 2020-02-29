@@ -120,6 +120,7 @@ const entities: (State, Action) => State = (
     fields: identityReducer,
     employees: identityReducer,
     lineItems: identityReducer,
+    lineItemOverrides: identityReducer,
     asyncTasks: identityReducer,
     invoices: identityReducer
   })(newState, action);

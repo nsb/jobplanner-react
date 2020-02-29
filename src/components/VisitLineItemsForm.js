@@ -11,6 +11,7 @@ import Button from "grommet/components/Button";
 import CloseIcon from "grommet/components/icons/base/Close";
 import RenderTextField from "./LineItemTextInput";
 import type { Service } from "../actions/services";
+import type { LineItemOverride } from "../actions/lineitemoverrides";
 import type { Fields } from "redux-form/lib/FieldArrayProps.types";
 
 const intlAddButton = (
@@ -19,16 +20,16 @@ const intlAddButton = (
     description="Line items add button"
     defaultMessage="Add Line item"
   />
-)
+);
 
 const intlLineItem = (index: number) => (
   <FormattedMessage
     id="lineItemsForm.lineItemIndex"
     description="Line items index"
     defaultMessage="Line item #{index}"
-    values={{index}}
+    values={{ index }}
   />
-)
+);
 
 const intlName = (
   <FormattedMessage
@@ -36,7 +37,7 @@ const intlName = (
     description="Line items name label"
     defaultMessage="Name"
   />
-)
+);
 
 const intlDescription = (
   <FormattedMessage
@@ -44,7 +45,7 @@ const intlDescription = (
     description="Line items description label"
     defaultMessage="Description"
   />
-)
+);
 
 const intlQuantity = (
   <FormattedMessage
@@ -52,7 +53,7 @@ const intlQuantity = (
     description="Line items quantity label"
     defaultMessage="Quantity"
   />
-)
+);
 
 const intlUnitCost = (
   <FormattedMessage
@@ -60,7 +61,7 @@ const intlUnitCost = (
     description="Line items unit cost label"
     defaultMessage="Unit cost ex. VAT"
   />
-)
+);
 
 const renderField = ({
   input,
@@ -83,7 +84,7 @@ const renderNumberField = ({
   </FormField>
 );
 
-export type LineItemProps = {
+export type VisitLineItemProps = {
   formName: string,
   suggestions: Array<{ label: string, value: Service }>,
   fields: Fields,
@@ -98,8 +99,11 @@ type LineItemState = {
   suggestions: Array<Suggestion>
 };
 
-class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineItemState> {
-  constructor(props: LineItemProps) {
+class VisitLineItemsForm extends Component<
+  VisitLineItemProps & { intl: intlShape },
+  LineItemState
+> {
+  constructor(props: VisitLineItemProps) {
     super();
     this.state = { value: "", suggestions: props.suggestions };
   }
@@ -124,52 +128,57 @@ class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineI
   };
 
   render() {
-    const { fields, meta: { error, submitFailed } } = this.props;
+    const {
+      fields,
+      meta: { error, submitFailed }
+    } = this.props;
 
     return (
       <Section>
-          {fields.map((lineItem, index) => (
-            <Box margin={{bottom: "medium"}}>
-              <div key={index}>
-                {intlLineItem(index + 1)}
-                <Button icon={<CloseIcon />}
-                  onClick={() => fields.remove(index)}
-                  href='#'
-                  primary={false}
-                  accent={false}
-                  plain={true} />
-                <Field
-                  name={`${lineItem}.id`}
-                  type="hidden"
-                  component={renderField}
-                />
-                <Field
-                  name={`${lineItem}.name`}
-                  component={RenderTextField}
-                  label={intlName}
-                  onDomChange={e => this.onNameChange(e, index)}
-                  onSelect={e => this.onNameSelect(e, index)}
-                  suggestions={this.state.suggestions}
-                />
-                <Field
-                  name={`${lineItem}.description`}
-                  type="text"
-                  component={renderField}
-                  label={intlDescription}
-                />
-                <Field
-                  name={`${lineItem}.quantity`}
-                  component={renderNumberField}
-                  label={intlQuantity}
-                />
-                <Field
-                  name={`${lineItem}.unit_cost`}
-                  component={renderNumberField}
-                  label={intlUnitCost}
-                />
-              </div>
-            </Box>
-          ))}
+        {fields.map((lineItem, index) => (
+          <Box margin={{ bottom: "medium" }}>
+            <div key={index}>
+              {intlLineItem(index + 1)}
+              <Button
+                icon={<CloseIcon />}
+                onClick={() => fields.remove(index)}
+                href="#"
+                primary={false}
+                accent={false}
+                plain={true}
+              />
+              <Field
+                name={`${lineItem}.id`}
+                type="hidden"
+                component={renderField}
+              />
+              <Field
+                name={`${lineItem}.name`}
+                component={RenderTextField}
+                label={intlName}
+                onDomChange={e => this.onNameChange(e, index)}
+                onSelect={e => this.onNameSelect(e, index)}
+                suggestions={this.state.suggestions}
+              />
+              <Field
+                name={`${lineItem}.description`}
+                type="text"
+                component={renderField}
+                label={intlDescription}
+              />
+              <Field
+                name={`${lineItem}.quantity`}
+                component={renderNumberField}
+                label={intlQuantity}
+              />
+              <Field
+                name={`${lineItem}.unit_cost`}
+                component={renderNumberField}
+                label={intlUnitCost}
+              />
+            </div>
+          </Box>
+        ))}
         <Box>
           <button type="button" onClick={() => fields.push({})}>
             {intlAddButton}
@@ -181,4 +190,4 @@ class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineI
   }
 }
 
-export default injectIntl(LineItemsForm);
+export default injectIntl(VisitLineItemsForm);

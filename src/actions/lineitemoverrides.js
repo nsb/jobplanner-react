@@ -1,9 +1,9 @@
 // @flow
 
 export type LineItemOverride = {
-  id: number,
+  id?: number,
   line_item: number,
-  visit: number,
+  visit?: number,
   name: string,
   description: string,
   unit_cost: number,

@@ -25,6 +25,7 @@ const mapStateToProps = (
 ): Props => {
   const { entities, visits } = state;
 
+  // TODO: Make sure job is loaded before rendering visit detail!!!
   const lineItems = ownProps.job
     ? ownProps.job.line_items.map(Id => ensureState(entities).lineItems[Id])
     : [];

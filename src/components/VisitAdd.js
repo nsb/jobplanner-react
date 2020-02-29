@@ -10,14 +10,14 @@ import VisitForm from "./VisitForm";
 import { AuthContext } from "../providers/authProvider";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
-import type { LineItem } from "../actions/lineitems";
+import type { LineItemOverride } from "../actions/lineitemoverrides";
 import type { Employee } from "../actions/employees";
 
 export type Props = {
   employees: Array<Employee>,
   business: Business,
   job: Job,
-  lineItems: Array<LineItem>,
+  overrides: Array<LineItemOverride>,
   onClose: Function,
   createVisitAndLoadJob: Function,
   isFetching: boolean
@@ -27,7 +27,7 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
   static contextType = AuthContext;
 
   render() {
-    const { employees, onClose, job, lineItems, isFetching } = this.props;
+    const { employees, onClose, job, overrides, isFetching } = this.props;
 
     return (
       <Layer align="right" closer={true} onClose={onClose}>
@@ -39,7 +39,7 @@ class VisitAdd extends Component<Props & { intl: intlShape }> {
               ends: new Date(),
               anytime: true,
               assigned: [],
-              line_items: lineItems,
+              overrides: overrides,
               job: job.id
             }}
             onSubmit={this.handleSubmit}

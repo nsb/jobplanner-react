@@ -17,9 +17,10 @@ import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import BusyIcon from 'grommet/components/icons/Spinning';
-import LineItemsFormContainer from "./VisitLineItemsFormContainer";
+import VisitLineItemsFormContainer from "./VisitLineItemsFormContainer";
 import { intlFormSaveLabel, intlFormSavingLabel } from "../i18n";
 import type { Client } from "../actions/clients";
+import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 import type { Element } from "react";
 import type { Dispatch } from "../types/Store";
@@ -179,7 +180,7 @@ type Props = {
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  initialValues: Object,
+  initialValues: Visit & { assigned: Array<{ value: number, label: string }>},
   begins: Date,
   ends: Date,
   anytime: boolean,
@@ -297,9 +298,9 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
 
           <fieldset>
             <FieldArray
-              name="line_items"
+              name="overrides"
               label={intlLineItems}
-              component={LineItemsFormContainer}
+              component={VisitLineItemsFormContainer}
             />
           </fieldset>
         </FormFields>

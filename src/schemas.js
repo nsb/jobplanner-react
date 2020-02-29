@@ -46,10 +46,6 @@ export const visitSchema = new schema.Entity("visits", {
 });
 export const visitListSchema = new schema.Array(visitSchema);
 
-export const visitSchemaDenormalize = new schema.Entity("visits", {
-  line_items: [lineItem]
-});
-
 export const jobSchema = new schema.Entity("jobs", {
   client: clientSchema,
   line_items: [lineItem],
