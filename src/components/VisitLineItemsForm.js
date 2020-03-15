@@ -6,12 +6,16 @@ import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Section from "grommet/components/Section";
 import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
+import TextInput from "grommet/components/TextInput";
 import NumberInput from "grommet/components/NumberInput";
 import Button from "grommet/components/Button";
 import CloseIcon from "grommet/components/icons/base/Close";
+import List from "grommet/components/List";
+import ListItem from "grommet/components/ListItem";
+import Heading from "grommet/components/Heading";
+import Paragraph from "grommet/components/Paragraph";
 import RenderTextField from "./LineItemTextInput";
 import type { Service } from "../actions/services";
-import type { LineItemOverride } from "../actions/lineitemoverrides";
 import type { Fields } from "redux-form/lib/FieldArrayProps.types";
 
 const intlAddButton = (
@@ -115,16 +119,16 @@ class VisitLineItemsForm extends Component<
       return regexp.test(suggestion.label.toLowerCase());
     });
     this.setState({ suggestions: suggestions });
-    change(formName, `line_items[${index}].name`, event.target.value);
+    change(formName, `overrides[${index}].name`, event.target.value);
   };
 
   onNameSelect = ({ target, suggestion }, index) => {
     const { formName, change } = this.props;
     const { value } = suggestion;
-    change(formName, `line_items[${index}].name`, value.name);
-    change(formName, `line_items[${index}].description`, value.description);
-    change(formName, `line_items[${index}].quantity`, value.quantity || 1);
-    change(formName, `line_items[${index}].unit_cost`, value.unit_cost);
+    change(formName, `overrides[${index}].name`, value.name);
+    change(formName, `overrides[${index}].description`, value.description);
+    change(formName, `overrides[${index}].quantity`, value.quantity || 1);
+    change(formName, `overrides[${index}].unit_cost`, value.unit_cost);
   };
 
   render() {
@@ -135,50 +139,83 @@ class VisitLineItemsForm extends Component<
 
     return (
       <Section>
-        {fields.map((lineItem, index) => (
-          <Box margin={{ bottom: "medium" }}>
-            <div key={index}>
-              {intlLineItem(index + 1)}
-              <Button
-                icon={<CloseIcon />}
-                onClick={() => fields.remove(index)}
-                href="#"
-                primary={false}
-                accent={false}
-                plain={true}
-              />
-              <Field
-                name={`${lineItem}.id`}
-                type="hidden"
-                component={renderField}
-              />
-              <Field
-                name={`${lineItem}.name`}
-                component={RenderTextField}
-                label={intlName}
-                onDomChange={e => this.onNameChange(e, index)}
-                onSelect={e => this.onNameSelect(e, index)}
-                suggestions={this.state.suggestions}
-              />
-              <Field
-                name={`${lineItem}.description`}
-                type="text"
-                component={renderField}
-                label={intlDescription}
-              />
-              <Field
-                name={`${lineItem}.quantity`}
-                component={renderNumberField}
-                label={intlQuantity}
-              />
-              <Field
-                name={`${lineItem}.unit_cost`}
-                component={renderNumberField}
-                label={intlUnitCost}
-              />
-            </div>
-          </Box>
-        ))}
+        {fields.map((override, index) => {
+          return fields.get(index).line_item ? (
+            <Box margin={{ bottom: "medium" }} pad={"small"} colorIndex="light-2">
+              <div key={index}>
+                {intlLineItem(index + 1)}
+                <Button
+                  icon={<CloseIcon />}
+                  onClick={() => fields.remove(index)}
+                  href="#"
+                  primary={false}
+                  accent={false}
+                  plain={true}
+                />
+                <Heading tag="h4" margin="none" strong="true">
+                  {fields.get(index).name}
+                </Heading>
+                <Paragraph margin="small">
+                  {fields.get(index).description}
+                </Paragraph>
+                <Field
+                  name={`${override}.quantity`}
+                  component={renderNumberField}
+                  label={intlQuantity}
+                />
+                <List>
+                  <ListItem justify="between" separator="horizontal">
+                    <span>{intlUnitCost}</span>
+                    <span>{fields.get(index).unit_cost}</span>
+                  </ListItem>
+                </List>
+              </div>
+            </Box>
+          ) : (
+            <Box margin={{ bottom: "medium" }} pad={"small"} colorIndex="light-2">
+              <div key={index}>
+                {intlLineItem(index + 1)}
+                <Button
+                  icon={<CloseIcon />}
+                  onClick={() => fields.remove(index)}
+                  href="#"
+                  primary={false}
+                  accent={false}
+                  plain={true}
+                />
+                <Field
+                  name={`${override}.id`}
+                  type="hidden"
+                  component={renderField}
+                />
+                <Field
+                  name={`${override}.name`}
+                  component={RenderTextField}
+                  label={intlName}
+                  onDomChange={e => this.onNameChange(e, index)}
+                  onSelect={e => this.onNameSelect(e, index)}
+                  suggestions={this.state.suggestions}
+                />
+                <Field
+                  name={`${override}.description`}
+                  type="text"
+                  component={renderField}
+                  label={intlDescription}
+                />
+                <Field
+                  name={`${override}.quantity`}
+                  component={renderNumberField}
+                  label={intlQuantity}
+                />
+                <Field
+                  name={`${override}.unit_cost`}
+                  component={renderNumberField}
+                  label={intlUnitCost}
+                />
+              </div>
+            </Box>
+          );
+        })}
         <Box>
           <button type="button" onClick={() => fields.push({})}>
             {intlAddButton}

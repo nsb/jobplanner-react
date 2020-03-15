@@ -6,7 +6,6 @@ import { ensureState } from "redux-optimistic-ui";
 import { change } from "redux-form";
 import type { State as ReduxState } from "../types/State";
 import VisitLineItemsForm from "./VisitLineItemsForm";
-import type { LineItemOverride } from "../actions/lineitemoverrides";
 import type { LineItemProps as Props } from "./LineItemsForm";
 import type { Dispatch } from "../types/Store";
 import type { Fields } from 'redux-form/lib/FieldArrayProps.types'

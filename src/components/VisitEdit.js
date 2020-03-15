@@ -20,6 +20,7 @@ export type Props = {
   visit: Visit,
   employees: Array<Employee>,
   assigned: Array<Employee>,
+  lineItems: Array<LineItem>,
   overrides: Array<LineItemOverride>,
   toggleEdit: Function,
   onClose: Function,
@@ -61,7 +62,8 @@ class VisitEdit extends Component<Props & { intl: intlShape }> {
           updateVisitAndLoadJob(
             {
               ...values,
-              assigned: values.assigned.map(v => v.value)
+              assigned: values.assigned.map(v => v.value),
+              overrides: [] // TODO: handle overrides and check differences with existing quantity
             },
             access_token || ""
           )
@@ -96,7 +98,7 @@ const mapStateToProps = (
     ? job.line_items.map(Id => ensureState(entities).lineItems[Id])
     : [];
 
-  const overridesForLineItems = lineItems.map(
+  const overridesForLineItems: Array<LineItemOverride> = lineItems.map(
     (lineItem: LineItem): LineItemOverride => {
       return {
         line_item: lineItem.id,
@@ -109,7 +111,7 @@ const mapStateToProps = (
     }
   );
 
-  const overrides = visit.overrides.map(
+  const overrides: Array<LineItemOverride> = visit.overrides.map(
     Id => ensureState(entities).lineItemOverrides[Id]
   );
 
@@ -128,6 +130,7 @@ const mapStateToProps = (
     assigned: visit.assigned.map((Id: number) => {
       return ensureState(entities).employees[Id];
     }),
+    lineItems: lineItems,
     overrides: lineItemsWithOverrides,
     visit: visit,
     toggleEdit: toggleEdit,
