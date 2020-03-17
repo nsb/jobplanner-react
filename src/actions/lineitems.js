@@ -5,7 +5,8 @@ export type LineItem = {
   name: string,
   description: string,
   unit_cost: number,
-  quantity: number
+  quantity: number,
+  overrides: Array<number>
 };
 
 export type LineItemsMap = { [id: number]: LineItem };

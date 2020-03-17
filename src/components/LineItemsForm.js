@@ -11,6 +11,7 @@ import Button from "grommet/components/Button";
 import CloseIcon from "grommet/components/icons/base/Close";
 import RenderTextField from "./LineItemTextInput";
 import type { Service } from "../actions/services";
+import type { Fields } from "redux-form/lib/FieldArrayProps.types";
 
 const intlAddButton = (
   <FormattedMessage
@@ -85,8 +86,8 @@ const renderNumberField = ({
 export type LineItemProps = {
   formName: string,
   suggestions: Array<{ label: string, value: Service }>,
-  fields: Object,
-  meta: { error: boolean, submitFailed: boolean },
+  fields: Fields,
+  meta: { error: ?string, submitFailed: boolean },
   change: Function
 };
 

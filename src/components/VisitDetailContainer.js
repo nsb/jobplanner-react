@@ -33,7 +33,6 @@ const mapStateToProps = (
     assigned: ownProps.visit.assigned.map(Id => {
       return ensureState(entities).employees[Id];
     }),
-    lineItems: ownProps.visit.line_items.map(Id => ensureState(entities).lineItems[Id]),
     onEdit: ownProps.onEdit,
     onUpdateFutureVisits: ownProps.onUpdateFutureVisits,
     partialUpdateVisitAndLoadJob: ownProps.partialUpdateVisitAndLoadJob,

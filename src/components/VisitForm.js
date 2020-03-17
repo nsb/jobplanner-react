@@ -20,6 +20,7 @@ import BusyIcon from 'grommet/components/icons/Spinning';
 import LineItemsFormContainer from "./VisitLineItemsFormContainer";
 import { intlFormSaveLabel, intlFormSavingLabel } from "../i18n";
 import type { Client } from "../actions/clients";
+import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 import type { Element } from "react";
 import type { Dispatch } from "../types/Store";
@@ -179,7 +180,7 @@ type Props = {
   valid: boolean,
   dirty: boolean,
   submitting: boolean,
-  initialValues: Object,
+  initialValues: Visit & { assigned: Array<{ value: number, label: string }>},
   begins: Date,
   ends: Date,
   anytime: boolean,

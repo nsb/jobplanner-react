@@ -122,7 +122,6 @@ export type Props = {
   job: ?Job,
   property: Property,
   assigned: Array<Object>,
-  lineItems: Array<LineItem>,
   onEdit: Function,
   onUpdateFutureVisits: Function,
   partialUpdateVisitAndLoadJob: Function,
@@ -139,7 +138,6 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
       job,
       property,
       assigned,
-      lineItems,
       onEdit,
       onUpdateFutureVisits,
       onDelete
@@ -262,7 +260,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
             <Heading tag="h4" strong={true}>
               <Box direction="row">{intlLineItems}</Box>
             </Heading>
-            {lineItems.map(item => {
+            {visit.line_items.map(item => {
               return <div>{item.name}</div>;
             })}
           </Box>
