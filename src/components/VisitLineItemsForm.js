@@ -9,6 +9,10 @@ import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
 import Button from "grommet/components/Button";
 import CloseIcon from "grommet/components/icons/base/Close";
+import List from "grommet/components/List";
+import ListItem from "grommet/components/ListItem";
+import Heading from "grommet/components/Heading";
+import Paragraph from "grommet/components/Paragraph";
 import RenderTextField from "./LineItemTextInput";
 import type { Service } from "../actions/services";
 import type { Fields } from "redux-form/lib/FieldArrayProps.types";
@@ -128,56 +132,99 @@ class VisitLineItemsForm extends Component<
 
   render() {
     const {
+      change,
+      formName,
       fields,
       meta: { error, submitFailed }
     } = this.props;
 
     return (
       <Section>
-        {fields.map((lineItem, index) => (
-          <Box margin={{ bottom: "medium" }}>
-            <div key={index}>
-              {intlLineItem(index + 1)}
-              <Button
-                icon={<CloseIcon />}
-                onClick={() => fields.remove(index)}
-                href="#"
-                primary={false}
-                accent={false}
-                plain={true}
-              />
-              <Field
-                name={`${lineItem}.id`}
-                type="hidden"
-                component={renderField}
-              />
-              <Field
-                name={`${lineItem}.name`}
-                component={RenderTextField}
-                label={intlName}
-                onDomChange={e => this.onNameChange(e, index)}
-                onSelect={e => this.onNameSelect(e, index)}
-                suggestions={this.state.suggestions}
-              />
-              <Field
-                name={`${lineItem}.description`}
-                type="text"
-                component={renderField}
-                label={intlDescription}
-              />
-              <Field
-                name={`${lineItem}.quantity`}
-                component={renderNumberField}
-                label={intlQuantity}
-              />
-              <Field
-                name={`${lineItem}.unit_cost`}
-                component={renderNumberField}
-                label={intlUnitCost}
-              />
-            </div>
-          </Box>
-        ))}
+        {fields.map((lineItem, index) => {
+          return fields.get(index).line_item ? (
+            <Box
+              margin={{ bottom: "medium" }}
+              pad={"small"}
+              colorIndex="light-2"
+            >
+              <div key={index}>
+                {intlLineItem(index + 1)}
+                <Button
+                  icon={<CloseIcon />}
+                  onClick={() => change(formName, `line_items[${index}].quantity`, 0)}
+                  href="#"
+                  primary={false}
+                  accent={false}
+                  plain={true}
+                />
+                <Heading tag="h4" margin="none" strong="true">
+                  {fields.get(index).name}
+                </Heading>
+                <Paragraph margin="small">
+                  {fields.get(index).description}
+                </Paragraph>
+                <Field
+                  name={`${lineItem}.quantity`}
+                  component={renderNumberField}
+                  label={intlQuantity}
+                />
+                <List>
+                  <ListItem justify="between" separator="horizontal">
+                    <span>{intlUnitCost}</span>
+                    <span>{fields.get(index).unit_cost}</span>
+                  </ListItem>
+                </List>
+              </div>
+            </Box>
+          ) : (
+            <Box
+              margin={{ bottom: "medium" }}
+              pad={"small"}
+              colorIndex="light-2"
+            >
+              <div key={index}>
+                {intlLineItem(index + 1)}
+                <Button
+                  icon={<CloseIcon />}
+                  onClick={() => fields.remove(index)}
+                  href="#"
+                  primary={false}
+                  accent={false}
+                  plain={true}
+                />
+                <Field
+                  name={`${lineItem}.id`}
+                  type="hidden"
+                  component={renderField}
+                />
+                <Field
+                  name={`${lineItem}.name`}
+                  component={RenderTextField}
+                  label={intlName}
+                  onDomChange={e => this.onNameChange(e, index)}
+                  onSelect={e => this.onNameSelect(e, index)}
+                  suggestions={this.state.suggestions}
+                />
+                <Field
+                  name={`${lineItem}.description`}
+                  type="text"
+                  component={renderField}
+                  label={intlDescription}
+                />
+                <Field
+                  name={`${lineItem}.quantity`}
+                  component={renderNumberField}
+                  label={intlQuantity}
+                />
+                <Field
+                  name={`${lineItem}.unit_cost`}
+                  component={renderNumberField}
+                  label={intlUnitCost}
+                />
+              </div>
+            </Box>
+          );
+        })}
         <Box>
           <button type="button" onClick={() => fields.push({})}>
             {intlAddButton}
