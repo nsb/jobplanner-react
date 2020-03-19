@@ -18,7 +18,6 @@ import { AuthContext } from "../providers/authProvider";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
-import type { LineItem } from "../actions/lineitems";
 
 const intlTitle = (
   <FormattedMessage
