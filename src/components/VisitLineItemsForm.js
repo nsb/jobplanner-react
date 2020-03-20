@@ -193,11 +193,6 @@ class VisitLineItemsForm extends Component<
                   plain={true}
                 />
                 <Field
-                  name={`${lineItem}.id`}
-                  type="hidden"
-                  component={renderField}
-                />
-                <Field
                   name={`${lineItem}.name`}
                   component={RenderTextField}
                   label={intlName}
