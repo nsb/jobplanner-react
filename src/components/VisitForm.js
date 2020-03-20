@@ -18,8 +18,7 @@ import Select from "grommet/components/Select";
 import DateTime from "grommet/components/DateTime";
 import BusyIcon from 'grommet/components/icons/Spinning';
 import LineItemsFormContainer from "./VisitLineItemsFormContainer";
-import { intlFormSaveLabel, intlFormSavingLabel } from "../i18n";
-import type { Client } from "../actions/clients";
+import { intlFormSaveLabel, intlFormSavingLabel, intlFormFieldRequired } from "../i18n";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 import type { Element } from "react";
@@ -105,10 +104,31 @@ const intlLineItems = (
   />
 )
 
-const validate = (values: Client) => {
+const validate = (values: Visit) => {
   const errors = {};
+  const lineItemArrayErrors = [];
+  values.line_items &&
+    values.line_items.forEach((lineItem, lineItemIndex) => {
+      const lineItemErrors = {};
+      if (!lineItem.line_item) {
+        if (!lineItem.name) {
+          lineItemErrors.name = intlFormFieldRequired;
+          lineItemArrayErrors[lineItemIndex] = lineItemErrors;
+        }
+        if (!lineItem.quantity) {
+          lineItemErrors.quantity = intlFormFieldRequired;
+          lineItemArrayErrors[lineItemIndex] = lineItemErrors;
+        }
+        if (!lineItem.unit_cost) {
+          lineItemErrors.unit_cost = intlFormFieldRequired;
+          lineItemArrayErrors[lineItemIndex] = lineItemErrors;
+        }
+      }
+    });
+  errors.line_items = lineItemArrayErrors;
   return errors;
 };
+
 
 const renderField = ({
   input,
