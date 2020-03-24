@@ -1,4 +1,5 @@
 // @flow
+import type { LineItemOverride } from "./lineitemoverrides";
 
 export type LineItem = {
   id: number,
@@ -6,7 +7,7 @@ export type LineItem = {
   description: string,
   unit_cost: number,
   quantity: number,
-  overrides: Array<number>
+  overrides: Array<LineItemOverride>
 };
 
 export type LineItemsMap = { [id: number]: LineItem };
