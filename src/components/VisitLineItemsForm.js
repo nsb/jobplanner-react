@@ -9,11 +9,13 @@ import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
 import Button from "grommet/components/Button";
 import CloseIcon from "grommet/components/icons/base/Close";
+import AddIcon from "grommet/components/icons/base/Add";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 import Heading from "grommet/components/Heading";
 import Paragraph from "grommet/components/Paragraph";
 import RenderTextField from "./LineItemTextInput";
+import Label from "grommet/components/Label";
 import type { Service } from "../actions/services";
 import type { Fields } from "redux-form/lib/FieldArrayProps.types";
 
@@ -141,6 +143,7 @@ class VisitLineItemsForm extends Component<
     return (
       <Section>
         {fields.map((lineItem, index) => {
+          const quantity = fields.get(index).quantity;
           return fields.get(index).line_item ? (
             <Box
               margin={{ bottom: "medium" }}
@@ -150,8 +153,14 @@ class VisitLineItemsForm extends Component<
               <div key={index}>
                 {intlLineItem(index + 1)}
                 <Button
-                  icon={<CloseIcon />}
-                  onClick={() => change(formName, `line_items[${index}].quantity`, 0)}
+                  icon={quantity ? <CloseIcon /> : <AddIcon />}
+                  onClick={() =>
+                    change(
+                      formName,
+                      `line_items[${index}].quantity`,
+                      quantity ? 0 : 1
+                    )
+                  }
                   href="#"
                   primary={false}
                   accent={false}
@@ -163,13 +172,19 @@ class VisitLineItemsForm extends Component<
                 <Paragraph margin="small">
                   {fields.get(index).description}
                 </Paragraph>
-                <Field
-                  name={`${lineItem}.quantity`}
-                  component={renderNumberField}
-                  label={intlQuantity}
-                />
+                {fields.get(index).quantity ? (
+                  <Field
+                    name={`${lineItem}.quantity`}
+                    component={renderNumberField}
+                    label={intlQuantity}
+                  />
+                ) : (
+                  <div>
+                    <Label>{intlQuantity}</Label> {fields.get(index).quantity}
+                  </div>
+                )}
                 <List>
-                  <ListItem justify="between" separator="horizontal">
+                  <ListItem justify="between" pad="none">
                     <span>{intlUnitCost}</span>
                     <span>{fields.get(index).unit_cost}</span>
                   </ListItem>
