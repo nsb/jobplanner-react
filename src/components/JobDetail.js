@@ -85,6 +85,14 @@ const intlLineItems = (
   />
 );
 
+const intlLineItemVaries = (
+  <FormattedMessage
+    id="jobDetail.lineItemQuantityVaries"
+    description="Job detail lineitem quantity varies"
+    defaultMessage="Varies"
+  />
+);
+
 const intlLineItemsEmptyMessage = (
   <FormattedMessage
     id="jobDetail.lineItemsEmptyMessage"
@@ -383,7 +391,11 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
                             key={line_item.id}
                           >
                             <span>{line_item.name}</span>
-                            <span>{line_item.quantity}</span>
+                            <span>
+                              {line_item.overrides.length
+                                ? intlLineItemVaries
+                                : line_item.quantity}
+                            </span>
                             <span>{line_item.unit_cost}</span>
                           </ListItem>
                         ))}
