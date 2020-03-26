@@ -2,8 +2,6 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { denormalize } from "normalizr";
-import { visitSchemaDenormalize } from "../schemas";
 import { injectIntl, intlShape } from "react-intl";
 import { addSuccess, addError } from "redux-flash-messages";
 import { updateVisitAndLoadJob } from "../actions/index";
@@ -95,11 +93,7 @@ const mapStateToProps = (
         return ensureState(entities).employees[Id];
       })
       .filter(employee => employee),
-    visit: denormalize(
-      ensureState(entities).visits[ownProps.visit.id],
-      visitSchemaDenormalize,
-      ensureState(entities)
-    ),
+    visit: ensureState(entities).visits[ownProps.visit.id],
     toggleEdit: ownProps.toggleEdit,
     isFetching: ensureState(visits).isFetching || jobs.isFetching
   };

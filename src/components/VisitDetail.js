@@ -14,11 +14,12 @@ import Menu from "grommet/components/Menu";
 import ScheduleIcon from "grommet/components/icons/base/Schedule";
 import ActionsIcon from "grommet/components/icons/base/Actions";
 import DirectionsIcon from "grommet/components/icons/base/Directions";
+import Table from "grommet/components/Table";
+import TableRow from "grommet/components/TableRow";
 import { AuthContext } from "../providers/authProvider";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
-import type { LineItem } from "../actions/lineitems";
 
 const intlTitle = (
   <FormattedMessage
@@ -117,12 +118,27 @@ const intlLineItems = (
   />
 );
 
+const intlLineItemName = (
+  <FormattedMessage
+    id="visitDetail.lineItemNameLabel"
+    description="Visit detail line item name label"
+    defaultMessage="Name"
+  />
+);
+
+const intlLineItemQuantity = (
+  <FormattedMessage
+    id="visitDetail.lineItemQuantityLabel"
+    description="Visit detail line item quantity label"
+    defaultMessage="Qty"
+  />
+);
+
 export type Props = {
   visit: Visit,
   job: ?Job,
   property: Property,
   assigned: Array<Object>,
-  lineItems: Array<LineItem>,
   onEdit: Function,
   onUpdateFutureVisits: Function,
   partialUpdateVisitAndLoadJob: Function,
@@ -139,7 +155,6 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
       job,
       property,
       assigned,
-      lineItems,
       onEdit,
       onUpdateFutureVisits,
       onDelete
@@ -251,8 +266,11 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
                 <Box direction="row">{intlTeam}</Box>
               </Heading>
               {assigned.length ? (
-                assigned.map(employee => [employee.first_name, employee.last_name].join(' '))
-                .join(", ")
+                assigned
+                  .map(employee =>
+                    [employee.first_name, employee.last_name].join(" ")
+                  )
+                  .join(", ")
               ) : (
                 <div>{intlUnassigned}</div>
               )}
@@ -262,9 +280,26 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
             <Heading tag="h4" strong={true}>
               <Box direction="row">{intlLineItems}</Box>
             </Heading>
-            {lineItems.map(item => {
-              return <div>{item.name}</div>;
-            })}
+            <Table>
+              <thead>
+                <tr>
+                  <th>{intlLineItemName}</th>
+                  <th>{intlLineItemQuantity}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visit.line_items
+                  .filter(line_item => line_item.quantity)
+                  .map(item => {
+                    return (
+                      <TableRow>
+                        <td>{item.name}</td>
+                        <td className="secondary">{item.quantity}</td>
+                      </TableRow>
+                    );
+                  })}
+              </tbody>
+            </Table>
           </Box>
         </Section>
       </Box>

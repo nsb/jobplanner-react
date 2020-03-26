@@ -10,14 +10,14 @@ import VisitForm from "./VisitForm";
 import { AuthContext } from "../providers/authProvider";
 import type { Business } from "../actions/businesses";
 import type { Job } from "../actions/jobs";
-import type { LineItem } from "../actions/lineitems";
+import type { LineItemOverride } from "../actions/lineitemoverrides";
 import type { Employee } from "../actions/employees";
 
 export type Props = {
   employees: Array<Employee>,
   business: Business,
   job: Job,
-  lineItems: Array<LineItem>,
+  lineItems: Array<LineItemOverride>,
   onClose: Function,
   createVisitAndLoadJob: Function,
   isFetching: boolean

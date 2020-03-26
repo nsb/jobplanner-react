@@ -3,6 +3,7 @@ import { merge } from "lodash/object";
 import { normalize } from "normalizr";
 import { visitListSchema, visitSchema } from "../schemas";
 import visitsApi from "../api";
+import type { LineItemOverride } from "../actions/lineitemoverrides";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import { BEGIN, COMMIT, REVERT } from "redux-optimistic-ui";
@@ -46,7 +47,7 @@ export type Visit = {
   job: number,
   property: number,
   client: number,
-  line_items: [Object],
+  line_items: Array<LineItemOverride>,
   completed: boolean,
   begins: Date,
   ends: Date,

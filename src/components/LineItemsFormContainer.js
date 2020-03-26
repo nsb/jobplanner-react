@@ -8,10 +8,15 @@ import type { State as ReduxState } from "../types/State";
 import LineItemsForm from "./LineItemsForm";
 import type { LineItemProps as Props } from "./LineItemsForm";
 import type { Dispatch } from "../types/Store";
+import type { Fields } from "redux-form/lib/FieldArrayProps.types";
 
 const mapStateToProps = (
   state: ReduxState,
-  ownProps: { formName: string, fields: any, meta: any }
+  ownProps: {
+    formName: string,
+    fields: Fields,
+    meta: { dirty: Boolean, error: ?string, submitFailed: boolean }
+  }
 ): Props => {
   const { entities, services } = state;
 
@@ -23,7 +28,7 @@ const mapStateToProps = (
     }),
     fields: ownProps.fields,
     meta: ownProps.meta,
-    change,
+    change
   };
 };
 
