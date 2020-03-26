@@ -227,15 +227,15 @@ const validate = (values: {
   values.line_items &&
     values.line_items.forEach((lineItem, lineItemIndex) => {
       const lineItemErrors = {};
-      if (!lineItem || !lineItem.name) {
+      if (!lineItem.name) {
         lineItemErrors.name = intlFormFieldRequired;
         lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
       }
-      if (!lineItem || !lineItem.quantity) {
+      if (!(lineItem.quantity || lineItem.quantity === 0)) {
         lineItemErrors.quantity = intlFormFieldRequired;
         lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
       }
-      if (!lineItem || !lineItem.unit_cost) {
+      if (!(lineItem.unit_cost || lineItem.unit_cost === 0)) {
         lineItemErrors.unit_cost = intlFormFieldRequired;
         lineItemsArrayErrors[lineItemIndex] = lineItemErrors;
       }
