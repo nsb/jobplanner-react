@@ -335,7 +335,7 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
 
   onBeginsChanged = (e, newValue, prevValue) => {
     const { ends, change, dispatch } = this.props;
-    if (new Date(newValue) > new Date(prevValue)) {
+    if (newValue > prevValue) {
       const difference = ends - prevValue;
       dispatch(change("ends", newValue.getTime() + difference));
     }
