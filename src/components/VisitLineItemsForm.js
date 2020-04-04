@@ -151,8 +151,9 @@ class VisitLineItemsForm extends Component<
               colorIndex="light-2"
             >
               <div key={index}>
-                {intlLineItem(index + 1)}
-                <Button
+                <Heading tag="h4" margin="none" strong="true">
+                  {fields.get(index).name}
+                  <Button
                   icon={quantity ? <CloseIcon /> : <AddIcon />}
                   onClick={() =>
                     change(
@@ -166,8 +167,6 @@ class VisitLineItemsForm extends Component<
                   accent={false}
                   plain={true}
                 />
-                <Heading tag="h4" margin="none" strong="true">
-                  {fields.get(index).name}
                 </Heading>
                 <Paragraph margin="small">
                   {fields.get(index).description}
@@ -184,7 +183,7 @@ class VisitLineItemsForm extends Component<
                   </div>
                 )}
                 <List>
-                  <ListItem justify="between" pad="none">
+        <ListItem justify="between" pad={{horizontal: "none", vertical: "medium"}}>
                     <span>{intlUnitCost}</span>
                     <span>{fields.get(index).unit_cost}</span>
                   </ListItem>
