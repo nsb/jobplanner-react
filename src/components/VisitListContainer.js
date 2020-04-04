@@ -59,7 +59,7 @@ class VisitListContainer extends Component<Props, State> {
       job && job.closed
         ? {
             business: business.id,
-            ordering: "begins",
+            ordering: "-begins",
             limit: 20,
             offset: this.state.offset
           }
