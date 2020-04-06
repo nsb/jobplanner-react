@@ -24,7 +24,7 @@ import "./index.css";
 import localeEnData from "./locales/en.json";
 import localeDaData from "./locales/da.json";
 
-browserUpdate( {required: {i:999,f:-6,o:-6,s:-3,c:-6}});
+browserUpdate({ required: { i: 999, f: -6, o: -6, s: -3, c: -6 } });
 
 addLocaleData([...en, ...da]);
 
@@ -37,7 +37,7 @@ let messages: Object;
 // configure drift
 if (window.drift) {
   window.drift.config({
-    locale: languageWithoutRegionCode
+    locale: languageWithoutRegionCode,
   });
   window.drift.load("fk4gftg5k9zk");
 }
@@ -46,8 +46,8 @@ if (window.drift) {
 moment.locale(language, {
   week: {
     dow: 1,
-    doy: 1
-  }
+    doy: 1,
+  },
 });
 
 if (languageWithoutRegionCode === "da") {
@@ -61,7 +61,7 @@ if (process.env.REACT_APP_SENTRY_PUBLIC_DSN) {
     dsn: process.env.REACT_APP_SENTRY_PUBLIC_DSN,
     release: process.env.COMMIT_REF || "unknown",
     environment: process.env.NODE_ENV || "unknown",
-    send_default_pii: true
+    send_default_pii: true,
   });
 }
 
@@ -74,7 +74,7 @@ if (process.env.REACT_APP_SENTRY_PUBLIC_DSN) {
 
 configureFlashMessages({
   // The dispatch function for the Redux store.
-  dispatch: store.dispatch
+  dispatch: store.dispatch,
 });
 
 const root = document.getElementById("root");
