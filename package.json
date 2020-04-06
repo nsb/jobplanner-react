@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@sentry/browser": "^5.10.2",
+    "browser-update": "^3.3.16",
     "grommet": "1.13.0",
     "grommet-addons": "^0.6.0",
     "grommet-templates": "^0.2.0",

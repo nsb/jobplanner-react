@@ -9,6 +9,7 @@ import * as Sentry from "@sentry/browser";
 import { Router } from "react-router-dom";
 import { addLocaleData } from "react-intl";
 import { configureFlashMessages } from "redux-flash-messages";
+import browserUpdate from "browser-update";
 import history from "./history";
 import en from "react-intl/locale-data/en";
 import da from "react-intl/locale-data/da";
@@ -21,6 +22,8 @@ import "nielsbusch-grommet-css";
 import "./index.css";
 import localeEnData from "./locales/en.json";
 import localeDaData from "./locales/da.json";
+
+browserUpdate( {required: {i:999,f:-6,o:-6,s:-3,c:-6}});
 
 addLocaleData([...en, ...da]);
 
