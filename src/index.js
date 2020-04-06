@@ -7,6 +7,7 @@ import moment from "moment";
 import "moment/locale/da";
 import * as Sentry from "@sentry/browser";
 import { Router } from "react-router-dom";
+import "core-js/fn/array/flat-map"; // Edge browser does not have flat-map
 import { addLocaleData } from "react-intl";
 import { configureFlashMessages } from "redux-flash-messages";
 import browserUpdate from "browser-update";
