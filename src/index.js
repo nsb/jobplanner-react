@@ -8,10 +8,6 @@ import "moment/locale/da";
 import * as Sentry from "@sentry/browser";
 import { Router } from "react-router-dom";
 import "core-js/fn/array/flat-map"; // Edge browser does not have flat-map
-import "core-js/fn/array/from"; // IE browser does not have array from
-import "core-js/fn/array/includes"; // IE browser does not have array includes
-import "core-js/fn/object/assign"; // IE browser does not have object assign
-import "core-js/fn/promise"; // IE browser does not support promise
 import { addLocaleData } from "react-intl";
 import { configureFlashMessages } from "redux-flash-messages";
 import browserUpdate from "browser-update";
