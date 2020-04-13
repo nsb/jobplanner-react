@@ -21,16 +21,16 @@ import type { Fields } from "redux-form/lib/FieldArrayProps.types";
 
 const intlAddButton = (
   <FormattedMessage
-    id="lineItemsForm.addButton"
-    description="Line items add button"
+    id="visitLineItemsForm.addButton"
+    description="Visit Lineitems add button"
     defaultMessage="Add Line item"
   />
 );
 
 const intlLineItem = (index: number) => (
   <FormattedMessage
-    id="lineItemsForm.lineItemIndex"
-    description="Line items index"
+    id="visitLineItemsForm.lineItemIndex"
+    description="Visit Lineitems index"
     defaultMessage="Line item #{index}"
     values={{ index }}
   />
@@ -38,32 +38,32 @@ const intlLineItem = (index: number) => (
 
 const intlName = (
   <FormattedMessage
-    id="lineItemsForm.nameLabel"
-    description="Line items name label"
+    id="visitLineItemsForm.nameLabel"
+    description="Visit lineitems name label"
     defaultMessage="Name"
   />
 );
 
 const intlDescription = (
   <FormattedMessage
-    id="lineItemsForm.descriptionLabel"
-    description="Line items description label"
+    id="VisitLineItemsForm.descriptionLabel"
+    description="Visit Lineitems description label"
     defaultMessage="Description"
   />
 );
 
 const intlQuantity = (
   <FormattedMessage
-    id="lineItemsForm.quantityLabel"
-    description="Line items quantity label"
+    id="VisitLineItemsForm.quantityLabel"
+    description="Visit Lineitems quantity label"
     defaultMessage="Quantity"
   />
 );
 
 const intlUnitCost = (
   <FormattedMessage
-    id="lineItemsForm.unitCostLabel"
-    description="Line items unit cost label"
+    id="VisitLineItemsForm.unitCostLabel"
+    description="Visit Lineitems unit cost label"
     defaultMessage="Unit cost ex. VAT"
   />
 );

@@ -34,7 +34,7 @@ import type { ThunkAction } from "../types/Store";
 
 const intlTitle = (
   <FormattedMessage
-    id="invoices.title"
+    id="invoicesBatch.title"
     description="Invoices title"
     defaultMessage="Invoices"
   />
@@ -42,7 +42,7 @@ const intlTitle = (
 
 const intlNone = (
   <FormattedMessage
-    id="invoices.none"
+    id="invoicesBatch.none"
     description="Invoices none selection"
     defaultMessage="None"
   />
@@ -50,7 +50,7 @@ const intlNone = (
 
 const intlAll = (
   <FormattedMessage
-    id="invoices.all"
+    id="invoicesBatch.all"
     description="Invoices all selection"
     defaultMessage="All"
   />
@@ -58,7 +58,7 @@ const intlAll = (
 
 const intlEmptyMessage = (
   <FormattedMessage
-    id="invoices.emptyMessage"
+    id="invoicesBatch.emptyMessage"
     description="Invoices empty message"
     defaultMessage="Nothing to invoice"
   />
@@ -66,7 +66,7 @@ const intlEmptyMessage = (
 
 const intlSelectClients = (
   <FormattedMessage
-    id="invoices.selectClients"
+    id="invoicesBatch.selectClients"
     description="Message about selecting clients for invoicing."
     defaultMessage="Select the clients you want to invoice."
   />
