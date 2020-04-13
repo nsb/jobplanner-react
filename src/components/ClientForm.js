@@ -18,7 +18,7 @@ import CloseIcon from "grommet/components/icons/base/Close";
 import BusyIcon from 'grommet/components/icons/Spinning';
 import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import type { Client } from "../actions/clients";
-import type { Field as CustomField } from "../actions/fields";
+// import type { Field as CustomField } from "../actions/fields";
 import type { Element } from "react";
 
 const intlClientEditTitle = (
@@ -278,7 +278,7 @@ type Props = {
   dirty: boolean,
   submitting: boolean,
   onClose: Function,
-  fields: Array<CustomField>,
+  // fields: Array<CustomField>,
   initialValues: Object,
   isFetching: boolean
 };
