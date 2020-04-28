@@ -13,7 +13,7 @@ import { AuthContext } from "../providers/authProvider";
 import { updateClient } from "../actions/clients";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
-import type { Field } from "../actions/fields";
+// import type { Field } from "../actions/fields";
 import type { State } from "../types/State";
 import type { Dispatch } from "../types/Store";
 import type { PropertiesMap } from "../actions/properties";
@@ -22,7 +22,7 @@ import { ensureState } from "redux-optimistic-ui";
 type Props = {
   business: Business,
   client: Client,
-  fields: Array<Field>,
+  // fields: Array<Field>,
   properties: PropertiesMap,
   isFetching: boolean,
   updateClient: Function,
@@ -33,14 +33,13 @@ class ClientEdit extends Component<Props & { intl: intlShape }> {
   static contextType = AuthContext;
 
   render() {
-    const { client, fields, isFetching, onClose } = this.props;
+    const { client, isFetching, onClose } = this.props;
 
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
         <ClientForm
           onSubmit={this.handleSubmit}
           onClose={onClose}
-          fields={fields}
           initialValues={client}
           isFetching={isFetching}
         />
@@ -78,7 +77,7 @@ const mapStateToProps = (
     client: Client
   }
 ): Props => {
-  const { fields, entities, clients } = state;
+  const { entities, clients } = state;
 
   return {
     business: ensureState(entities).businesses[ownProps.client.business],
@@ -87,13 +86,13 @@ const mapStateToProps = (
       clientSchema,
       ensureState(entities)
     ),
-    fields: fields.result
-      .map((Id: number) => {
-        return ensureState(entities).fields[Id];
-      })
-      .filter(field => {
-        return field.business === ownProps.client.business;
-      }),
+    // fields: fields.result
+    //   .map((Id: number) => {
+    //     return ensureState(entities).fields[Id];
+    //   })
+    //   .filter(field => {
+    //     return field.business === ownProps.client.business;
+    //   }),
     properties: ensureState(entities).properties,
     isFetching: clients.isFetching,
     updateClient: ownProps.updateClient,
