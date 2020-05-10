@@ -11,14 +11,11 @@ import { createClient } from "../actions/clients";
 import { AuthContext } from "../providers/authProvider";
 import type { Client } from "../actions/clients";
 import type { Business } from "../actions/businesses";
-import type { Field } from "../actions/fields";
 import type { Dispatch } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
-import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
   business: Business,
-  fields: Array<Field>,
   isFetching: boolean,
   createClient: Function,
   onClose: Function,
@@ -29,12 +26,11 @@ class ClientAdd extends Component<Props & { intl: intlShape }> {
   static contextType = AuthContext;
 
   render() {
-    const { fields, isFetching, onClose } = this.props;
+    const { isFetching, onClose } = this.props;
     return (
       <Article align="center" pad={{ horizontal: "medium" }} primary={true}>
         <ClientForm
           onSubmit={this.handleSubmit}
-          fields={fields}
           onClose={onClose}
           isFetching={isFetching}
           initialValues={{
@@ -80,17 +76,10 @@ type OwnProps = {
 };
 
 const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
-  const { clients, fields, entities } = state;
+  const { clients } = state;
 
   return {
     business: ownProps.business,
-    fields: fields.result
-      .map((Id: number) => {
-        return ensureState(entities).fields[Id];
-      })
-      .filter(field => {
-        return field.business === ownProps.business.id;
-      }),
     isFetching: clients.isFetching,
     createClient: ownProps.createClient,
     onClose: ownProps.onClose,
