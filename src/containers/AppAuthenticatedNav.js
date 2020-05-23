@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
+import posthog from 'posthog-js';
 import Loadable from "react-loadable";
 import Split from "grommet/components/Split";
 import Loading from "../components/Loading";
@@ -62,6 +63,11 @@ const Integrations = Loadable({
 })
 
 class AppAuthenticatedNav extends Component<Props> {
+  constructor(props: Props) {
+    super(props);
+    posthog.identify(props.user.username);
+  }
+
   render() {
     const {
       navActive,
