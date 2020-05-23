@@ -1,5 +1,6 @@
 import { IDENTITY_CONFIG, METADATA_OIDC } from "./authConst";
 import { UserManager, WebStorageStateStore } from "oidc-client";
+import posthog from 'posthog-js';
 
 export default class AuthService {
   UserManager;
@@ -25,6 +26,9 @@ export default class AuthService {
       console.log("token expired");
       this.signinSilent();
     });
+    this.UserManager.events.addUserSignedOut(() => {
+      posthog.reset();
+    })
   }
 
   signinRedirectCallback = () => {
