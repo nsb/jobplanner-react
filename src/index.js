@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import moment from "moment";
+import posthog from 'posthog-js';
 import "moment/locale/da";
 import * as Sentry from "@sentry/browser";
 import { Router } from "react-router-dom";
@@ -41,6 +42,12 @@ if (window.drift) {
   });
   window.drift.load("fk4gftg5k9zk");
 }
+
+// configure posthog
+window.location.href.indexOf("127.0.0.1") === -1 &&
+  posthog.init("UiU9EFVUJIhvAAs0P8OPHq3KJfeTdoSqLCGeg7NjNew", {
+    api_host: "https://app.posthog.com",
+  });
 
 // configure moment locale, with Monday as 1st day of week
 moment.locale(language, {
