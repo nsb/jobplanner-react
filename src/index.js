@@ -44,7 +44,7 @@ if (window.drift) {
 }
 
 // configure posthog
-window.location.href.indexOf("127.0.0.1") === -1 &&
+window.location.href.indexOf("localhost") === -1 &&
   posthog.init("UiU9EFVUJIhvAAs0P8OPHq3KJfeTdoSqLCGeg7NjNew", {
     api_host: "https://app.posthog.com",
   });
