@@ -13,11 +13,12 @@ type Props = {
 export const Tag = ({
   text,
   color = "warning",
-  margin = { vertical: "small" }
+  margin = {}
 }: Props) => (
   <Box
-    alignContent="start"
-    alignSelf="start"
+    flex={true}
+    direction="column"
+    justify="center"
     margin={margin}
     pad={{ horizontal: "small" }}
     colorIndex={color}

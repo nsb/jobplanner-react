@@ -13,7 +13,7 @@ export type Props = {
   job: Job,
   client?: Client,
   index: number,
-  onClick: Function
+  onClick: Function,
 };
 
 class JobListItem extends Component<Props> {
@@ -23,9 +23,9 @@ class JobListItem extends Component<Props> {
     let jobDescription;
     if (job.description) {
       if (job.description.length > 17) {
-        jobDescription = `Job #${job.id} - ${job.description.substr(0, 17)}…`
+        jobDescription = `Job #${job.id} - ${job.description.substr(0, 17)}…`;
       } else {
-        jobDescription = `Job #${job.id} - ${job.description}`
+        jobDescription = `Job #${job.id} - ${job.description}`;
       }
     } else {
       jobDescription = `Job #${job.id}`;
@@ -33,12 +33,14 @@ class JobListItem extends Component<Props> {
 
     let dates;
     if (job.ends) {
-      dates = (<span>
-        <Timestamp value={job.begins} fields="date" /> -{" "}
-        <Timestamp value={job.ends} fields="date" />
-      </span>)
+      dates = (
+        <span>
+          <Timestamp value={job.begins} fields="date" /> -{" "}
+          <Timestamp value={job.ends} fields="date" />
+        </span>
+      );
     } else {
-      dates = <Timestamp value={job.begins} fields="date" />
+      dates = <Timestamp value={job.begins} fields="date" />;
     }
 
     return (
@@ -54,17 +56,29 @@ class JobListItem extends Component<Props> {
       >
         <span>
           <Box>
-            <div>
-              <Status
-                value={job.closed ? "disabled" : "ok"}
-                a11yTitle={job.closed ? "Closed" : "Open"}
-              />{" "}
+            <Box
+              direction="row"
+              align="center"
+              margin={{ bottom: "small" }}
+              responsive={false}
+            >
+              <Box margin={{ right: "small" }}>
+                <Status
+                  value={job.closed ? "disabled" : "ok"}
+                  a11yTitle={job.closed ? "Closed" : "Open"}
+                />
+              </Box>
               {jobDescription}
-            </div>
+            </Box>
             <JobStatusTag status={job.status} />
           </Box>
         </span>
-        <span>{client && (client.is_business ? client.business_name : `${client.first_name} ${client.last_name}`)}</span>
+        <span>
+          {client &&
+            (client.is_business
+              ? client.business_name
+              : `${client.first_name} ${client.last_name}`)}
+        </span>
         {dates}
       </ListItem>
     );
