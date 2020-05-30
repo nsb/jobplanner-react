@@ -176,7 +176,7 @@ const DnDCalendar = ({
                 className: "jobplanner__counter",
                 style: {
                   "background-color": "#fff",
-                  color: "#333",
+                  color: "#434343",
                   "font-weight": "bold"
                 }
               };
