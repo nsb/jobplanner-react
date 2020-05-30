@@ -236,8 +236,10 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
             {phone}
             {visit.details}
           </Box>
-          {toggleCompletedButton}
-          <Box margin={{ bottom: "medium" }}>
+          <Box margin={{ bottom: "small" }}>
+            {toggleCompletedButton}
+          </Box>
+          <Box margin={{ bottom: "small" }}>
             <Menu
               size="small"
               responsive={true}
@@ -266,6 +268,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
           <Box
             colorIndex="light-2"
             pad={{ horizontal: "medium", vertical: "small" }}
+            margin={{ bottom: "small" }}
           >
             <Heading tag="h4" strong={true}>
               <Box direction="row">
@@ -275,12 +278,6 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
               </Box>
             </Heading>
             {job && job.description}
-          </Box>
-          <Box
-            colorIndex="light-2"
-            pad={{ horizontal: "medium", vertical: "small" }}
-            margin={{ bottom: "medium" }}
-          >
             <Heading tag="h4" strong={true}>
               <Box direction="row">{intlTeam}</Box>
             </Heading>
