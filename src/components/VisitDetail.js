@@ -21,6 +21,7 @@ import UpdateIcon from "grommet/components/icons/base/Update";
 import BusyIcon from "grommet/components/icons/Spinning";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
+import VisitStatusTag from "./VisitStatusTag";
 import { AuthContext } from "../providers/authProvider";
 import { intlFormSavingLabel } from "../i18n";
 import type { Visit } from "../actions/visits";
@@ -230,13 +231,16 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
     }
 
     return (
-      <Box>
-        <Heading tag="h4" strong={true}>
-          {intlTitle}
-        </Heading>
-        <Heading tag="h3" strong={true}>
-          {visit.title || visit.client_name}
-        </Heading>
+      <Box margin={{top: "medium"}}>
+        <Box>
+          <Heading tag="h4" strong={true}>
+            {intlTitle}
+          </Heading>
+          <VisitStatusTag status={visit.status} />
+          <Heading tag="h3" strong={true}>
+            {visit.title || visit.client_name}
+          </Heading>
+        </Box>
         <Section>
           <Box margin={{ bottom: "medium" }}>{schedule}</Box>
           <Box margin={{ bottom: "medium" }}>
