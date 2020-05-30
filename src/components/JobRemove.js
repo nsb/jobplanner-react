@@ -52,7 +52,8 @@ type Props = {
   onClose: Function,
   dispatch: Dispatch,
   deleteJob: Function,
-  history: { push: string => void }
+  history: { push: string => void },
+  isFetching: boolean
 };
 
 class JobRemove extends Component<Props & { intl: intlShape }> {
@@ -75,7 +76,7 @@ class JobRemove extends Component<Props & { intl: intlShape }> {
   };
 
   render() {
-    const { job, onClose } = this.props;
+    const { job, onClose, isFetching } = this.props;
 
     let formContent = (
       <fieldset>
@@ -91,6 +92,7 @@ class JobRemove extends Component<Props & { intl: intlShape }> {
         compact={true}
         onClose={onClose}
         onSubmit={this.onRemove}
+        busy={isFetching}
       >
         {formContent}
       </LayerForm>

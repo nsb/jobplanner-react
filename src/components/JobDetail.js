@@ -220,6 +220,7 @@ class JobDetail extends Component<Props & { intl: intlShape }, State> {
         onClose={onSidebarClose}
         onEdit={this.onEdit}
         onToggleCloseJob={this.onToggleCloseJob}
+        isFetching={isFetching}
       />
     );
 

@@ -65,7 +65,8 @@ const intlNoIncompleteVisitsParagraph2 = (
 type Props = {
   job: Job,
   onClose: Function,
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  isFetching: boolean
 };
 
 class JobClose extends Component<Props & { intl: intlShape }> {
@@ -92,7 +93,7 @@ class JobClose extends Component<Props & { intl: intlShape }> {
   };
 
   render() {
-    const { job, onClose } = this.props;
+    const { job, onClose, isFetching } = this.props;
 
     let formContent = job.incomplete_visit_count ? (
       <fieldset>
@@ -113,6 +114,7 @@ class JobClose extends Component<Props & { intl: intlShape }> {
         compact={true}
         onClose={onClose}
         onSubmit={this._onClose}
+        busy={isFetching}
       >
         {formContent}
       </LayerForm>

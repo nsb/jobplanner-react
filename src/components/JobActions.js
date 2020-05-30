@@ -58,7 +58,8 @@ type Props = {
   job: Job,
   onToggleCloseJob: Function,
   onClose?: Function,
-  onEdit: Function
+  onEdit: Function,
+  isFeching: boolean
 };
 
 type State = {
@@ -82,7 +83,7 @@ class JobActions extends Component<Props, State> {
   };
 
   render() {
-    const { onClose, onEdit, onToggleCloseJob, job } = this.props;
+    const { onClose, onEdit, onToggleCloseJob, job, isFeching } = this.props;
 
     let closeControl;
     if (onClose) {
@@ -99,7 +100,7 @@ class JobActions extends Component<Props, State> {
     let layer;
     if (this.state.layerName) {
       let Component = LAYERS[this.state.layerName];
-      layer = <Component job={job} onClose={this._onLayerClose} />;
+      layer = <Component job={job} onClose={this._onLayerClose} isFetching={isFeching} />;
     }
 
     let editButton;

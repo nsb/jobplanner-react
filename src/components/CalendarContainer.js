@@ -40,7 +40,8 @@ type Props = {
   >,
   getJobById: Function,
   dispatch: Dispatch,
-  responsive: Responsive
+  responsive: Responsive,
+  jobsIsFetching: boolean
 };
 
 type CalendarView = "day" | "week" | "month" | "agenda";
@@ -93,7 +94,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { visits, getJobById, responsive } = this.props;
+    const { visits, getJobById, responsive, jobsIsFetching } = this.props;
 
     let visitLayer;
     if (this.state.selected) {
@@ -113,6 +114,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
           onClose={() => {
             this.setState({ showJobClose: 0 });
           }}
+          isFetching={jobsIsFetching}
         />
       );
     }
@@ -229,7 +231,7 @@ const mapStateToProps = (
     responsive: Responsive
   }
 ): Props => {
-  const { entities, nav } = state;
+  const { entities, nav, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   const visits = Object.entries(getVisitsGroupedByDay(state))
@@ -244,7 +246,8 @@ const mapStateToProps = (
     visits: visits,
     dispatch: ownProps.dispatch,
     responsive: nav.responsive,
-    getJobById: id => ensureState(entities).jobs[id]
+    getJobById: id => ensureState(entities).jobs[id],
+    jobsIsFetching: jobs.isFetching
   };
 };
 
