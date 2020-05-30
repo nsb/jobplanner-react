@@ -15,6 +15,7 @@ import DirectionsIcon from "grommet/components/icons/base/Directions";
 import ContactIcon from "grommet/components/icons/base/Contact";
 import EditIcon from "grommet/components/icons/base/Edit";
 import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
+import CloseIcon from "grommet/components/icons/base/Close";
 import TrashIcon from "grommet/components/icons/base/Trash";
 import UpdateIcon from "grommet/components/icons/base/Update";
 import Table from "grommet/components/Table";
@@ -88,7 +89,7 @@ const intlMarkIncomplete = (
   />
 );
 
-const intlJob = id => (
+const intlJob = (id) => (
   <FormattedMessage
     id="visitDetail.jobHeading"
     description="Visit detail job heading"
@@ -146,7 +147,7 @@ export type Props = {
   onUpdateFutureVisits: Function,
   partialUpdateVisitAndLoadJob: Function,
   onDelete: Function,
-  onClose: Function
+  onClose: Function,
 };
 
 class VisitDetail extends Component<Props & { intl: intlShape }> {
@@ -160,7 +161,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
       assigned,
       onEdit,
       onUpdateFutureVisits,
-      onDelete
+      onDelete,
     } = this.props;
 
     let schedule;
@@ -179,23 +180,23 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
     let phone;
     if (visit.client_phone) {
       phone = (
-        <Anchor icon={<ContactIcon/>} href={`tel:${visit.client_phone}`} >
+        <Anchor icon={<ContactIcon />} href={`tel:${visit.client_phone}`}>
           {visit.client_phone}
         </Anchor>
-      )
+      );
     }
 
     let directions;
     if (property) {
       let directionsParams = new URLSearchParams({
-        q: `${property.address1}, ${property.city}, ${property.zip_code}, ${property.country}`
+        q: `${property.address1}, ${property.city}, ${property.zip_code}, ${property.country}`,
       });
       directions = (
         <Anchor
           icon={<DirectionsIcon />}
           href={`https://maps.google.com/?${directionsParams.toString()}`}
           target="_blank"
-          primary={true}
+          primary={false}
         >
           {intlDirections}
         </Anchor>
@@ -204,9 +205,14 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
 
     let toggleCompletedButton;
     if (!visit.completed) {
-    toggleCompletedButton = (
-      <Button primary={true} label={intlMarkCompleted} onClick={this.toggleCompleted} />
-    )}
+      toggleCompletedButton = (
+        <Button
+          primary={true}
+          label={intlMarkCompleted}
+          onClick={this.toggleCompleted}
+        />
+      );
+    }
 
     return (
       <Box>
@@ -217,10 +223,8 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
           {visit.title || visit.client_name}
         </Heading>
         <Section>
-          <Box margin={{bottom: "medium"}}>
-            {schedule}
-          </Box>
-          <Box margin={{bottom: "medium"}}>
+          <Box margin={{ bottom: "medium" }}>{schedule}</Box>
+          <Box margin={{ bottom: "medium" }}>
             {visit.client_name}
             <br />
             {property && property.address1}
@@ -233,7 +237,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
             {visit.details}
           </Box>
           {toggleCompletedButton}
-          <Box margin={{bottom: "medium"}}>
+          <Box margin={{ bottom: "medium" }}>
             <Menu
               size="small"
               responsive={true}
@@ -251,7 +255,10 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
               <Anchor icon={<TrashIcon />} onClick={onDelete}>
                 {intlDelete}
               </Anchor>
-              <Anchor icon={<CheckmarkIcon />} onClick={this.toggleCompleted}>
+              <Anchor
+                icon={visit.completed ? <CloseIcon /> : <CheckmarkIcon />}
+                onClick={this.toggleCompleted}
+              >
                 {visit.completed ? intlMarkIncomplete : intlMarkCompleted}
               </Anchor>
             </Menu>
@@ -272,14 +279,14 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
           <Box
             colorIndex="light-2"
             pad={{ horizontal: "medium", vertical: "small" }}
-            margin={{bottom: "medium"}}
+            margin={{ bottom: "medium" }}
           >
             <Heading tag="h4" strong={true}>
               <Box direction="row">{intlTeam}</Box>
             </Heading>
             {assigned.length ? (
               assigned
-                .map(employee =>
+                .map((employee) =>
                   [employee.first_name, employee.last_name].join(" ")
                 )
                 .join(", ")
@@ -300,8 +307,8 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
               </thead>
               <tbody>
                 {visit.line_items
-                  .filter(line_item => line_item.quantity)
-                  .map(item => {
+                  .filter((line_item) => line_item.quantity)
+                  .map((item) => {
                     return (
                       <TableRow>
                         <td>{item.name}</td>
