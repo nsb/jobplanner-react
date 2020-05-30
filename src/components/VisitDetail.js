@@ -221,7 +221,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
       ) : (
         <Box margin={{ bottom: "small" }}>
           <Button
-            primary={false}
+            primary={true}
             label={intlMarkCompleted}
             onClick={this.toggleCompleted}
           />
