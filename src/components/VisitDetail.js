@@ -9,11 +9,13 @@ import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
 import Columns from "grommet/components/Columns";
 import Timestamp from "grommet/components/Timestamp";
+import Button from "grommet/components/Button";
 import Anchor from "grommet/components/Anchor";
 import Menu from "grommet/components/Menu";
 import ScheduleIcon from "grommet/components/icons/base/Schedule";
 import ActionsIcon from "grommet/components/icons/base/Actions";
 import DirectionsIcon from "grommet/components/icons/base/Directions";
+import ContactIcon from "grommet/components/icons/base/Contact";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
 import { AuthContext } from "../providers/authProvider";
@@ -173,6 +175,15 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
       />
     );
 
+    let phone;
+    if (visit.client_phone) {
+      phone = (
+        <Anchor icon={<ContactIcon/>} href={`tel:${visit.client_phone}`} >
+          {visit.client_phone}
+        </Anchor>
+      )
+    }
+
     let directions;
     if (property) {
       let directionsParams = new URLSearchParams({
@@ -190,93 +201,92 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
       );
     }
 
+    let toggleCompletedButton;
+    if (!visit.completed) {
+    toggleCompletedButton = (
+      <Button primary={true} label={intlMarkCompleted} onClick={this.toggleCompleted} />
+    )}
+
     return (
       <Box>
-        <Header justify="between" pad="none">
-          <Heading tag="h4" margin="none" strong={true}>
-            {intlTitle}
-          </Heading>
-        </Header>
-
-        <Section pad="none">
-          <Columns masonry={false} maxCount={2}>
-            <Box pad={{ horizontal: "none", vertical: "none" }}>
-              <Heading tag="h2" strong={true}>
-                {visit.title || visit.client_name}
-              </Heading>
-            </Box>
-            <Box pad={{ horizontal: "none", vertical: "small" }}>
-              {schedule}
-              {directions}
-              {visit.client_phone}
-            </Box>
-            <Box pad={{ horizontal: "none", vertical: "small" }}>
-              {visit.client_name}
-              <br />
-              {property && property.address1}
-              <br />
-              {property && property.address2}
-              <br />
-              {property && property.zip_code} {property && property.city}
-            </Box>
-            <Box pad={{ horizontal: "none", vertical: "small" }}>
-              {visit.details}
-            </Box>
-            <Box pad={{ horizontal: "none", vertical: "small" }}>
-              <Menu
-                responsive={true}
-                inline={false}
-                primary={false}
-                label={intlActions}
-                icon={<ActionsIcon />}
-                Directions
-              >
-                <Anchor href="#" onClick={onEdit}>
-                  {intlEdit}
-                </Anchor>
-                <Anchor href="#" onClick={onUpdateFutureVisits}>
-                  {intlUpdateFuture}
-                </Anchor>
-                <Anchor href="#" onClick={onDelete}>
-                  {intlDelete}
-                </Anchor>
-                <Anchor href="#" onClick={this.toggleCompleted}>
-                  {visit.completed ? intlMarkIncomplete : intlMarkCompleted}
-                </Anchor>
-              </Menu>
-            </Box>
-            <Box
-              colorIndex="light-2"
-              pad={{ horizontal: "medium", vertical: "small" }}
+        <Heading tag="h4" strong={true}>
+          {intlTitle}
+        </Heading>
+        <Heading tag="h3" strong={true}>
+          {visit.title || visit.client_name}
+        </Heading>
+        <Section>
+          <Box margin={{bottom: "medium"}}>
+            {schedule}
+          </Box>
+          <Box margin={{bottom: "medium"}}>
+            {visit.client_name}
+            <br />
+            {property && property.address1}
+            <br />
+            {property && property.address2}
+            <br />
+            {property && property.zip_code} {property && property.city}
+            {directions}
+            {phone}
+            {visit.details}
+          </Box>
+          {toggleCompletedButton}
+          <Box margin={{bottom: "medium"}}>
+            <Menu
+              responsive={true}
+              inline={false}
+              primary={false}
+              label={intlActions}
+              icon={<ActionsIcon />}
+              Directions
             >
-              <Heading tag="h4" strong={true}>
-                <Box direction="row">
-                  <Anchor path={`/${visit.business}/jobs/${visit.job}`}>
-                    {intlJob(visit.job)}
-                  </Anchor>
-                </Box>
-              </Heading>
-              {job && job.description}
-            </Box>
-            <Box
-              colorIndex="light-2"
-              pad={{ horizontal: "medium", vertical: "small" }}
-            >
-              <Heading tag="h4" strong={true}>
-                <Box direction="row">{intlTeam}</Box>
-              </Heading>
-              {assigned.length ? (
-                assigned
-                  .map(employee =>
-                    [employee.first_name, employee.last_name].join(" ")
-                  )
-                  .join(", ")
-              ) : (
-                <div>{intlUnassigned}</div>
-              )}
-            </Box>
-          </Columns>
-          <Box pad={{ horizontal: "none", vertical: "small" }}>
+              <Anchor href="#" onClick={onEdit}>
+                {intlEdit}
+              </Anchor>
+              <Anchor href="#" onClick={onUpdateFutureVisits}>
+                {intlUpdateFuture}
+              </Anchor>
+              <Anchor href="#" onClick={onDelete}>
+                {intlDelete}
+              </Anchor>
+              <Anchor href="#" onClick={this.toggleCompleted}>
+                {visit.completed ? intlMarkIncomplete : intlMarkCompleted}
+              </Anchor>
+            </Menu>
+          </Box>
+          <Box
+            colorIndex="light-2"
+            pad={{ horizontal: "medium", vertical: "small" }}
+          >
+            <Heading tag="h4" strong={true}>
+              <Box direction="row">
+                <Anchor path={`/${visit.business}/jobs/${visit.job}`}>
+                  {intlJob(visit.job)}
+                </Anchor>
+              </Box>
+            </Heading>
+            {job && job.description}
+          </Box>
+          <Box
+            colorIndex="light-2"
+            pad={{ horizontal: "medium", vertical: "small" }}
+            margin={{bottom: "medium"}}
+          >
+            <Heading tag="h4" strong={true}>
+              <Box direction="row">{intlTeam}</Box>
+            </Heading>
+            {assigned.length ? (
+              assigned
+                .map(employee =>
+                  [employee.first_name, employee.last_name].join(" ")
+                )
+                .join(", ")
+            ) : (
+              <div>{intlUnassigned}</div>
+            )}
+          </Box>
+          <Box>
             <Heading tag="h4" strong={true}>
               <Box direction="row">{intlLineItems}</Box>
             </Heading>
