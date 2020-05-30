@@ -9,7 +9,7 @@ const intlCompleted = ( // eslint-disable-line no-unused-vars
     description="Visit status tag completed"
     defaultMessage="Completed"
   />
-)
+);
 
 const intlUpcoming = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -17,7 +17,7 @@ const intlUpcoming = ( // eslint-disable-line no-unused-vars
     description="Visit status tag upcoming"
     defaultMessage="Upcoming"
   />
-)
+);
 
 const intlOverdue = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -25,22 +25,53 @@ const intlOverdue = ( // eslint-disable-line no-unused-vars
     description="Visit status tag overdue"
     defaultMessage="Overdue"
   />
-)
+);
 
 type Props = {
-    status: VisitStatus
-}
+  status: VisitStatus,
+};
 
 class VisitStatusTag extends Component<Props & { intl: intlShape }> {
-    render () {
-        const { status, intl } = this.props;
-        switch(status) {
-            case 'completed': return <Tag text={intl.formatMessage({id: "visitStatusTag.completed"})} color="accent-1" />;
-            case 'upcoming': return <Tag text={intl.formatMessage({id: "visitStatusTag.upcoming"})} color="accent-2" />;
-            case 'overdue': return <Tag text={intl.formatMessage({id: "visitStatusTag.overdue"})} color="accent-3" />;
-            default: return null
-          }
+  render() {
+    const { status, intl } = this.props;
+    switch (status) {
+      case "completed":
+        return (
+          <Tag
+            text={intl.formatMessage({ id: "visitStatusTag.completed" })}
+            color="neutral-2"
+          />
+        );
+      case "upcoming":
+        return (
+          <Tag
+            text={intl.formatMessage({ id: "visitStatusTag.upcoming" })}
+            color="ok"
+          />
+        );
+      case "overdue":
+        return (
+          <Tag
+            text={intl.formatMessage({ id: "visitStatusTag.overdue" })}
+            color="critical"
+          />
+        );
+      default:
+        return null;
     }
+  }
 }
+
+export const VisitCompletedTag = () => {
+  return <VisitStatusTag status="completed" />;
+};
+
+export const VisitUpcomingTag = () => {
+  return <VisitStatusTag status="upcoming" />;
+};
+
+export const VisitOverdueTag = () => {
+  return <VisitStatusTag status="overdue" />;
+};
 
 export default injectIntl(VisitStatusTag);

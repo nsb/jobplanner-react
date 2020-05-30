@@ -6,6 +6,7 @@ import ListItem from "grommet/components/ListItem";
 import CheckBox from 'grommet/components/CheckBox';
 import Timestamp from "grommet/components/Timestamp";
 import Value from 'grommet/components/Value';
+import VisitStatusTag from "./VisitStatusTag";
 import type { Visit } from "../actions/visits";
 import type { VisitSelection } from "../utils/invoices";
 
@@ -26,10 +27,15 @@ class InvoiceBatchVisit extends Component<Props> {
       >
         <Box full="horizontal" direction="row">
           <Box direction="row" flex="grow">
-            <CheckBox
-              checked={selected.get(visit.id)}
-              onChange={this.onChanged} />
-            <Timestamp fields={["date", "year"]} value={visit.begins} />
+            <Box direction="row" margin={{right: "small"}}>
+              <CheckBox
+                checked={selected.get(visit.id)}
+                onChange={this.onChanged} />
+              <Timestamp fields={["date", "year"]} value={visit.begins} />
+            </Box>
+            <Box>
+              <VisitStatusTag status={visit.status} />
+            </Box>
           </Box>
           <Box
             direction="row"

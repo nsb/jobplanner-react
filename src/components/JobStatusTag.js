@@ -60,11 +60,11 @@ class JobStatusTag extends Component<Props & { intl: intlShape }> {
     render () {
         const { status, intl } = this.props;
         switch(status) {
-            case 'requires_invoicing': return <Tag text={intl.formatMessage({id: "jobStatusTag.requiresInvoicing"})} color="accent-1" />;
-            case 'action_required': return <Tag text={intl.formatMessage({id: "jobStatusTag.actionRequired"})} color="accent-2" />;
-            case 'has_late_visit': return <Tag text={intl.formatMessage({id: "jobStatusTag.hasLateVisit"})} color="accent-3" />;
-            case 'today': return <Tag text={intl.formatMessage({id: "jobStatusTag.today"})} color="neutral-1" />;
-            case 'upcoming': return <Tag text={intl.formatMessage({id: "jobStatusTag.upcoming"})} color="neutral-2" />;
+            case 'requires_invoicing': return <Tag text={intl.formatMessage({id: "jobStatusTag.requiresInvoicing"})} color="accent-2" />;
+            case 'action_required': return <Tag text={intl.formatMessage({id: "jobStatusTag.actionRequired"})} color="warning" />;
+            case 'has_late_visit': return <Tag text={intl.formatMessage({id: "jobStatusTag.hasLateVisit"})} color="critical" />;
+            case 'today': return <Tag text={intl.formatMessage({id: "jobStatusTag.today"})} color="neutral-2" />;
+            case 'upcoming': return <Tag text={intl.formatMessage({id: "jobStatusTag.upcoming"})} color="ok" />;
             case 'archived': return <Tag text={intl.formatMessage({id: "jobStatusTag.archived"})} color="unknown" />;
             default: return null
           }
