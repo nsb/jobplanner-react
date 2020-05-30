@@ -16,7 +16,7 @@ const intlOverdue = ( // eslint-disable-line no-unused-vars
     description="Visit list item overdue tag"
     defaultMessage="Overdue"
   />
-)
+);
 
 const intlAssigned = (
   <FormattedMessage
@@ -24,7 +24,7 @@ const intlAssigned = (
     description="Visit list item none assigned"
     defaultMessage="Not assigned yet"
   />
-)
+);
 
 const intlCompleted = (
   <FormattedMessage
@@ -32,28 +32,30 @@ const intlCompleted = (
     description="Visit list completed"
     defaultMessage="Completed"
   />
-)
+);
 
 export type Props = {
   visit: Visit,
   assigned: Array<Employee>,
   job?: Job,
   index: number,
-  onClick: Visit => void
+  onClick: (Visit) => void,
 };
 
 class VisitListItem extends Component<Props & { intl: intlShape }> {
   render() {
     const { visit, assigned, index, onClick, job } = this.props;
 
-    let clientName = job ? undefined : (<span>{visit.client_name}</span>);
-    let details = visit.completed ? intlCompleted : (<span>{visit.details}</span>);
+    let clientName = job ? undefined : <span>{visit.client_name}</span>;
+    let details = visit.completed ? (
+      intlCompleted
+    ) : (
+      <span>{visit.details}</span>
+    );
 
     let is_overdue;
     if (visit.is_overdue) {
-      is_overdue = (
-        <VisitStatusTag status={visit.status} />
-      )
+      is_overdue = <VisitStatusTag status={visit.status} />;
     }
 
     return (
@@ -69,19 +71,23 @@ class VisitListItem extends Component<Props & { intl: intlShape }> {
       >
         {clientName}
         <span>
-          <Box>
-          <Timestamp
-            fields={visit.anytime ? "date" : ["date", "time"]}
-            value={visit.begins}
-          />
-          {is_overdue}
+          <Box direction="row" responsive={false}>
+            <Box margin={{ right: "small" }}>
+              <Timestamp
+                fields={visit.anytime ? "date" : ["date", "time"]}
+                value={visit.begins}
+              />
+            </Box>
+            {is_overdue}
           </Box>
         </span>
         {details}
         <span>
           {assigned.length
             ? assigned
-                .map((employee: Employee) => [employee.first_name, employee.last_name].join(' '))
+                .map((employee: Employee) =>
+                  [employee.first_name, employee.last_name].join(" ")
+                )
                 .join(", ")
             : intlAssigned}
         </span>
