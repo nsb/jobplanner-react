@@ -163,11 +163,11 @@ const DnDCalendar = ({
                   : "jobplanner__incomplete",
                 style: event.completed
                   ? {
-                      "background-color": "#bbb",
+                      "background-color": "#a8a8a8",
                       "text-decoration": "line-through"
                     }
                   : {
-                      "background-color": "#0A64A0"
+                      "background-color": "#dc2878"
                     }
               };
             } else {
