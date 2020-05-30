@@ -18,9 +18,11 @@ import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
 import CloseIcon from "grommet/components/icons/base/Close";
 import TrashIcon from "grommet/components/icons/base/Trash";
 import UpdateIcon from "grommet/components/icons/base/Update";
+import BusyIcon from "grommet/components/icons/Spinning";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
 import { AuthContext } from "../providers/authProvider";
+import { intlFormSavingLabel } from "../i18n";
 import type { Visit } from "../actions/visits";
 import type { Job } from "../actions/jobs";
 import type { Property } from "../actions/properties";
@@ -148,6 +150,7 @@ export type Props = {
   partialUpdateVisitAndLoadJob: Function,
   onDelete: Function,
   onClose: Function,
+  isFetching: boolean,
 };
 
 class VisitDetail extends Component<Props & { intl: intlShape }> {
@@ -162,6 +165,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
       onEdit,
       onUpdateFutureVisits,
       onDelete,
+      isFetching,
     } = this.props;
 
     let schedule;
@@ -205,10 +209,19 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
 
     let toggleCompletedButton;
     if (!visit.completed) {
-      toggleCompletedButton = (
+      toggleCompletedButton = isFetching ? (
+        <Box
+          direction="row"
+          align="center"
+          pad={{ horizontal: "medium", between: "small" }}
+        >
+          <BusyIcon />
+          <span className="secondary">{intlFormSavingLabel}</span>
+        </Box>
+      ) : (
         <Box margin={{ bottom: "small" }}>
           <Button
-            primary={true}
+            primary={false}
             label={intlMarkCompleted}
             onClick={this.toggleCompleted}
           />

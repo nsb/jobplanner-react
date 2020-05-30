@@ -26,7 +26,7 @@ const mapStateToProps = (
   const { entities, visits } = state;
 
   return {
-    isFetching: visits.isFetching,
+    isFetching: ensureState(visits).isFetching,
     visit: ownProps.visit,
     job: ownProps.job,
     property: ensureState(entities).properties[ownProps.visit.property],
