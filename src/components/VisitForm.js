@@ -256,7 +256,7 @@ class VisitForm extends Component<Props & { intl: intlShape }> {
         </Header>
 
         <Box pad={{ horizontal: "none", vertical: "none" }}>
-          <Heading tag="h2" strong={true}>
+          <Heading tag="h3" strong={true}>
             {initialValues && initialValues.client_name}
           </Heading>
         </Box>
