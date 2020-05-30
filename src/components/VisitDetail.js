@@ -11,7 +11,6 @@ import Button from "grommet/components/Button";
 import Anchor from "grommet/components/Anchor";
 import Menu from "grommet/components/Menu";
 import ScheduleIcon from "grommet/components/icons/base/Schedule";
-import ActionsIcon from "grommet/components/icons/base/Actions";
 import DirectionsIcon from "grommet/components/icons/base/Directions";
 import ContactIcon from "grommet/components/icons/base/Contact";
 import EditIcon from "grommet/components/icons/base/Edit";
@@ -241,7 +240,6 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
               inline={false}
               primary={false}
               label={intlActions}
-              icon={<ActionsIcon />}
               Directions
             >
               <Anchor icon={<EditIcon />} onClick={onEdit}>
