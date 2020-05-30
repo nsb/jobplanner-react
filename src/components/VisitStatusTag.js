@@ -62,16 +62,4 @@ class VisitStatusTag extends Component<Props & { intl: intlShape }> {
   }
 }
 
-export const VisitCompletedTag = () => {
-  return <VisitStatusTag status="completed" />;
-};
-
-export const VisitUpcomingTag = () => {
-  return <VisitStatusTag status="upcoming" />;
-};
-
-export const VisitOverdueTag = () => {
-  return <VisitStatusTag status="overdue" />;
-};
-
 export default injectIntl(VisitStatusTag);
