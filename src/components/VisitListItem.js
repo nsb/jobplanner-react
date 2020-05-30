@@ -5,7 +5,7 @@ import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import ListItem from "grommet/components/ListItem";
 import Timestamp from "grommet/components/Timestamp";
-import Tag from "./Tag";
+import VisitStatusTag from "./VisitStatusTag";
 import type { Visit } from "../actions/visits";
 import type { Employee } from "../actions/employees";
 import type { Job } from "../actions/jobs";
@@ -44,7 +44,7 @@ export type Props = {
 
 class VisitListItem extends Component<Props & { intl: intlShape }> {
   render() {
-    const { visit, assigned, index, onClick, job, intl } = this.props;
+    const { visit, assigned, index, onClick, job } = this.props;
 
     let clientName = job ? undefined : (<span>{visit.client_name}</span>);
     let details = visit.completed ? intlCompleted : (<span>{visit.details}</span>);
@@ -52,7 +52,7 @@ class VisitListItem extends Component<Props & { intl: intlShape }> {
     let is_overdue;
     if (visit.is_overdue) {
       is_overdue = (
-        <Tag text={intl.formatMessage({id: "visitListItem.overdueTag"})} color="accent-2" />
+        <VisitStatusTag status={visit.status} />
       )
     }
 
