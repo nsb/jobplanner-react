@@ -167,7 +167,7 @@ const DnDCalendar = ({
                       "text-decoration": "line-through"
                     }
                   : {
-                      "background-color": "#dc2878"
+                      "background-color": "#0dcfec"
                     }
               };
             } else {
