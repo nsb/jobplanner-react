@@ -14,6 +14,10 @@ import ScheduleIcon from "grommet/components/icons/base/Schedule";
 import ActionsIcon from "grommet/components/icons/base/Actions";
 import DirectionsIcon from "grommet/components/icons/base/Directions";
 import ContactIcon from "grommet/components/icons/base/Contact";
+import EditIcon from "grommet/components/icons/base/Edit";
+import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
+import TrashIcon from "grommet/components/icons/base/Trash";
+import UpdateIcon from "grommet/components/icons/base/Update";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
 import { AuthContext } from "../providers/authProvider";
@@ -232,6 +236,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
           {toggleCompletedButton}
           <Box margin={{bottom: "medium"}}>
             <Menu
+              size="small"
               responsive={true}
               inline={false}
               primary={false}
@@ -239,16 +244,16 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
               icon={<ActionsIcon />}
               Directions
             >
-              <Anchor href="#" onClick={onEdit}>
+              <Anchor icon={<EditIcon />} onClick={onEdit}>
                 {intlEdit}
               </Anchor>
-              <Anchor href="#" onClick={onUpdateFutureVisits}>
+              <Anchor icon={<UpdateIcon />} onClick={onUpdateFutureVisits}>
                 {intlUpdateFuture}
               </Anchor>
-              <Anchor href="#" onClick={onDelete}>
+              <Anchor icon={<TrashIcon />} onClick={onDelete}>
                 {intlDelete}
               </Anchor>
-              <Anchor href="#" onClick={this.toggleCompleted}>
+              <Anchor icon={<CheckmarkIcon />} onClick={this.toggleCompleted}>
                 {visit.completed ? intlMarkIncomplete : intlMarkCompleted}
               </Anchor>
             </Menu>
