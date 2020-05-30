@@ -206,11 +206,13 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
     let toggleCompletedButton;
     if (!visit.completed) {
       toggleCompletedButton = (
-        <Button
-          primary={true}
-          label={intlMarkCompleted}
-          onClick={this.toggleCompleted}
-        />
+        <Box margin={{ bottom: "small" }}>
+          <Button
+            primary={true}
+            label={intlMarkCompleted}
+            onClick={this.toggleCompleted}
+          />
+        </Box>
       );
     }
 
@@ -236,9 +238,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
             {phone}
             {visit.details}
           </Box>
-          <Box margin={{ bottom: "small" }}>
-            {toggleCompletedButton}
-          </Box>
+          {toggleCompletedButton}
           <Box margin={{ bottom: "small" }}>
             <Menu
               size="small"
