@@ -38,8 +38,9 @@ export const DELETE_VISIT_FAILURE: "DELETE_VISIT_FAILURE" = "DELETE_VISIT_FAILUR
 
 export type VisitStatus =
   | 'completed'
-  | 'upcoming'
   | 'overdue'
+  | 'today'
+  | 'upcoming'
 
 export type Visit = {
   id: number,
@@ -58,7 +59,6 @@ export type Visit = {
   details: string,
   anytime: boolean,
   total_cost: number,
-  is_overdue: boolean,
   status: VisitStatus,
   recurrences: ?string
 };

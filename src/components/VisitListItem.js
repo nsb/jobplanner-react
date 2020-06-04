@@ -54,7 +54,7 @@ class VisitListItem extends Component<Props & { intl: intlShape }> {
     );
 
     let is_overdue;
-    if (visit.is_overdue) {
+    if (visit.status === "overdue") {
       is_overdue = <VisitStatusTag status={visit.status} />;
     }
 

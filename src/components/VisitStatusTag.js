@@ -11,6 +11,14 @@ const intlCompleted = ( // eslint-disable-line no-unused-vars
   />
 );
 
+const intlToday = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="visitStatusTag.today"
+    description="Visit status tag today"
+    defaultMessage="Today"
+  />
+);
+
 const intlUpcoming = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
     id="visitStatusTag.upcoming"
@@ -39,6 +47,13 @@ class VisitStatusTag extends Component<Props & { intl: intlShape }> {
         return (
           <Tag
             text={intl.formatMessage({ id: "visitStatusTag.completed" })}
+            color="accent-2"
+          />
+        );
+      case "today":
+        return (
+          <Tag
+            text={intl.formatMessage({ id: "visitStatusTag.today" })}
             color="neutral-2"
           />
         );
