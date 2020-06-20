@@ -808,7 +808,6 @@ class JobForm extends Component<
         </FormFields>
 
         <Footer pad={{ vertical: "medium" }}>
-          <span />
           {control}
         </Footer>
       </Form>

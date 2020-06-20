@@ -135,9 +135,9 @@ class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineI
     const { fields, meta: { error, submitFailed } } = this.props;
 
     return (
-      <Section>
+      <Box>
           {fields.map((lineItem, index) => (
-            <Box margin={{bottom: "medium"}}>
+            <Box margin={{bottom: "small"}}>
               <div key={index}>
                 {intlLineItem(index + 1)}
                 <Button icon={<CloseIcon />}
@@ -184,7 +184,7 @@ class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineI
           </button>
           {submitFailed && error && <span>{error}</span>}
         </Box>
-      </Section>
+      </Box>
     );
   }
 }
