@@ -218,9 +218,9 @@ const renderProperties = ({
   fields,
   meta: { error, submitFailed }
 }): Element<*> => (
-    <Section>
+    <Box>
       {fields.map((property, index) => (
-        <Box margin={{ bottom: "medium" }}>
+        <Box margin={{ bottom: "small" }}>
           <div key={index}>
             Property #{index + 1}
             {index ? <Button icon={<CloseIcon />}
@@ -269,7 +269,7 @@ const renderProperties = ({
         />          
         {submitFailed && error && <span>{error}</span>}
       </Box>
-    </Section>
+    </Box>
   );
 
 type Props = {
