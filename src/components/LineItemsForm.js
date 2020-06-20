@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import { Field } from "redux-form";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
-import Section from "grommet/components/Section";
 import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
 import NumberInput from "grommet/components/NumberInput";
