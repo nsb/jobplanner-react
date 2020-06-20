@@ -238,7 +238,7 @@ const renderProperties = ({
       {fields.map((property, index) => (
         <Box margin={{ bottom: "small" }}>
           <div key={index}>
-            {intlPropertyIndex(index + 1)}
+            {!!index && intlPropertyIndex(index + 1)}
             {index ? <Button icon={<CloseIcon />}
               onClick={() => fields.remove(index)}
               href='#'
