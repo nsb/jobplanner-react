@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
-import Section from "grommet/components/Section";
 import Anchor from "grommet/components/Anchor";
 import Button from "grommet/components/Button";
 import Header from "grommet/components/Header";
