@@ -355,8 +355,8 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Header size="large" justify="between" pad="none">
-          <Heading tag="h2" margin="none" strong={true}>
+        <Header size="medium" justify="between" pad="none">
+          <Heading tag="h3" margin="none" strong={true}>
             {initialValues && initialValues.id ? intlClientEditTitle : intlClientAddTitle}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
