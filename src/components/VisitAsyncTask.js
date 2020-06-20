@@ -1,8 +1,10 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Article from "grommet/components/Article";
 import Section from "grommet/components/Section";
+import Box from "grommet/components/Box";
 import Spinning from "grommet/components/icons/Spinning";
 import VisitListContainer from "../components/VisitListContainer";
 import { AuthContext } from "../providers/authProvider";
@@ -13,6 +15,14 @@ import type { Job } from "../actions/jobs";
 import type { AsyncTask, AsyncTaskState } from "../actions/asynctasks";
 import { ensureState } from "redux-optimistic-ui";
 import asyncTasksApi from "../api";
+
+const intlGeneratingVisits = (
+  <FormattedMessage
+    id="visitAsyncTask.generatingVisits"
+    description="Generating visits message"
+    defaultMessage="Generating visits..."
+  />
+);
 
 type Props = {
   business: Business,
@@ -26,7 +36,7 @@ type State = {
   taskState: ?AsyncTaskState
 };
 
-class VisitAsyncTask extends Component<Props, State> {
+class VisitAsyncTask extends Component<Props & { intl: intlShape }, State> {
   intervalId: IntervalID;
   state = {
     taskState: null
@@ -76,7 +86,9 @@ class VisitAsyncTask extends Component<Props, State> {
       return (
         <Article scrollStep={true} controls={true}>
           <Section full={false} pad="large" justify="center" align="center">
-            Generating visits...
+            <Box direction="row" align="center" pad={{between: "small"}}>
+              <Spinning size="small" /> {intlGeneratingVisits}
+            </Box>
           </Section>
         </Article>
       );
@@ -108,4 +120,4 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(VisitAsyncTask);
+export default connect(mapStateToProps)(injectIntl(VisitAsyncTask));
