@@ -164,6 +164,23 @@ const intlAddressUsePropertyLabel = (
   />
 )
 
+const intlPropertyIndex = (index: number) => (
+  <FormattedMessage
+    id="clientForm.PropertyIndex"
+    description="Client form property index"
+    defaultMessage="Property #{index}"
+    values={{ index }}
+  />
+);
+
+const intlAddProperty = (
+  <FormattedMessage
+    id="clientForm.addProperty"
+    description="Client form add property button"
+    defaultMessage="Add Property"
+  />
+)
+
 const validate = (values: Client) => {
   const errors = {};
   const propertiesArrayErrors = [];
@@ -221,7 +238,7 @@ const renderProperties = ({
       {fields.map((property, index) => (
         <Box margin={{ bottom: "small" }}>
           <div key={index}>
-            Property #{index + 1}
+            {intlPropertyIndex(index + 1)}
             {index ? <Button icon={<CloseIcon />}
               onClick={() => fields.remove(index)}
               href='#'
@@ -261,7 +278,7 @@ const renderProperties = ({
       ))}
       <Box>
         <Button
-          label="Add Property"
+          label={intlAddProperty}
           secondary={true}
           fill={false}
           onClick={() => fields.push({})}
