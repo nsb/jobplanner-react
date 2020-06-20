@@ -220,6 +220,13 @@ const renderField = ({
     </FormField>
   );
 
+const renderFieldHidden = ({
+  input,
+  type,
+}): Element<*> => (
+    <input {...input} type="hidden" />
+  );
+
 const renderCheckBox = ({
   input,
   label,
@@ -248,7 +255,7 @@ const renderProperties = ({
             <Field
               name={`${property}.id`}
               type="hidden"
-              component={renderField} />
+              component={renderFieldHidden} />
             <Field
               name={`${property}.address1`}
               type="text"

@@ -12,6 +12,7 @@ import CloseIcon from "grommet/components/icons/base/Close";
 import RenderTextField from "./LineItemTextInput";
 import type { Service } from "../actions/services";
 import type { Fields } from "redux-form/lib/FieldArrayProps.types";
+import type { Element } from "react";
 
 const intlAddButton = (
   <FormattedMessage
@@ -72,6 +73,13 @@ const renderField = ({
     <input {...input} type={type} />
   </FormField>
 );
+
+const renderFieldHidden = ({
+  input,
+  type,
+}): Element<*> => (
+    <input {...input} type="hidden" />
+  );
 
 const renderNumberField = ({
   input,
@@ -141,7 +149,7 @@ class LineItemsForm extends Component<LineItemProps & { intl: intlShape }, LineI
                 <Field
                   name={`${lineItem}.id`}
                   type="hidden"
-                  component={renderField}
+                  component={renderFieldHidden}
                 />
                 <Field
                   name={`${lineItem}.name`}
