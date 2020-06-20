@@ -1,10 +1,19 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
 import Select from "grommet/components/Select";
 import type { Property } from "../actions/properties";
+
+const intlSelectProperty = (
+  <FormattedMessage
+    id="propertySelect.label"
+    description="Property select label"
+    defaultMessage="Select a property for the job"
+  />
+);
 
 const useStateWithCallback = (initialState, callback) => {
   const [state, setState] = useState(initialState);
@@ -19,7 +28,7 @@ export type Props = {
   onSelect: (selection: { value: Property, label: string } | null) => void
 };
 
-const PropertySelect = ({ properties, onSelect }: Props) => {
+const PropertySelect = ({ properties, onSelect }: Props & { intl: intlShape }) => {
   const [selected, setSelected] = useStateWithCallback(null, onSelect);
 
   const mappedProperties = properties.map(property => {
@@ -45,7 +54,7 @@ const PropertySelect = ({ properties, onSelect }: Props) => {
       );
     default:
       return (
-        <FormField label={"Select a property for the job"} error={undefined}>
+        <FormField label={intlSelectProperty} error={undefined}>
           <Select
             placeHolder="None"
             inline={true}
@@ -59,4 +68,4 @@ const PropertySelect = ({ properties, onSelect }: Props) => {
   }
 };
 
-export default PropertySelect;
+export default injectIntl(PropertySelect);
