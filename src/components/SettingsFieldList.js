@@ -41,8 +41,8 @@ class FieldList extends Component<Props, State> {
     const { fields } = this.props;
     return (
       <Box>
-        <Header size="large" justify="between" pad="none">
-          <Heading tag="h2" margin="none" strong={true}>
+        <Header>
+          <Heading tag="h3" strong={true}>
             Fields
           </Heading>
         </Header>

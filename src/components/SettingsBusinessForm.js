@@ -73,8 +73,8 @@ export const BusinessForm = ({
   return (
     <Form onSubmit={handleSubmit}>
 
-      <Header size="large" justify="between" pad="none">
-        <Heading tag="h2" margin="none" strong={true}>
+      <Header>
+        <Heading tag="h3" strong={true}>
           {intlTitle}
         </Heading>
       </Header>
