@@ -24,7 +24,7 @@ const intlTitle = (
     description="Visits report filter title"
     defaultMessage="Filter"
   />
-)
+);
 
 const intlFrom = (
   <FormattedMessage
@@ -32,7 +32,7 @@ const intlFrom = (
     description="Visits report filter from label"
     defaultMessage="From"
   />
-)
+);
 
 const intlTo = (
   <FormattedMessage
@@ -40,7 +40,7 @@ const intlTo = (
     description="Visits report filter to label"
     defaultMessage="To"
   />
-)
+);
 
 const intlStatus = (
   <FormattedMessage
@@ -48,7 +48,7 @@ const intlStatus = (
     description="Visits report filter status label"
     defaultMessage="Status"
   />
-)
+);
 
 const intlCompleted = (
   <FormattedMessage
@@ -56,7 +56,7 @@ const intlCompleted = (
     description="Visits report filter status completed"
     defaultMessage="Completed"
   />
-)
+);
 
 const intlIncomplete = (
   <FormattedMessage
@@ -64,7 +64,7 @@ const intlIncomplete = (
     description="Visits report filter status incomplete"
     defaultMessage="Incomplete"
   />
-)
+);
 
 const intlAssigned = (
   <FormattedMessage
@@ -72,7 +72,7 @@ const intlAssigned = (
     description="Visits report filter assigned label"
     defaultMessage="Assigned to"
   />
-)
+);
 
 const intlAll = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -80,7 +80,7 @@ const intlAll = ( // eslint-disable-line no-unused-vars
     description="Visits report filter assigned all"
     defaultMessage="All"
   />
-)
+);
 
 const intlApply = (
   <FormattedMessage
@@ -88,21 +88,21 @@ const intlApply = (
     description="Visits report filter apply label"
     defaultMessage="Apply"
   />
-)
+);
 
 export type FilterValues = {
   begins: Date,
   ends: Date,
   complete: boolean,
   incomplete: boolean,
-  assigned: ?{ value: number, label: string }
+  assigned: ?{ value: number, label: string },
 };
 
 type Props = {
   onClose: Function,
   onSubmit: Function,
   employees: Array<Employee>,
-  filterValues: FilterValues
+  filterValues: FilterValues,
 };
 
 type State = FilterValues;
@@ -110,14 +110,12 @@ type State = FilterValues;
 class VisitsReportFilter extends Component<Props & { intl: intlShape }, State> {
   dateFormat: string;
   static defaultProps = {
-    employees: []
+    employees: [],
   };
 
   constructor(props: Props & { intl: intlShape }) {
     super(props);
-    this.dateFormat = moment()
-      .creationData()
-      .locale.longDateFormat("L");
+    this.dateFormat = moment().creationData().locale.longDateFormat("L");
     this.state = this.props.filterValues;
   }
 
@@ -125,12 +123,7 @@ class VisitsReportFilter extends Component<Props & { intl: intlShape }, State> {
     const { employees, intl } = this.props;
 
     return (
-      <Layer
-        align="right"
-        flush={true}
-        closer={false}
-        a11yTitle={intlTitle}
-      >
+      <Layer align="right" flush={true} closer={false} a11yTitle={intlTitle}>
         <Sidebar size="medium">
           <div>
             <Header
@@ -185,9 +178,16 @@ class VisitsReportFilter extends Component<Props & { intl: intlShape }, State> {
                 <FormField label={intlAssigned}>
                   <Select
                     name="assigned"
-                    placeHolder={intl.formatMessage({id: "visitsReportFilter.assignedPlaceholder"})}
-                    options={employees.map(employee => {
-                      return { value: employee.id, label: [employee.first_name, employee.last_name].join(' ')};
+                    placeHolder={intl.formatMessage({
+                      id: "visitsReportFilter.assignedPlaceholder",
+                    })}
+                    options={employees.map((employee) => {
+                      return {
+                        value: employee.id,
+                        label: [employee.first_name, employee.last_name].join(
+                          " "
+                        ),
+                      };
                     })}
                     inline={false}
                     multiple={false}
@@ -207,11 +207,10 @@ class VisitsReportFilter extends Component<Props & { intl: intlShape }, State> {
   }
 
   onEmployeesChange = ({
-    value
+    value,
   }: {
-    value: { value: number, label: string }
+    value: { value: number, label: string },
   }) => {
-    console.log(value);
     this.setState({ assigned: value });
   };
 

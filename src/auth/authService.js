@@ -1,6 +1,6 @@
 import { IDENTITY_CONFIG, METADATA_OIDC } from "./authConst";
 import { UserManager, WebStorageStateStore } from "oidc-client";
-import posthog from 'posthog-js';
+import posthog from "posthog-js";
 
 export default class AuthService {
   UserManager;
@@ -10,25 +10,25 @@ export default class AuthService {
       ...IDENTITY_CONFIG,
       userStore: new WebStorageStateStore({ store: window.sessionStorage }),
       metadata: {
-        ...METADATA_OIDC
-      }
+        ...METADATA_OIDC,
+      },
     });
-    this.UserManager.events.addUserLoaded(user => {
+    this.UserManager.events.addUserLoaded((user) => {
       if (window.location.href.indexOf("signin-oidc") !== -1) {
         this.navigateToScreen();
       }
     });
-    this.UserManager.events.addSilentRenewError(e => {
-      console.log("silent renew error", e.message);
+    this.UserManager.events.addSilentRenewError((e) => {
+      // console.log("silent renew error", e.message);
     });
 
     this.UserManager.events.addAccessTokenExpired(() => {
-      console.log("token expired");
+      // console.log("token expired");
       this.signinSilent();
     });
     this.UserManager.events.addUserSignedOut(() => {
       posthog.reset();
-    })
+    });
   }
 
   signinRedirectCallback = () => {
@@ -45,7 +45,7 @@ export default class AuthService {
     return user;
   };
 
-  parseJwt = token => {
+  parseJwt = (token) => {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace("-", "+").replace("_", "/");
     return JSON.parse(window.atob(base64));
@@ -72,11 +72,11 @@ export default class AuthService {
 
   signinSilent = () => {
     this.UserManager.signinSilent()
-      .then(user => {
-        console.log("signed in", user);
+      .then((user) => {
+        // console.log("signed in", user);
       })
-      .catch(err => {
-        console.log(err);
+      .catch((err) => {
+        // console.log(err);
       });
   };
   signinSilentCallback = () => {
@@ -89,7 +89,7 @@ export default class AuthService {
 
   logout = () => {
     this.UserManager.signoutRedirect({
-      id_token_hint: localStorage.getItem("id_token")
+      id_token_hint: localStorage.getItem("id_token"),
     });
     this.UserManager.clearStaleState();
   };

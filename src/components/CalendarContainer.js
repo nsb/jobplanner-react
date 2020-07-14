@@ -35,13 +35,13 @@ type Props = {
         begins: string,
         ends: string,
         anytime: boolean,
-        title: string | Element<*>
+        title: string | Element<*>,
       }
   >,
   getJobById: Function,
   dispatch: Dispatch,
   responsive: Responsive,
-  jobsIsFetching: boolean
+  jobsIsFetching: boolean,
 };
 
 type CalendarView = "day" | "week" | "month" | "agenda";
@@ -51,7 +51,7 @@ type State = {
   view: CalendarView,
   date: Date,
   selected: ?Visit,
-  showJobClose: number
+  showJobClose: number,
 };
 
 class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
@@ -61,22 +61,19 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   constructor({ responsive }: Props) {
     super();
     this.state = {
-      views: responsive === "single" ? ["day"] : ["month", "week", "day", "agenda"],
+      views:
+        responsive === "single" ? ["day"] : ["month", "week", "day", "agenda"],
       view: responsive === "single" ? "day" : "week",
       date: new Date(),
       selected: undefined,
-      showJobClose: 0
+      showJobClose: 0,
     };
   }
 
   componentDidMount() {
     this.loadVisits(
-      moment(this.state.date)
-        .startOf(this.state.view)
-        .toDate(),
-      moment(this.state.date)
-        .add(1, "years")
-        .toDate()
+      moment(this.state.date).startOf(this.state.view).toDate(),
+      moment(this.state.date).add(1, "years").toDate()
     );
   }
 
@@ -131,9 +128,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
         onView={(view: CalendarView) => {
           this.setState({ view }, this.loadVisits);
         }}
-        onSelectSlot={(e: Event) => {
-          console.log(e, "onSelectSlot");
-        }}
+        onSelectSlot={(e: Event) => {}}
         onSelectEvent={this.onClick}
         onEventDrop={this.onEventDrop}
         responsive={responsive}
@@ -153,12 +148,12 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
     event,
     start,
     end,
-    isAllDay = false
+    isAllDay = false,
   }: {
     event: Visit,
     start: Date,
     end: Date,
-    isAllDay: boolean
+    isAllDay: boolean,
   }) => {
     const { dispatch, intl } = this.props;
 
@@ -203,16 +198,11 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
             ordering: "begins",
             begins__gte:
               begins ||
-              moment(this.state.date)
-                .startOf(this.state.view)
-                .toDate(),
+              moment(this.state.date).startOf(this.state.view).toDate(),
             ends__lte:
-              ends ||
-              moment(this.state.date)
-                .endOf(this.state.view)
-                .toDate(),
+              ends || moment(this.state.date).endOf(this.state.view).toDate(),
             limit: 200,
-            offset: 0
+            offset: 0,
           })
         );
       })
@@ -228,7 +218,7 @@ const mapStateToProps = (
     match: { params: { businessId: number } },
     history: { push: Function },
     dispatch: Dispatch,
-    responsive: Responsive
+    responsive: Responsive,
   }
 ): Props => {
   const { entities, nav, jobs } = state;
@@ -237,17 +227,25 @@ const mapStateToProps = (
   const visits = Object.entries(getVisitsGroupedByDay(state))
     .map(([date: string, visits: Array<Visit>]) => {
       // $FlowFixMe
-      return [{begins: date, ends: date, anytime: true, title: intlVisitCount(visits.length)}, ...visits];
+      return [
+        {
+          begins: date,
+          ends: date,
+          anytime: true,
+          title: intlVisitCount(visits.length),
+        },
+        ...visits,
+      ];
     })
-    .flatMap(arr => arr);
+    .flatMap((arr) => arr);
 
   return {
     business: ensureState(entities).businesses[businessId],
     visits: visits,
     dispatch: ownProps.dispatch,
     responsive: nav.responsive,
-    getJobById: id => ensureState(entities).jobs[id],
-    jobsIsFetching: jobs.isFetching
+    getJobById: (id) => ensureState(entities).jobs[id],
+    jobsIsFetching: jobs.isFetching,
   };
 };
 

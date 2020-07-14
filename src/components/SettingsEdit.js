@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {injectIntl, FormattedMessage} from 'react-intl';
+import { injectIntl, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import Header from "grommet/components/Header";
@@ -28,7 +28,7 @@ const intlTitle = (
     description="Settings title"
     defaultMessage="Settings"
   />
-)
+);
 
 const LAYERS: {} = {
   businessEdit: BusinessEdit,
@@ -36,7 +36,7 @@ const LAYERS: {} = {
   employeesEdit: EmployeesEdit,
   fieldsEdit: FieldsEdit,
   emailsEdit: EmailsEdit,
-  calendarSyncEdit: CalendarSyncEdit
+  calendarSyncEdit: CalendarSyncEdit,
 };
 
 type Props = {|
@@ -44,12 +44,12 @@ type Props = {|
 |};
 
 type State = {
-  layer: string | null
+  layer: string | null,
 };
 
 class SettingsEdit extends Component<Props, State> {
   state = {
-    layer: null
+    layer: null,
   };
 
   render() {
@@ -106,9 +106,7 @@ class SettingsEdit extends Component<Props, State> {
     this.setState({ layer: nextLayer });
   };
 
-  handleSubmit = e => {
-    console.log(e);
-  };
+  handleSubmit = (e) => {};
 }
 
 const mapStateToProps = (
@@ -121,7 +119,7 @@ const mapStateToProps = (
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
-    business: ensureState(entities).businesses[businessId]
+    business: ensureState(entities).businesses[businessId],
   };
 };
 

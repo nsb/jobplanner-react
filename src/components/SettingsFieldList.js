@@ -21,11 +21,11 @@ import { AuthContext } from "../providers/authProvider";
 type Props = {
   business: Business,
   fields: Array<Field>,
-  dispatch: Dispatch
+  dispatch: Dispatch,
 };
 
 type State = {
-  activePanel?: number
+  activePanel?: number,
 };
 
 class FieldList extends Component<Props, State> {
@@ -80,7 +80,7 @@ class FieldList extends Component<Props, State> {
   onSubmit = (field: Field) => {
     const { business, dispatch } = this.props;
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {  
+    getUser().then(({ access_token }) => {
       if (field.id) {
         dispatch(updateField(field, access_token));
       } else {
@@ -97,7 +97,7 @@ const mapStateToProps = (
   { fields, entities }: ReduxState,
   ownProps: {
     business: Business,
-    dispatch: Dispatch
+    dispatch: Dispatch,
   }
 ): Props => ({
   business: ownProps.business,
@@ -105,11 +105,10 @@ const mapStateToProps = (
     .map((Id: number) => {
       return ensureState(entities).fields[Id];
     })
-    .filter(field => {
-      console.log(ownProps, field)
+    .filter((field) => {
       return field.business === ownProps.business.id ? field : false;
     }),
-  dispatch: ownProps.dispatch
+  dispatch: ownProps.dispatch,
 });
 
 export default connect(mapStateToProps)(FieldList);

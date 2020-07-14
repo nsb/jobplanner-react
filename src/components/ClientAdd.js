@@ -19,7 +19,7 @@ type Props = {
   isFetching: boolean,
   createClient: Function,
   onClose: Function,
-  history: { push: Function }
+  history: { push: Function },
 };
 
 class ClientAdd extends Component<Props & { intl: intlShape }> {
@@ -36,7 +36,7 @@ class ClientAdd extends Component<Props & { intl: intlShape }> {
           initialValues={{
             upcoming_visit_reminder_email_enabled: true,
             address_use_property: true,
-            properties: [{}]
+            properties: [{}],
           }}
         />
       </Article>
@@ -52,13 +52,12 @@ class ClientAdd extends Component<Props & { intl: intlShape }> {
           business,
           {
             ...values,
-            business: business.id
+            business: business.id,
           },
           access_token
         );
       })
       .then((responseClient: Client) => {
-        console.log(responseClient);
         addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
         history.push(`/${business.id}/clients/${responseClient.id}`);
       })
@@ -72,7 +71,7 @@ type OwnProps = {
   business: Business,
   createClient: Function,
   onClose: Function,
-  history: { push: Function }
+  history: { push: Function },
 };
 
 const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
@@ -83,19 +82,18 @@ const mapStateToProps = (state: ReduxState, ownProps: OwnProps): Props => {
     isFetching: clients.isFetching,
     createClient: ownProps.createClient,
     onClose: ownProps.onClose,
-    history: ownProps.history
+    history: ownProps.history,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      createClient
+      createClient,
     },
     dispatch
   );
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectIntl(ClientAdd)));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(injectIntl(ClientAdd))
+);
