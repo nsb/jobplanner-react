@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
-// import { addSuccess, addError } from "redux-flash-messages";
+import { addSuccess, addError } from "redux-flash-messages";
 import Article from "grommet/components/Article";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
@@ -23,14 +23,14 @@ import { AuthContext } from "../providers/authProvider";
 import { createInvoiceAndLoadJobs } from "../actions/index";
 import {
   intlFormSavingLabel,
-  intlInvoiceAccountingSystemNotification
+  intlInvoiceAccountingSystemNotification,
 } from "../i18n";
 import { ensureState } from "redux-optimistic-ui";
 import {
   jobStates,
   getInvoiceForJobSelection,
   intlCreateButton,
-  intlEmptyMessage
+  intlEmptyMessage,
 } from "../utils/invoices";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
@@ -49,7 +49,7 @@ const intlHeaderText = (client: Client) => (
     values={{
       name: client.is_business
         ? client.business_name
-        : `${client.first_name} ${client.last_name}`
+        : `${client.first_name} ${client.last_name}`,
     }}
   />
 );
@@ -69,11 +69,11 @@ type Props = {
   visitSelection: Map<number, Visit>,
   isFetching: boolean,
   createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction,
-  responsive: Responsive
+  responsive: Responsive,
 };
 
 type State = {
-  selected: JobSelection
+  selected: JobSelection,
 };
 
 class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
@@ -135,9 +135,7 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
               size="small"
             />
           </Box>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
         <Box pad="medium" full={"horizontal"}>
           <Heading tag="h3">{intlHeadingText}</Heading>
           <List onMore={undefined}>
@@ -165,25 +163,32 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
 
   onChange = (selection: JobSelection) => {
     this.setState({
-      selected: new Map([...this.state.selected, ...selection])
+      selected: new Map([...this.state.selected, ...selection]),
     });
   };
 
   onSubmit = (e: SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const { client, createInvoiceAndLoadJobs } = this.props;
+    const { client, createInvoiceAndLoadJobs, intl } = this.props;
     const { selected } = this.state;
 
     const invoice = getInvoiceForJobSelection(client.id, selected);
 
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {
-      return createInvoiceAndLoadJobs(invoice, access_token, {
-        business: client.business,
-        limit: 200
+    getUser()
+      .then(({ access_token }) => {
+        return createInvoiceAndLoadJobs(invoice, access_token, {
+          business: client.business,
+          limit: 200,
+        });
+      })
+      .then(() => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
       });
-    });
   };
 }
 
@@ -192,18 +197,18 @@ const mapStateToProps = (
   {
     onClose,
     client,
-    createInvoiceAndLoadJobs
+    createInvoiceAndLoadJobs,
   }: {
     onClose: Function,
     client: Client,
-    createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction
+    createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction,
   }
 ): Props => {
   const jobsForClient: Array<Job> = jobs.result
     .map((Id: number): Array<Job> => {
       return ensureState(entities).jobs[Id];
     })
-    .filter(job => job.client === client.id && job.visits.length);
+    .filter((job) => job.client === client.id && job.visits.length);
 
   const jobSelection: Map<number, Job> = jobsForClient.reduce(
     (acc: Map<number, Job>, job: Job) => {
@@ -231,14 +236,14 @@ const mapStateToProps = (
     visitSelection,
     createInvoiceAndLoadJobs,
     onClose,
-    client
+    client,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      createInvoiceAndLoadJobs
+      createInvoiceAndLoadJobs,
     },
     dispatch
   );

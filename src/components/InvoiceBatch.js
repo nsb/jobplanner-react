@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from "react";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
+import { addSuccess, addError } from "redux-flash-messages";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
@@ -16,13 +17,13 @@ import NavControl from "./NavControl";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import {
   intlFormSavingLabel,
-  intlInvoiceAccountingSystemNotification
+  intlInvoiceAccountingSystemNotification,
 } from "../i18n";
 import { AuthContext } from "../providers/authProvider";
 import {
   batchState,
   getInvoiceForJobSelection,
-  intlCreateButton
+  intlCreateButton,
 } from "../utils/invoices";
 import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
@@ -82,17 +83,17 @@ export type Props = {
     string,
     Object
   ) => ThunkAction,
-  isFetching: boolean
+  isFetching: boolean,
 };
 
 type State = {
-  selected: ClientSelection
+  selected: ClientSelection,
 };
 
-class InvoiceBatch extends Component<Props, State> {
+class InvoiceBatch extends Component<Props & { intl: intlShape }, State> {
   static contextType = AuthContext;
 
-  constructor(props: Props) {
+  constructor(props: Props & { intl: intlShape }) {
     super(props);
 
     const { clients, jobs, visits } = this.props;
@@ -145,9 +146,7 @@ class InvoiceBatch extends Component<Props, State> {
               size="small"
             />
           </Box>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
         <Header size="large" pad={{ horizontal: "medium" }}>
           <NavControl title={intlTitle} />
           <Box direction="column">
@@ -190,7 +189,7 @@ class InvoiceBatch extends Component<Props, State> {
 
   onChange = (selection: ClientSelection) => {
     this.setState({
-      selected: new Map([...this.state.selected, ...selection])
+      selected: new Map([...this.state.selected, ...selection]),
     });
   };
 
@@ -234,15 +233,22 @@ class InvoiceBatch extends Component<Props, State> {
       }
     }
 
-    const { createInvoiceAndLoadJobs, business } = this.props;
+    const { createInvoiceAndLoadJobs, business, intl } = this.props;
 
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {
-      return createInvoiceAndLoadJobs(invoices, access_token, {
-        business: business.id,
-        limit: 200
+    getUser()
+      .then(({ access_token }) => {
+        return createInvoiceAndLoadJobs(invoices, access_token, {
+          business: business.id,
+          limit: 200,
+        });
+      })
+      .then(() => {
+        addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
       });
-    });
   };
 }
 

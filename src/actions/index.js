@@ -13,10 +13,7 @@ export const verifyAuthAndFetchBusinesses = (
   token: string
 ): ((d: Dispatch, s: {}) => Promise<*>) => {
   return (dispatch, getState) => {
-    return Promise.all([
-      dispatch(me(token)),
-      dispatch(fetchBusinesses(token))
-    ]);
+    return Promise.all([dispatch(me(token)), dispatch(fetchBusinesses(token))]);
   };
 };
 
@@ -38,7 +35,7 @@ export const updateVisitAndLoadJob = (
     begins: Date,
     ends: Date,
     anytime: boolean,
-    job: number
+    job: number,
   },
   token: string,
   optimistic: boolean = false,
@@ -68,9 +65,9 @@ export const createInvoiceAndLoadJobs = (
   queryParams: Object = {}
 ): ThunkAction => {
   return (dispatch: Dispatch, getState: GetState) => {
-    return dispatch(createInvoice(invoice, token)).then(invoices => {
+    return dispatch(createInvoice(invoice, token)).then((invoices) => {
       const jobIds = invoices.length
-        ? [...new Set(invoices.flatMap(invoice => invoice.jobs))]
+        ? [...new Set(invoices.flatMap((invoice) => invoice.jobs))]
         : invoices.jobs;
       return dispatch(
         fetchJobs(token, { ...queryParams, id__in: jobIds.join() })

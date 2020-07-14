@@ -1,10 +1,8 @@
 // @flow
 import { normalize } from "normalizr";
-import { addSuccess, addError } from "redux-flash-messages";
 import { invoiceListSchema, invoiceSchema } from "../schemas";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import invoicesApi from "../api";
-import history from "../history";
 
 //Create new invoice
 export const CREATE_INVOICE: "CREATE_INVOICE" = "CREATE_INVOICE";
@@ -51,7 +49,7 @@ export type Invoice = {
   client: number,
   total_ex_vat: number,
   total_inc_vat: number,
-  paid: boolean
+  paid: boolean,
 };
 
 export type InvoiceRequest =
@@ -64,88 +62,97 @@ export type InvoicesResponse = {
   results: Array<Invoice>,
   count: number,
   next: ?string,
-  previous: ?string
+  previous: ?string,
 };
 
 type FetchInvoicesAction = {
-  type: typeof FETCH_INVOICES
+  type: typeof FETCH_INVOICES,
 };
 
 type FetchInvoicesSuccessAction = {
   type: typeof FETCH_INVOICES_SUCCESS,
   payload: { entities: { invoices: InvoicesMap }, result: Array<number> },
-  meta: { count: number, next: ?string, previous: ?string }
+  meta: { count: number, next: ?string, previous: ?string },
 };
 
 type FetchInvoicesFailureAction = {
   type: typeof FETCH_INVOICES_FAILURE,
-  error: string
+  error: string,
 };
 
 type FetchInvoiceAction = {
-  type: typeof FETCH_INVOICE
+  type: typeof FETCH_INVOICE,
 };
 
 type FetchInvoiceSuccessAction = {
   type: typeof FETCH_INVOICE_SUCCESS,
-  payload: { entities: { invoices: InvoicesMap }, result: number }
+  payload: { entities: { invoices: InvoicesMap }, result: number },
 };
 
 type FetchInvoiceFailureAction = {
   type: typeof FETCH_INVOICE_FAILURE,
-  error: string
+  error: string,
 };
 
 type CreateInvoiceAction = {
   type: typeof CREATE_INVOICE,
-  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>
+  payload:
+    | InvoiceRequest
+    | Array<Invoice>
+    | Array<{ client: number, visits: Array<number> }>,
 };
 
 type CreateInvoiceSuccessAction = {
   type: typeof CREATE_INVOICE_SUCCESS,
-  payload: { entities: { invoices: InvoicesMap }, result: number }
+  payload: { entities: { invoices: InvoicesMap }, result: number },
 };
 
 type CreateInvoiceFailureAction = {
   type: typeof CREATE_INVOICE_FAILURE,
-  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>,
-  error: string
+  payload:
+    | InvoiceRequest
+    | Array<Invoice>
+    | Array<{ client: number, visits: Array<number> }>,
+  error: string,
 };
 
 type UpdateInvoiceAction = {
   type: typeof UPDATE_INVOICE,
-  payload: InvoiceRequest | Array<{client: number, visits: Array<number>}> | { id: number }
+  payload:
+    | InvoiceRequest
+    | Array<{ client: number, visits: Array<number> }>
+    | { id: number },
 };
 
 type UpdateInvoiceSuccessAction = {
   type: typeof UPDATE_INVOICE_SUCCESS,
-  payload: Invoice
+  payload: Invoice,
 };
 
 type UpdateInvoiceFailureAction = {
   type: typeof UPDATE_INVOICE_FAILURE,
   payload: Invoice | { id: number },
-  error: string
+  error: string,
 };
 
 type DeleteInvoiceAction = {
   type: typeof DELETE_INVOICE,
-  payload: Invoice
+  payload: Invoice,
 };
 
 type DeleteInvoiceSuccessAction = {
   type: typeof DELETE_INVOICE_SUCCESS,
-  payload: Invoice
+  payload: Invoice,
 };
 
 type DeleteInvoiceFailureAction = {
   type: typeof DELETE_INVOICE_FAILURE,
   payload: Invoice,
-  error: string
+  error: string,
 };
 
 type ResetInvoicesAction = {
-  type: typeof RESET_INVOICES
+  type: typeof RESET_INVOICES,
 };
 
 export type Action =
@@ -168,7 +175,7 @@ export type Action =
 
 export const fetchInvoicesRequest = (): FetchInvoicesAction => {
   return {
-    type: FETCH_INVOICES
+    type: FETCH_INVOICES,
   };
 };
 
@@ -181,9 +188,9 @@ export const fetchInvoicesSuccess = (
     meta: {
       count: response.count,
       next: response.next,
-      previous: response.previous
+      previous: response.previous,
     },
-    receivedAt: Date.now()
+    receivedAt: Date.now(),
   };
 };
 
@@ -192,7 +199,7 @@ export const fetchInvoicesFailure = (
 ): FetchInvoicesFailureAction => {
   return {
     type: FETCH_INVOICES_FAILURE,
-    error: error
+    error: error,
   };
 };
 
@@ -217,7 +224,7 @@ export const fetchInvoices = (
 
 export const fetchInvoiceRequest = (): FetchInvoiceAction => {
   return {
-    type: FETCH_INVOICE
+    type: FETCH_INVOICE,
   };
 };
 
@@ -227,7 +234,7 @@ export const fetchInvoiceSuccess = (
   return {
     type: FETCH_INVOICE_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, invoiceSchema)
+    payload: normalize(payload, invoiceSchema),
   };
 };
 
@@ -236,7 +243,7 @@ export const fetchInvoiceFailure = (
 ): FetchInvoiceFailureAction => {
   return {
     type: FETCH_INVOICE_FAILURE,
-    error: error
+    error: error,
   };
 };
 
@@ -252,43 +259,55 @@ export const fetchInvoice = (token: string, id: number): ThunkAction => {
       })
       .catch((error: string) => {
         dispatch(fetchInvoicesFailure("error"));
-        addError({
-          text: "An error occurred"
-        });
+        return error;
       });
   };
 };
 
-export const createInvoiceRequest = (payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>): CreateInvoiceAction => {
+export const createInvoiceRequest = (
+  payload:
+    | InvoiceRequest
+    | Array<Invoice>
+    | Array<{ client: number, visits: Array<number> }>
+): CreateInvoiceAction => {
   return {
     type: CREATE_INVOICE,
-    payload
+    payload,
   };
 };
 
 export const createInvoiceSuccess = (
-  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>
+  payload:
+    | InvoiceRequest
+    | Array<Invoice>
+    | Array<{ client: number, visits: Array<number> }>
 ): CreateInvoiceSuccessAction => {
   return {
     type: CREATE_INVOICE_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, invoiceSchema)
+    payload: normalize(payload, invoiceSchema),
   };
 };
 
 export const createInvoiceError = (
-  payload: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>,
+  payload:
+    | InvoiceRequest
+    | Array<Invoice>
+    | Array<{ client: number, visits: Array<number> }>,
   error: string
 ): CreateInvoiceFailureAction => {
   return {
     type: CREATE_INVOICE_FAILURE,
     error,
-    payload
+    payload,
   };
 };
 
 export const createInvoice = (
-  invoice: InvoiceRequest | Array<Invoice> | Array<{client: number, visits: Array<number>}>,
+  invoice:
+    | InvoiceRequest
+    | Array<Invoice>
+    | Array<{ client: number, visits: Array<number> }>,
   token: string
 ): ThunkAction => {
   return (dispatch: Dispatch): Promise<Invoice | Array<Invoice> | string> => {
@@ -298,27 +317,24 @@ export const createInvoice = (
       .create("invoices", invoice, token)
       .then((responseInvoice: Invoice) => {
         dispatch(createInvoiceSuccess(responseInvoice));
-        addSuccess({
-          text: "Created"
-        });
         return responseInvoice;
       })
       .catch((error: string) => {
         dispatch(createInvoiceError(invoice, error));
-        addError({
-          text: "An error occurred"
-        });
         return error;
       });
   };
 };
 
 export const updateInvoiceRequest = (
-  payload: InvoiceRequest | Array<{client: number, visits: Array<number>}> | { id: number }
+  payload:
+    | InvoiceRequest
+    | Array<{ client: number, visits: Array<number> }>
+    | { id: number }
 ): UpdateInvoiceAction => {
   return {
     type: UPDATE_INVOICE,
-    payload
+    payload,
   };
 };
 
@@ -328,7 +344,7 @@ export const updateInvoiceSuccess = (
   return {
     type: UPDATE_INVOICE_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, invoiceSchema)
+    payload: normalize(payload, invoiceSchema),
   };
 };
 
@@ -339,7 +355,7 @@ export const updateInvoiceError = (
   return {
     type: UPDATE_INVOICE_FAILURE,
     error,
-    payload
+    payload,
   };
 };
 
@@ -351,17 +367,11 @@ export const updateInvoice = (invoice: Invoice, token: string): ThunkAction => {
       .update("invoices", invoice, token)
       .then((responseInvoice: Invoice) => {
         dispatch(updateInvoiceSuccess(responseInvoice));
-        history.push(`/${invoice.business}/invoices/${responseInvoice.id}`);
-        addSuccess({
-          text: "Saved"
-        });
         return responseInvoice;
       })
       .catch((error: string) => {
         dispatch(updateInvoiceError(invoice, error));
-        addError({
-          text: "An error occurred"
-        });
+        return error;
       });
   };
 };
@@ -378,16 +388,11 @@ export const partialUpdateInvoice = (
       .then((responseInvoice: Invoice) => {
         const coercedInvoice = responseInvoice;
         dispatch(updateInvoiceSuccess(coercedInvoice));
-        addSuccess({
-          text: "Saved"
-        });
         return coercedInvoice;
       })
       .catch((error: string) => {
         dispatch(updateInvoiceError(invoice, error));
-        addError({
-          text: "An error occurred"
-        });
+        return error;
       });
   };
 };
@@ -395,7 +400,7 @@ export const partialUpdateInvoice = (
 export const deleteInvoiceRequest = (payload: Invoice): DeleteInvoiceAction => {
   return {
     type: DELETE_INVOICE,
-    payload
+    payload,
   };
 };
 
@@ -405,7 +410,7 @@ export const deleteInvoiceSuccess = (
   return {
     type: DELETE_INVOICE_SUCCESS,
     receivedAt: Date.now(),
-    payload
+    payload,
   };
 };
 
@@ -416,7 +421,7 @@ export const deleteInvoiceError = (
   return {
     type: DELETE_INVOICE_FAILURE,
     error,
-    payload
+    payload,
   };
 };
 
@@ -428,16 +433,11 @@ export const deleteInvoice = (invoice: Invoice, token: string): ThunkAction => {
       .delete("invoices", invoice, token)
       .then(() => {
         dispatch(deleteInvoiceSuccess(invoice));
-        history.push(`/${invoice.business}/invoices`);
-        addSuccess({
-          text: "Deleted"
-        });
+        return invoice;
       })
       .catch((error: string) => {
         dispatch(deleteInvoiceError(invoice, error));
-        addError({
-          text: "An error occurred"
-        });
+        return error;
       });
   };
 };
