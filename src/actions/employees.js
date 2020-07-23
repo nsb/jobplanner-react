@@ -38,13 +38,17 @@ export const DELETE_EMPLOYEE_SUCCESS: "DELETE_EMPLOYEE_SUCCESS" =
 export const DELETE_EMPLOYEE_FAILURE: "DELETE_EMPLOYEE_FAILURE" =
   "DELETE_EMPLOYEE_FAILURE";
 
+export type Role = "admin" | "worker";
+
 export type Employee = {
   id: number,
   email: string,
   first_name: string,
   last_name: string,
   is_active: boolean,
-  business: number
+  business: number,
+  me: boolean,
+  role: Role,
 };
 
 export type EmployeesMap = { [id: number]: Employee };
@@ -53,84 +57,84 @@ export type EmployeesResponse = {
   results: Array<Employee>,
   count: number,
   next: ?string,
-  previous: ?string
+  previous: ?string,
 };
 
 type FetchEmployeesAction = {
-  type: typeof FETCH_EMPLOYEES
+  type: typeof FETCH_EMPLOYEES,
 };
 
 type FetchEmployeesSuccessAction = {
   type: typeof FETCH_EMPLOYEES_SUCCESS,
   payload: { entities: { employees: EmployeesMap }, result: Array<number> },
-  meta: { count: number, next: ?string, previous: ?string }
+  meta: { count: number, next: ?string, previous: ?string },
 };
 
 type FetchEmployeesFailureAction = {
   type: typeof FETCH_EMPLOYEES_FAILURE,
-  error: string
+  error: string,
 };
 
 type FetchEmployeeAction = {
-  type: typeof FETCH_EMPLOYEE
+  type: typeof FETCH_EMPLOYEE,
 };
 
 type FetchEmployeeSuccessAction = {
   type: typeof FETCH_EMPLOYEE_SUCCESS,
-  payload: { entities: { employees: EmployeesMap }, result: number }
+  payload: { entities: { employees: EmployeesMap }, result: number },
 };
 
 type FetchEmployeeFailureAction = {
   type: typeof FETCH_EMPLOYEE_FAILURE,
-  error: string
+  error: string,
 };
 
 type CreateEmployeeAction = {
   type: typeof CREATE_EMPLOYEE,
-  payload: Employee
+  payload: Employee,
 };
 
 type CreateEmployeeSuccessAction = {
   type: typeof CREATE_EMPLOYEE_SUCCESS,
-  payload: { entities: { employees: EmployeesMap }, result: number }
+  payload: { entities: { employees: EmployeesMap }, result: number },
 };
 
 type CreateEmployeeFailureAction = {
   type: typeof CREATE_EMPLOYEE_FAILURE,
   payload: Employee,
-  error: string
+  error: string,
 };
 
 type UpdateEmployeeAction = {
   type: typeof UPDATE_EMPLOYEE,
-  payload: Employee
+  payload: Employee,
 };
 
 type UpdateEmployeeSuccessAction = {
   type: typeof UPDATE_EMPLOYEE_SUCCESS,
-  payload: { entities: { employees: EmployeesMap }, result: number }
+  payload: { entities: { employees: EmployeesMap }, result: number },
 };
 
 type UpdateEmployeeFailureAction = {
   type: typeof UPDATE_EMPLOYEE_FAILURE,
   payload: Employee,
-  error: string
+  error: string,
 };
 
 type DeleteEmployeeAction = {
   type: typeof DELETE_EMPLOYEE,
-  payload: Employee
+  payload: Employee,
 };
 
 type DeleteEmployeeSuccessAction = {
   type: typeof DELETE_EMPLOYEE_SUCCESS,
-  payload: Employee
+  payload: Employee,
 };
 
 type DeleteEmployeeFailureAction = {
   type: typeof DELETE_EMPLOYEE_FAILURE,
   payload: Employee,
-  error: string
+  error: string,
 };
 
 export type Action =
@@ -152,7 +156,7 @@ export type Action =
 
 export const fetchEmployeesRequest = (): FetchEmployeesAction => {
   return {
-    type: FETCH_EMPLOYEES
+    type: FETCH_EMPLOYEES,
   };
 };
 
@@ -165,9 +169,9 @@ export const fetchEmployeesSuccess = (
     meta: {
       count: response.count,
       next: response.next,
-      previous: response.previous
+      previous: response.previous,
     },
-    receivedAt: Date.now()
+    receivedAt: Date.now(),
   };
 };
 
@@ -176,7 +180,7 @@ export const fetchEmployeesFailure = (
 ): FetchEmployeesFailureAction => {
   return {
     type: FETCH_EMPLOYEES_FAILURE,
-    error: error
+    error: error,
   };
 };
 
@@ -201,7 +205,7 @@ export const fetchEmployees = (
 
 export const fetchEmployeeRequest = (): FetchEmployeeAction => {
   return {
-    type: FETCH_EMPLOYEE
+    type: FETCH_EMPLOYEE,
   };
 };
 
@@ -211,7 +215,7 @@ export const fetchEmployeeSuccess = (
   return {
     type: FETCH_EMPLOYEE_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, employeeSchema)
+    payload: normalize(payload, employeeSchema),
   };
 };
 
@@ -220,7 +224,7 @@ export const fetchEmployeeFailure = (
 ): FetchEmployeeFailureAction => {
   return {
     type: FETCH_EMPLOYEE_FAILURE,
-    error: error
+    error: error,
   };
 };
 
@@ -245,7 +249,7 @@ export const createEmployeeRequest = (
 ): CreateEmployeeAction => {
   return {
     type: CREATE_EMPLOYEE,
-    payload
+    payload,
   };
 };
 
@@ -255,7 +259,7 @@ export const createEmployeeSuccess = (
   return {
     type: CREATE_EMPLOYEE_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, employeeSchema)
+    payload: normalize(payload, employeeSchema),
   };
 };
 
@@ -266,7 +270,7 @@ export const createEmployeeError = (
   return {
     type: CREATE_EMPLOYEE_FAILURE,
     error,
-    payload
+    payload,
   };
 };
 
@@ -295,7 +299,7 @@ export const updateEmployeeRequest = (
 ): UpdateEmployeeAction => {
   return {
     type: UPDATE_EMPLOYEE,
-    payload
+    payload,
   };
 };
 
@@ -305,7 +309,7 @@ export const updateEmployeeSuccess = (
   return {
     type: UPDATE_EMPLOYEE_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, employeeSchema)
+    payload: normalize(payload, employeeSchema),
   };
 };
 
@@ -316,7 +320,7 @@ export const updateEmployeeError = (
   return {
     type: UPDATE_EMPLOYEE_FAILURE,
     error,
-    payload
+    payload,
   };
 };
 
@@ -345,7 +349,7 @@ export const deleteEmployeeRequest = (
 ): DeleteEmployeeAction => {
   return {
     type: DELETE_EMPLOYEE,
-    payload
+    payload,
   };
 };
 
@@ -355,7 +359,7 @@ export const deleteEmployeeSuccess = (
   return {
     type: DELETE_EMPLOYEE_SUCCESS,
     receivedAt: Date.now(),
-    payload
+    payload,
   };
 };
 
@@ -366,7 +370,7 @@ export const deleteEmployeeError = (
   return {
     type: DELETE_EMPLOYEE_FAILURE,
     error,
-    payload
+    payload,
   };
 };
 

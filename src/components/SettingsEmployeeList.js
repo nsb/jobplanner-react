@@ -1,6 +1,5 @@
 // @flow
 
-import { merge } from "lodash/object";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { injectIntl, FormattedMessage, intlShape } from "react-intl";
@@ -17,7 +16,7 @@ import Heading from "grommet/components/Heading";
 import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Paragraph from "grommet/components/Paragraph";
-import EmployeeForm from "./SettingsEmployeeForm";
+import EmployeeForm, { employeeRoleMap } from "./SettingsEmployeeForm";
 import { AuthContext } from "../providers/authProvider";
 
 const intlTitle = (
@@ -39,11 +38,11 @@ const intlAdd = (
 type Props = {
   business: Business,
   employees: Array<Employee>,
-  dispatch: Dispatch
+  dispatch: Dispatch,
 };
 
 type State = {
-  activePanel?: number
+  activePanel?: number,
 };
 
 class EmployeeList extends Component<Props & { intl: intlShape }, State> {
@@ -56,7 +55,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { employees } = this.props;
+    const { employees, intl } = this.props;
     return (
       <Box>
         <Header>
@@ -67,11 +66,22 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
         <Accordion onActive={this.onActive}>
           {employees.map((employee, index: number) => {
             return (
-              <AccordionPanel heading={[employee.first_name, employee.last_name].join(' ')} key={employee.id}>
+              <AccordionPanel
+                heading={[employee.first_name, employee.last_name].join(" ")}
+                key={employee.id}
+              >
                 <Paragraph>
                   <EmployeeForm
                     form={`employeeform-${employee.id}`}
-                    initialValues={employee}
+                    initialValues={{
+                      ...employee,
+                      role: {
+                        value: employee.role,
+                        label: intl.formatMessage({
+                          id: employeeRoleMap[employee.role],
+                        }),
+                      },
+                    }}
                     onSubmit={this.onSubmit}
                   />
                 </Paragraph>
@@ -82,7 +92,15 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
             <Paragraph>
               <EmployeeForm
                 form={`employeeform-new`}
-                initialValues={{ is_active: true }}
+                initialValues={{
+                  is_active: true,
+                  role: {
+                    value: "worker",
+                    label: intl.formatMessage({
+                      id: employeeRoleMap["worker"],
+                    }),
+                  },
+                }}
                 onSubmit={this.onSubmit}
               />
             </Paragraph>
@@ -99,14 +117,19 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
     }
   };
 
-  onSubmit = (employee: Employee) => {
+  onSubmit = (employee: Object) => {
     const { business, dispatch, intl } = this.props;
 
     const { getUser } = this.context;
     if (employee.id) {
       getUser()
         .then(({ access_token }) => {
-          return dispatch(updateEmployee(employee, access_token));
+          return dispatch(
+            updateEmployee(
+              { ...employee, role: employee.role.value },
+              access_token
+            )
+          );
         })
         .then(() => {
           addSuccess({ text: intl.formatMessage({ id: "flash.saved" }) });
@@ -119,7 +142,7 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
         .then(({ access_token }) => {
           return dispatch(
             createEmployee(
-              merge({}, { business: business.id }, employee),
+              { ...employee, business: business.id, role: employee.role.value },
               access_token
             )
           );
@@ -138,13 +161,13 @@ class EmployeeList extends Component<Props & { intl: intlShape }, State> {
 const mapStateToProps = (
   { employees, entities }: ReduxState,
   ownProps: {
-    business: Business
+    business: Business,
   }
 ): * => ({
   business: ownProps.business,
   employees: employees.result
     .map((Id: number) => ensureState(entities).employees[Id])
-    .filter(employee => employee.business === ownProps.business.id)
+    .filter((employee) => employee.business === ownProps.business.id),
 });
 
 export default connect(mapStateToProps)(injectIntl(EmployeeList));

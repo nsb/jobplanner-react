@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl, FormattedMessage, intlShape } from "react-intl";
 import { Field, reduxForm } from "redux-form";
 import Button from "grommet/components/Button";
 import Form from "grommet/components/Form";
@@ -9,9 +9,10 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
+import Select from "grommet/components/Select";
 import { intlFormFieldRequired } from "../i18n";
 import type { Element } from "react";
-import type { Employee } from "../actions/employees";
+import type { Employee, Role } from "../actions/employees";
 
 const intlFirstName = (
   <FormattedMessage
@@ -61,6 +62,30 @@ const intlIsActive = (
   />
 );
 
+const intlRole = (
+  <FormattedMessage
+    id="settingsEmployeeForm.roleLabel"
+    description="Settings employee form role label"
+    defaultMessage="Role"
+  />
+);
+
+const intlRoleAdmin = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="settingsEmployeeForm.roleAdminLabel"
+    description="role admin label"
+    defaultMessage="Admin"
+  />
+);
+
+const intlRoleWorker = ( // eslint-disable-line no-unused-vars
+  <FormattedMessage
+    id="settingsEmployeeForm.roleWorkerLabel"
+    description="role worker label"
+    defaultMessage="Worker"
+  />
+);
+
 const validate = (values: Object): Object => {
   const errors = {};
   if (!values.first_name) {
@@ -73,7 +98,7 @@ const renderField = ({
   input,
   label,
   type,
-  meta: { touched, error, warning }
+  meta: { touched, error, warning },
 }): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <input {...input} type={type} />
@@ -83,12 +108,37 @@ const renderField = ({
 const renderCheckBox = ({
   input,
   label,
-  meta: { touched, error, warning }
+  meta: { touched, error, warning },
 }): Element<*> => (
   <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
     <CheckBox {...input} checked={!!input.value} />
   </FormField>
 );
+
+const renderSelect = ({
+  input,
+  label,
+  options,
+  multiple,
+  meta: { touched, error, warning },
+}): Element<*> => {
+  return (
+    <Select
+      {...input}
+      placeHolder="None"
+      inline={false}
+      multiple={multiple}
+      value={input.value}
+      options={options}
+      onChange={input.onChange}
+    />
+  );
+};
+
+export const employeeRoleMap: { [key: Role]: string } = {
+  admin: "settingsEmployeeForm.roleAdminLabel",
+  worker: "settingsEmployeeForm.roleWorkerLabel",
+};
 
 type Props = {
   handleSubmit: Function,
@@ -96,7 +146,7 @@ type Props = {
   dirty: boolean,
   submitting: boolean,
   onClose: Function,
-  initialValues?: Employee
+  initialValues?: Employee,
 };
 
 export const EmployeeForm = ({
@@ -105,8 +155,15 @@ export const EmployeeForm = ({
   dirty,
   submitting,
   onClose,
-  initialValues
-}: Props) => {
+  initialValues,
+  intl,
+}: Props & { intl: intlShape }) => {
+  const employeeRoleOptions: Array<Object> = Object.entries(
+    employeeRoleMap
+  ).map(([key, value]) => {
+    return { label: intl.formatMessage({ id: value }), value: key };
+  });
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormFields>
@@ -136,9 +193,15 @@ export const EmployeeForm = ({
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
             />
-          ) : (
-            undefined
-          )}
+          ) : undefined}
+          <Field
+            name="role"
+            label={intlRole}
+            component={renderSelect}
+            options={employeeRoleOptions}
+            multiple={false}
+            normalize={(selected) => selected.value}
+          />
         </fieldset>
       </FormFields>
 
@@ -156,5 +219,5 @@ export const EmployeeForm = ({
 };
 
 export default reduxForm({
-  validate
+  validate,
 })(injectIntl(EmployeeForm));
