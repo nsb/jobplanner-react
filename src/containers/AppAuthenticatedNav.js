@@ -12,7 +12,7 @@ import NavSidebar from "../components/NavSidebar";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientDetail from "../components/ClientDetailContainer";
 import ClientEdit from "../components/ClientEdit";
-import { AbilityContext } from "../components/Can";
+import { AbilityContext, Can } from "../components/Can";
 import ability from "../ability";
 import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
@@ -118,7 +118,15 @@ class AppAuthenticatedNav extends Component<Props> {
             <Route path="/:businessId/settings" component={Settings} />
             <Route path="/:businessId/invoices" component={Invoices} />
             <Route path="/:businessId/integrations" component={Integrations} />
-            <Redirect to={`/${business.id}/clients`} />
+            <Can I="create" a="client" passThrough>
+              {(allowed) =>
+                allowed ? (
+                  <Redirect to={`/${business.id}/clients`} />
+                ) : (
+                  <Redirect to={`/${business.id}/calendar`} />
+                )
+              }
+            </Can>
           </Switch>
         </Split>
       </AbilityContext.Provider>
