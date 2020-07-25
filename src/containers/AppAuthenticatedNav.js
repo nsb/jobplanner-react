@@ -93,25 +93,69 @@ class AppAuthenticatedNav extends Component<Props> {
           ) : null}
           <Switch>
             <Route
-              exact
               path="/:businessId/calendar"
-              component={CalendarContainer}
+              render={(props) => (
+                <Can I="read" a="Visit">
+                  {() => <CalendarContainer {...props} />}
+                </Can>
+              )}
             />
             <Route
-              exact
               path="/:businessId/clients/:clientId"
-              component={ClientDetail}
+              render={(props) => (
+                <Can I="read" a="Client">
+                  {() => <ClientDetail {...props} />}
+                </Can>
+              )}
             />
             <Route
-              exact
               path="/:businessId/clients"
-              component={ClientListContainer}
+              render={(props) => (
+                <Can I="read" a="Client">
+                  {() => <ClientListContainer {...props} />}
+                </Can>
+              )}
             />
-            <Route path="/:businessId/jobs" component={Jobs} />
-            <Route path="/:businessId/reports" component={Reports} />
-            <Route path="/:businessId/settings" component={Settings} />
-            <Route path="/:businessId/invoices" component={Invoices} />
-            <Route path="/:businessId/integrations" component={Integrations} />
+            <Route
+              path="/:businessId/jobs"
+              render={(props) => (
+                <Can I="read" a="Job">
+                  {() => <Jobs {...props} />}
+                </Can>
+              )}
+            />
+            <Route
+              path="/:businessId/reports"
+              render={(props) => (
+                <Can I="read" a="Report">
+                  {() => <Reports {...props} />}
+                </Can>
+              )}
+            />
+            <Route
+              path="/:businessId/settings"
+              render={(props) => (
+                <Can I="read" a="Client">
+                  {() => <Settings {...props} />}
+                </Can>
+              )}
+            />
+            <Route
+              path="/:businessId/invoices"
+              render={(props) => (
+                <Can I="read" a="Invoice">
+                  {() => <Invoices {...props} />}
+                </Can>
+              )}
+            />
+            <Route
+              path="/:businessId/integrations"
+              render={(props) => (
+                <Can I="read" a="Integration">
+                  {() => <Integrations {...props} />}
+                </Can>
+              )}
+            />
             <Can I="create" a="client" passThrough>
               {(allowed) =>
                 allowed ? (

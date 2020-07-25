@@ -9,8 +9,8 @@ export default function defineAbilityFor(employee: Employee) {
   if (employee.role === "admin") {
     can("manage", "all"); // read-write access to everything
   } else {
-    can("read", "all"); // read-only access to everything
-    can("update", "visit:completed");
+    can("read", "Visit"); // read-only access to everything
+    can("update", "Visit:completed");
     cannot("read", "Client");
     cannot("read", "Job");
     cannot("read", "Report");
