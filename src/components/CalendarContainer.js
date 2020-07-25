@@ -16,6 +16,7 @@ import { getVisitsGroupedByDay } from "../selectors/visitSelectors";
 import Calendar from "./Calendar";
 import JobClose from "./JobClose";
 import { AuthContext } from "../providers/authProvider";
+import { Can } from "./Can";
 import type { Element } from "react";
 
 const intlVisitCount = (count: number) => (
@@ -116,22 +117,26 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
     }
 
     const calendar = (
-      <Calendar
-        visits={visits}
-        views={this.state.views}
-        defaultView={this.state.view}
-        defaultDate={this.state.date}
-        onNavigate={(date: Date) => {
-          this.setState({ date }, this.loadVisits);
-        }}
-        onView={(view: CalendarView) => {
-          this.setState({ view }, this.loadVisits);
-        }}
-        onSelectSlot={(e: Event) => {}}
-        onSelectEvent={this.onClick}
-        onEventDrop={this.onEventDrop}
-        responsive={responsive}
-      />
+      <Can I="update" a="Visit" passThrough>
+        {(allowed) => (
+          <Calendar
+            visits={visits}
+            views={this.state.views}
+            defaultView={this.state.view}
+            defaultDate={this.state.date}
+            onNavigate={(date: Date) => {
+              this.setState({ date }, this.loadVisits);
+            }}
+            onView={(view: CalendarView) => {
+              this.setState({ view }, this.loadVisits);
+            }}
+            onSelectSlot={(e: Event) => {}}
+            onSelectEvent={this.onClick}
+            onEventDrop={allowed ? this.onEventDrop : undefined}
+            responsive={responsive}
+          />
+        )}
+      </Can>
     );
 
     return (

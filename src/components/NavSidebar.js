@@ -12,6 +12,7 @@ import Footer from "grommet/components/Footer";
 import CloseIcon from "grommet/components/icons/base/Close";
 import logo from "../logo-white.svg";
 import SessionMenu from "./SessionMenu";
+import { Can } from "./Can";
 import type { Business } from "../actions/businesses";
 import type { User } from "../actions/users";
 
@@ -21,7 +22,7 @@ const intlCalendar = (
     description="Navsidebar menu calendar"
     defaultMessage="Calendar"
   />
-)
+);
 
 const intlClients = (
   <FormattedMessage
@@ -29,7 +30,7 @@ const intlClients = (
     description="Navsidebar menu clients"
     defaultMessage="Clients"
   />
-)
+);
 
 const intlJobs = (
   <FormattedMessage
@@ -37,7 +38,7 @@ const intlJobs = (
     description="Navsidebar menu jobs"
     defaultMessage="Jobs"
   />
-)
+);
 
 const intlReports = (
   <FormattedMessage
@@ -45,7 +46,7 @@ const intlReports = (
     description="Navsidebar menu reports"
     defaultMessage="Reports"
   />
-)
+);
 
 const intlInvoices = (
   <FormattedMessage
@@ -53,7 +54,7 @@ const intlInvoices = (
     description="Navsidebar menu invoices"
     defaultMessage="Invoices"
   />
-)
+);
 
 const intlSettings = (
   <FormattedMessage
@@ -61,7 +62,7 @@ const intlSettings = (
     description="Navsidebar menu settings"
     defaultMessage="Settings"
   />
-)
+);
 
 const intlIntegrations = (
   <FormattedMessage
@@ -69,13 +70,13 @@ const intlIntegrations = (
     description="Navsidebar menu integrations"
     defaultMessage="Add-ons"
   />
-)
+);
 
 type Props = {
   toggleNav: () => void,
   business: Business,
   user: User,
-  logout: Function
+  logout: Function,
 };
 
 class NavSidebar extends Component<Props> {
@@ -108,37 +109,44 @@ class NavSidebar extends Component<Props> {
             path={`/${business.id}/calendar`}
             label={intlCalendar}
           />
-          <Anchor
-            key="clients"
-            path={`/${business.id}/clients`}
-            label={intlClients}
-          />
-          <Anchor
-            key="jobs"
-            path={`/${business.id}/jobs`}
-            label={intlJobs}
-          />
-          <Anchor
-            key="reports"
-            path={`/${business.id}/reports`}
-            label={intlReports}
-          />
-          <Anchor
-            key="invoices"
-            path={`/${business.id}/invoices`}
-            label={intlInvoices}
-          />
-          <Anchor
-            key="settings"
-            path={`/${business.id}/settings`}
-            label={intlSettings}
-          />
-          <Anchor
-            key="integrations"
-            path={`/${business.id}/integrations`}
-            label={intlIntegrations}
-          />
-
+          <Can I="read" a="Client">
+            <Anchor
+              key="clients"
+              path={`/${business.id}/clients`}
+              label={intlClients}
+            />
+          </Can>
+          <Can I="read" a="Job">
+            <Anchor key="jobs" path={`/${business.id}/jobs`} label={intlJobs} />
+          </Can>
+          <Can I="read" a="Report">
+            <Anchor
+              key="reports"
+              path={`/${business.id}/reports`}
+              label={intlReports}
+            />
+          </Can>
+          <Can I="read" a="Invoice">
+            <Anchor
+              key="invoices"
+              path={`/${business.id}/invoices`}
+              label={intlInvoices}
+            />
+          </Can>
+          <Can I="read" a="Setting">
+            <Anchor
+              key="settings"
+              path={`/${business.id}/settings`}
+              label={intlSettings}
+            />
+          </Can>
+          <Can I="read" a="Integration">
+            <Anchor
+              key="integrations"
+              path={`/${business.id}/integrations`}
+              label={intlIntegrations}
+            />
+          </Can>
         </Menu>
         <Footer pad={{ horizontal: "medium", vertical: "small" }}>
           <SessionMenu
