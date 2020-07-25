@@ -1,10 +1,11 @@
 // @flow
 
 import React from "react";
-import {injectIntl, FormattedMessage} from 'react-intl';
+import { injectIntl, FormattedMessage } from "react-intl";
 import Button from "grommet/components/Button";
 import EditIcon from "grommet/components/icons/base/Edit";
 import SettingsListItem from "./SettingsListItem";
+import { Can } from "./Can";
 
 const intlHeading = (
   <FormattedMessage
@@ -12,7 +13,7 @@ const intlHeading = (
     description="Settings employees heading"
     defaultMessage="Employees"
   />
-)
+);
 
 const intlDetails = (
   <FormattedMessage
@@ -20,7 +21,7 @@ const intlDetails = (
     description="Settings employees details"
     defaultMessage="These are your employees."
   />
-)
+);
 
 const intlEdit = (
   <FormattedMessage
@@ -28,7 +29,7 @@ const intlEdit = (
     description="Settings employees edit"
     defaultMessage="Edit employees"
   />
-)
+);
 
 type Props = {
   onOpen: Function,
@@ -38,9 +39,16 @@ const EmployeesSection = (props: Props) => {
   const { onOpen } = props;
   let control;
   control = (
-    <Button icon={<EditIcon />} onClick={onOpen} a11yTitle={intlEdit} />
+    <Can I="update" a="Employee" passThrough>
+      {(allowed) => (
+        <Button
+          icon={<EditIcon />}
+          onClick={allowed ? onOpen : undefined}
+          a11yTitle={intlEdit}
+        />
+      )}
+    </Can>
   );
-
 
   return (
     <SettingsListItem key="employees" control={control} first={true}>

@@ -5,6 +5,7 @@ import { injectIntl, FormattedMessage } from "react-intl";
 import Button from "grommet/components/Button";
 import EditIcon from "grommet/components/icons/base/Edit";
 import SettingsListItem from "./SettingsListItem";
+import { Can } from "./Can";
 
 const intlHeading = (
   <FormattedMessage
@@ -12,7 +13,7 @@ const intlHeading = (
     description="Settings business section heading"
     defaultMessage="Company"
   />
-)
+);
 
 const intlDetails = (
   <FormattedMessage
@@ -20,17 +21,25 @@ const intlDetails = (
     description="Settings business section details"
     defaultMessage="Update your company details here."
   />
-)
+);
 
 type Props = {
-  onOpen: Function
+  onOpen: Function,
 };
 
 const BusinessSection = (props: Props) => {
   const { onOpen } = props;
   let control;
   control = (
-    <Button icon={<EditIcon />} onClick={onOpen} a11yTitle="Edit Company" />
+    <Can I="update" a="Business" passThrough>
+      {(allowed) => (
+        <Button
+          icon={<EditIcon />}
+          onClick={allowed ? onOpen : undefined}
+          a11yTitle="Edit Company"
+        />
+      )}
+    </Can>
   );
 
   return (
