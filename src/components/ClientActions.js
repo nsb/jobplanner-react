@@ -12,6 +12,7 @@ import CloseIcon from "grommet/components/icons/base/Close";
 import EditIcon from "grommet/components/icons/base/Edit";
 import MoneyIcon from "grommet/components/icons/base/Money";
 import TrashIcon from "grommet/components/icons/base/Trash";
+import { Can } from "./Can";
 import ClientRemove from "./ClientRemove";
 import type { Client } from "../actions/clients";
 
@@ -39,20 +40,19 @@ const intlRemove = (
   />
 );
 
-
 const LAYERS = {
-  remove: ClientRemove
+  remove: ClientRemove,
 };
 
 type Props = {
   client: Client,
   onClose?: () => void,
   onEdit: () => void,
-  onInvoice: () => void
+  onInvoice: () => void,
 };
 
 const ClientActions = ({ client, onEdit, onInvoice, onClose }: Props) => {
-  const [layerName, setLayerName] = useState(undefined)
+  const [layerName, setLayerName] = useState(undefined);
 
   let closeControl;
   if (onClose) {
@@ -68,7 +68,9 @@ const ClientActions = ({ client, onEdit, onInvoice, onClose }: Props) => {
   let layer;
   if (layerName) {
     let Component = LAYERS[layerName];
-    layer = <Component client={client} onClose={() => setLayerName(undefined)} />;
+    layer = (
+      <Component client={client} onClose={() => setLayerName(undefined)} />
+    );
   }
 
   return (
@@ -83,35 +85,41 @@ const ClientActions = ({ client, onEdit, onInvoice, onClose }: Props) => {
       </Header>
       <Box pad="medium">
         <Menu>
-          <Button
-            align="start"
-            plain={true}
-            icon={<EditIcon />}
-            label={intlEdit}
-            onClick={onEdit}
-            a11yTitle={intlEdit}
-          />
-          <Button
-            align="start"
-            plain={true}
-            icon={<MoneyIcon />}
-            label={intlInvoice}
-            onClick={onInvoice}
-            a11yTitle={intlInvoice}
-          />
-          <Button
-            align="start"
-            plain={true}
-            icon={<TrashIcon />}
-            label={intlRemove}
-            onClick={() => setLayerName("remove")}
-            a11yTitle={intlRemove}
-          />
+          <Can I="update" a="Client">
+            <Button
+              align="start"
+              plain={true}
+              icon={<EditIcon />}
+              label={intlEdit}
+              onClick={onEdit}
+              a11yTitle={intlEdit}
+            />
+          </Can>
+          <Can I="create" a="Invoice">
+            <Button
+              align="start"
+              plain={true}
+              icon={<MoneyIcon />}
+              label={intlInvoice}
+              onClick={onInvoice}
+              a11yTitle={intlInvoice}
+            />
+          </Can>
+          <Can I="delete" a="Client">
+            <Button
+              align="start"
+              plain={true}
+              icon={<TrashIcon />}
+              label={intlRemove}
+              onClick={() => setLayerName("remove")}
+              a11yTitle={intlRemove}
+            />
+          </Can>
         </Menu>
       </Box>
       {layer}
     </Sidebar>
   );
-}
+};
 
 export default injectIntl(ClientActions);

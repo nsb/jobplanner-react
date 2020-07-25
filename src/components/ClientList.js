@@ -1,21 +1,22 @@
 // @flow
 
-import React, { Component } from 'react';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
-import Search from 'grommet/components/Search';
-import Button from 'grommet/components/Button';
-import AddIcon from 'grommet/components/icons/base/Add';
-import List from 'grommet/components/List';
-import Anchor from 'grommet/components/Anchor';
-import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
-import NavControl from './NavControl';
-import ClientListItem from './ClientListItem';
-import ClientAdd from './ClientAdd';
+import React, { Component } from "react";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import Box from "grommet/components/Box";
+import Header from "grommet/components/Header";
+import Search from "grommet/components/Search";
+import Button from "grommet/components/Button";
+import AddIcon from "grommet/components/icons/base/Add";
+import List from "grommet/components/List";
+import Anchor from "grommet/components/Anchor";
+import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import NavControl from "./NavControl";
+import ClientListItem from "./ClientListItem";
+import ClientAdd from "./ClientAdd";
 import { AuthContext } from "../providers/authProvider";
-import type { Business } from '../actions/businesses';
-import type { Client } from '../actions/clients';
+import { Can } from "./Can";
+import type { Business } from "../actions/businesses";
+import type { Client } from "../actions/clients";
 import type { Responsive } from "../actions/nav";
 
 const intlTitle = (
@@ -24,7 +25,7 @@ const intlTitle = (
     description="Clients title"
     defaultMessage="Clients"
   />
-)
+);
 
 const intlSearch = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -32,7 +33,7 @@ const intlSearch = ( // eslint-disable-line no-unused-vars
     description="Clients search"
     defaultMessage="Search"
   />
-)
+);
 
 const intlAdd = (
   <FormattedMessage
@@ -40,7 +41,7 @@ const intlAdd = (
     description="Client add"
     defaultMessage="Add client"
   />
-)
+);
 
 const intlAddons = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -48,7 +49,7 @@ const intlAddons = ( // eslint-disable-line no-unused-vars
     descriptions="Add-ons"
     defaultMessage="Add-ons"
   />
-)
+);
 
 export type Props = {
   business: Business,
@@ -57,7 +58,7 @@ export type Props = {
   push: Function,
   totalCount: number,
   fetchClients: (string, Object) => Promise<any>,
-  responsive: Responsive
+  responsive: Responsive,
 };
 
 type State = {
@@ -65,7 +66,7 @@ type State = {
   searchResults: Array<number>,
   offset: number,
   limit: number,
-  add: boolean
+  add: boolean,
 };
 
 class ClientList extends Component<Props & { intl: intlShape }, State> {
@@ -75,7 +76,7 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
     searchResults: [],
     offset: 0,
     limit: 25,
-    add: false
+    add: false,
   };
   static contextType = AuthContext;
 
@@ -93,16 +94,23 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { business, clients, isFetching, intl, totalCount, responsive } = this.props;
+    const {
+      business,
+      clients,
+      isFetching,
+      intl,
+      totalCount,
+      responsive,
+    } = this.props;
     const { add } = this.state;
 
     if (add) {
-      return <ClientAdd business={business} onClose={this.onHideAdd} />
+      return <ClientAdd business={business} onClose={this.onHideAdd} />;
     }
 
-    const filteredClients = clients.filter(client => {
+    const filteredClients = clients.filter((client) => {
       if (this.state.searchText) {
-        return this.state.searchResults.includes(client.id)
+        return this.state.searchResults.includes(client.id);
       } else {
         return true;
       }
@@ -113,50 +121,72 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
         inline={true}
         fill={true}
         size="medium"
-        placeHolder={intl.formatMessage({ id: 'clients.search' })}
+        placeHolder={intl.formatMessage({ id: "clients.search" })}
         value={this.state.searchText}
         onDOMChange={this.onSearch}
       />
-    ) : undefined
+    ) : undefined;
 
     return (
       <Box>
-        <Header size="large" pad={{ horizontal: 'medium' }}>
+        <Header size="large" pad={{ horizontal: "medium" }}>
           <NavControl title={intlTitle} />
           {search}
-          {clients.length ? responsive === "single" ?
-            <Anchor
-              icon={<AddIcon />}
-              onClick={this.onShowAdd}
-              a11yTitle={intlAdd}
-            /> : <Button label={intlAdd}
-              accent={true}
-              onClick={this.onShowAdd}
-            /> : undefined}
-
+          {clients.length ? (
+            <Can I="create" a="Client">
+              {responsive === "single" ? (
+                <Anchor
+                  icon={<AddIcon />}
+                  onClick={this.onShowAdd}
+                  a11yTitle={intlAdd}
+                />
+              ) : (
+                <Button
+                  label={intlAdd}
+                  accent={true}
+                  onClick={this.onShowAdd}
+                />
+              )}
+            </Can>
+          ) : undefined}
         </Header>
-        <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
+        <List
+          onMore={
+            isFetching || this.state.offset > totalCount
+              ? undefined
+              : this.onMore
+          }
+        >
           {filteredClients.map((client: Client, index: number) => {
             return (
               <ClientListItem
                 key={client.id}
                 client={client}
                 index={index}
-                onClick={e => this.onClick(e, client)}
+                onClick={(e) => this.onClick(e, client)}
               />
             );
           })}
         </List>
         <ListPlaceholder
           filteredTotal={isFetching ? null : filteredClients.length}
-          unfilteredTotal={isFetching ? null : this.state.searchText ? clients.length : totalCount}
+          unfilteredTotal={
+            isFetching
+              ? null
+              : this.state.searchText
+              ? clients.length
+              : totalCount
+          }
           emptyMessage={
             <FormattedMessage
               id="clients.emptyMessage"
               values={{
                 link: (
-                  <Anchor label={intl.formatMessage({ id: "clients.addons" })} path={`/${business.id}/integrations`} />
-                )
+                  <Anchor
+                    label={intl.formatMessage({ id: "clients.addons" })}
+                    path={`/${business.id}/integrations`}
+                  />
+                ),
               }}
               defaultMessage="Add a client or import clients from your invoicing system via our {link}."
             />
@@ -179,24 +209,26 @@ class ClientList extends Component<Props & { intl: intlShape }, State> {
     const { business, fetchClients } = this.props;
 
     const { getUser } = this.context;
-    getUser().then(({access_token}) => {
-      return fetchClients(access_token, {
-        business: business.id,
-        ordering: "first_name,last_name",
-        limit: this.state.limit,
-        offset: this.state.offset,
-        search: this.state.searchText
+    getUser()
+      .then(({ access_token }) => {
+        return fetchClients(access_token, {
+          business: business.id,
+          ordering: "first_name,last_name",
+          limit: this.state.limit,
+          offset: this.state.offset,
+          search: this.state.searchText,
+        });
       })
-    }).then(resultClients => {
-      this.setState({
-        offset: this.state.offset + this.state.limit,
-        searchResults: resultClients.results.map(client => client.id)
+      .then((resultClients) => {
+        this.setState({
+          offset: this.state.offset + this.state.limit,
+          searchResults: resultClients.results.map((client) => client.id),
+        });
       });
-    });
   };
 
-  onShowAdd = () => this.setState({ add: true })
-  onHideAdd = () => this.setState({ add: false })
+  onShowAdd = () => this.setState({ add: true });
+  onHideAdd = () => this.setState({ add: false });
 
   onClick = (e: SyntheticInputEvent<*>, client: Client) => {
     const { push, business } = this.props;

@@ -17,6 +17,7 @@ import MoreIcon from "grommet/components/icons/base/More";
 import AddIcon from "grommet/components/icons/base/Add";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import Spinning from "grommet/components/icons/Spinning";
+import { Can } from "./Can";
 import ClientActions from "./ClientActions";
 import ClientEdit from "./ClientEdit";
 import ClientInvoice from "./ClientInvoice";
@@ -77,22 +78,22 @@ export type Props = {
   jobs: Array<Job>,
   clientId: number,
   isFetching: boolean,
-  push: string => void,
+  push: (string) => void,
   fetchClient: Function,
-  fetchJobs: Function
+  fetchJobs: Function,
 };
 
 type State = {
   showSidebarWhenSingle: boolean,
   view: "edit" | "invoice" | null,
-  responsive: Responsive
+  responsive: Responsive,
 };
 
 class ClientDetail extends Component<Props & { intl: intlShape }, State> {
   state = {
     showSidebarWhenSingle: false,
     view: null,
-    responsive: "multiple"
+    responsive: "multiple",
   };
   static contextType = AuthContext;
 
@@ -110,14 +111,16 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
         });
     }
 
-    getUser().then(({ access_token }) => {
-      fetchJobs(access_token, {
-        client: clientId,
-        ordering: "status_order,-begins"
+    getUser()
+      .then(({ access_token }) => {
+        fetchJobs(access_token, {
+          client: clientId,
+          ordering: "status_order,-begins",
+        });
+      })
+      .catch(() => {
+        addError({ text: intl.formatMessage({ id: "flash.error" }) });
       });
-    }).catch(() => {
-      addError({ text: intl.formatMessage({ id: "flash.error" }) });
-    });
   }
 
   render() {
@@ -276,22 +279,22 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                       responsive={false}
                     >
                       {jobs.length ? (
-                        this.state.responsive === "single" ? (
-                          <Anchor
-                            icon={<AddIcon />}
-                            path={`/${business.id}/jobs/add?client=${client.id}`}
-                            a11yTitle={intlJobAdd}
-                          />
-                        ) : (
-                          <Button
-                            label={intlJobAdd}
-                            accent={true}
-                            path={`/${business.id}/jobs/add?client=${client.id}`}
-                          />
-                        )
-                      ) : (
-                        undefined
-                      )}
+                        <Can I="create" a="Job">
+                          {this.state.responsive === "single" ? (
+                            <Anchor
+                              icon={<AddIcon />}
+                              path={`/${business.id}/jobs/add?client=${client.id}`}
+                              a11yTitle={intlJobAdd}
+                            />
+                          ) : (
+                            <Button
+                              label={intlJobAdd}
+                              accent={true}
+                              path={`/${business.id}/jobs/add?client=${client.id}`}
+                            />
+                          )}
+                        </Can>
+                      ) : undefined}
                     </Box>
                   </Header>
                 </Box>
@@ -353,7 +356,7 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
 
   _onToggleSidebar = () => {
     this.setState({
-      showSidebarWhenSingle: !this.state.showSidebarWhenSingle
+      showSidebarWhenSingle: !this.state.showSidebarWhenSingle,
     });
   };
 }

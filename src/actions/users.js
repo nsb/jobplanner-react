@@ -1,5 +1,4 @@
 // @flow
-// import {push} from 'react-router-redux';
 import usersApi from "../api/UsersApi";
 import type { Dispatch } from "../types/Store";
 
@@ -9,27 +8,26 @@ export const REQUEST_ME_SUCCESS: "REQUEST_ME_SUCCESS" = "REQUEST_ME_SUCCESS";
 
 export type User = {
   id: number,
-  url: string,
   username: string,
   first_name: string,
   last_name: string,
   email: string,
-  businesses: Array<number>
+  is_active: boolean,
 };
 
 type RequestMeAction = {
   type: typeof REQUEST_ME,
-  token: string
+  token: string,
 };
 
 type RequestMeSuccessAction = {
   type: typeof REQUEST_ME_SUCCESS,
-  user: User
+  user: User,
 };
 
 type RequestMeFailureAction = {
   type: typeof REQUEST_ME_FAILURE,
-  error: string
+  error: string,
 };
 
 export type Action =
@@ -40,7 +38,7 @@ export type Action =
 export const requestMe = (token: string): RequestMeAction => {
   return {
     type: REQUEST_ME,
-    token
+    token,
   };
 };
 
@@ -48,14 +46,14 @@ export const receiveMe = (user: User): RequestMeSuccessAction => {
   return {
     type: REQUEST_ME_SUCCESS,
     receivedAt: Date.now(),
-    user
+    user,
   };
 };
 
 export const receiveMeError = (error: string): RequestMeFailureAction => {
   return {
     type: REQUEST_ME_FAILURE,
-    error
+    error,
   };
 };
 

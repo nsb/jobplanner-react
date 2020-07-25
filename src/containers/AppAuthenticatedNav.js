@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
-import posthog from 'posthog-js';
+import posthog from "posthog-js";
 import Loadable from "react-loadable";
 import Split from "grommet/components/Split";
 import Loading from "../components/Loading";
@@ -13,12 +13,15 @@ import ClientListContainer from "../components/ClientListContainer";
 import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
 import ClientEdit from "../components/ClientEdit";
+import { AbilityContext } from "../components/Can";
+import ability from "../ability";
 import { navToggle, navResponsive } from "../actions/nav";
 import type { State } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { Business } from "../actions/businesses";
 import type { User } from "../actions/users";
 import type { Responsive } from "../actions/nav";
+import type { Employee } from "../actions/employees";
 import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
@@ -28,39 +31,40 @@ type Props = {
   dispatch: Dispatch,
   match: { url: string },
   user: User,
+  currentEmployee: Employee,
   navResponsive: (Responsive) => ThunkAction,
-  navToggle: () => ThunkAction
+  navToggle: () => ThunkAction,
 };
 
 const Jobs = Loadable({
   loader: () => import("../components/Jobs"),
-  loading: Loading
+  loading: Loading,
 });
 
 const CalendarContainer = Loadable({
   loader: () => import("../components/CalendarContainer"),
-  loading: Loading
+  loading: Loading,
 });
 
 const Reports = Loadable({
   loader: () => import("../components/Reports"),
-  loading: Loading
+  loading: Loading,
 });
 
 const Settings = Loadable({
   loader: () => import("../components/Settings"),
-  loading: Loading
+  loading: Loading,
 });
 
 const Invoices = Loadable({
   loader: () => import("../components/Invoices"),
-  loading: Loading
-})
+  loading: Loading,
+});
 
 const Integrations = Loadable({
   loader: () => import("../components/Integrations"),
-  loading: Loading
-})
+  loading: Loading,
+});
 
 class AppAuthenticatedNav extends Component<Props> {
   constructor(props: Props) {
@@ -73,50 +77,57 @@ class AppAuthenticatedNav extends Component<Props> {
       navActive,
       responsive,
       user,
+      currentEmployee,
       navToggle,
-      business
+      business,
     } = this.props;
     const priority = navActive && "single" === responsive ? "left" : "right";
 
     return (
-      <Split priority={priority} flex="right" onResponsive={this.onResponsive}>
-        {this.props.navActive ? (
-          <NavSidebar
-            toggleNav={navToggle}
-            business={business}
-            user={user}
-          />
-        ) : null}
-        <Switch>
-          <Route
-            exact
-            path="/:businessId/calendar"
-            component={CalendarContainer}
-          />
-          <Route exact path="/:businessId/clients/add" component={ClientAdd} />
-          <Route
-            exact
-            path="/:businessId/clients/:clientId"
-            component={ClientDetail}
-          />
-          <Route
-            exact
-            path="/:businessId/clients/:clientId/edit"
-            component={ClientEdit}
-          />
-          <Route
-            exact
-            path="/:businessId/clients"
-            component={ClientListContainer}
-          />
-          <Route path="/:businessId/jobs" component={Jobs} />
-          <Route path="/:businessId/reports" component={Reports} />
-          <Route path="/:businessId/settings" component={Settings} />
-          <Route path="/:businessId/invoices" component={Invoices} />
-          <Route path="/:businessId/integrations" component={Integrations} />
-          <Redirect to={`/${business.id}/clients`} />
-        </Switch>
-      </Split>
+      <AbilityContext.Provider value={ability(currentEmployee)}>
+        <Split
+          priority={priority}
+          flex="right"
+          onResponsive={this.onResponsive}
+        >
+          {this.props.navActive ? (
+            <NavSidebar toggleNav={navToggle} business={business} user={user} />
+          ) : null}
+          <Switch>
+            <Route
+              exact
+              path="/:businessId/calendar"
+              component={CalendarContainer}
+            />
+            <Route
+              exact
+              path="/:businessId/clients/add"
+              component={ClientAdd}
+            />
+            <Route
+              exact
+              path="/:businessId/clients/:clientId"
+              component={ClientDetail}
+            />
+            <Route
+              exact
+              path="/:businessId/clients/:clientId/edit"
+              component={ClientEdit}
+            />
+            <Route
+              exact
+              path="/:businessId/clients"
+              component={ClientListContainer}
+            />
+            <Route path="/:businessId/jobs" component={Jobs} />
+            <Route path="/:businessId/reports" component={Reports} />
+            <Route path="/:businessId/settings" component={Settings} />
+            <Route path="/:businessId/invoices" component={Invoices} />
+            <Route path="/:businessId/integrations" component={Integrations} />
+            <Redirect to={`/${business.id}/clients`} />
+          </Switch>
+        </Split>
+      </AbilityContext.Provider>
     );
   }
 
@@ -126,24 +137,28 @@ class AppAuthenticatedNav extends Component<Props> {
 }
 
 const mapStateToProps = (
-  { nav, entities, users }: State,
+  { employees, nav, entities, users }: State,
   ownProps: {
     match: { params: { businessId: number }, url: string },
     navResponsive: ("multiple") => ThunkAction,
-    navToggle: () => ThunkAction
+    navToggle: () => ThunkAction,
   }
 ) => {
   const businessId = parseInt(ownProps.match.params.businessId, 10);
 
   return {
-
     navActive: nav.active,
     responsive: nav.responsive,
     business: ensureState(entities).businesses[businessId],
     match: ownProps.match,
     user: users.me,
+    currentEmployee: employees.result
+      .map((Id: number) => {
+        return ensureState(entities).employees[Id];
+      })
+      .find((employee) => employee.me),
     navResponsive: ownProps.navResponsive,
-    navToggle: ownProps.navToggle
+    navToggle: ownProps.navToggle,
   };
 };
 

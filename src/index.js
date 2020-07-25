@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { IntlProvider } from "react-intl";
 import moment from "moment";
-import posthog from 'posthog-js';
+import posthog from "posthog-js";
 import "moment/locale/da";
 import * as Sentry from "@sentry/browser";
 import { Router } from "react-router-dom";

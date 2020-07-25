@@ -21,7 +21,7 @@ import { AuthContext } from "../providers/authProvider";
 type Props = {
   isFetching: boolean,
   dispatch: Dispatch,
-  messages: Array<FlashMessageShape>
+  messages: Array<FlashMessageShape>,
 };
 
 class AppAuthenticated extends Component<Props> {
@@ -36,10 +36,10 @@ class AppAuthenticated extends Component<Props> {
     });
   }
 
-  renderToast = message => {
+  renderToast = (message) => {
     const status = {
       SUCCESS: "ok",
-      ERROR: "critical"
+      ERROR: "critical",
     };
 
     return <Toast status={status[message.type]}>{message.text}</Toast>;
@@ -50,7 +50,7 @@ class AppAuthenticated extends Component<Props> {
 
     if (!isFetching) {
       let toasts = (
-        <div>{messages.map(message => this.renderToast(message))}</div>
+        <div>{messages.map((message) => this.renderToast(message))}</div>
       );
 
       let routes = (
@@ -91,7 +91,7 @@ const mapStateToProps = (state: State) => {
 
   return {
     isFetching: users.isFetching || businesses.isFetching,
-    messages: flashMessage.messages
+    messages: flashMessage.messages,
   };
 };
 
