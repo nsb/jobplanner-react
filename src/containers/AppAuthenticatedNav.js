@@ -10,7 +10,6 @@ import Split from "grommet/components/Split";
 import Loading from "../components/Loading";
 import NavSidebar from "../components/NavSidebar";
 import ClientListContainer from "../components/ClientListContainer";
-import ClientAdd from "../components/ClientAdd";
 import ClientDetail from "../components/ClientDetailContainer";
 import ClientEdit from "../components/ClientEdit";
 import { AbilityContext } from "../components/Can";
@@ -98,11 +97,6 @@ class AppAuthenticatedNav extends Component<Props> {
               exact
               path="/:businessId/calendar"
               component={CalendarContainer}
-            />
-            <Route
-              exact
-              path="/:businessId/clients/add"
-              component={ClientAdd}
             />
             <Route
               exact
