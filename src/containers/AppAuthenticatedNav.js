@@ -11,7 +11,6 @@ import Loading from "../components/Loading";
 import NavSidebar from "../components/NavSidebar";
 import ClientListContainer from "../components/ClientListContainer";
 import ClientDetail from "../components/ClientDetailContainer";
-import ClientEdit from "../components/ClientEdit";
 import { AbilityContext, Can } from "../components/Can";
 import ability from "../ability";
 import { navToggle, navResponsive } from "../actions/nav";
@@ -102,11 +101,6 @@ class AppAuthenticatedNav extends Component<Props> {
               exact
               path="/:businessId/clients/:clientId"
               component={ClientDetail}
-            />
-            <Route
-              exact
-              path="/:businessId/clients/:clientId/edit"
-              component={ClientEdit}
             />
             <Route
               exact
