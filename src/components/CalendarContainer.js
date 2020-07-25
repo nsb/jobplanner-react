@@ -44,7 +44,7 @@ type Props = {
   jobsIsFetching: boolean,
 };
 
-type CalendarView = "day" | "week" | "month" | "agenda";
+type CalendarView = "day" | "week" | "month";
 
 type State = {
   views: Array<CalendarView>,
@@ -61,8 +61,7 @@ class CalendarContainer extends Component<Props & { intl: intlShape }, State> {
   constructor({ responsive }: Props) {
     super();
     this.state = {
-      views:
-        responsive === "single" ? ["day"] : ["month", "week", "day", "agenda"],
+      views: responsive === "single" ? ["day"] : ["month", "week", "day"],
       view: responsive === "single" ? "day" : "week",
       date: new Date(),
       selected: undefined,

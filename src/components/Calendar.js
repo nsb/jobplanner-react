@@ -8,7 +8,6 @@ import moment from "moment";
 import Box from "grommet/components/Box";
 import NavControl from "./NavControl";
 import CalendarEvent from "./CalendarEvent";
-import CalendarEventAgenda from "./CalendarEventAgenda";
 import type { Visit } from "../actions/visits";
 import type { Responsive } from "../actions/nav";
 
@@ -71,31 +70,23 @@ const intlDay = ( // eslint-disable-line no-unused-vars
   />
 );
 
-const intlAgenda = ( // eslint-disable-line no-unused-vars
-  <FormattedMessage
-    id="calendar.agendaLabel"
-    description="Calendar agenda label"
-    defaultMessage="agenda"
-  />
-);
-
 type Props = {
   visits: Array<Visit>,
   // visitsGroupedByDay: { [key: string]: Array<Visit> },
-  views: Array<"day" | "week" | "month" | "agenda">,
-  defaultView: "day" | "week" | "month" | "agenda",
+  views: Array<"day" | "week" | "month">,
+  defaultView: "day" | "week" | "month",
   defaultDate: Date,
   responsive: Responsive,
   onNavigate: Function,
   onView: Function,
   onSelectSlot: Function,
   onSelectEvent: Function,
-  onEventDrop: Function
+  onEventDrop: Function,
 };
 
 const DnDCalendar = ({
   visits,
-  views = ["month", "week", "day", "agenda"],
+  views = ["month", "week", "day"],
   defaultView = "week",
   onNavigate,
   onView,
@@ -103,7 +94,7 @@ const DnDCalendar = ({
   onSelectEvent,
   onEventDrop,
   intl,
-  responsive
+  responsive,
 }: Props & { intl: intlShape }) => {
   let scrollToTime = new Date();
   scrollToTime.setHours(6);
@@ -115,7 +106,6 @@ const DnDCalendar = ({
     month: intl.formatMessage({ id: "calendar.monthLabel" }),
     week: intl.formatMessage({ id: "calendar.weekLabel" }),
     day: intl.formatMessage({ id: "calendar.dayLabel" }),
-    agenda: intl.formatMessage({ id: "calendar.agendaLabel" })
   };
 
   return (
@@ -130,11 +120,11 @@ const DnDCalendar = ({
           views={views}
           defaultView={defaultView}
           events={visits}
-          titleAccessor={visit => visit.title || visit.client_name}
-          startAccessor={visit => {
+          titleAccessor={(visit) => visit.title || visit.client_name}
+          startAccessor={(visit) => {
             return new Date(visit.begins);
           }}
-          endAccessor={visit => {
+          endAccessor={(visit) => {
             return new Date(visit.ends);
           }}
           allDayAccessor="anytime"
@@ -146,9 +136,6 @@ const DnDCalendar = ({
           onEventDrop={onEventDrop}
           components={{
             event: CalendarEvent,
-            agenda: {
-              event: CalendarEventAgenda
-            }
           }}
           eventPropGetter={(
             event: Visit,
@@ -164,12 +151,12 @@ const DnDCalendar = ({
                 style: event.completed
                   ? {
                       "background-color": "#a8a8a8",
-                      "text-decoration": "line-through"
+                      "text-decoration": "line-through",
                     }
                   : {
                       background: "#49516f",
-                      opacity: 0.8
-                    }
+                      opacity: 0.8,
+                    },
               };
             } else {
               return {
@@ -177,8 +164,8 @@ const DnDCalendar = ({
                 style: {
                   "background-color": "#fff",
                   color: "#434343",
-                  "font-weight": "bold"
-                }
+                  "font-weight": "bold",
+                },
               };
             }
           }}
