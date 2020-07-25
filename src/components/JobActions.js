@@ -15,6 +15,7 @@ import EditIcon from "grommet/components/icons/base/Edit";
 import TrashIcon from "grommet/components/icons/base/Trash";
 import JobClose from "./JobClose";
 import JobRemove from "./JobRemove";
+import { Can } from "./Can";
 import type { Job } from "../actions/jobs";
 
 const intlEdit = (
@@ -51,7 +52,7 @@ const intlRemove = (
 
 const LAYERS = {
   close: JobClose,
-  remove: JobRemove
+  remove: JobRemove,
 };
 
 type Props = {
@@ -59,17 +60,17 @@ type Props = {
   onToggleCloseJob: Function,
   onClose?: Function,
   onEdit: Function,
-  isFeching: boolean
+  isFeching: boolean,
 };
 
 type State = {
-  layerName: ?string
+  layerName: ?string,
 };
 
 class JobActions extends Component<Props, State> {
   state = {
-    layerName: undefined
-  }
+    layerName: undefined,
+  };
 
   _onLayerOpen = (layerName: string) => {
     this.setState({ layerName });
@@ -89,18 +90,20 @@ class JobActions extends Component<Props, State> {
     if (onClose) {
       // name = <Heading tag="h3" margin='none'>Job name</Heading>;
       closeControl = (
-        <Button
-          icon={<CloseIcon />}
-          onClick={onClose}
-          a11yTitle={intlClose}
-        />
+        <Button icon={<CloseIcon />} onClick={onClose} a11yTitle={intlClose} />
       );
     }
 
     let layer;
     if (this.state.layerName) {
       let Component = LAYERS[this.state.layerName];
-      layer = <Component job={job} onClose={this._onLayerClose} isFetching={isFeching} />;
+      layer = (
+        <Component
+          job={job}
+          onClose={this._onLayerClose}
+          isFetching={isFeching}
+        />
+      );
     }
 
     let editButton;
@@ -117,23 +120,25 @@ class JobActions extends Component<Props, State> {
       );
     }
 
-    const closeButton = job.closed
-      ? <Button
-          align="start"
-          plain={true}
-          icon={<RevertIcon />}
-          label={intlReopen}
-          onClick={onToggleCloseJob}
-          a11yTitle={intlReopen}
-        />
-      : <Button
-          align="start"
-          plain={true}
-          icon={<TaskIcon />}
-          label={intlClose}
-          onClick={() => this._onLayerOpen("close")}
-          a11yTitle={intlClose}
-        />;
+    const closeButton = job.closed ? (
+      <Button
+        align="start"
+        plain={true}
+        icon={<RevertIcon />}
+        label={intlReopen}
+        onClick={onToggleCloseJob}
+        a11yTitle={intlReopen}
+      />
+    ) : (
+      <Button
+        align="start"
+        plain={true}
+        icon={<TaskIcon />}
+        label={intlClose}
+        onClick={() => this._onLayerOpen("close")}
+        a11yTitle={intlClose}
+      />
+    );
 
     let removeButton;
     if (job.closed) {
@@ -161,9 +166,15 @@ class JobActions extends Component<Props, State> {
         </Header>
         <Box pad="medium">
           <Menu>
-            {editButton}
-            {closeButton}
-            {removeButton}
+            <Can I="update" a="Job">
+              {editButton}
+            </Can>
+            <Can I="update" a="Job">
+              {closeButton}
+            </Can>
+            <Can I="delete" a="Job">
+              {removeButton}
+            </Can>
           </Menu>
         </Box>
         {layer}

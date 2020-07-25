@@ -22,6 +22,7 @@ import BusyIcon from "grommet/components/icons/Spinning";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
 import VisitStatusTag from "./VisitStatusTag";
+import { Can } from "./Can";
 import { AuthContext } from "../providers/authProvider";
 import { intlFormSavingLabel } from "../i18n";
 import type { Visit } from "../actions/visits";
@@ -231,7 +232,7 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
     }
 
     return (
-      <Box margin={{top: "medium"}}>
+      <Box margin={{ top: "medium" }}>
         <Box>
           <Heading tag="h4" strong={true}>
             {intlTitle}
@@ -256,32 +257,34 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
             {visit.details}
           </Box>
           {toggleCompletedButton}
-          <Box margin={{ bottom: "small" }}>
-            <Menu
-              size="small"
-              responsive={true}
-              inline={false}
-              primary={false}
-              label={intlActions}
-              Directions
-            >
-              <Anchor icon={<EditIcon />} onClick={onEdit}>
-                {intlEdit}
-              </Anchor>
-              <Anchor icon={<UpdateIcon />} onClick={onUpdateFutureVisits}>
-                {intlUpdateFuture}
-              </Anchor>
-              <Anchor icon={<TrashIcon />} onClick={onDelete}>
-                {intlDelete}
-              </Anchor>
-              <Anchor
-                icon={visit.completed ? <CloseIcon /> : <CheckmarkIcon />}
-                onClick={this.toggleCompleted}
+          <Can I="update" a="Visit">
+            <Box margin={{ bottom: "small" }}>
+              <Menu
+                size="small"
+                responsive={true}
+                inline={false}
+                primary={false}
+                label={intlActions}
+                Directions
               >
-                {visit.completed ? intlMarkIncomplete : intlMarkCompleted}
-              </Anchor>
-            </Menu>
-          </Box>
+                <Anchor icon={<EditIcon />} onClick={onEdit}>
+                  {intlEdit}
+                </Anchor>
+                <Anchor icon={<UpdateIcon />} onClick={onUpdateFutureVisits}>
+                  {intlUpdateFuture}
+                </Anchor>
+                <Anchor icon={<TrashIcon />} onClick={onDelete}>
+                  {intlDelete}
+                </Anchor>
+                <Anchor
+                  icon={visit.completed ? <CloseIcon /> : <CheckmarkIcon />}
+                  onClick={this.toggleCompleted}
+                >
+                  {visit.completed ? intlMarkIncomplete : intlMarkCompleted}
+                </Anchor>
+              </Menu>
+            </Box>
+          </Can>
           <Box
             colorIndex="light-2"
             pad={{ horizontal: "medium", vertical: "small" }}

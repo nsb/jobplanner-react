@@ -10,14 +10,19 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     visit: Visit,
-    onClose: Function
+    onClose: Function,
   }
 ): Props => {
-  const { entities } = state;
+  const { entities, employees } = state;
   return {
     visit: ownProps.visit,
     job: ensureState(entities).jobs[ownProps.visit.job],
-    onClose: ownProps.onClose
+    onClose: ownProps.onClose,
+    currentEmployee: employees.result
+      .map((Id: number) => {
+        return ensureState(entities).employees[Id];
+      })
+      .find((employee) => employee.me),
   };
 };
 

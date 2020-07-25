@@ -20,7 +20,7 @@ const mapStateToProps = (
     onClose: Function,
     visit: Visit,
     job: ?Job,
-    partialUpdateVisitAndLoadJob: Function
+    partialUpdateVisitAndLoadJob: Function,
   }
 ): Props => {
   const { entities, visits } = state;
@@ -30,21 +30,21 @@ const mapStateToProps = (
     visit: ownProps.visit,
     job: ownProps.job,
     property: ensureState(entities).properties[ownProps.visit.property],
-    assigned: ownProps.visit.assigned.map(Id => {
+    assigned: ownProps.visit.assigned.map((Id) => {
       return ensureState(entities).employees[Id];
     }),
     onEdit: ownProps.onEdit,
     onUpdateFutureVisits: ownProps.onUpdateFutureVisits,
     partialUpdateVisitAndLoadJob: ownProps.partialUpdateVisitAndLoadJob,
     onDelete: ownProps.onDelete,
-    onClose: ownProps.onClose
+    onClose: ownProps.onClose,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      partialUpdateVisitAndLoadJob
+      partialUpdateVisitAndLoadJob,
     },
     dispatch
   );
