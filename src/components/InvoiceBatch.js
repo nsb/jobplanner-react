@@ -14,6 +14,7 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from "grommet/components/icons/Spinning";
 import Notification from "grommet/components/Notification";
 import NavControl from "./NavControl";
+import { Can } from "./Can";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import {
   intlFormSavingLabel,
@@ -123,15 +124,17 @@ class InvoiceBatch extends Component<Props & { intl: intlShape }, State> {
         </Box>
       ) : (
         <Box pad={{ horizontal: "medium" }}>
-          <Form onSubmit={this.onSubmit}>
-            <Footer pad={{ vertical: "medium" }}>
-              <Button
-                label={intlCreateButton}
-                type={!hasSelected ? undefined : "submit"}
-                primary={true}
-              />
-            </Footer>
-          </Form>
+          <Can I="create" a="Invoice">
+            <Form onSubmit={this.onSubmit}>
+              <Footer pad={{ vertical: "medium" }}>
+                <Button
+                  label={intlCreateButton}
+                  type={!hasSelected ? undefined : "submit"}
+                  primary={true}
+                />
+              </Footer>
+            </Form>
+          </Can>
         </Box>
       );
     }

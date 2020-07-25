@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
 import Search from "grommet/components/Search";
@@ -16,6 +16,7 @@ import { AuthContext } from "../providers/authProvider";
 import { fetchJobs } from "../actions/jobs";
 import JobListItemContainer from "./JobListItemContainer";
 import NavControl from "./NavControl";
+import { Can } from "./Can";
 import { jobsSorted as jobsSelector } from "../selectors/jobSelectors";
 import { ensureState } from "redux-optimistic-ui";
 
@@ -31,7 +32,7 @@ const intlTitle = (
     description="Job list title"
     defaultMessage="Jobs"
   />
-)
+);
 
 const intlSearch = ( // eslint-disable-line no-unused-vars
   <FormattedMessage
@@ -39,7 +40,7 @@ const intlSearch = ( // eslint-disable-line no-unused-vars
     description="Job list search placeholder"
     defaultMessage="Search"
   />
-)
+);
 
 const intlAdd = (
   <FormattedMessage
@@ -47,7 +48,7 @@ const intlAdd = (
     description="Job list add job"
     defaultMessage="Add job"
   />
-)
+);
 
 const intlEmptyMessage = (
   <FormattedMessage
@@ -55,7 +56,7 @@ const intlEmptyMessage = (
     description="Job list empty message"
     defaultMessage="Add a job to get started scheduling work for your clients."
   />
-)
+);
 
 type Props = {
   business: Business,
@@ -64,14 +65,14 @@ type Props = {
   push: Function,
   fetchJobs: Function,
   totalCount: number,
-  responsive: Responsive
+  responsive: Responsive,
 };
 
 type State = {
   searchText: string,
   searchResults: Array<number>,
   offset: number,
-  limit: number
+  limit: number,
 };
 
 class JobList extends Component<Props & { intl: intlShape }, State> {
@@ -80,7 +81,7 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
     searchText: "",
     searchResults: [],
     offset: 0,
-    limit: 15
+    limit: 15,
   };
   static contextType = AuthContext;
 
@@ -98,11 +99,18 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { jobs, business, isFetching, totalCount, intl, responsive } = this.props;
+    const {
+      jobs,
+      business,
+      isFetching,
+      totalCount,
+      intl,
+      responsive,
+    } = this.props;
 
-    const filteredJobs = jobs.filter(job => {
+    const filteredJobs = jobs.filter((job) => {
       if (this.state.searchText) {
-        return this.state.searchResults.includes(job.id)
+        return this.state.searchResults.includes(job.id);
       } else {
         return true;
       }
@@ -110,33 +118,45 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
 
     const search = jobs.length ? (
       <Search
-      inline={true}
-      fill={true}
-      size="medium"
-      placeHolder={intl.formatMessage({ id: "jobList.searchPlaceholder" })}
-      value={this.state.searchText}
-      onDOMChange={this.onSearch}
-    />
-    ) : undefined
+        inline={true}
+        fill={true}
+        size="medium"
+        placeHolder={intl.formatMessage({ id: "jobList.searchPlaceholder" })}
+        value={this.state.searchText}
+        onDOMChange={this.onSearch}
+      />
+    ) : undefined;
 
     return (
       <Box>
         <Header size="large" pad={{ horizontal: "medium" }}>
           <NavControl title={intlTitle} />
           {search}
-          {
-            jobs.length ?
-              responsive === "single" ?
+          {jobs.length ? (
+            <Can I="create" a="Job">
+              {responsive === "single" ? (
                 <Anchor
                   icon={<AddIcon />}
                   path={`/${business.id}/jobs/add`}
                   a11yTitle={intlAdd}
-                /> : <Button label={intlAdd}
+                />
+              ) : (
+                <Button
+                  label={intlAdd}
                   accent={true}
-                  path={`/${business.id}/jobs/add`} /> : undefined
-          }
+                  path={`/${business.id}/jobs/add`}
+                />
+              )}
+            </Can>
+          ) : undefined}
         </Header>
-        <List onMore={isFetching || this.state.offset > totalCount ? undefined : this.onMore}>
+        <List
+          onMore={
+            isFetching || this.state.offset > totalCount
+              ? undefined
+              : this.onMore
+          }
+        >
           {filteredJobs.map((job, index) => {
             return (
               <JobListItemContainer
@@ -150,7 +170,9 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
         </List>
         <ListPlaceholder
           filteredTotal={isFetching ? null : filteredJobs.length}
-          unfilteredTotal={isFetching ? null : this.state.searchText ? jobs.length : totalCount}
+          unfilteredTotal={
+            isFetching ? null : this.state.searchText ? jobs.length : totalCount
+          }
           emptyMessage={intlEmptyMessage}
           addControl={
             <Button
@@ -169,20 +191,22 @@ class JobList extends Component<Props & { intl: intlShape }, State> {
   onMore = () => {
     const { business, fetchJobs } = this.props;
     const { getUser } = this.context;
-    getUser().then(({ access_token }) => {
-      return fetchJobs(access_token, {
-        business: business.id,
-        ordering: "status_order,next_visit",
-        limit: this.state.limit,
-        offset: this.state.offset,
-        search: this.state.searchText
+    getUser()
+      .then(({ access_token }) => {
+        return fetchJobs(access_token, {
+          business: business.id,
+          ordering: "status_order,next_visit",
+          limit: this.state.limit,
+          offset: this.state.offset,
+          search: this.state.searchText,
+        });
       })
-    }).then((resultJobs) => {
-      return this.setState({
-        offset: this.state.offset + this.state.limit,
-        searchResults: resultJobs.results.map(job => job.id)
+      .then((resultJobs) => {
+        return this.setState({
+          offset: this.state.offset + this.state.limit,
+          searchResults: resultJobs.results.map((job) => job.id),
+        });
       });
-    });
   };
 
   onClick = (e: SyntheticEvent<>, job: Job) => {
@@ -199,8 +223,8 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     businessId: number,
-    push: string => void,
-  fetchJobs: Function
+    push: (string) => void,
+    fetchJobs: Function,
   }
 ): * => {
   const { entities, jobs, nav } = state;
@@ -212,16 +236,19 @@ const mapStateToProps = (
     push: ownProps.push,
     totalCount: jobs.count,
     fetchJobs: ownProps.fetchJobs,
-    responsive: nav.responsive
+    responsive: nav.responsive,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      fetchJobs
+      fetchJobs,
     },
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(JobList));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(JobList));
