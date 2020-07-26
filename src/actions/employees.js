@@ -49,6 +49,7 @@ export type Employee = {
   business: number,
   me: boolean,
   role: Role,
+  invite: string,
 };
 
 export type EmployeesMap = { [id: number]: Employee };

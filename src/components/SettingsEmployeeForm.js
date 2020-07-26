@@ -10,6 +10,7 @@ import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 import Select from "grommet/components/Select";
+import TextInput from "grommet/components/TextInput";
 import { intlFormFieldRequired } from "../i18n";
 import type { Element } from "react";
 import type { Employee, Role } from "../actions/employees";
@@ -203,6 +204,18 @@ export const EmployeeForm = ({
             normalize={(selected) => selected.value}
           />
         </fieldset>
+        {initialValues && initialValues.invite ? (
+          <fieldset>
+            <div>Invite link</div>
+            <FormField>
+              <TextInput
+                id="ical_feed"
+                name="Ical Feed"
+                value={initialValues && initialValues.invite}
+              />
+            </FormField>
+          </fieldset>
+        ) : undefined}
       </FormFields>
 
       <Footer pad={{ vertical: "medium" }}>
