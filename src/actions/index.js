@@ -49,12 +49,13 @@ export const updateVisitAndLoadJob = (
 };
 
 export const partialUpdateVisitAndLoadJob = (
-  visit: { id: number, job: number },
+  visit: { id: number },
+  job: number,
   token: string
 ): ThunkAction => {
   return (dispatch: Dispatch, getState: GetState) => {
     return dispatch(partialUpdateVisit(visit, token)).then(() => {
-      return dispatch(fetchJob(token, visit.job));
+      return dispatch(fetchJob(token, job));
     });
   };
 };

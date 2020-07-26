@@ -347,7 +347,8 @@ class VisitDetail extends Component<Props & { intl: intlShape }> {
     getUser()
       .then(({ access_token }) => {
         return partialUpdateVisitAndLoadJob(
-          { id: visit.id, job: visit.job, completed: !visit.completed },
+          { id: visit.id, completed: !visit.completed },
+          visit.job,
           access_token
         );
       })
