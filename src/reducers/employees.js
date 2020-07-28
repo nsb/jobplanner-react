@@ -9,7 +9,7 @@ type IsFetchingState = boolean;
 type ResultState = Array<number>;
 export type State = {
   isFetching: IsFetchingState,
-  result: ResultState
+  result: ResultState,
 };
 
 const isFetching = (
@@ -47,6 +47,9 @@ const isFetching = (
     case "FETCH_BUSINESSES_SUCCESS":
       return false;
 
+    case "CREATE_BUSINESS_SUCCESS":
+      return false;
+
     default:
       return state;
   }
@@ -64,7 +67,7 @@ const count = (
       if (action.payload && action.payload.entities) {
         return flatMap(
           action.payload.entities.businesses,
-          business => business.employees
+          (business) => business.employees
         ).length;
       } else {
         return state;
@@ -124,7 +127,18 @@ const result = (
       if (action.payload && action.payload.entities) {
         return flatMap(
           action.payload.entities.businesses,
-          business => business.employees
+          (business) => business.employees
+        );
+      } else {
+        return state;
+      }
+
+    // employees are inlined under business entity
+    case "CREATE_BUSINESS_SUCCESS":
+      if (action.payload && action.payload.entities) {
+        return flatMap(
+          action.payload.entities.businesses,
+          (business) => business.employees
         );
       } else {
         return state;
@@ -139,5 +153,5 @@ export default combineReducers({
   isFetching,
   count,
   next,
-  result
+  result,
 });
