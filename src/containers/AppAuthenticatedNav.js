@@ -67,7 +67,7 @@ const Integrations = Loadable({
 class AppAuthenticatedNav extends Component<Props> {
   constructor(props: Props) {
     super(props);
-    posthog.identify(props.user.username);
+    props.user && posthog.identify(props.user.username);
   }
 
   render() {
