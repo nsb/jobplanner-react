@@ -47,6 +47,14 @@ const intlPropertiesHeading = (
   />
 );
 
+const intlNotesHeading = (
+  <FormattedMessage
+    id="clientDetail.notesHeading"
+    description="Client detail notes heading"
+    defaultMessage="Notes"
+  />
+);
+
 const intlJobsEmptyMessage = (
   <FormattedMessage
     id="clientDetail.jobsEmptyMessage"
@@ -267,6 +275,15 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                   })}
                 </Columns>
               </Section>
+
+              {client.notes ? (
+                <Section pad="medium" full="horizontal">
+                  <Heading tag="h4" margin="none">
+                    {intlNotesHeading}
+                  </Heading>
+                  {client.notes}
+                </Section>
+              ) : undefined}
 
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertical: "none" }}>

@@ -14,7 +14,7 @@ import Footer from "grommet/components/Footer";
 import FormFields from "grommet/components/FormFields";
 import FormField from "grommet/components/FormField";
 import CloseIcon from "grommet/components/icons/base/Close";
-import BusyIcon from 'grommet/components/icons/Spinning';
+import BusyIcon from "grommet/components/icons/Spinning";
 import { intlFormFieldRequired, intlFormSavingLabel } from "../i18n";
 import type { Client } from "../actions/clients";
 // import type { Field as CustomField } from "../actions/fields";
@@ -66,7 +66,7 @@ const intlCompanyName = (
     description="Client form company name label"
     defaultMessage="Company name"
   />
-)
+);
 
 const intlIsBusiness = (
   <FormattedMessage
@@ -74,7 +74,7 @@ const intlIsBusiness = (
     description="Client form is business label"
     defaultMessage="Use company name as the primary name"
   />
-)
+);
 
 const intlContactDetailsHeading = (
   <FormattedMessage
@@ -82,7 +82,7 @@ const intlContactDetailsHeading = (
     description="Client form contact details heading"
     defaultMessage="Contact details"
   />
-)
+);
 
 const intlPhone = (
   <FormattedMessage
@@ -90,7 +90,7 @@ const intlPhone = (
     description="Client form phone label"
     defaultMessage="Phone"
   />
-)
+);
 
 const intlEmail = (
   <FormattedMessage
@@ -98,7 +98,7 @@ const intlEmail = (
     description="Client form email label"
     defaultMessage="E-mail"
   />
-)
+);
 
 const intlNotificationsHeading = (
   <FormattedMessage
@@ -106,7 +106,7 @@ const intlNotificationsHeading = (
     description="Client form automated notifications heading"
     defaultMessage="Automated notifications"
   />
-)
+);
 
 const intlVisitRemindersLabel = (
   <FormattedMessage
@@ -114,7 +114,7 @@ const intlVisitRemindersLabel = (
     description="Client form automated notifications visit reminders label"
     defaultMessage="Visit reminders"
   />
-)
+);
 
 const intlPropertiesHeading = (
   <FormattedMessage
@@ -122,7 +122,7 @@ const intlPropertiesHeading = (
     description="Client form properties heading"
     defaultMessage="Property details"
   />
-)
+);
 
 const intlAddress1Label = (
   <FormattedMessage
@@ -130,7 +130,7 @@ const intlAddress1Label = (
     description="Client form address 1 label"
     defaultMessage="Address 1"
   />
-)
+);
 
 const intlAddress2Label = (
   <FormattedMessage
@@ -138,7 +138,7 @@ const intlAddress2Label = (
     description="Client form address 2 label"
     defaultMessage="Address 2"
   />
-)
+);
 
 const intlCityLabel = (
   <FormattedMessage
@@ -146,7 +146,7 @@ const intlCityLabel = (
     description="Client form city label"
     defaultMessage="City"
   />
-)
+);
 
 const intlZipCodeLabel = (
   <FormattedMessage
@@ -154,7 +154,7 @@ const intlZipCodeLabel = (
     description="Client form zip code label"
     defaultMessage="Zip Code"
   />
-)
+);
 
 const intlAddressUsePropertyLabel = (
   <FormattedMessage
@@ -162,7 +162,7 @@ const intlAddressUsePropertyLabel = (
     description="Client form address use property label"
     defaultMessage="Billing address is the same as property address"
   />
-)
+);
 
 const intlPropertyIndex = (index: number) => (
   <FormattedMessage
@@ -179,20 +179,29 @@ const intlAddProperty = (
     description="Client form add property button"
     defaultMessage="Add Property"
   />
-)
+);
+
+const intlNotes = (
+  <FormattedMessage
+    id="clientForm.notesLabel"
+    description="Client form notes label"
+    defaultMessage="Internal notes"
+  />
+);
 
 const validate = (values: Client) => {
   const errors = {};
   const propertiesArrayErrors = [];
-  values.properties && values.properties.forEach((property, propertyIndex) => {
-    const propertyErrors = {};
-    if (!property || !property.address1) {
-      propertyErrors.address1 = intlFormFieldRequired;
-      propertiesArrayErrors[propertyIndex] = propertyErrors;
-    }
-  })
+  values.properties &&
+    values.properties.forEach((property, propertyIndex) => {
+      const propertyErrors = {};
+      if (!property || !property.address1) {
+        propertyErrors.address1 = intlFormFieldRequired;
+        propertiesArrayErrors[propertyIndex] = propertyErrors;
+      }
+    });
   if (propertiesArrayErrors.length) {
-    errors.properties = propertiesArrayErrors
+    errors.properties = propertiesArrayErrors;
   }
   if (!values.is_business && !values.first_name) {
     errors.first_name = intlFormFieldRequired;
@@ -201,10 +210,10 @@ const validate = (values: Client) => {
     errors.last_name = intlFormFieldRequired;
   }
   if (values.is_business && !values.business_name) {
-    errors.business_name = intlFormFieldRequired
+    errors.business_name = intlFormFieldRequired;
   }
   if (!values.address_use_property && !values.address1) {
-    errors.address1 = intlFormFieldRequired
+    errors.address1 = intlFormFieldRequired;
   }
   return errors;
 };
@@ -213,87 +222,100 @@ const renderField = ({
   input,
   label,
   type,
-  meta: { touched, error, warning }
+  meta: { touched, error, warning },
 }): Element<*> => (
-    <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-      <input {...input} type={type} />
-    </FormField>
-  );
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <input {...input} type={type} />
+  </FormField>
+);
 
-const renderFieldHidden = ({
-  input,
-  type,
-}): Element<*> => (
-    <input {...input} type="hidden" />
-  );
+const renderFieldHidden = ({ input, type }): Element<*> => (
+  <input {...input} type="hidden" />
+);
 
 const renderCheckBox = ({
   input,
   label,
-  meta: { touched, error, warning }
+  meta: { touched, error, warning },
 }): Element<*> => (
-    // <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
-    <CheckBox {...input} label={label} checked={!!input.value} />
-    // </FormField>
-  );
+  // <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+  <CheckBox {...input} label={label} checked={!!input.value} />
+  // </FormField>
+);
+
+const renderTextArea = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning },
+}): Element<*> => (
+  <FormField label={label} htmlFor={input.name} error={touched ? error : null}>
+    <textarea rows="2" {...input} type={type} />
+  </FormField>
+);
 
 const renderProperties = ({
   fields,
-  meta: { error, submitFailed }
+  meta: { error, submitFailed },
 }): Element<*> => (
-    <Box>
-      {fields.map((property, index) => (
-        <Box margin={{ bottom: "small" }}>
-          <div key={index}>
-            {!!index && intlPropertyIndex(index + 1)}
-            {index ? <Button icon={<CloseIcon />}
+  <Box>
+    {fields.map((property, index) => (
+      <Box margin={{ bottom: "small" }}>
+        <div key={index}>
+          {!!index && intlPropertyIndex(index + 1)}
+          {index ? (
+            <Button
+              icon={<CloseIcon />}
               onClick={() => fields.remove(index)}
-              href='#'
+              href="#"
               primary={false}
               accent={false}
-              plain={true} /> : null }
-            <Field
-              name={`${property}.id`}
-              type="hidden"
-              component={renderFieldHidden} />
-            <Field
-              name={`${property}.address1`}
-              type="text"
-              component={renderField}
-              label={intlAddress1Label}
+              plain={true}
             />
-            <Field
-              name={`${property}.address2`}
-              type="text"
-              component={renderField}
-              label={intlAddress2Label}
-            />
-            <Field
-              name={`${property}.city`}
-              type="text"
-              component={renderField}
-              label={intlCityLabel}
-            />
-            <Field
-              name={`${property}.zip_code`}
-              type="text"
-              component={renderField}
-              label={intlZipCodeLabel}
-            />
-          </div>
-        </Box>
-      ))}
-      <Box>
-        <Button
-          label={intlAddProperty}
-          secondary={true}
-          fill={false}
-          onClick={() => fields.push({})}
-        />          
-        {submitFailed && error && <span>{error}</span>}
+          ) : null}
+          <Field
+            name={`${property}.id`}
+            type="hidden"
+            component={renderFieldHidden}
+          />
+          <Field
+            name={`${property}.address1`}
+            type="text"
+            component={renderField}
+            label={intlAddress1Label}
+          />
+          <Field
+            name={`${property}.address2`}
+            type="text"
+            component={renderField}
+            label={intlAddress2Label}
+          />
+          <Field
+            name={`${property}.city`}
+            type="text"
+            component={renderField}
+            label={intlCityLabel}
+          />
+          <Field
+            name={`${property}.zip_code`}
+            type="text"
+            component={renderField}
+            label={intlZipCodeLabel}
+          />
+        </div>
       </Box>
+    ))}
+    <Box>
+      <Button
+        label={intlAddProperty}
+        secondary={true}
+        fill={false}
+        onClick={() => fields.push({})}
+      />
+      {submitFailed && error && <span>{error}</span>}
     </Box>
-  );
+  </Box>
+);
 
 type Props = {
   handleSubmit: Function,
@@ -303,15 +325,14 @@ type Props = {
   onClose: Function,
   // fields: Array<CustomField>,
   initialValues: Object,
-  isFetching: boolean
+  isFetching: boolean,
 };
 
 type State = {
-  address_use_property: boolean
-}
+  address_use_property: boolean,
+};
 
 class ClientForm extends Component<Props & { intl: intlShape }, State> {
-
   constructor({ initialValues }: Props) {
     super();
     this.state = { address_use_property: initialValues.address_use_property };
@@ -327,7 +348,7 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
       // fields,
       initialValues,
       isFetching,
-      intl
+      intl,
     } = this.props;
 
     let billingAddress;
@@ -360,28 +381,34 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
             label={intlZipCodeLabel}
           />
         </fieldset>
-      )
+      );
     }
 
     const control = isFetching ? (
-      <Box direction="row" align="center"
-        pad={{ horizontal: 'medium', between: 'small' }}>
-        <BusyIcon /><span className="secondary">{intlFormSavingLabel}</span>
+      <Box
+        direction="row"
+        align="center"
+        pad={{ horizontal: "medium", between: "small" }}
+      >
+        <BusyIcon />
+        <span className="secondary">{intlFormSavingLabel}</span>
       </Box>
     ) : (
-        <Button
-          type="submit"
-          primary={true}
-          label={intl.formatMessage({id: 'form.save'})}
-          onClick={valid && dirty && !submitting ? () => true : undefined}
-        />
-      )
+      <Button
+        type="submit"
+        primary={true}
+        label={intl.formatMessage({ id: "form.save" })}
+        onClick={valid && dirty && !submitting ? () => true : undefined}
+      />
+    );
 
     return (
       <Form onSubmit={handleSubmit}>
         <Header size="medium" justify="between" pad="none">
           <Heading tag="h3" margin="none" strong={true}>
-            {initialValues && initialValues.id ? intlClientEditTitle : intlClientAddTitle}
+            {initialValues && initialValues.id
+              ? intlClientEditTitle
+              : intlClientAddTitle}
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
@@ -456,7 +483,9 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
               label={intlAddressUsePropertyLabel}
               component={renderCheckBox}
               parse={(value: boolean | string) => !!value}
-              onChange={(event, value) => { this.setState({ address_use_property: value }) }}
+              onChange={(event, value) => {
+                this.setState({ address_use_property: value });
+              }}
             />
           </fieldset>
 
@@ -473,6 +502,15 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
               />
             ))}
           </fieldset> */}
+          <fieldset>
+            <Field
+              name="notes"
+              label={intlNotes}
+              component={renderTextArea}
+              type="text"
+              rows="2"
+            />
+          </fieldset>
         </FormFields>
 
         <Footer pad={{ vertical: "medium" }}>
@@ -482,9 +520,9 @@ class ClientForm extends Component<Props & { intl: intlShape }, State> {
       </Form>
     );
   }
-};
+}
 
 export default reduxForm({
   form: "client", // a unique identifier for this form
-  validate
+  validate,
 })(injectIntl(ClientForm));
