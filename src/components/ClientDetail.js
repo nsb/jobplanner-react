@@ -275,16 +275,6 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                   })}
                 </Columns>
               </Section>
-
-              {client.notes ? (
-                <Section pad="medium" full="horizontal">
-                  <Heading tag="h4" margin="none">
-                    {intlNotesHeading}
-                  </Heading>
-                  {client.notes}
-                </Section>
-              ) : undefined}
-
               <Section full="horizontal">
                 <Box pad={{ horizontal: "medium", vertical: "none" }}>
                   <Header>
@@ -342,6 +332,14 @@ class ClientDetail extends Component<Props & { intl: intlShape }, State> {
                   }
                 />
               </Section>
+              {client.notes ? (
+                <Section pad="medium" full="horizontal">
+                  <Heading tag="h4" margin="none">
+                    {intlNotesHeading}
+                  </Heading>
+                  {client.notes}
+                </Section>
+              ) : undefined}
             </Article>
           </div>
           {sidebar}
