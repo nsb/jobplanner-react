@@ -14,7 +14,7 @@
     "nielsbusch-grommet-css": "1.11.0",
     "normalizr": "^3.6.0",
     "oidc-client": "^1.10.1",
-    "posthog-js": "^1.0.6",
+    "posthog-js": "^1.3.6",
     "react": "16.13.1",
     "react-big-calendar": "^0.24.1",
     "react-dnd": "^10.0.2",
