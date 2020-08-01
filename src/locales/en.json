@@ -58,7 +58,6 @@
   "integrationList.DineroDescription": "Automatically create invoices with Dinero.",
   "integrationList.DineroLabel": "Go to Dinero Add-on",
   "invoicesBatch.title": "Invoices",
-  "invoiceBatch.connected": "Connected to {hookNames}",
   "invoicesBatch.none": "None",
   "invoicesBatch.all": "All",
   "invoicesBatch.emptyMessage": "Nothing to invoice",
@@ -289,6 +288,7 @@
   "flash.error": "An error occurred",
   "flash.deleted": "Removed",
   "invoices.createdAccounting": "Invoices will be created in your accounting system. Please make sure you have connected your accounting system via our add-ons.",
+  "invoices.connected": "Connected to {hookNames}",
   "invoices.createButton": "Create invoices",
   "invoices.emptyMessage": "Nothing to invoice"
 }

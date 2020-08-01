@@ -56,3 +56,12 @@ export const intlInvoiceAccountingSystemNotification = ( // eslint-disable-line 
     defaultMessage="Invoices will be created in your accounting system. Please make sure you have connected your accounting system via our add-ons."
   />
 );
+
+export const intlInvoiceAccountingSystemConnected = (hookNames: string) => (
+  <FormattedMessage
+    id="invoices.connected"
+    description="Invoice connected to message"
+    defaultMessage="Connected to {hookNames}"
+    values={{ hookNames }}
+  />
+);

@@ -20,6 +20,7 @@ import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
 import {
   intlFormSavingLabel,
   intlInvoiceAccountingSystemNotification,
+  intlInvoiceAccountingSystemConnected,
 } from "../i18n";
 import { AuthContext } from "../providers/authProvider";
 import {
@@ -41,15 +42,6 @@ const intlTitle = (
     id="invoicesBatch.title"
     description="Invoices title"
     defaultMessage="Invoices"
-  />
-);
-
-const intlConnected = (hookNames: string) => (
-  <FormattedMessage
-    id="invoiceBatch.connected"
-    description="Invoice connected to message"
-    defaultMessage="Connected to {hookNames}"
-    values={{ hookNames }}
   />
 );
 
@@ -161,7 +153,9 @@ class InvoiceBatch extends Component<Props & { intl: intlShape }, State> {
                 <Box margin={{ right: "small" }}>
                   <Status value="ok" />
                 </Box>
-                {intlConnected(hooks.map((hook) => hook.name).join(", "))}
+                {intlInvoiceAccountingSystemConnected(
+                  hooks.map((hook) => hook.name).join(", ")
+                )}
               </Box>
             ) : (
               <Box

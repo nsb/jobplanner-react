@@ -18,12 +18,14 @@ import Notification from "grommet/components/Notification";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from "grommet/components/icons/Spinning";
 import CloseIcon from "grommet/components/icons/base/Close";
+import Status from "grommet/components/icons/Status";
 import InvoiceBatchJobContainer from "./InvoiceBatchJobContainer";
 import { AuthContext } from "../providers/authProvider";
 import { createInvoiceAndLoadJobs } from "../actions/index";
 import {
   intlFormSavingLabel,
   intlInvoiceAccountingSystemNotification,
+  intlInvoiceAccountingSystemConnected,
 } from "../i18n";
 import { ensureState } from "redux-optimistic-ui";
 import {
@@ -39,6 +41,7 @@ import type { State as ReduxState } from "../types/State";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { JobSelection } from "../utils/invoices";
 import type { InvoiceRequest } from "../actions/invoices";
+import type { Hook } from "../actions/hooks";
 import type { Responsive } from "../actions/nav";
 
 const intlHeaderText = (client: Client) => (
@@ -67,6 +70,7 @@ type Props = {
   client: Client,
   jobSelection: Map<number, Job>,
   visitSelection: Map<number, Visit>,
+  hooks: Array<Hook>,
   isFetching: boolean,
   createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction,
   responsive: Responsive,
@@ -86,7 +90,7 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { client, jobSelection, isFetching, onClose } = this.props;
+    const { client, hooks, jobSelection, isFetching, onClose } = this.props;
 
     const jobCount = jobSelection.size;
     const { selected } = this.state;
@@ -111,7 +115,7 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
           <Footer pad={{ vertical: "medium" }}>
             <Button
               label={intlCreateButton}
-              type={!hasSelected ? undefined : "submit"}
+              type={hasSelected && hooks.length ? "submit" : undefined}
               primary={true}
             />
           </Footer>
@@ -127,15 +131,27 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
           </Heading>
           <Anchor icon={<CloseIcon />} onClick={onClose} a11yTitle="Close" />
         </Header>
-        {jobSelection.size ? (
-          <Box margin={{ horizontal: "medium" }}>
-            <Notification
-              message={intlInvoiceAccountingSystemNotification}
-              status="warning"
-              size="small"
-            />
-          </Box>
-        ) : undefined}
+        <Box pad={{ horizontal: "medium " }}>
+          {hooks.length ? (
+            <Box direction="row" align="center">
+              <Box margin={{ right: "small" }}>
+                <Status value="ok" />
+              </Box>
+              {intlInvoiceAccountingSystemConnected(
+                hooks.map((hook) => hook.name).join(", ")
+              )}
+            </Box>
+          ) : (
+            <Box direction="row" align="center" margin={{ vertical: "small" }}>
+              <Notification
+                message={intlInvoiceAccountingSystemNotification}
+                status="warning"
+                size="small"
+              />
+            </Box>
+          )}
+        </Box>
+
         <Box pad="medium" full={"horizontal"}>
           <Heading tag="h3">{intlHeadingText}</Heading>
           <List onMore={undefined}>
@@ -193,7 +209,7 @@ class ClientInvoice extends Component<Props & { intl: intlShape }, State> {
 }
 
 const mapStateToProps = (
-  { entities, jobs, invoices, nav }: ReduxState,
+  { entities, businesses, jobs, invoices, nav }: ReduxState,
   {
     onClose,
     client,
@@ -204,6 +220,8 @@ const mapStateToProps = (
     createInvoiceAndLoadJobs: (InvoiceRequest, string, Object) => ThunkAction,
   }
 ): Props => {
+  const business = ensureState(entities).businesses[client.business];
+
   const jobsForClient: Array<Job> = jobs.result
     .map((Id: number): Array<Job> => {
       return ensureState(entities).jobs[Id];
@@ -229,9 +247,14 @@ const mapStateToProps = (
       return acc;
     }, new Map());
 
+  const hooks = business.hooks
+    .map((id) => ensureState(entities).hooks[id])
+    .filter((hook) => hook.event === "invoice.added" && hook.is_active);
+
   return {
     isFetching: invoices.isFetching,
     responsive: nav.responsive,
+    hooks,
     jobSelection,
     visitSelection,
     createInvoiceAndLoadJobs,
