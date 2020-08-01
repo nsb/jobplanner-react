@@ -26,12 +26,12 @@ type Props = {
   property: Property,
   clients: ClientsState,
   job: Job,
-  push: string => void,
+  push: (string) => void,
   employees: Array<Employee>,
   assigned: Array<Employee>,
   isFetching: boolean,
   updateJob: Function,
-  history: { push: string => void }
+  history: { push: (string) => void },
 };
 
 class JobEdit extends Component<Props & { intl: intlShape }> {
@@ -45,7 +45,7 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
       business,
       property,
       intl,
-      isFetching
+      isFetching,
     } = this.props;
 
     return (
@@ -60,28 +60,31 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
             ...job,
             client: {
               label: `${job.client_firstname} ${job.client_lastname}`,
-              value: job.client
+              value: job.client,
             },
             property: {
               label: `${property.address1}`,
-              value: property
+              value: property,
             },
-            assigned: assigned.map(employee => {
-              return { value: employee.id, label: [employee.first_name, employee.last_name].join(' ') };
+            assigned: assigned.map((employee) => {
+              return {
+                value: employee.id,
+                label: [employee.first_name, employee.last_name].join(" "),
+              };
             }),
             invoice_reminder: {
               value: job.invoice_reminder,
               label: intl.formatMessage({
-                id: invoicingReminderMap[job.invoice_reminder]
-              })
-            }
+                id: invoicingReminderMap[job.invoice_reminder],
+              }),
+            },
           }}
         />
       </Article>
     );
   }
 
-  handleSubmit = values => {
+  handleSubmit = (values) => {
     const { business, intl, updateJob, job, history } = this.props;
 
     const { getUser } = this.context;
@@ -92,8 +95,8 @@ class JobEdit extends Component<Props & { intl: intlShape }> {
             ...values,
             business: business.id,
             property: job.property,
-            assigned: values.assigned.map(v => v.value),
-            invoice_reminder: values.invoice_reminder.value
+            assigned: values.assigned.map((v) => v.value),
+            invoice_reminder: values.invoice_reminder.value,
           },
           access_token
         );
@@ -117,25 +120,25 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     match: { params: { businessId: number, jobId: number } },
-    history: { push: string => void },
+    history: { push: (string) => void },
     fetchClients: (string, Object) => Promise<any>,
-    updateJob: (Business, Object, string) => Promise<any>
+    updateJob: (Business, Object, string) => Promise<any>,
   }
 ): Props => {
-  const { clients, employees, entities, jobs } = state;
+  const { clients, entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const jobId = parseInt(ownProps.match.params.jobId, 10);
   const job = ensureState(entities).jobs[jobId];
 
+  const business = ensureState(entities).businesses[businessId];
+
   return {
-    business: ensureState(entities).businesses[businessId],
+    business: business,
     property: ensureState(entities).properties[job.property],
     push: ownProps.history.push,
-    employees: employees.result
-      .map((Id: number) => {
-        return ensureState(entities).employees[Id];
-      })
-      .filter(employee => employee.business === businessId),
+    employees: business.employees.map((Id: number) => {
+      return ensureState(entities).employees[Id];
+    }),
     assigned: job.assigned.map((Id: number) => {
       return ensureState(entities).employees[Id];
     }),
@@ -147,14 +150,14 @@ const mapStateToProps = (
     ),
     isFetching: jobs.isFetching,
     updateJob: ownProps.updateJob,
-    history: ownProps.history
+    history: ownProps.history,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      updateJob
+      updateJob,
     },
     dispatch
   );
