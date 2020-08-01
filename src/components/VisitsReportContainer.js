@@ -7,22 +7,21 @@ import type { Props } from "./VisitsReport";
 import { ensureState } from "redux-optimistic-ui";
 
 const mapStateToProps = (
-  { entities, employees }: ReduxState,
+  { entities }: ReduxState,
   ownProps: {
     match: { params: { businessId: number } },
     history: { push: Function },
-    dispatch: Dispatch
+    dispatch: Dispatch,
   }
 ): Props => {
   const businessId = parseInt(ownProps.match.params.businessId, 10);
+  const business = ensureState(entities).businesses[businessId];
 
   return {
-    business: ensureState(entities).businesses[businessId],
-    employees: employees.result
-      .map((Id: number) => {
-        return ensureState(entities).employees[Id];
-      })
-      .filter(employee => employee.business === businessId)
+    business: business,
+    employees: business.employees.map((Id: number) => {
+      return ensureState(entities).employees[Id];
+    }),
   };
 };
 
