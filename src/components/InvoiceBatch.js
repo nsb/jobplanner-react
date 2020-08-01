@@ -13,6 +13,7 @@ import Button from "grommet/components/Button";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import BusyIcon from "grommet/components/icons/Spinning";
 import Notification from "grommet/components/Notification";
+import Status from "grommet/components/icons/Status";
 import NavControl from "./NavControl";
 import { Can } from "./Can";
 import InvoiceBatchClientContainer from "./InvoiceBatchClientContainer";
@@ -30,6 +31,7 @@ import type { Business } from "../actions/businesses";
 import type { Client } from "../actions/clients";
 import type { Job } from "../actions/jobs";
 import type { Visit } from "../actions/visits";
+import type { Hook } from "../actions/hooks";
 import type { InvoiceRequest } from "../actions/invoices";
 import type { ClientSelection } from "../utils/invoices";
 import type { ThunkAction } from "../types/Store";
@@ -39,6 +41,15 @@ const intlTitle = (
     id="invoicesBatch.title"
     description="Invoices title"
     defaultMessage="Invoices"
+  />
+);
+
+const intlConnected = (hookNames: string) => (
+  <FormattedMessage
+    id="invoiceBatch.connected"
+    description="Invoice connected to message"
+    defaultMessage="Connected to {hookNames}"
+    values={{ hookNames }}
   />
 );
 
@@ -79,6 +90,7 @@ export type Props = {
   clients: Map<number, Client>,
   jobs: Map<number, Job>,
   visits: Map<number, Visit>,
+  hooks: Array<Hook>,
   createInvoiceAndLoadJobs: (
     InvoiceRequest | Array<InvoiceRequest>,
     string,
@@ -103,7 +115,7 @@ class InvoiceBatch extends Component<Props & { intl: intlShape }, State> {
   }
 
   render() {
-    const { clients, isFetching } = this.props;
+    const { clients, hooks, isFetching } = this.props;
     const { selected } = this.state;
     const clientCount = clients.size;
     const hasSelected = Array.from(selected.keys()).some((clientId: number) => {
@@ -129,7 +141,7 @@ class InvoiceBatch extends Component<Props & { intl: intlShape }, State> {
               <Footer pad={{ vertical: "medium" }}>
                 <Button
                   label={intlCreateButton}
-                  type={!hasSelected ? undefined : "submit"}
+                  type={hasSelected && hooks.length ? "submit" : undefined}
                   primary={true}
                 />
               </Footer>
@@ -141,33 +153,48 @@ class InvoiceBatch extends Component<Props & { intl: intlShape }, State> {
 
     return (
       <Box>
-        {clients.size ? (
-          <Box margin="medium">
-            <Notification
-              message={intlInvoiceAccountingSystemNotification}
-              status="warning"
-              size="small"
-            />
-          </Box>
-        ) : undefined}
         <Header size="large" pad={{ horizontal: "medium" }}>
           <NavControl title={intlTitle} />
-          <Box direction="column">
-            <Heading tag="h3">{intlSelectClients}</Heading>
-            <Box direction="row">
-              <Button
-                label={intlNone}
-                onClick={() => this.onAllOrNone(false)}
-                accent={true}
-              />
-              <Button
-                label={intlAll}
-                onClick={() => this.onAllOrNone(true)}
-                accent={true}
-              />
-            </Box>
+          <Box>
+            {hooks.length ? (
+              <Box direction="row" align="center">
+                <Box margin={{ right: "small" }}>
+                  <Status value="ok" />
+                </Box>
+                {intlConnected(hooks.map((hook) => hook.name).join(", "))}
+              </Box>
+            ) : (
+              <Box
+                direction="row"
+                align="center"
+                margin={{ vertical: "small" }}
+              >
+                <Notification
+                  message={intlInvoiceAccountingSystemNotification}
+                  status="warning"
+                  size="small"
+                />
+              </Box>
+            )}
           </Box>
         </Header>
+
+        <Box direction="column" margin={{ horizontal: "medium" }}>
+          <Heading tag="h3">{intlSelectClients}</Heading>
+          <Box direction="row">
+            <Button
+              label={intlNone}
+              onClick={() => this.onAllOrNone(false)}
+              accent={true}
+            />
+            <Button
+              label={intlAll}
+              onClick={() => this.onAllOrNone(true)}
+              accent={true}
+            />
+          </Box>
+        </Box>
+
         <List onMore={undefined}>
           {Array.from(clients.keys()).map((id: number, index) => {
             return (

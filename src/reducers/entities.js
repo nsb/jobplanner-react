@@ -5,7 +5,7 @@ import { combineReducers } from "redux";
 import { FETCH_JOBS_SUCCESS } from "../actions/jobs";
 import type {
   Action as BusinessesAction,
-  BusinessesMap
+  BusinessesMap,
 } from "../actions/businesses";
 import type { Action as ClientsAction, ClientsMap } from "../actions/clients";
 import type { PropertiesMap } from "../actions/properties";
@@ -13,22 +13,23 @@ import type { Action as JobsAction, JobsMap } from "../actions/jobs";
 import type { Action as VisitsAction, VisitsMap } from "../actions/visits";
 import type {
   Action as ServicesAction,
-  ServicesMap
+  ServicesMap,
 } from "../actions/services";
 import type { Action as FieldsAction, FieldsMap } from "../actions/fields";
 import type {
   Action as EmployeesAction,
-  EmployeesMap
+  EmployeesMap,
 } from "../actions/employees";
 import type { LineItemsMap } from "../actions/lineitems";
 import type {
   Action as AsyncTasksAction,
-  AsyncTasksMap
+  AsyncTasksMap,
 } from "../actions/asynctasks";
 import type {
   Action as InvoicesAction,
-  InvoicesMap
+  InvoicesMap,
 } from "../actions/invoices";
+import type { Action as HooksAction, HooksMap } from "../actions/hooks";
 
 type BusinessState = BusinessesMap;
 type ClientsState = ClientsMap;
@@ -41,6 +42,7 @@ type EmployeesState = EmployeesMap;
 type LineItemsState = LineItemsMap;
 type AsyncTaskState = AsyncTasksMap;
 type InvoicesState = InvoicesMap;
+type HooksState = HooksMap;
 
 export type State = {
   businesses: BusinessState,
@@ -53,7 +55,8 @@ export type State = {
   employees: EmployeesState,
   lineItems: LineItemsState,
   asyncTasks: AsyncTaskState,
-  invoices: InvoicesState
+  invoices: InvoicesState,
+  hooks: HooksState,
 };
 
 type Action =
@@ -65,7 +68,8 @@ type Action =
   | FieldsAction
   | EmployeesAction
   | AsyncTasksAction
-  | InvoicesAction;
+  | InvoicesAction
+  | HooksAction;
 
 const jobsReducer: (JobsMap, Action) => JobsMap = (
   state: JobsMap = {},
@@ -97,7 +101,8 @@ const entities: (State, Action) => State = (
     employees: {},
     lineItems: {},
     asyncTasks: {},
-    invoices: {}
+    invoices: {},
+    hooks: {},
   },
   action: Action
 ): State => {
@@ -117,7 +122,8 @@ const entities: (State, Action) => State = (
     employees: identityReducer,
     lineItems: identityReducer,
     asyncTasks: identityReducer,
-    invoices: identityReducer
+    invoices: identityReducer,
+    hooks: identityReducer,
   })(newState, action);
 };
 

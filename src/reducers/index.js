@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 // import { routerReducer } from "react-router-redux";
 import { reducer as reduxFormReducer } from "redux-form";
 import { optimistic } from "redux-optimistic-ui";
-import { flashMessage } from 'redux-flash-messages';
+import { flashMessage } from "redux-flash-messages";
 import nav from "./nav";
 import businesses from "./businesses";
 import services from "./services";
@@ -18,6 +18,7 @@ import visits from "./visits";
 import asyncTasks from "./asynctasks";
 import entities from "./entities";
 import invoices from "./invoices";
+import hooks from "./hooks";
 
 const reducers = {
   // router: routerReducer,
@@ -36,7 +37,8 @@ const reducers = {
   asyncTasks,
   flashMessage,
   entities: optimistic(entities),
-  invoices
+  invoices,
+  hooks,
 };
 
 export type Reducers = typeof reducers;

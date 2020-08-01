@@ -66,6 +66,7 @@
   "form.saving": "Gemmer...",
   "integrationList.DineroDescription": "Automatisk fakturering med Dinero.",
   "integrationList.DineroLabel": "Gå til Dinero Add-on",
+  "invoiceBatch.connected": "Forbundet til {hookNames}",
   "invoiceBatch.oneOffJob": "#{id} - Enkelt job",
   "invoiceBatch.recurringJob": "#{id} - Gentaget job",
   "invoiceBatchVisit.markedCompleted": "Markeres udført.",

@@ -12,6 +12,7 @@ import type { Props } from "./InvoiceBatch";
 import type { InvoiceRequest } from "../actions/invoices";
 import type { Dispatch, ThunkAction } from "../types/Store";
 import type { State as ReduxState } from "../types/State";
+import { ensureState } from "redux-optimistic-ui";
 
 const mapStateToProps = (
   state: ReduxState,
@@ -21,11 +22,11 @@ const mapStateToProps = (
       string,
       Object
     ) => ThunkAction,
-    business: Business
+    business: Business,
   }
 ): Props => {
   const jobs = jobsWithRequiresInvoicing(state);
-  const { invoices } = state;
+  const { invoices, entities } = state;
 
   return {
     clients: jobs.reduce((acc, job) => {
@@ -37,8 +38,8 @@ const mapStateToProps = (
       return acc;
     }, new Map()),
     visits: jobs
-      .flatMap(job => {
-        return job.visits.map(visit => {
+      .flatMap((job) => {
+        return job.visits.map((visit) => {
           return getVisitById(state, { id: visit });
         });
       })
@@ -46,16 +47,19 @@ const mapStateToProps = (
         acc.set(visit.id, visit);
         return acc;
       }, new Map()),
+    hooks: ownProps.business.hooks
+      .map((id) => ensureState(entities).hooks[id])
+      .filter((hook) => hook.event === "invoice.added" && hook.is_active),
     createInvoiceAndLoadJobs: ownProps.createInvoiceAndLoadJobs,
     business: ownProps.business,
-    isFetching: invoices.isFetching
+    isFetching: invoices.isFetching,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      createInvoiceAndLoadJobs
+      createInvoiceAndLoadJobs,
     },
     dispatch
   );

@@ -58,6 +58,7 @@
   "integrationList.DineroDescription": "Automatically create invoices with Dinero.",
   "integrationList.DineroLabel": "Go to Dinero Add-on",
   "invoicesBatch.title": "Invoices",
+  "invoiceBatch.connected": "Connected to {hookNames}",
   "invoicesBatch.none": "None",
   "invoicesBatch.all": "All",
   "invoicesBatch.emptyMessage": "Nothing to invoice",

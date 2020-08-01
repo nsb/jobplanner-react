@@ -32,7 +32,9 @@ export type Business = {
   name: string,
   timezone: string,
   services: Array<number>,
-  ical_feed: string
+  employees: Array<number>,
+  hooks: Array<number>,
+  ical_feed: string,
 };
 
 export type BusinessesMap = { [id: number]: Business };
@@ -41,11 +43,11 @@ type BusinessResponse = {
   results: Array<Business>,
   count: number,
   next: ?string,
-  previous: ?string
+  previous: ?string,
 };
 
 type FetchBusinessesAction = {
-  type: typeof FETCH_BUSINESSES
+  type: typeof FETCH_BUSINESSES,
 };
 
 type FetchBusinessesSuccessAction = {
@@ -53,46 +55,46 @@ type FetchBusinessesSuccessAction = {
   meta: { count: number, next: ?string, previous: ?string },
   payload: {
     entities: { businesses: BusinessesMap },
-    result: Array<number>
-  }
+    result: Array<number>,
+  },
 };
 
 type FetchBusinessesFailureAction = {
   type: typeof FETCH_BUSINESSES_FAILURE,
-  error: string
+  error: string,
 };
 
 type CreateBusinessAction = {
   type: typeof CREATE_BUSINESS,
-  payload: Business
+  payload: Business,
 };
 
 type CreateBusinessSuccessAction = {
   type: typeof CREATE_BUSINESS_SUCCESS,
   payload: {
     entities: { businesses: BusinessesMap },
-    result: number
-  }
+    result: number,
+  },
 };
 
 type CreateBusinessFailureAction = {
   type: typeof CREATE_BUSINESS_FAILURE,
-  error: string
+  error: string,
 };
 
 type UpdateBusinessAction = {
   type: typeof UPDATE_BUSINESS,
-  payload: Business | { id: number }
+  payload: Business | { id: number },
 };
 
 type UpdateBusinessSuccessAction = {
   type: typeof UPDATE_BUSINESS_SUCCESS,
-  payload: Business
+  payload: Business,
 };
 
 type UpdateBusinessFailureAction = {
   type: typeof UPDATE_BUSINESS_FAILURE,
-  error: string
+  error: string,
 };
 
 export type Action =
@@ -112,7 +114,7 @@ const parse = (business): Business => {
 
 export const fetchBusinessesRequest = (): FetchBusinessesAction => {
   return {
-    type: FETCH_BUSINESSES
+    type: FETCH_BUSINESSES,
   };
 };
 
@@ -125,8 +127,8 @@ export const fetchBusinessesSuccess = (
     meta: {
       count: response.count,
       next: response.next,
-      previous: response.previous
-    }
+      previous: response.previous,
+    },
   };
 };
 
@@ -135,7 +137,7 @@ export const fetchBusinessesFailure = (
 ): FetchBusinessesFailureAction => {
   return {
     type: FETCH_BUSINESSES_FAILURE,
-    error: error
+    error: error,
   };
 };
 
@@ -160,7 +162,7 @@ export const createBusinessRequest = (
 ): CreateBusinessAction => {
   return {
     type: CREATE_BUSINESS,
-    payload
+    payload,
   };
 };
 
@@ -170,7 +172,7 @@ export const createBusinessSuccess = (
   return {
     type: CREATE_BUSINESS_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, businessSchema)
+    payload: normalize(payload, businessSchema),
   };
 };
 
@@ -179,7 +181,7 @@ export const createBusinessError = (
 ): CreateBusinessFailureAction => {
   return {
     type: CREATE_BUSINESS_FAILURE,
-    error: error
+    error: error,
   };
 };
 
@@ -205,7 +207,7 @@ export const updateBusinessRequest = (
 ): UpdateBusinessAction => {
   return {
     type: UPDATE_BUSINESS,
-    payload
+    payload,
   };
 };
 
@@ -215,7 +217,7 @@ export const updateBusinessSuccess = (
   return {
     type: UPDATE_BUSINESS_SUCCESS,
     receivedAt: Date.now(),
-    payload: normalize(payload, businessSchema)
+    payload: normalize(payload, businessSchema),
   };
 };
 
@@ -224,7 +226,7 @@ export const updateBusinessError = (
 ): UpdateBusinessFailureAction => {
   return {
     type: UPDATE_BUSINESS_FAILURE,
-    error
+    error,
   };
 };
 

@@ -15,10 +15,14 @@ export const reminderScheduleListSchema = new schema.Array(
   reminderScheduleSchema
 );
 
+export const hookSchema = new schema.Entity("hooks", {});
+export const hookListSchema = new schema.Array(hookSchema);
+
 export const businessSchema = new schema.Entity("businesses", {
   services: [serviceSchema],
   employees: [employeeSchema],
-  fields: [fieldSchema]
+  fields: [fieldSchema],
+  hooks: [hookSchema],
   // reminder_schedules: [reminderScheduleSchema]
 });
 export const businessListSchema = new schema.Array(businessSchema);
@@ -28,7 +32,7 @@ const quote = new schema.Entity("quote");
 
 export const clientSchema = new schema.Entity("clients", {
   properties: [property],
-  quotes: [quote]
+  quotes: [quote],
 });
 export const clientListSchema = new schema.Array(clientSchema);
 
@@ -37,24 +41,23 @@ const lineItem = new schema.Entity("lineItems");
 export const visitSchema = new schema.Entity("visits", {
   assigned: [employeeSchema],
   property: property,
-  client: clientSchema
+  client: clientSchema,
 });
 export const visitListSchema = new schema.Array(visitSchema);
 
 export const jobSchema = new schema.Entity("jobs", {
   client: clientSchema,
   line_items: [lineItem],
-  visits: [visitSchema]
+  visits: [visitSchema],
 });
 
 export const jobSchemaDenormalize = new schema.Entity("jobs", {
   client: clientSchema,
   line_items: [lineItem],
-  visits: [visitSchema]
+  visits: [visitSchema],
 });
 
 export const jobListSchema = new schema.Array(jobSchema);
-
 
 export const asyncTaskSchema = new schema.Entity("asyncTasks", {});
 export const asyncTaskListSchema = new schema.Array(asyncTaskSchema);
