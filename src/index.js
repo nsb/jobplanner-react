@@ -66,7 +66,7 @@ if (languageWithoutRegionCode === "da") {
 if (process.env.REACT_APP_SENTRY_PUBLIC_DSN) {
   Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_PUBLIC_DSN,
-    release: process.env.COMMIT_REF || "unknown",
+    release: process.env.REACT_APP_COMMIT_REF || "unknown",
     environment: process.env.NODE_ENV || "unknown",
     send_default_pii: true,
   });
