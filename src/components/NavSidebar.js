@@ -85,15 +85,17 @@ class NavSidebar extends Component<Props> {
     const colorIndex = "neutral-1-a";
 
     return (
-      <Sidebar colorIndex={colorIndex} fixed={true}>
-        <Header size="large" justify="between" pad={{ horizontal: "medium" }}>
+      <Sidebar colorIndex={colorIndex} fixed={true} size="small">
+        <Header size="large" justify="between" pad={{ horizontal: "small" }}>
           <Title a11yTitle="Close Menu">
-            <img
-              src={logo}
-              className="App-logo"
-              alt="logo"
-              style={{ height: "40px" }}
-            />
+            {business.name.length < 7 ? (
+              <img
+                src={logo}
+                className="App-logo"
+                alt="logo"
+                style={{ height: "40px" }}
+              />
+            ) : undefined}
             <span>{business.name}</span>
           </Title>
           <Button
