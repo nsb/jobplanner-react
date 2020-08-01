@@ -21,23 +21,23 @@ import { ensureState } from "redux-optimistic-ui";
 
 type Props = {
   business: Business,
-  push: string => void,
+  push: (string) => void,
   employees: Array<Employee>,
   client: ?{ value: Client, label: string },
   isFetching: boolean,
   fetchClients?: (string, Object) => Promise<any>,
   createJob: (Business, Job, string) => Promise<any>,
-  history: { push: string => void }
+  history: { push: (string) => void },
 };
 
 type State = {
-  scheduleLayer: boolean
+  scheduleLayer: boolean,
 };
 
 class JobsAdd extends Component<Props & { intl: intlShape }, State> {
   static contextType = AuthContext;
   state = {
-    scheduleLayer: false
+    scheduleLayer: false,
   };
 
   render() {
@@ -47,7 +47,7 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
       business,
       intl,
       isFetching,
-      fetchClients
+      fetchClients,
     } = this.props;
 
     return (
@@ -66,9 +66,9 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
             invoice_reminder: {
               value: "closed",
               label: intl.formatMessage({
-                id: oneoffInvoicingReminderMap["closed"]
-              })
-            }
+                id: oneoffInvoicingReminderMap["closed"],
+              }),
+            },
           }}
           fetchClients={fetchClients}
         />
@@ -76,10 +76,10 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
     );
   }
 
-  handleSubmit = values => {
+  handleSubmit = (values) => {
     const {
       client: { value: client },
-      property
+      property,
     } = values;
     const { business, intl, createJob, history } = this.props;
 
@@ -95,8 +95,8 @@ class JobsAdd extends Component<Props & { intl: intlShape }, State> {
               (client.properties[0].id
                 ? client.properties[0].id
                 : client.properties[0]), // client may not be normalized
-            assigned: values.assigned && values.assigned.map(v => v.value),
-            invoice_reminder: values.invoice_reminder.value
+            assigned: values.assigned && values.assigned.map((v) => v.value),
+            invoice_reminder: values.invoice_reminder.value,
           },
           access_token
         );
@@ -124,12 +124,12 @@ const mapStateToProps = (
   state: ReduxState,
   ownProps: {
     match: { params: { businessId: number } },
-    history: { push: string => void },
+    history: { push: (string) => void },
     fetchClients: (string, Object) => Promise<any>,
-    createJob: (Business, Job, string) => Promise<any>
+    createJob: (Business, Job, string) => Promise<any>,
   }
 ): * => {
-  const { employees, entities, jobs } = state;
+  const { entities, jobs } = state;
   const businessId = parseInt(ownProps.match.params.businessId, 10);
   const searchParams: URLSearchParams = new URLSearchParams(
     document.location.search
@@ -141,26 +141,26 @@ const mapStateToProps = (
     client = ensureState(entities).clients[clientId];
   }
 
+  const business = ensureState(entities).businesses[businessId];
+
   return {
-    business: ensureState(entities).businesses[businessId],
+    business: business,
     push: ownProps.history.push,
-    employees: employees.result
-      .map((Id: number) => {
-        return ensureState(entities).employees[Id];
-      })
-      .filter(employee => employee.business === businessId),
+    employees: business.employees.map((Id: number) => {
+      return ensureState(entities).employees[Id];
+    }),
     client: client
       ? {
           value: client,
           label: client.is_business
             ? client.business_name
-            : `${client.first_name} ${client.last_name}`
+            : `${client.first_name} ${client.last_name}`,
         }
       : undefined,
     isFetching: jobs.isFetching,
     fetchClients: ownProps.fetchClients,
     createJob: ownProps.createJob,
-    history: ownProps.history
+    history: ownProps.history,
   };
 };
 
@@ -168,7 +168,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       createJob,
-      fetchClients
+      fetchClients,
     },
     dispatch
   );
