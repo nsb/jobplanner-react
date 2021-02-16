@@ -1,9 +1,10 @@
+// @flow
 import { IDENTITY_CONFIG, METADATA_OIDC } from "./authConst";
 import { UserManager, WebStorageStateStore } from "oidc-client";
 import posthog from "posthog-js";
 
 export default class AuthService {
-  UserManager;
+  UserManager: UserManager;
 
   constructor() {
     this.UserManager = new UserManager({
@@ -45,7 +46,7 @@ export default class AuthService {
     return user;
   };
 
-  parseJwt = (token) => {
+  parseJwt = (token: string) => {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace("-", "+").replace("_", "/");
     return JSON.parse(window.atob(base64));
@@ -61,11 +62,20 @@ export default class AuthService {
   };
 
   isAuthenticated = () => {
-    const oidcStorage = JSON.parse(
-      sessionStorage.getItem(
-        `oidc.user:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_IDENTITY_CLIENT_ID}`
-      )
+    if (!process.env.REACT_APP_AUTH_URL) {
+      throw Error("REACT_APP_AUTH_URL is not set!");
+    }
+
+    if (!process.env.REACT_APP_IDENTITY_CLIENT_ID) {
+      throw Error("REACT_APP_IDENTITY_CLIENT_ID is not set!");
+    }
+
+    const session = sessionStorage.getItem(
+      `oidc.user:${process.env.REACT_APP_AUTH_URL}:${process.env.REACT_APP_IDENTITY_CLIENT_ID}`
     );
+    let oidcStorage;
+    if (session)
+      oidcStorage = JSON.parse(session);
 
     return !!oidcStorage && !!oidcStorage.access_token;
   };

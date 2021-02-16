@@ -1,27 +1,33 @@
+// @flow
+
 import React, { Component } from "react";
 import AuthService from "../auth/authService";
 
-export const AuthContext = React.createContext({
-  signinRedirectCallback: () => ({}),
-  logout: () => ({}),
-  signoutRedirectCallback: () => ({}),
-  isAuthenticated: () => ({}),
-  signinRedirect: () => ({}),
-  signinSilentCallback: () => ({}),
-  createSigninRequest: () => ({})
-});
+type t = {
+  signinRedirectCallback: () => void,
+  logout: () => void,
+  signoutRedirectCallback: () => void,
+  isAuthenticated: () => boolean,
+  signinRedirect: () => void,
+  signinSilentCallback: () => void,
+  createSigninRequest: () => ({}),
+  getUser: () => Promise<{ access_token: string }>
+}
+
+const authService = new AuthService()
+
+export const AuthContext = React.createContext < t > (authService);
 
 export const AuthConsumer = AuthContext.Consumer;
 
-export class AuthProvider extends Component {
-  authService;
-  constructor(props) {
-    super(props);
-    this.authService = new AuthService();
-  }
+type Props = {
+  children: any
+};
+
+export class AuthProvider extends Component<Props> {
   render() {
     return (
-      <AuthContext.Provider value={this.authService}>
+      <AuthContext.Provider value={authService}>
         {this.props.children}
       </AuthContext.Provider>
     );
