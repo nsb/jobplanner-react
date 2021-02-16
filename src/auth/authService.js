@@ -21,6 +21,7 @@ export default class AuthService {
     });
     this.UserManager.events.addSilentRenewError((e) => {
       // console.log("silent renew error", e.message);
+      this.logout();
     });
 
     this.UserManager.events.addAccessTokenExpired(() => {
@@ -40,9 +41,12 @@ export default class AuthService {
 
   getUser = async () => {
     const user = await this.UserManager.getUser();
-    if (!user) {
-      return await this.UserManager.signinRedirectCallback();
+    if (!user || user.expired) {
+      return await this.UserManager.signinSilent();
     }
+    // if (!user) {
+    //   return await this.UserManager.signinRedirectCallback();
+    // }
     return user;
   };
 
