@@ -72,7 +72,7 @@ type State = {
 class VisitsReport extends Component<Props & { intl: intlShape }, State> {
   state: State = {
     offset: 0,
-    limit: 1,
+    limit: 30,
     count: 0,
     visits: [],
     filterActive: false,
