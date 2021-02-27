@@ -72,7 +72,7 @@ type State = {
 class VisitsReport extends Component<Props & { intl: intlShape }, State> {
   state: State = {
     offset: 0,
-    limit: 30,
+    limit: 1,
     count: 0,
     visits: [],
     filterActive: false,
@@ -201,7 +201,7 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
       filters.assigned = filterValues.assigned.value;
     }
 
-    this.setState({ isFetching: true }, () => {
+    this.setState({ isFetching: true, offset: this.state.offset + this.state.limit }, () => {
       const { getUser } = this.context;
       getUser()
         .then(({ access_token }) => {
@@ -214,7 +214,7 @@ class VisitsReport extends Component<Props & { intl: intlShape }, State> {
           this.setState({
             visits: union(this.state.visits, responseVisits.results),
             count: responseVisits.count,
-            offset: this.state.offset + this.state.limit,
+            // offset: this.state.offset + this.state.limit,
             isFetching: false
           });
         })
